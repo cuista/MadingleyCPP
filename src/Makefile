@@ -23,13 +23,13 @@ OBJ=$(addprefix $(OBJDIR), $(patsubst %.cpp, %.o, $(notdir $(SRC))))
 VPATH=$(SRCDIR)
 
 # Compilation flags
-CXXFLAGS=-Wall -g -std=c++11
+CXXFLAGS=-Wall -std=c++11
 
 $(TARGET) : $(OBJ)
 	@echo Linking...
 	@mkdir -p $(BINDIR)
 	@$(CXX) $(CXXFLAGS) -o $(BINDIR)$@ $(OBJ) $(LIBS)
-	@echo EATSM compilation complete.
+	@echo Madingley compilation complete.
 
 $(OBJDIR)%.o : %.cpp
 	@echo Compiling $< in $@...
