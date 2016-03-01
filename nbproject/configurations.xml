@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <logicalFolder name="f3" displayName="Input" projectFiles="true">
+        <itemPath>src/Input/Constants.h</itemPath>
+        <itemPath>src/Input/DataGrid.h</itemPath>
+        <itemPath>src/Input/FileReader.h</itemPath>
+        <itemPath>src/Input/NcGridCell.h</itemPath>
+        <itemPath>src/Input/Parameters.h</itemPath>
+        <itemPath>src/Input/Types.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f1" displayName="Model" projectFiles="true">
+        <itemPath>src/Model/Activity.h</itemPath>
+        <itemPath>src/Model/ApplyEcology.h</itemPath>
+        <itemPath>src/Model/AutotrophProcessor.h</itemPath>
+        <itemPath>src/Model/Cohort.h</itemPath>
+        <itemPath>src/Model/CohortMerge.h</itemPath>
+        <itemPath>src/Model/Dispersal.h</itemPath>
+        <itemPath>src/Model/Eating.h</itemPath>
+        <itemPath>src/Model/EcologyCohort.h</itemPath>
+        <itemPath>src/Model/EcologyStock.h</itemPath>
+        <itemPath>src/Model/Environment.h</itemPath>
+        <itemPath>src/Model/FunctionalGroupDefinitions.h</itemPath>
+        <itemPath>src/Model/GridCell.h</itemPath>
+        <itemPath>src/Model/HANPP.h</itemPath>
+        <itemPath>src/Model/IDispersalImplementation.h</itemPath>
+        <itemPath>src/Model/IEatingImplementation.h</itemPath>
+        <itemPath>src/Model/IEcologicalProcessWithinGridCells.h</itemPath>
+        <itemPath>src/Model/IMetabolismImplementation.h</itemPath>
+        <itemPath>src/Model/IMortalityImplementation.h</itemPath>
+        <itemPath>src/Model/IReproductionImplementation.h</itemPath>
+        <itemPath>src/Model/MadingleyModel.h</itemPath>
+        <itemPath>src/Model/MadingleyModelInitialisation.h</itemPath>
+        <itemPath>src/Model/Metabolism.h</itemPath>
+        <itemPath>src/Model/ModelGrid.h</itemPath>
+        <itemPath>src/Model/Mortality.h</itemPath>
+        <itemPath>src/Model/Reproduction.h</itemPath>
+        <itemPath>src/Model/RevisedTerrestrialPlantModel.h</itemPath>
+        <itemPath>src/Model/Stock.h</itemPath>
+        <itemPath>src/Model/TAdvectiveDispersal.h</itemPath>
+        <itemPath>src/Model/TBackgroundMortality.h</itemPath>
+        <itemPath>src/Model/TDiffusiveDispersal.h</itemPath>
+        <itemPath>src/Model/TMetabolismEctotherm.h</itemPath>
+        <itemPath>src/Model/TMetabolismEndotherm.h</itemPath>
+        <itemPath>src/Model/TMetabolismHeterotroph.h</itemPath>
+        <itemPath>src/Model/TReproductionBasic.h</itemPath>
+        <itemPath>src/Model/TResponsiveDispersal.h</itemPath>
+        <itemPath>src/Model/TRevisedHerbivory.h</itemPath>
+        <itemPath>src/Model/TRevisedPredation.h</itemPath>
+        <itemPath>src/Model/TSenescenceMortality.h</itemPath>
+        <itemPath>src/Model/TStarvationMortality.h</itemPath>
+        <itemPath>src/Model/ThreadLocked.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4" displayName="Output" projectFiles="true">
+        <itemPath>src/Output/FileWriter.h</itemPath>
+        <itemPath>src/Output/Logger.h</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="Tools" projectFiles="true">
+        <itemPath>src/Tools/ClimateVariablesCalculator.h</itemPath>
+        <itemPath>src/Tools/Convertor.h</itemPath>
+        <itemPath>src/Tools/MassBinsHandler.h</itemPath>
+        <itemPath>src/Tools/Stopwatch.h</itemPath>
+        <itemPath>src/Tools/UtilityFunctions.h</itemPath>
+      </logicalFolder>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <logicalFolder name="f3" displayName="Input" projectFiles="true">
+        <itemPath>src/Input/DataGrid.cpp</itemPath>
+        <itemPath>src/Input/FileReader.cpp</itemPath>
+        <itemPath>src/Input/NcGridCell.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f1" displayName="Model" projectFiles="true">
+        <itemPath>src/Model/Cohort.cpp</itemPath>
+        <itemPath>src/Model/Environment.cpp</itemPath>
+        <itemPath>src/Model/Stock.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f4" displayName="Output" projectFiles="true">
+        <itemPath>src/Output/Logger.cpp</itemPath>
+      </logicalFolder>
+      <logicalFolder name="f2" displayName="Tools" projectFiles="true">
+        <itemPath>src/Tools/Convertor.cpp</itemPath>
+      </logicalFolder>
+      <itemPath>src/Program.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceRootList>
+    <Elem>src</Elem>
+  </sourceRootList>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <ccTool>
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/Model</pElem>
+            <pElem>src/Tools</pElem>
+            <pElem>src/Input</pElem>
+            <pElem>src/Output</pElem>
+            <pElem>/home/philju/Libraries/netcdfcxx-4.2.1/include</pElem>
+            <pElem>/home/philju/Libraries/netcdfc-4.3.3.1/include</pElem>
+            <pElem>/home/philju/Libraries/hdf5-1.8.15/include</pElem>
+            <pElem>/home/philju/Libraries/zlib-1.2.8/include/</pElem>
+          </incDir>
+          <commandLine>-std=c++11</commandLine>
+        </ccTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibFileItem>/home/philju/Libraries/netcdfcxx-4.2.1/lib/libnetcdf_c++4.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/netcdfc-4.3.3.1/lib/libnetcdf.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.15/lib/libhdf5_hl.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.15/lib/libhdf5.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/zlib-1.2.8/lib/libz.a</linkerLibFileItem>
+          </linkerLibItems>
+          <commandLine>-ldl</commandLine>
+        </linkerTool>
+      </compileType>
+      <item path="src/Input/Constants.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/DataGrid.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Input/DataGrid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/FileReader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Input/FileReader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/NcGridCell.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Input/NcGridCell.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/Parameters.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/Types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Activity.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/ApplyEcology.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/AutotrophProcessor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Cohort.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Cohort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/CohortMerge.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Dispersal.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyCohort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyStock.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Environment.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Environment.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/FunctionalGroupDefinitions.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/GridCell.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/HANPP.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/IDispersalImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/IEatingImplementation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/IEcologicalProcessWithinGridCells.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/IMetabolismImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/IMortalityImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/IReproductionImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/MadingleyModel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MadingleyModelInitialisation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/Metabolism.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/ModelGrid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/RevisedTerrestrialPlantModel.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/Stock.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Stock.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TAdvectiveDispersal.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TBackgroundMortality.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TDiffusiveDispersal.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TMetabolismEctotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TMetabolismEndotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TMetabolismHeterotroph.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TReproductionBasic.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TResponsiveDispersal.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TRevisedHerbivory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TRevisedPredation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TSenescenceMortality.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TStarvationMortality.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/ThreadLocked.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Output/FileWriter.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Program.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Tools/ClimateVariablesCalculator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Tools/Convertor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Tools/Convertor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/MassBinsHandler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/Stopwatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/UtilityFunctions.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="src/Input/Constants.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/DataGrid.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Input/DataGrid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/FileReader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Input/FileReader.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/NcGridCell.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Input/NcGridCell.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/Parameters.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/Types.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Activity.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/ApplyEcology.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/AutotrophProcessor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Cohort.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Cohort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/CohortMerge.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Dispersal.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyCohort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyStock.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Environment.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Environment.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/FunctionalGroupDefinitions.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/GridCell.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/HANPP.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/IDispersalImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/IEatingImplementation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/IEcologicalProcessWithinGridCells.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/IMetabolismImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/IMortalityImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/IReproductionImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/MadingleyModel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MadingleyModelInitialisation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/Metabolism.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/ModelGrid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/RevisedTerrestrialPlantModel.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/Stock.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Stock.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TAdvectiveDispersal.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TBackgroundMortality.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TDiffusiveDispersal.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TMetabolismEctotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TMetabolismEndotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TMetabolismHeterotroph.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TReproductionBasic.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TResponsiveDispersal.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TRevisedHerbivory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TRevisedPredation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TSenescenceMortality.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/TStarvationMortality.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/ThreadLocked.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Output/FileWriter.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Program.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Tools/ClimateVariablesCalculator.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Tools/Convertor.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Tools/Convertor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/MassBinsHandler.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/Stopwatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/UtilityFunctions.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>

@@ -1,0 +1,41 @@
+Parameter,Value
+Timestep Units,month
+Length of simulation (years),10
+Bottom Latitude,-65
+Top Latitude,65
+Leftmost Longitude,-180
+Rightmost Longitude,180
+Grid Cell Size,10
+Grid Cell Rarefaction,1
+Run Cells In Parallel,no
+Run Simulations In Parallel,no
+Run Single Realm,
+Draw Randomly,no
+Extinction Threshold,1
+Maximum Number Of Cohorts,100
+Output Filename,FinalOutputs
+Track Processes,no
+Track Global Processes,no
+Mass Bin Filename,input/Model setup/MassBinDefinitions.csv
+New Cohorts Filename,NewCohorts
+Maturity Filename,Maturity
+Predation Flows Filename,PredationFlows
+Herbivory Flows Filename,HerbivoryFlows
+Biomasses Eaten Filename,BiomassesEaten
+Trophic Flows Filename,TrophicFlows
+Mortality Filename,Mortality
+Extinction Filename,Extinction
+Growth Filename,Growth
+Metabolism Filename,Metabolism
+NPP Filename,NPP
+Environmental Data File,input/Model setup/EnvironmentalDataLayers.csv
+Specific Location File,SpecificLocations.csv
+Cohort Functional Group Definitions File,CohortFunctionalGroupDefinitions.csv
+Stock Functional Group Definitions File,StockFunctionalGroupDefinitions.csv
+Output Detail,low
+Dispersal only,no
+Dispersal only type,advection
+Plankton size threshold,0.01
+Live outputs,no
+Track marine specifics,no
+Human NPP Extraction,no
