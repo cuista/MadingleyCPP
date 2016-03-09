@@ -28,11 +28,11 @@ DataGrid::~DataGrid( ) {
     }
 }
 
-void DataGrid::AddData( const double* dataArray, const unsigned int variableIndex ) {
+void DataGrid::AddDataWithTime( const double* dataArray, const unsigned int variableIndex ) {
 
     for( unsigned int timeIndex = 0; timeIndex < mTimeVector.size( ); ++timeIndex ) {
-        for( unsigned int latitudeIndex = 0; latitudeIndex < mLatitudeVector.size( ); ++latitudeIndex ) {
-            for( unsigned int longitudeIndex = 0; longitudeIndex < mLongitudeVector.size( ); ++longitudeIndex ) {
+        for( unsigned int longitudeIndex = 0; longitudeIndex < mLongitudeVector.size( ); ++longitudeIndex ) {
+            for( unsigned int latitudeIndex = 0; latitudeIndex < mLatitudeVector.size( ); ++latitudeIndex ) {
 
                 unsigned int dataIndex = ( timeIndex * mLatitudeVector.size( ) * mLongitudeVector.size( ) ) + ( latitudeIndex * mLongitudeVector.size( ) ) + longitudeIndex;
                 //Logger::Get( )->LogString( "dataIndex> " + Convertor::Get( )->NumberToString( dataIndex ) );
@@ -73,11 +73,6 @@ void DataGrid::AddData( const double* dataArray, const unsigned int variableInde
                         mGridCells[ longitudeIndex ][ latitudeIndex ]->SetVSpeed( val, timeIndex );
                         break;
                     }
-                    case Constants::eWaterCapacity:
-                    {
-                        mGridCells[ longitudeIndex ][ latitudeIndex ]->SetWaterCapacity( val, timeIndex );
-                        break;
-                    }
                     case Constants::eSST:
                     {
                         mGridCells[ longitudeIndex ][ latitudeIndex ]->SetSST( val, timeIndex );
@@ -98,9 +93,36 @@ void DataGrid::AddData( const double* dataArray, const unsigned int variableInde
                         Logger::Get( )->LogString( "ERROR> \"" + Convertor::Get( )->NumberToString( variableIndex ) + "\" is not a recognised variable index." );
                         break;
                     }
+
                 }
+
+
+                int printNum = 0;
+                if( dataArray[ dataIndex ] != Constants::cMissingValue )
+                    printNum = 1;
+
+
+                Logger::Get( )->LogStringNoReturn( Convertor::Get( )->NumberToString( printNum ) );
             }
+            Logger::Get( )->LogString( "" );
         }
+        Logger::Get( )->LogString( "" );
+    }
+}
+
+void DataGrid::AddDataWithoutTime( const double* dataArray ) {
+    for( unsigned int longitudeIndex = 0; longitudeIndex < mLongitudeVector.size( ); ++longitudeIndex ) {
+        for( unsigned int latitudeIndex = 0; latitudeIndex < mLatitudeVector.size( ); ++latitudeIndex ) {
+            unsigned int dataIndex = ( latitudeIndex * mLongitudeVector.size( ) ) + longitudeIndex;
+
+            int printNum = 0;
+            if( dataArray[ dataIndex ] != Constants::cMissingValue )
+                printNum = 1;
+
+            Logger::Get( )->LogStringNoReturn( Convertor::Get( )->NumberToString( printNum ) );
+            mGridCells[ longitudeIndex ][ latitudeIndex ]->SetWaterCapacity( dataArray[ dataIndex ] );
+        }
+        Logger::Get( )->LogString( "" );
     }
 }
 

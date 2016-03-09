@@ -11,7 +11,8 @@ public:
 
     static Types::DataGridPointer Get( );
 
-    void AddData( const double*, const unsigned int );
+    void AddDataWithTime( const double*, const unsigned int );
+    void AddDataWithoutTime( const double* );
 
     void InitialiseGridCells( const int*, const double*, const double*, const unsigned int, const unsigned int );
     void InitialiseGridCellVectors( const unsigned int*, const unsigned int );

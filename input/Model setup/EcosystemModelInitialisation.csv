@@ -1,6 +1,6 @@
 Parameter,Value
 Timestep Units,month
-Length of simulation (years),10
+Length of simulation (years),100
 Bottom Latitude,-65
 Top Latitude,65
 Leftmost Longitude,-180
@@ -12,7 +12,7 @@ Run Simulations In Parallel,no
 Run Single Realm,
 Draw Randomly,no
 Extinction Threshold,1
-Maximum Number Of Cohorts,100
+Maximum Number Of Cohorts,1000
 Output Filename,FinalOutputs
 Track Processes,no
 Track Global Processes,no

@@ -15,7 +15,7 @@ map<string, layer*> Environment::Layers;
 Environment::Environment( ) {
     double degreeResolution = 10;
     //std::string mInputBaseDirectory = "../netCDFdata/";
-    std::string mInputBaseDirectory = "input/Data/";
+    std::string mInputBaseDirectory = "/home/philju/Data/Madingley/Standardised/10deg/";
 
     cout << "Reading netcdf??" << endl;
     Types::FileReaderPointer mFileReader;
@@ -152,7 +152,7 @@ void Environment::setUVel( ) {
             for( int la = 0; la < NumLat; la++ ) {
 
                 double d = 0;
-                
+
                 if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 1 )
                     d = DataGrid::Get( )->GetGridCell( lo, la )->GetUSpeed( tm );
 
@@ -171,10 +171,10 @@ void Environment::setVVel( ) {
         for( int la = 0; la < NumLat; la++ ) {
             for( int tm = 0; tm < 12; tm++ ) {
                 double d = 0;
-                
+
                 if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 1 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetUSpeed( tm );
-                
+                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetVSpeed( tm );
+
                 Layers["vVel"]->setTime( tm );
                 ( *Layers["vVel"] )[lo][la] = d;
             }
@@ -263,7 +263,10 @@ void Environment::setRealm( ) {
     const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
-            ( *Layers["Realm"] )[lo][la] = DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( );
+            if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 2 )
+                ( *Layers["Realm"] )[lo][la] = 1.0;
+            else if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 1 )
+                ( *Layers["Realm"] )[lo][la] = 2.0;
         }
     }
 }
@@ -400,7 +403,7 @@ void Environment::setFrostandFire( ) {
                 Layers["Fraction Month Frost"]->setTime( i );
                 ( *Layers["Fraction Month Frost"] )[lo][la] = min( FrostDays[i] / MonthDays[i], 1.0 );
             }
-            double AWC = DataGrid::Get( )->GetGridCell( lo, la )->GetWaterCapacity( 0 );
+            double AWC = DataGrid::Get( )->GetGridCell( lo, la )->GetWaterCapacity( );
 
             tuple<vector<double>, double, double> TempTuple = CVC.MonthlyActualEvapotranspirationSoilMoisture( AWC, Precipitation, Temperature );
             ( *Layers["TotalAET"] )[lo][la] = 0;

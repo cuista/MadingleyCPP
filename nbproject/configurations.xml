@@ -127,7 +127,7 @@
             <pElem>/home/philju/Libraries/hdf5-1.8.15/include</pElem>
             <pElem>/home/philju/Libraries/zlib-1.2.8/include/</pElem>
           </incDir>
-          <commandLine>-Wall -g -std=c++11</commandLine>
+          <commandLine>-g -std=c++11</commandLine>
         </ccTool>
         <linkerTool>
           <linkerLibItems>

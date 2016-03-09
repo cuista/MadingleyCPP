@@ -9,70 +9,47 @@ namespace Constants {
     const std::string cLongitudeVariableName = "lon";
     const std::string cTimeVariableName = "time";
 
-    //const std::string cVariableNames[ ] = { "mask" };
-    //const std::string cInputFileNames[ ] = { "land_mask.nc4", "diurnal_temperature_range.nc4", "ground_frost_frequency.nc4", "precipitation.nc4", "near-surface_temperature.nc4" };
-
-    //const std::string cVariableNames[ ] = { "dtr", "frs", "pre", "tmp" };
-    //const std::string cInputFileNames[ ] = { "diurnal_temperature_range.nc4", "ground_frost_frequency.nc4", "precipitation.nc4", "near-surface_temperature.nc4" };
-
-
     enum eVariableNamesEnum {
         eLandMask,
+        eWaterCapacity,
         eDiurnalTemperatureRange,
         eGroundFrostFrequency,
         ePrecipitation,
         eNearSurfaceTemperature,
+        eNPP,
+        eOceanNPP,
+        eSST,
         eUSpeed,
         eVSpeed,
-        eWaterCapacity,
-        eSST,
-        eNPP,
-        eOceanNPP
     };
 
-    /*
-    const std::string cVariableNames[ ] = { 
-	"mask",
-	"dtr", 
-	"frs", 
-	"pre", 
-	"tmp", 
-	"vVel",
-	"uVel",
-	"AWC",
-	"SST",
-	"NPP",
-	"OceanNPP"
-	};
-    */
-    
-    const std::string cVariableNames[ ] = { 
-	"realm",
-	"dtr", 
-	"frs", 
-	"pre", 
-	"tmp", 
-	"v",
-	"u",
-	"awc",
-	"temp",
-	"npp",
-	"npp"
-	};
-     
-    const std::string cInputFileNames[ ] = { 
-	"realm_classification.nc4", 
-	"diurnal_temperature_range.nc4", 
-	"ground_frost_frequency.nc4", 
-	"precipitation.nc4", 
-	"near-surface_temperature.nc4",
-	"averaged_v_50y_top100m_monthly.nc4",
-	"averaged_u_50y_top100m_monthly.nc4",
-	"AvailableWaterCapacity.nc4",
-	"averaged_SST_50y_top100m_monthly.nc4",
-	"NPP.nc4",
-	"OceanNPP.nc4"
-	};
+    const std::string cVariableNames[ ] = {
+        "realm",
+        "awc",
+        "dtr",
+        "frs",
+        "pre",
+        "tmp",
+        "npp",
+        "npp",
+        "temp",
+        "uo",
+        "vo"
+    };
+
+    const std::string cInputFileNames[ ] = {
+        "realm_classification.nc4",
+        "Terrestrial/available_water_capacity.nc4",
+        "Terrestrial/diurnal_temperature_range.nc4",
+        "Terrestrial/ground_frost_frequency.nc4",
+        "Terrestrial/precipitation.nc4",
+        "Terrestrial/near-surface_temperature.nc4",
+        "Terrestrial/terrestrial_net_primary_productivity.nc4",
+        "Marine/Modelled/intpp.nc4",
+        "Marine/Modelled/thetao.nc4",
+        "Marine/Modelled/uo.nc4",
+        "Marine/Modelled/vo.nc4"
+    };
 
     const unsigned int cNumberOfInputFiles = 11;
 }
