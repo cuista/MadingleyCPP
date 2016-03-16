@@ -6,15 +6,6 @@
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/home/philju/Development/C++/In%20Progress/MadingleyC++/src/Model/AutotrophProcessor.h</file>
-            <file>file:/home/philju/Development/C++/In%20Progress/MadingleyC++/src/Input/FileReader.cpp</file>
-            <file>file:/home/philju/Development/C++/In%20Progress/MadingleyC++/src/Model/Environment.cpp</file>
-            <file>file:/home/philju/Development/C++/In%20Progress/MadingleyC++/src/Model/Environment.h</file>
-            <file>file:/home/philju/Development/C++/In%20Progress/MadingleyC++/src/Input/NcGridCell.h</file>
-            <file>file:/home/philju/Development/C++/In%20Progress/MadingleyC++/src/Model/MadingleyModelInitialisation.h</file>
-            <file>file:/home/philju/Development/C++/In%20Progress/MadingleyC++/src/Input/NcGridCell.cpp</file>
-            <file>file:/home/philju/Development/C++/In%20Progress/MadingleyC++/src/Input/DataGrid.cpp</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

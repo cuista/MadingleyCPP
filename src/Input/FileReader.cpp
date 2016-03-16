@@ -2,116 +2,136 @@
 
 #include "Logger.h"
 #include "Convertor.h"
-#include "DataGrid.h"
 #include "Constants.h"
+#include "InputData.h"
+#include "DataLayerSet.h"
+#include "DataRecorder.h"
+#include "Parameters.h"
 
 #include <netcdf>
 
 FileReader::FileReader( ) {
+
 }
 
 FileReader::~FileReader( ) {
-    mFilePath.clear( );
+
 }
 
-void FileReader::ReadNetCDFFile( const std::string& filePath, const unsigned int variableIndex ) {
+bool FileReader::ReadFiles( ) {
 
-    Logger::Get( )->LogString( "Reading \"" + filePath + "\"..." );
+    std::string inputFilePath = Constants::cConfigurationDirectory + Constants::cSimulationControlParametersFileName;
+    bool completedSuccessfully = ReadMetadataFile( inputFilePath );
 
-    netCDF::NcFile inputNcFile( filePath, netCDF::NcFile::read ); // Open the file for read access
+    if( completedSuccessfully == true ) {
+        DataRecorder::Get( )->AddMetadataFilePath( inputFilePath );
+        Parameters::Get( )->Initialise( mMetadata );
+        inputFilePath = Constants::cConfigurationDirectory + Constants::cOutputControlParametersFileName;
+        completedSuccessfully = ReadMetadataFile( inputFilePath );
+    }
 
-    switch( variableIndex ) {
-        case Constants::eLandMask:
-        {
-            Logger::Get( )->LogString( "Extracting longitude and latitude data from \"" + Constants::cInputFileNames[ variableIndex ] + "\"..." );
+    if( completedSuccessfully == true ) {
+        DataRecorder::Get( )->AddMetadataFilePath( inputFilePath );
+        DataRecorder::Get( )->Initialise( mMetadata );
+        inputFilePath = Constants::cConfigurationDirectory + Constants::cEnvironmentalDataLayersFileName;
+        completedSuccessfully = ReadMetadataFile( inputFilePath );
+        ReadNetCDFFiles( );
+    }
 
-            netCDF::NcVar longitudeNcVar = inputNcFile.getVar( Constants::cLongitudeVariableName );
-            netCDF::NcVar latitudeNcVar = inputNcFile.getVar( Constants::cLatitudeVariableName );
-            netCDF::NcVar isOceanNcVar = inputNcFile.getVar( Constants::cVariableNames[ variableIndex ] );
+    if( completedSuccessfully == true ) {
+        DataRecorder::Get( )->AddMetadataFilePath( inputFilePath );
+    }
 
-            unsigned int lengthLongitudeArray = longitudeNcVar.getDim( 0 ).getSize( );
-            unsigned int lengthLatitudeArray = latitudeNcVar.getDim( 0 ).getSize( );
+    return completedSuccessfully;
+}
 
-            ////////////////////////////////////////////////////////////////////
-            double* longitudeArray = new double[ lengthLongitudeArray ];
-            double* latitudeArray = new double[ lengthLatitudeArray ];
-            int* isOceanArray = new int[ lengthLongitudeArray * lengthLatitudeArray ];
-            ////////////////////////////////////////////////////////////////////
+void FileReader::ClearMetadata( ) {
+    for( unsigned int xIndex = 0; xIndex < mMetadata.size( ); ++xIndex ) {
+        mMetadata[ xIndex ].clear( );
+    }
+    mMetadata.clear( );
+}
 
-            longitudeNcVar.getVar( longitudeArray );
-            latitudeNcVar.getVar( latitudeArray );
-            isOceanNcVar.getVar( isOceanArray );
+bool FileReader::ReadMetadataFile( const std::string& filePath ) {
 
-            DataGrid::Get( )->InitialiseGridCells( isOceanArray, longitudeArray, latitudeArray, lengthLongitudeArray, lengthLatitudeArray );
+    bool completedSuccessfully = false;
 
-            ////////////////////////////////////////////////////////////////////
-            //delete [] isOceanArray;
-            //delete [] longitudeArray;
-            //delete [] latitudeArray;
-            ////////////////////////////////////////////////////////////////////
+    ClearMetadata( );
 
-            break;
+    Logger::Get( )->LogMessage( "Reading text file \"" + filePath + "\"..." );
+    std::ifstream fileStream;
+    fileStream.open( filePath.c_str( ) );
+
+    if( fileStream.is_open( ) ) {
+        std::string readLine;
+        unsigned int lineCount = 0;
+
+        while( std::getline( fileStream, readLine ) ) {
+            if( lineCount > 0 && readLine[ 0 ] != Constants::cTextFileCommentCharacter ) {
+                mMetadata.push_back( Convertor::Get( )->StringToWords( readLine, Constants::cDataDelimiterValue ) );
+            }
+            ++lineCount;
         }
-        case Constants::eWaterCapacity:
-        {
-            netCDF::NcVar dataNcVar = inputNcFile.getVar( Constants::cVariableNames[ variableIndex ] );
+        completedSuccessfully = true;
+    } else {
+        Logger::Get( )->LogMessage( "File path \"" + filePath + "\" is invalid." );
+    }
+    fileStream.close( );
 
-            ////////////////////////////////////////////////////////////////////
-            double* dataArray = new double[ DataGrid::Get( )->GetLengthLongitudeVector( ) * DataGrid::Get( )->GetLengthLatitudeVector( ) ];
-            ////////////////////////////////////////////////////////////////////
+    return completedSuccessfully;
+}
 
-            dataNcVar.getVar( dataArray );
-            DataGrid::Get( )->AddDataWithoutTime( dataArray );
+bool FileReader::ReadNetCDFFiles( ) {
 
-            ////////////////////////////////////////////////////////////////////
-            //delete [] dataArray;
-            ////////////////////////////////////////////////////////////////////
+    bool completedSuccessfully = false;
 
-            break;
-        }
-        case Constants::eDiurnalTemperatureRange:
-        {
-            Logger::Get( )->LogString( "Extracting time data from \"" + Constants::cInputFileNames[ variableIndex ] + "\"..." );
+    Types::InputDataPointer initialInputData = new InputData( );
 
-            netCDF::NcVar timeNcVar = inputNcFile.getVar( Constants::cTimeVariableName );
-            netCDF::NcVar dataNcVar = inputNcFile.getVar( Constants::cVariableNames[ variableIndex ] );
+    for( unsigned int environmentalDataFileIndex = 0; environmentalDataFileIndex < mMetadata.size( ); ++environmentalDataFileIndex ) {
 
-            unsigned int lengthTimeArray = dataNcVar.getDim( 0 ).getSize( );
+        std::string filePath = mMetadata[ environmentalDataFileIndex ][ Constants::eFilePath ];
+        Logger::Get( )->LogMessage( "Reading NetCDF file \"" + filePath + "\"..." );
 
-            ////////////////////////////////////////////////////////////////////
-            unsigned int* timeArray = new unsigned int[ lengthTimeArray ];
-            double* dataArray = new double[ DataGrid::Get( )->GetLengthLongitudeVector( ) * DataGrid::Get( )->GetLengthLatitudeVector( ) * lengthTimeArray ];
-            ////////////////////////////////////////////////////////////////////
+        try {
+            netCDF::NcFile inputNcFile( filePath, netCDF::NcFile::read ); // Open the file for read access
+            std::multimap< std::string, netCDF::NcVar > multiMap = inputNcFile.getVars( );
 
-            timeNcVar.getVar( timeArray );
-            dataNcVar.getVar( dataArray );
-            DataGrid::Get( )->InitialiseGridCellVectors( timeArray, lengthTimeArray );
-            DataGrid::Get( )->AddDataWithTime( dataArray, variableIndex );
+            // Outer variable loop
+            for( std::multimap<std::string, netCDF::NcVar>::iterator it = multiMap.begin( ); it != multiMap.end( ); ++it ) {
 
-            ////////////////////////////////////////////////////////////////////
-            //delete [] timeArray;
-            //delete [] dataArray;
-            ////////////////////////////////////////////////////////////////////
+                std::string variableName = ( *it ).first;
+                netCDF::NcVar variableNcVar = ( *it ).second;
+                std::vector< netCDF::NcDim > varDims = variableNcVar.getDims( );
 
-            break;
-        }
+                Types::UnsignedIntegerVector variableDimensions;
+                unsigned int variableSize = 0;
 
-        default:
-        {
-            netCDF::NcVar dataNcVar = inputNcFile.getVar( Constants::cVariableNames[ variableIndex ] );
+                // Inner variable dimension loop
+                for( unsigned int dimIndex = 0; dimIndex < varDims.size( ); ++dimIndex ) {
+                    variableDimensions.push_back( varDims[ dimIndex ].getSize( ) );
 
-            ////////////////////////////////////////////////////////////////////
-            double* dataArray = new double[ DataGrid::Get( )->GetLengthLongitudeVector( ) * DataGrid::Get( )->GetLengthLatitudeVector( ) * DataGrid::Get( )->GetLengthTimeVector( ) ];
-            ////////////////////////////////////////////////////////////////////
+                    if( dimIndex == 0 ) {
+                        variableSize = varDims[ dimIndex ].getSize( );
+                    } else {
+                        variableSize *= varDims[ dimIndex ].getSize( );
+                    }
+                }
 
-            dataNcVar.getVar( dataArray );
-            DataGrid::Get( )->AddDataWithTime( dataArray, variableIndex );
+                float* variableData = new float[ variableSize ];
+                variableNcVar.getVar( variableData );
+                bool isDefault = variableName == mMetadata[ environmentalDataFileIndex ][ Constants::eDefaultVariableName ];
+                initialInputData->AddVariableToDatum( mMetadata[ environmentalDataFileIndex ][ Constants::eInternalName ], variableName, variableDimensions, variableSize, variableData, isDefault );
+            }
 
-            ////////////////////////////////////////////////////////////////////
-            //delete [] dataArray;
-            ////////////////////////////////////////////////////////////////////
+            completedSuccessfully = true;
 
-            break;
+        } catch( netCDF::exceptions::NcException& e ) {
+            e.what( );
+            Logger::Get( )->LogMessage( "ERROR> File path \"" + filePath + "\" is invalid." );
         }
     }
+
+    DataLayerSet::Get( )->SetDataLayers( initialInputData );
+
+    return completedSuccessfully;
 }

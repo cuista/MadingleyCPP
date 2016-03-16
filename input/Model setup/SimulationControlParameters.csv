@@ -1,0 +1,7 @@
+Parameter,Value
+LengthOfSimulationInYears,1
+MinimumLongitude,-180
+MaximumLongitude,180
+MinimumLatitude,-90
+MaximumLatitude,90
+GridCellSize,10

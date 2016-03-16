@@ -12,15 +12,6 @@
 #include <Stopwatch.h>
 #include <cstdlib>
 
-
-#include <Logger.h>
-#include <NcGridCell.h>
-#include <FileReader.h>
-#include <FileWriter.h>
-#include <Convertor.h>
-#include <Constants.h>
-#include <DataGrid.h>
-
 /**
  \ file *MadingleyModelInitialisation.h
  \brief The MadingleyModelInitialisation header file

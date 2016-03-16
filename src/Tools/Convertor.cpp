@@ -1,17 +1,18 @@
 #include "Convertor.h"
-#include "Logger.h"
 
-Types::ConvertorPointer Convertor::mThis = 0;
+#include <algorithm>
+
+Types::ConvertorPointer Convertor::mThis = NULL;
 
 Types::ConvertorPointer Convertor::Get( ) {
-    if( mThis == 0 ) {
+    if( mThis == NULL ) {
         mThis = new Convertor( );
     }
     return mThis;
 }
 
 Convertor::~Convertor( ) {
-    if( mThis != 0 ) {
+    if( mThis != NULL ) {
         delete mThis;
     }
 }
@@ -20,23 +21,16 @@ Convertor::Convertor( ) {
 
 }
 
-const std::string Convertor::NumberToString( const double& number ) const {
-    Types::StringStream stringStream;
-    stringStream << number;
-
-    return stringStream.str( );
-}
-
-double Convertor::StringToNumber( std::string& string ) const {
+double Convertor::StringToNumber( const std::string& string ) const {
 
     double number = strtod( string.c_str( ), NULL );
 
     return number;
 }
 
-const Types::StringVector Convertor::StringToWords( const std::string& inputString, const char wordTerminationCharacter ) {
+const Types::StringVector Convertor::StringToWords( const std::string& inputString, const char wordTerminationCharacter ) const {
 
-    Types::StringStream stringStream( inputString );
+    std::stringstream stringStream( inputString );
 
     std::string word = "";
     Types::StringVector wordList;
@@ -48,10 +42,17 @@ const Types::StringVector Convertor::StringToWords( const std::string& inputStri
     return wordList;
 }
 
-const std::string Convertor::DoubleToPrecisionString( double& value, unsigned int& decimals ) {
+const std::string Convertor::DoubleToPrecisionString( const double& value, const unsigned int& decimals ) const {
 
     std::ostringstream outputStringStream;
     outputStringStream << std::fixed << std::setprecision( decimals ) << value;
 
     return outputStringStream.str( );
+}
+
+std::string Convertor::ToLowercase( const std::string instring ) const {
+    std::string outstring;
+    std::transform( instring.begin( ), instring.end( ), std::back_inserter( outstring ), tolower );
+
+    return outstring;
 }

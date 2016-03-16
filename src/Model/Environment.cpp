@@ -7,6 +7,14 @@
 #include <Environment.h>
 #include <GridCell.h>
 
+#include "Types.h"
+#include "FileReader.h"
+#include "Logger.h"
+#include "Parameters.h"
+#include "DataLayerSet.h"
+#include "Indices.h"
+#include "DateTime.h"
+
 Environment* Environment::Instance = 0;
 const double Environment::MissingValue = -9999;
 map<string, layer*> Environment::Layers;
@@ -18,55 +26,56 @@ Environment::Environment( ) {
     std::string mInputBaseDirectory = "/home/philju/Data/Madingley/Standardised/10deg/";
 
     cout << "Reading netcdf??" << endl;
-    Types::FileReaderPointer mFileReader;
-    mFileReader = new FileReader( );
+    Types::FileReaderPointer fileReader = new FileReader( );
 
-    for( unsigned int variableIndex = 0; variableIndex < Constants::cNumberOfInputFiles; ++variableIndex ) {
-        std::string inputFilePath = mInputBaseDirectory + Constants::cInputFileNames[ variableIndex ];
-        mFileReader->ReadNetCDFFile( inputFilePath, variableIndex );
+    bool completedSuccessfully = fileReader->ReadFiles( );
+
+    if( completedSuccessfully == true ) {
+        Logger::Get( )->LogMessage( "Files read successfully..." );
+
+        cout << endl;
+        addLayerT( "uVel" );
+        setUVel( );
+        addLayerT( "vVel" );
+        setVVel( );
+        addLayerT( "Temperature" );
+        setTemperature( );
+        addLayerT( "DiurnalTemperatureRange" );
+        setDiurnalTemperatureRange( );
+        addLayerT( "Precipitation" );
+        addLayer( "TotalPrecip" );
+        setPrecipitation( );
+        addLayerT( "NPP" );
+        setNPP( );
+        addLayerT( "Seasonality" );
+        setNPPSeasonality( );
+        addLayerT( "Breeding Season" );
+        setBreeding( );
+
+        addLayer( "Realm" );
+        setRealm( );
+        addLayer( "Organic Pool" );
+        setOrganicPool( );
+        addLayer( "Respiratory CO2 Pool" );
+        setRespiratoryCO2Pool( );
+        addLayer( "AnnualTemperature" );
+        addLayer( "SDTemperature" );
+        addLayerT( "ExpTDevWeight" );
+        setAVGSDTemp( );
+
+        addLayerT( "AET" );
+        addLayer( "TotalAET" );
+        addLayerT( "Fraction Month Frost" );
+        addLayer( "Fraction Year Frost" );
+        addLayer( "Fraction Year Fire" );
+        setFrostandFire( );
+        addLayer( "HANPP" );
+        setHANPP( );
+        //make sure all time dependent fields set to the start
+        update( 0 );
+    } else {
+        Logger::Get( )->LogMessage( "ERROR> File reading failed." );
     }
-
-    Logger::Get( )->LogString( "Finished reading netcdf!" );
-    cout << endl;
-    addLayerT( "uVel" );
-    setUVel( );
-    addLayerT( "vVel" );
-    setVVel( );
-    addLayerT( "Temperature" );
-    setTemperature( );
-    addLayerT( "DiurnalTemperatureRange" );
-    setDiurnalTemperatureRange( );
-    addLayerT( "Precipitation" );
-    addLayer( "TotalPrecip" );
-    setPrecipitation( );
-    addLayerT( "NPP" );
-    setNPP( );
-    addLayerT( "Seasonality" );
-    setNPPSeasonality( );
-    addLayerT( "Breeding Season" );
-    setBreeding( );
-
-    addLayer( "Realm" );
-    setRealm( );
-    addLayer( "Organic Pool" );
-    setOrganicPool( );
-    addLayer( "Respiratory CO2 Pool" );
-    setRespiratoryCO2Pool( );
-    addLayer( "AnnualTemperature" );
-    addLayer( "SDTemperature" );
-    addLayerT( "ExpTDevWeight" );
-    setAVGSDTemp( );
-
-    addLayerT( "AET" );
-    addLayer( "TotalAET" );
-    addLayerT( "Fraction Month Frost" );
-    addLayer( "Fraction Year Frost" );
-    addLayer( "Fraction Year Fire" );
-    setFrostandFire( );
-    addLayer( "HANPP" );
-    setHANPP( );
-    //make sure all time dependent fields set to the start
-    update( 0 );
 }
 //------------------------------------------------------------------------------
 
@@ -76,15 +85,15 @@ void Environment::update( int currentMonth ) {
 //------------------------------------------------------------------------------
 
 void Environment::addLayer( string s ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     Layers[s] = new layer0( NumLon, NumLat );
 }
 //------------------------------------------------------------------------------
 
 void Environment::addLayerT( string s ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     Layers[s] = new layerT( 12, NumLon, NumLat );
 }
 //------------------------------------------------------------------------------
@@ -120,16 +129,21 @@ double& Environment::Get( string s, GridCell& gcl ) {
 //------------------------------------------------------------------------------
 
 void Environment::setTemperature( ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             for( int tm = 0; tm < 12; tm++ ) {
-                double d;
-                if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 1 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetSST( tm );
-                else if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 2 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetNearSurfaceTemperature( tm );
+
+                double d = 0;
+
+                DateTime::Get( )->SetTimeStep( tm );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", new Indices( lo, la ) );
+                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", new Indices( lo, la ) );
+                }
+
                 Layers["Temperature"]->setTime( tm );
                 if( d == MissingValue ) {
                     d = 0;
@@ -144,8 +158,8 @@ void Environment::setTemperature( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setUVel( ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
 
     for( int tm = 0; tm < 12; tm++ ) {
         for( int lo = 0; lo < NumLon; lo++ ) {
@@ -153,8 +167,10 @@ void Environment::setUVel( ) {
 
                 double d = 0;
 
-                if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 1 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetUSpeed( tm );
+                DateTime::Get( )->SetTimeStep( tm );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineNorthVel", new Indices( lo, la ) );
+                }
 
                 Layers["uVel"]->setTime( tm );
                 ( *Layers["uVel"] )[lo][la] = d;
@@ -165,15 +181,18 @@ void Environment::setUVel( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setVVel( ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             for( int tm = 0; tm < 12; tm++ ) {
+
                 double d = 0;
 
-                if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 1 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetVSpeed( tm );
+                DateTime::Get( )->SetTimeStep( tm );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineEastVel", new Indices( lo, la ) );
+                }
 
                 Layers["vVel"]->setTime( tm );
                 ( *Layers["vVel"] )[lo][la] = d;
@@ -185,16 +204,21 @@ void Environment::setVVel( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setDiurnalTemperatureRange( ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             for( int tm = 0; tm < 12; tm++ ) {
-                double d;
-                if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 1 )
+
+                double d = 0;
+
+                DateTime::Get( )->SetTimeStep( tm );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
                     d = MissingValue; //MB currently missing
-                else
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetDiurnalTemperatureRange( tm );
+                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialDTR", new Indices( lo, la ) );
+                }
+
                 Layers["DiurnalTemperatureRange"]->setTime( tm );
                 ( *Layers["DiurnalTemperatureRange"] )[lo][la] = d;
             }
@@ -206,17 +230,20 @@ void Environment::setDiurnalTemperatureRange( ) {
 
 void Environment::setPrecipitation( ) {
 
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
 
     for( int tm = 0; tm < 12; tm++ ) {
         for( int lo = 0; lo < NumLon; lo++ ) {
             for( int la = 0; la < NumLat; la++ ) {
-                ( *Layers["TotalPrecip"] )[lo][la] = 0;
-                double d;
 
-                if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 2 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetPrecipitation( tm );
+                ( *Layers["TotalPrecip"] )[lo][la] = 0;
+                double d = 0;
+
+                DateTime::Get( )->SetTimeStep( tm );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialPre", new Indices( lo, la ) );
+                }
 
                 if( d == MissingValue ) {
                     d = 0;
@@ -235,16 +262,21 @@ void Environment::setPrecipitation( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setNPP( ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             for( int tm = 0; tm < 12; tm++ ) {
-                double d;
-                if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 1 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetOceanNPP( tm );
-                else if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 2 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetNPP( tm );
+
+                double d = 0;
+
+                DateTime::Get( )->SetTimeStep( tm );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineNPP", new Indices( lo, la ) );
+                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialNPP", new Indices( lo, la ) );
+                }
+
                 if( d == MissingValue ) {
                     d = 0;
                     cout << "Warning Environment::setNPP- missing values in NPP field!!" << endl;
@@ -259,22 +291,24 @@ void Environment::setNPP( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setRealm( ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
-            if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 2 )
-                ( *Layers["Realm"] )[lo][la] = 1.0;
-            else if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 1 )
+
+            if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
                 ( *Layers["Realm"] )[lo][la] = 2.0;
+            } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
+                ( *Layers["Realm"] )[lo][la] = 1.0;
+            }
         }
     }
 }
 //------------------------------------------------------------------------------
 
 void Environment::setOrganicPool( ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             ( *Layers["Organic Pool"] )[lo][la] = 0;
@@ -284,8 +318,8 @@ void Environment::setOrganicPool( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setRespiratoryCO2Pool( ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             ( *Layers["Respiratory CO2 Pool"] )[lo][la] = 0;
@@ -296,17 +330,22 @@ void Environment::setRespiratoryCO2Pool( ) {
 
 void Environment::setAVGSDTemp( ) {
 
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             double avg = 0;
             for( int tm = 0; tm < 12; tm++ ) {
-                double d;
-                if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 1 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetSST( tm );
-                else if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 2 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetNearSurfaceTemperature( tm );
+
+                double d = 0;
+
+                DateTime::Get( )->SetTimeStep( tm );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", new Indices( lo, la ) );
+                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", new Indices( lo, la ) );
+                }
+
                 if( d == MissingValue )d = 0;
                 avg += d;
             }
@@ -314,11 +353,16 @@ void Environment::setAVGSDTemp( ) {
             double sota = 0, sumExp = 0;
             vector<double>exptdev( 12 );
             for( int tm = 0; tm < 12; tm++ ) {
-                double d;
-                if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 1 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetSST( tm );
-                else if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 2 )
-                    d = DataGrid::Get( )->GetGridCell( lo, la )->GetNearSurfaceTemperature( tm );
+
+                double d = 0;
+
+                DateTime::Get( )->SetTimeStep( tm );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", new Indices( lo, la ) );
+                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", new Indices( lo, la ) );
+                }
+
                 if( d == MissingValue )d = 0;
                 sota += ( d - avg )*( d - avg );
                 exptdev[tm] = exp( -( d - avg ) / 3 );
@@ -340,8 +384,8 @@ void Environment::setAVGSDTemp( ) {
 then assign 1/12 for each month.
  */
 void Environment::setNPPSeasonality( ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             // Loop over months and calculate total annual NPP
@@ -382,17 +426,19 @@ void Environment::setFrostandFire( ) {
     // Calculate other climate variables from temperature and precipitation
     // Declare an instance of the climate variables calculator
     ClimateVariablesCalculator CVC;
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             // Calculate the fraction of the year that experiences frost
             vector<double> FrostDays( 12 ), Temperature( 12 ), Precipitation( 12 );
             for( int i = 0; i < 12; i++ ) {
-                if( DataGrid::Get( )->GetGridCell( lo, la )->GetRealm( ) == 2 ) {
-                    FrostDays[i] = DataGrid::Get( )->GetGridCell( lo, la )->GetGroundFrostFrequency( i );
-                    Precipitation[i] = DataGrid::Get( )->GetGridCell( lo, la )->GetPrecipitation( i );
-                    Temperature[i] = DataGrid::Get( )->GetGridCell( lo, la )->GetNearSurfaceTemperature( i );
+
+                DateTime::Get( )->SetTimeStep( i );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
+                    FrostDays[i] = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialFrost", new Indices( lo, la ) );
+                    Precipitation[i] = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialPre", new Indices( lo, la ) );
+                    Temperature[i] = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", new Indices( lo, la ) );
                 }
             }
             ( *Layers["Fraction Year Frost"] )[lo][la] = CVC.GetNDF( FrostDays, Temperature, MissingValue );
@@ -403,7 +449,7 @@ void Environment::setFrostandFire( ) {
                 Layers["Fraction Month Frost"]->setTime( i );
                 ( *Layers["Fraction Month Frost"] )[lo][la] = min( FrostDays[i] / MonthDays[i], 1.0 );
             }
-            double AWC = DataGrid::Get( )->GetGridCell( lo, la )->GetWaterCapacity( );
+            double AWC = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialAWC", new Indices( lo, la ) );
 
             tuple<vector<double>, double, double> TempTuple = CVC.MonthlyActualEvapotranspirationSoilMoisture( AWC, Precipitation, Temperature );
             ( *Layers["TotalAET"] )[lo][la] = 0;
@@ -421,8 +467,8 @@ void Environment::setFrostandFire( ) {
 void Environment::setBreeding( ) {
     // Designate a breeding season for this grid cell, where a month is considered to be part of the breeding season if its NPP is at
     // least 80% of the maximum NPP throughout the whole year
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             double maxSeason = -1;
@@ -446,8 +492,8 @@ void Environment::setBreeding( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setHANPP( ) {
-    const unsigned int NumLon = DataGrid::Get( )->GetLengthLongitudeVector( );
-    const unsigned int NumLat = DataGrid::Get( )->GetLengthLatitudeVector( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             ( *Layers["HANPP"] )[lo][la] = 0;

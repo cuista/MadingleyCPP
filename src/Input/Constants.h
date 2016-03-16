@@ -2,57 +2,77 @@
 #define	CONSTANTS
 
 namespace Constants {
+    
+    enum eSimulationControlParametersMetadata {
+        eInputParameter,
+        eValue
+    };
+    
+    enum eSimulationControlParameters {
+        eLengthOfSimulationInYears,
+        eMinimumLongitude,
+        eMaximumLongitude,
+        eMinimumLatitude,
+        eMaximumLatitude,
+        eGridCellSize
+    };
+    
+    enum eOutputControlParametersMetadata {
+        eOutputDatumName,
+        eUnits,
+        eType
+    };
+    
+    enum eEnvironmentalDataLayersMetadata {
+        eInternalName,
+        eFilePath,
+        eDefaultVariableName
+    };
+    
+    enum eDataLayerTypes {
+        eDataLayer2D,            // Spatial: land-sea mask
+        eDataLayer2DwithTime,    // Two-dimensional with time, e.g. SST.
+        eDataLayer3D,            // Three-dimensional, e.g. ocean temperature.
+        eDataLayer3DwithTime     // Three-dimensional with time.
+    };
+    
+    enum eVariableTypes {
+        eLongitude,
+        eLatitude,
+        eTime,
+        eDepth,
+        eOther
+    };
+    
+    const std::string cLongitudeVariableNames[ ] = { "lon", "long", "longitude", "x" };
+    const std::string cLatitudeVariableNames[ ] = { "lat", "lats", "latitude", "y" };
+    const std::string cDepthVariableNames[ ] = { "dep", "depth", "z" };
+    const std::string cTimeVariableNames[ ] = { "time", "month", "t" };
+    
+    const std::string cBasicDatumTypeName = "basic";
+    const std::string cGridDatumTypeName = "grid";
+    
+    const std::string cConfigurationDirectory = "/home/philju/Development/C++/In Progress/MadingleyCPP/input/Model setup/";
+    const std::string cEnvironmentalDataLayersFileName = "EnvironmentalDataLayers.csv";
+    const std::string cOutputControlParametersFileName = "OutputControlParameters.csv";
+    const std::string cSimulationControlParametersFileName = "SimulationControlParameters.csv";
+    
+    const std::string cBasicOutputsFileName = "BasicOutputs.nc";
+    const std::string cGridOutputsFileName = "GridOutputs.nc";
+    const std::string cOutputBaseDirectory = "/home/philju/Development/C++/In Progress/NetCDFIO/output/";
+    const std::string cDataSetNameFormat = "%Y-%m-%d_%H-%M-%S";
+    const std::string cUnitsString = "units";
+    const std::string cLongitudeVariableUnits = "degrees east";
+    const std::string cLatitudeVariableUnits = "degrees north";
+    const std::string cTimeVariableUnits = "months";
 
     const int cMissingValue = -9999;
-
-    const std::string cLatitudeVariableName = "lat";
-    const std::string cLongitudeVariableName = "lon";
-    const std::string cTimeVariableName = "time";
-
-    enum eVariableNamesEnum {
-        eLandMask,
-        eWaterCapacity,
-        eDiurnalTemperatureRange,
-        eGroundFrostFrequency,
-        ePrecipitation,
-        eNearSurfaceTemperature,
-        eNPP,
-        eOceanNPP,
-        eSST,
-        eUSpeed,
-        eVSpeed,
-    };
-
-    const std::string cVariableNames[ ] = {
-        "realm",
-        "awc",
-        "dtr",
-        "frs",
-        "pre",
-        "tmp",
-        "npp",
-        "npp",
-        "temp",
-        "uo",
-        "vo"
-    };
-
-    const std::string cInputFileNames[ ] = {
-        "realm_classification.nc4",
-        "Terrestrial/available_water_capacity.nc4",
-        "Terrestrial/diurnal_temperature_range.nc4",
-        "Terrestrial/ground_frost_frequency.nc4",
-        "Terrestrial/precipitation.nc4",
-        "Terrestrial/near-surface_temperature.nc4",
-        "Terrestrial/terrestrial_net_primary_productivity.nc4",
-        "Marine/Modelled/intpp.nc4",
-        "Marine/Modelled/thetao.nc4",
-        "Marine/Modelled/uo.nc4",
-        "Marine/Modelled/vo.nc4"
-    };
-
-    const unsigned int cNumberOfInputFiles = 11;
+    const int cOutputFolderPermissions = 0775;
+    const int cDateTimeBufferSize = 25;
+    
+    const char cDataDelimiterValue = ',';
+    const char cTextFileCommentCharacter = '#';
+    const char cFolderDelimiter = '/';
 }
 
 #endif
-

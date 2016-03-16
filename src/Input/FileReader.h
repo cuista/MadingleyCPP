@@ -6,14 +6,17 @@
 
 class FileReader {
 public:
-
     FileReader( );
     ~FileReader( );
-    
-    void ReadNetCDFFile( const std::string&, const unsigned int );
+
+    bool ReadFiles( );
 
 private:
-
+    void ClearMetadata( );
+    bool ReadMetadataFile( const std::string& );
+    bool ReadNetCDFFiles( );
+    
+    Types::StringMatrix mMetadata;
     std::string mFilePath;
 };
 

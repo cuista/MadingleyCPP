@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux-x86
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux-x86
-CND_ARTIFACT_NAME_Debug=madingleyc__
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux-x86/madingleyc__
+CND_ARTIFACT_NAME_Debug=madingleycpp
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux-x86/madingleycpp
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux-x86/package
-CND_PACKAGE_NAME_Debug=madingleyc++.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/madingleyc++.tar
+CND_PACKAGE_NAME_Debug=madingleycpp.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/madingleycpp.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux-x86
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux-x86
-CND_ARTIFACT_NAME_Release=madingleyc__
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/madingleyc__
+CND_ARTIFACT_NAME_Release=madingleycpp
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/madingleycpp
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux-x86/package
-CND_PACKAGE_NAME_Release=madingleyc++.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/madingleyc++.tar
+CND_PACKAGE_NAME_Release=madingleycpp.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/madingleycpp.tar
 #
 # include compiler specific variables
 #

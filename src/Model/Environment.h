@@ -8,16 +8,12 @@
 
 #ifndef ENVIRONMENT_H
 #define	ENVIRONMENT_H
-#include <Logger.h>
-#include <NcGridCell.h>
-#include <FileReader.h>
-#include <FileWriter.h>
-#include <Convertor.h>
-#include <Constants.h>
-#include <DataGrid.h>
 #include<iostream>
 #include <string>
 #include <map>
+
+#include <vector>       // For std::vector
+
 class GridCell;
 using namespace std;
 typedef vector <vector<double> > LayerData;

@@ -14,11 +14,20 @@ public:
     ~Convertor( );
     static Types::ConvertorPointer Get( );
 
-    const std::string NumberToString( const double& ) const;
-    double StringToNumber( std::string& ) const;
+    template< class T >
+    const std::string ToString( const T& input ) const {
+        std::stringstream stringStream;
+        stringStream << input;
 
-    const Types::StringVector StringToWords( const std::string&, const char );
-    const std::string DoubleToPrecisionString( double&, unsigned int& );
+        return stringStream.str( );
+    }
+    
+    double StringToNumber( const std::string& ) const;
+
+    const Types::StringVector StringToWords( const std::string&, const char ) const;
+    const std::string DoubleToPrecisionString( const double&, const unsigned int& ) const;
+
+    std::string ToLowercase( const std::string ) const;
 
 private:
     Convertor( );

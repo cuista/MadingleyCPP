@@ -1,0 +1,76 @@
+#include "DataLayer3DwithTime.h"
+
+#include "GeoCoord.h"
+#include "Logger.h"
+#include "Processor.h"
+#include "Parameters.h"
+#include "Indices.h"
+#include "DateTime.h"
+
+DataLayer3DwithTime::DataLayer3DwithTime( const std::string& name, const Types::VariableVector variableVector, const Types::VariablePointer longitudeVariable, const Types::VariablePointer latitudeVariable, const Types::VariablePointer depthVariable, const Types::VariablePointer timeVariable ) {
+    mName = name;
+    mVariableVector = variableVector;
+    mLongitudeVariable = longitudeVariable;
+    mLatitudeVariable = latitudeVariable;
+    mDepthVariable = depthVariable;
+    mTimeVariable = timeVariable;
+}
+
+DataLayer3DwithTime::~DataLayer3DwithTime( ) {
+    delete mDepthVariable;
+    delete mTimeVariable;
+}
+
+float DataLayer3DwithTime::GetDataAtGeoCoord( const Types::GeoCoordPointer coord ) const {
+    return GetDataAtGeoCoordForVariable( coord, mVariableVector[ 0 ] );
+}
+
+float DataLayer3DwithTime::GetDataAtGeoCoordFor( const Types::GeoCoordPointer coord, const std::string& variableName ) const {
+    return GetDataAtGeoCoordForVariable( coord, GetVariable( variableName ) );
+}
+
+float DataLayer3DwithTime::GetDataAtIndices( const Types::IndicesPointer indices ) const {
+    return GetDataAtIndicesForVariable( indices, mVariableVector[ 0 ] );
+}
+
+float DataLayer3DwithTime::GetDataAtIndicesFor( const Types::IndicesPointer indices, const std::string& variableName ) const {
+    return GetDataAtIndicesForVariable( indices, GetVariable( variableName ) );
+}
+
+Types::VariablePointer DataLayer3DwithTime::GetDepthVariable( ) const {
+    return mDepthVariable;
+}
+
+Types::VariablePointer DataLayer3DwithTime::GetTimeVariable( ) const {
+    return mTimeVariable;
+}
+
+float DataLayer3DwithTime::GetDataAtGeoCoordForVariable( const Types::GeoCoordPointer coord, const Types::VariablePointer variable ) const {
+
+    int xIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLongitudeVariable, coord->GetLongitude( ) );
+    int yIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLatitudeVariable, coord->GetLatitude( ) );
+    int zIndex = Processor::Get( )->FindVariableIndexOfValue( mDepthVariable, coord->GetDepth( ) );
+    unsigned int tIndex = DateTime::Get( )->GetTimeStep( );
+    unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
+    unsigned int yMax = Parameters::Get( )->GetLengthLatitudeArray( );
+    unsigned int zMax = mDepthVariable->GetSize( );
+
+    delete coord;
+
+    return variable->GetDataAtIndex( Processor::Get( )->Indices4DToIndex( xIndex, yIndex, zIndex, tIndex, xMax, yMax, zMax ) );
+}
+
+float DataLayer3DwithTime::GetDataAtIndicesForVariable( const Types::IndicesPointer indices, const Types::VariablePointer variable ) const {
+
+    unsigned int xIndex = indices->GetX( );
+    unsigned int yIndex = indices->GetY( );
+    unsigned int zIndex = indices->GetZ( );
+    unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
+    unsigned int yMax = Parameters::Get( )->GetLengthLatitudeArray( );
+    unsigned int tIndex = DateTime::Get( )->GetTimeStep( );
+    unsigned int zMax = mDepthVariable->GetSize( );
+    
+    delete indices;
+
+    return variable->GetDataAtIndex( Processor::Get( )->Indices4DToIndex( xIndex, yIndex, zIndex, tIndex, xMax, yMax, zMax ) );
+}
