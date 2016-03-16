@@ -96,7 +96,7 @@ public:
     /** \brief The paths and filenames for the diagnostics for the ecological processes */
     map<string, string> ProcessTrackingOutputs;
     /** \brief The string values for the units of each environmental data layer */
-    map<string, string> Units;
+    //map<string, string> Units;
     /** \brief An instance of the mass bin handler for the current model run */
     MassBinsHandler ModelMassBins;
     /** Instance of Utilities for timestep conversions */
@@ -145,7 +145,7 @@ public:
         Grid.SetUpGrid( BottomLatitude, LeftmostLongitude, TopLatitude, RightmostLongitude, CellSize, CellSize );
 
         //MB THis is currently just used to get units -needs replacing
-        ReadEnvironmentalLayers( InitialisationFileStrings["Environmental"], outputPath, Grid );
+        //ReadEnvironmentalLayers( InitialisationFileStrings["Environmental"], outputPath, Grid );
 
         // Set up the cohorts and stocks
         InitializationTimer.Start( );
@@ -344,7 +344,7 @@ public:
         infile.close( );
 
         for( int ii = 0; ii < MethodUnits.size( ); ii++ ) {
-            Units[LayerName[ii]] = MethodUnits[ii];
+            //Units[LayerName[ii]] = MethodUnits[ii];
         }
 
     }

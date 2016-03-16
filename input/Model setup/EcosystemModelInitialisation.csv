@@ -1,6 +1,6 @@
 Parameter,Value
 Timestep Units,month
-Length of simulation (years),100
+Length of simulation (years),1
 Bottom Latitude,-65
 Top Latitude,65
 Leftmost Longitude,-180
@@ -12,7 +12,7 @@ Run Simulations In Parallel,no
 Run Single Realm,
 Draw Randomly,no
 Extinction Threshold,1
-Maximum Number Of Cohorts,1000
+Maximum Number Of Cohorts,100
 Output Filename,FinalOutputs
 Track Processes,no
 Track Global Processes,no
@@ -28,8 +28,8 @@ Extinction Filename,Extinction
 Growth Filename,Growth
 Metabolism Filename,Metabolism
 NPP Filename,NPP
-Environmental Data File,input/Model setup/EnvironmentalDataLayers.csv
-Specific Location File,SpecificLocations.csv
+Environmental Data File,xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Specific Location File,xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 Cohort Functional Group Definitions File,CohortFunctionalGroupDefinitions.csv
 Stock Functional Group Definitions File,StockFunctionalGroupDefinitions.csv
 Output Detail,low
