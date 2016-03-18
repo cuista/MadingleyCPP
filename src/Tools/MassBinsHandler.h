@@ -25,6 +25,8 @@ public:
      */
     void SetUpMassBins(string massBinsFile) {
 
+        massBinsFile = Constants::cConfigurationDirectory + massBinsFile;
+        
         ifstream massFile(massBinsFile.c_str());
         string title;
         if (massFile.is_open()) {

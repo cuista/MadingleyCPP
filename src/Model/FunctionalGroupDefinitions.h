@@ -6,6 +6,7 @@
 #include <iostream>
 #include <algorithm>
 #include <assert.h>
+#include "Constants.h"
 using namespace std;
 /** \file FunctionalGroupDefinitions.h
  * \brief the FunctionalGroupDefinitions header file
@@ -41,10 +42,9 @@ public:
     @param fileName The name of the functional group definition file to be read in
     @param outputPath The path to the output folder, in which to copy the functional group definitions file
      */
-    FunctionalGroupDefinitions(string fileName, string outputPath) {
+    FunctionalGroupDefinitions( string fileName ) {
         cout << "Reading those functional group definitions" << endl;
-        fileName = "input/Model setup/" + fileName;
-        outputPath=".";
+        fileName = Constants::cConfigurationDirectory + fileName;
         ifstream infile(fileName.c_str());
         if (infile.is_open()) {
 

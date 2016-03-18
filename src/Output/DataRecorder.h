@@ -8,7 +8,7 @@ public:
     ~DataRecorder( );
     static Types::DataRecorderPointer Get( );
 
-    void Initialise( const Types::StringMatrix& );
+    bool Initialise( const Types::StringMatrix& );
     void AddDataTo( const std::string&, const float& );
     void AddDataTo( const std::string&, const Types::GeoCoordPointer, const float& );
     void AddDataTo( const std::string&, const Types::IndicesPointer, const float& );

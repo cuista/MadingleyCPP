@@ -26,46 +26,52 @@ Parameters::~Parameters( ) {
 Parameters::Parameters( ) {
 }
 
-void Parameters::Initialise( Types::StringMatrix& rawInputParameterData ) {
-    for( unsigned int rowIndex = 0; rowIndex < rawInputParameterData.size( ); ++rowIndex ) {
+bool Parameters::Initialise( const Types::StringMatrix& rawInputParameterData ) {
+    if( rawInputParameterData.size( ) > 0 ) {
+        for( unsigned int rowIndex = 0; rowIndex < rawInputParameterData.size( ); ++rowIndex ) {
 
-        float parameterValue = Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eValue ] );
+            float parameterValue = Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eValue ] );
 
-        switch( rowIndex ) {
-            case Constants::eLengthOfSimulationInYears:
-            {
-                mLengthOfSimulationInYears = parameterValue;
-                break;
-            }
-            case Constants::eMinimumLongitude:
-            {
-                mMinimumLongitude = parameterValue;
-                break;
-            }
-            case Constants::eMaximumLongitude:
-            {
-                mMaximumLongitude = parameterValue;
-                break;
-            }
-            case Constants::eMinimumLatitude:
-            {
-                mMinimumLatitude = parameterValue;
-                break;
-            }
-            case Constants::eMaximumLatitude:
-            {
-                mMaximumLatitude = parameterValue;
-                break;
-            }
-            case Constants::eGridCellSize:
-            {
-                mGridCellSize = parameterValue;
-                break;
+            switch( rowIndex ) {
+                case Constants::eLengthOfSimulationInYears:
+                {
+                    mLengthOfSimulationInYears = parameterValue;
+                    break;
+                }
+                case Constants::eMinimumLongitude:
+                {
+                    mMinimumLongitude = parameterValue;
+                    break;
+                }
+                case Constants::eMaximumLongitude:
+                {
+                    mMaximumLongitude = parameterValue;
+                    break;
+                }
+                case Constants::eMinimumLatitude:
+                {
+                    mMinimumLatitude = parameterValue;
+                    break;
+                }
+                case Constants::eMaximumLatitude:
+                {
+                    mMaximumLatitude = parameterValue;
+                    break;
+                }
+                case Constants::eGridCellSize:
+                {
+                    mGridCellSize = parameterValue;
+                    break;
+                }
             }
         }
-    }
 
-    CalculateParameters( );
+        CalculateParameters( );
+        
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void Parameters::CalculateParameters( ) {
@@ -73,7 +79,7 @@ void Parameters::CalculateParameters( ) {
     // Calculate temporal parameters
     mLengthOfSimulationInTimeSteps = mLengthOfSimulationInYears * 12;
     mTimeStepArray = new float[ mLengthOfSimulationInTimeSteps ];
-    
+
     for( unsigned int timeStep = 0; timeStep < mLengthOfSimulationInTimeSteps; ++timeStep ) {
         mTimeStepArray[ timeStep ] = timeStep;
     }

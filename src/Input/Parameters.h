@@ -8,7 +8,7 @@ public:
     ~Parameters( );
     static Types::ParametersPointer Get( );
 
-    void Initialise( Types::StringMatrix& );
+    bool Initialise( const Types::StringMatrix& );
 
     // User defined parameters
     unsigned int GetLengthOfSimulationInYears( ) const;

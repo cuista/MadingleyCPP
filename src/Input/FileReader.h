@@ -12,11 +12,11 @@ public:
     bool ReadFiles( );
 
 private:
-    void ClearMetadata( );
     bool ReadMetadataFile( const std::string& );
-    bool ReadNetCDFFiles( );
     
-    Types::StringMatrix mMetadata;
+    Types::StringMatrix ReadAndReturnTextFile( const std::string& );
+    bool ReadInputDataFiles( const Types::StringMatrix& );
+    
     std::string mFilePath;
 };
 

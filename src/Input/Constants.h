@@ -52,14 +52,22 @@ namespace Constants {
     const std::string cBasicDatumTypeName = "basic";
     const std::string cGridDatumTypeName = "grid";
     
-    const std::string cConfigurationDirectory = "/home/philju/Development/C++/In Progress/MadingleyCPP/input/Model setup/";
-    const std::string cEnvironmentalDataLayersFileName = "EnvironmentalDataLayers.csv";
-    const std::string cOutputControlParametersFileName = "OutputControlParameters.csv";
-    const std::string cSimulationControlParametersFileName = "SimulationControlParameters.csv";
+    const std::string cConfigurationDirectory = "./input/Model setup/";
+    const std::string cInputParametersFileName = "SimulationControlParameters.csv";
+    const std::string cInputDataFileName = "EnvironmentalDataLayers.csv";
+    const std::string cOutputVariablesFileName = "OutputControlParameters.csv";
+    
+    // PJU Temporary constants from original C++ implementation ////////////////
+    const std::string cInitialisationFileName = "EcosystemModelInitialisation.csv";
+    const std::string cCohortDefinitionsFileName = "CohortFunctionalGroupDefinitions.csv";
+    const std::string cStockDefinitionsFileName = "StockFunctionalGroupDefinitions.csv";
+    const std::string cMassBinDefinitionsFileName = "MassBinDefinitions.csv";
+    const std::string cOutputPath = ".";
+    ////////////////////////////////////////////////////////////////////////////
     
     const std::string cBasicOutputsFileName = "BasicOutputs.nc";
     const std::string cGridOutputsFileName = "GridOutputs.nc";
-    const std::string cOutputBaseDirectory = "/home/philju/Development/C++/In Progress/MadingleyCPP/output/";
+    const std::string cOutputBaseDirectory = "./output/";
     const std::string cDataSetNameFormat = "%Y-%m-%d_%H-%M-%S";
     const std::string cUnitsString = "units";
     const std::string cLongitudeVariableUnits = "degrees east";

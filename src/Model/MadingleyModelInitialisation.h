@@ -12,6 +12,8 @@
 #include <Stopwatch.h>
 #include <cstdlib>
 
+#include "Constants.h"
+
 /**
  \ file *MadingleyModelInitialisation.h
  \brief The MadingleyModelInitialisation header file
@@ -109,9 +111,7 @@ public:
     /** \brief Reads the initialization file to get information for the set of simulations to be run
      @param initialisationFile The name of the initialization file with information on the simulations to be run
      @param outputPath The path to folder in which outputs will be stored */
-    MadingleyModelInitialisation( string initialisationFile,
-            string outputPath,
-            long long& NC,
+    MadingleyModelInitialisation( long long& NC,
             double& TC,
             double& TS,
             ModelGrid& Grid ) {
@@ -127,11 +127,7 @@ public:
         NextCohortID = 0;
 
         // Read the intialisation files and store values
-        ReadInitialisationFiles( initialisationFile, outputPath );
-
-        //Set up grid size
-        //unsigned NumLatCells = ( unsigned )( ( TopLatitude - BottomLatitude ) / CellSize );
-        //unsigned NumLonCells = ( unsigned )( ( RightmostLongitude - LeftmostLongitude ) / CellSize );
+        ReadInitialisationFiles( );
 
         Grid.SetUpGrid( BottomLatitude, LeftmostLongitude, TopLatitude, RightmostLongitude, CellSize, CellSize );
 
@@ -165,8 +161,10 @@ public:
      @param outputPath The path to folder in which outputs will be stored
      //        /// <todo>Need to adjust this file to deal with incorrect inputs, extra columns etc by throwing an error</todo>
      //        /// <todo>Also need to strip leading spaces</todo>*/
-    void ReadInitialisationFiles( string initialisationFile, string outputPath ) {
+    void ReadInitialisationFiles( ) {
         cout << "Reading initialisation parameters file..." << endl;
+
+        std::string initialisationFile = Constants::cConfigurationDirectory + Constants::cInitialisationFileName;
         ifstream infile( initialisationFile.c_str( ) );
         if( infile.is_open( ) ) {
             string l, header[2];
@@ -201,64 +199,67 @@ public:
                 if( param == "top latitude" ) TopLatitude = atof( val.c_str( ) );
                 if( param == "leftmost longitude" ) LeftmostLongitude = atof( val.c_str( ) );
                 if( param == "rightmost longitude" ) RightmostLongitude = atof( val.c_str( ) );
-                if( param == "grid cell rarefaction" ) CellRarefaction = atoi( val.c_str( ) );
-                if( param == "run cells in parallel" ) RunCellsInParallel = ( ( val == "yes" ) ? true : false );
-                if( param == "run simulations in parallel" ) RunSimulationsInParallel = ( ( val == "yes" ) ? true : false );
-                if( param == "run single realm" ) RunRealm = val;
                 if( param == "draw randomly" ) DrawRandomly = ( ( val == "yes" ) ? true : false );
                 if( param == "extinction threshold" ) ExtinctionThreshold = atof( val.c_str( ) );
-                if( param == "merge difference" ) MergeDifference = atof( val.c_str( ) );
                 if( param == "maximum number of cohorts" ) MaxNumberOfCohorts = atof( val.c_str( ) );
-                if( param == "dispersal only" ) DispersalOnly = ( ( val == "yes" ) ? true : false );
                 if( param == "plankton size threshold" ) PlanktonDispersalThreshold = atof( val.c_str( ) );
-                if( param == "live outputs" ) LiveOutputs = ( ( val == "yes" ) ? true : false );
-                if( param == "track marine specifics" ) TrackMarineSpecifics = ( ( val == "yes" ) ? true : false );
-                if( param == "track processes" ) TrackProcesses = ( ( val == "yes" ) ? true : false );
-                if( param == "track global processes" ) TrackGlobalProcesses = ( ( val == "yes" ) ? true : false );
-
-                if( param == "new cohorts filename" ) ProcessTrackingOutputs["NewCohortsOutput"] = val;
-                if( param == "maturity filename" ) ProcessTrackingOutputs["MaturityOutput"] = val;
-                if( param == "biomasses eaten filename" ) ProcessTrackingOutputs["BiomassesEatenOutput"] = val;
-                if( param == "trophic flows filename" ) ProcessTrackingOutputs["TrophicFlowsOutput"] = val;
-                if( param == "growth filename" ) ProcessTrackingOutputs["GrowthOutput"] = val;
-                if( param == "metabolism filename" ) ProcessTrackingOutputs["MetabolismOutput"] = val;
-                if( param == "npp filename" ) ProcessTrackingOutputs["NPPOutput"] = val;
-                if( param == "predation flows filename" ) ProcessTrackingOutputs["PredationFlowsOutput"] = val;
-                if( param == "herbivory flows filename" ) ProcessTrackingOutputs["HerbivoryFlowsOutput"] = val;
-                if( param == "mortality filename" ) ProcessTrackingOutputs["MortalityOutput"] = val;
-                if( param == "extinction filename" ) ProcessTrackingOutputs["ExtinctionOutput"] = val;
-
-                if( param == "output detail" )InitialisationFileStrings["OutputDetail"] = val;
                 if( param == "human npp extraction" ) InitialisationFileStrings["HumanNPPExtraction"] = val;
-                if( param == "dispersal only type" ) InitialisationFileStrings["DispersalOnlyType"] = val;
-                if( param == "cohort functional group definitions file" ) InitialisationFileStrings["CohortFunctional"] = val;
-                if( param == "stock functional group definitions file" ) InitialisationFileStrings["StockFunctional"] = val;
-                if( param == "specific location file" ) InitialisationFileStrings["Locations"] = val;
-                if( param == "environmental data file" ) InitialisationFileStrings["Environmental"] = data[1];
 
-                //read in mass bins : use data[1] so that filename isn't lower-cased
-                if( param == "mass bin filename" ) ModelMassBins.SetUpMassBins( data[1] );
+                //if( param == "cohort functional group definitions file" ) {
+                //    cout << "Reading functional group definitions..." << endl;
+                //    CohortFunctionalGroupDefinitions = FunctionalGroupDefinitions( data[1], Constants::cOutputPath );
+                //}
+                //if( param == "stock functional group definitions file" ) {
+                //    cout << "Reading stock group definitions..." << endl;
+                //    //Open a the specified csv file and set up the stock functional group definitions
+                //    StockFunctionalGroupDefinitions = FunctionalGroupDefinitions( data[1], Constants::cOutputPath );
+                //}
+                //if( param == "cohort functional group definitions file" ) InitialisationFileStrings["CohortFunctional"] = val;
+                //if( param == "stock functional group definitions file" ) InitialisationFileStrings["StockFunctional"] = val;
+                //if( param == "mass bin filename" ) ModelMassBins.SetUpMassBins( data[1] ); //read in mass bins : use data[1] so that filename isn't lower-cased
+                //if( param == "grid cell rarefaction" ) CellRarefaction = atoi( val.c_str( ) );
+                //if( param == "run cells in parallel" ) RunCellsInParallel = ( ( val == "yes" ) ? true : false );
+                //if( param == "run simulations in parallel" ) RunSimulationsInParallel = ( ( val == "yes" ) ? true : false );
+                //if( param == "run single realm" ) RunRealm = val;
+                //if( param == "dispersal only" ) DispersalOnly = ( ( val == "yes" ) ? true : false );
+                //if( param == "live outputs" ) LiveOutputs = ( ( val == "yes" ) ? true : false );
+                //if( param == "track marine specifics" ) TrackMarineSpecifics = ( ( val == "yes" ) ? true : false );
+                //if( param == "track processes" ) TrackProcesses = ( ( val == "yes" ) ? true : false );
+                //if( param == "track global processes" ) TrackGlobalProcesses = ( ( val == "yes" ) ? true : false );
 
-                if( param == "cohort functional group definitions file" ) {
-                    cout << "Reading functional group definitions..." << endl;
-                    CohortFunctionalGroupDefinitions = FunctionalGroupDefinitions( data[1], outputPath );
-                }
-                if( param == "stock functional group definitions file" ) {
-                    cout << "Reading stock group definitions..." << endl;
+                //if( param == "new cohorts filename" ) ProcessTrackingOutputs["NewCohortsOutput"] = val;
+                //if( param == "maturity filename" ) ProcessTrackingOutputs["MaturityOutput"] = val;
+                //if( param == "biomasses eaten filename" ) ProcessTrackingOutputs["BiomassesEatenOutput"] = val;
+                //if( param == "trophic flows filename" ) ProcessTrackingOutputs["TrophicFlowsOutput"] = val;
+                //if( param == "growth filename" ) ProcessTrackingOutputs["GrowthOutput"] = val;
+                //if( param == "metabolism filename" ) ProcessTrackingOutputs["MetabolismOutput"] = val;
+                //if( param == "npp filename" ) ProcessTrackingOutputs["NPPOutput"] = val;
+                //if( param == "predation flows filename" ) ProcessTrackingOutputs["PredationFlowsOutput"] = val;
+                //if( param == "herbivory flows filename" ) ProcessTrackingOutputs["HerbivoryFlowsOutput"] = val;
+                //if( param == "mortality filename" ) ProcessTrackingOutputs["MortalityOutput"] = val;
+                //if( param == "extinction filename" ) ProcessTrackingOutputs["ExtinctionOutput"] = val;
 
-                    //Open a the specified csv file and set up the stock functional group definitions
-                    StockFunctionalGroupDefinitions = FunctionalGroupDefinitions( data[1], outputPath );
-                }
+                //if( param == "output detail" )InitialisationFileStrings["OutputDetail"] = val;
+                //if( param == "dispersal only type" ) InitialisationFileStrings["DispersalOnlyType"] = val;
+                //if( param == "specific location file" ) InitialisationFileStrings["Locations"] = val;
+                //if( param == "environmental data file" ) InitialisationFileStrings["Environmental"] = data[1];
 
+                // The following parameters are not in the original EcosystemModelInitialisation file...
 
-
+                //if( param == "merge difference" ) MergeDifference = atof( val.c_str( ) );
             }
         } else {
             cout << "Something wrong with initialisation parameter file " << initialisationFile << endl;
         }
 
-        assert( CellRarefaction >= 1 && "Cell rarefaction cannot be less than 1" );
+        cout << "Reading functional group definitions..." << endl;
+        InitialisationFileStrings["CohortFunctional"] = Constants::cCohortDefinitionsFileName;
+        CohortFunctionalGroupDefinitions = FunctionalGroupDefinitions( Constants::cCohortDefinitionsFileName );
+        InitialisationFileStrings["StockFunctional"] = Constants::cStockDefinitionsFileName;
+        StockFunctionalGroupDefinitions = FunctionalGroupDefinitions( Constants::cStockDefinitionsFileName );
+        ModelMassBins.SetUpMassBins( Constants::cMassBinDefinitionsFileName );
 
+        //assert( CellRarefaction >= 1 && "Cell rarefaction cannot be less than 1" );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -480,7 +481,7 @@ public:
 
     @param gcl The grid cell  */
     long SeedGridCellStocks( GridCell& gcl ) {
-        
+
         long totalStocks = 0;
 
         // Loop over all stock functional groups in the model

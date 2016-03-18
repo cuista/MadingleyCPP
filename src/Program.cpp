@@ -26,18 +26,13 @@ int main( ) {
     feenableexcept( FE_INVALID | FE_OVERFLOW );
     // Write out model details to the console
     std::cout << ( "Madingley model C++ v. 0.\n" ) << std::endl;
-
-    //Output directory
-    std::string OutputPath = ".";
-    //model run parameters
-    std::string initialisationFileName = "input/Model setup/EcosystemModelInitialisation.csv";
-
+    
     std::time_t t = system_clock::to_time_t( high_resolution_clock::now( ) );
     cout << "Model Run started at " << std::ctime( &t ) << endl;
 
     // Initialise the model
     // Declare an instance of the class that runs a Madingley model simulation
-    MadingleyModel MadingleyEcosystemModel( initialisationFileName, OutputPath );
+    MadingleyModel MadingleyEcosystemModel;
 
     // Declare and start a timer
     StopWatch s;

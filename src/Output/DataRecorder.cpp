@@ -21,7 +21,7 @@ DataRecorder::~DataRecorder( ) {
     for( Types::BasicDatumMap::iterator iter = mBasicDatumMap.begin( ); iter != mBasicDatumMap.end( ); ++iter ) {
         delete iter->second;
     }
-    
+
     for( Types::GridDatumMap::iterator iter = mGridDatumMap.begin( ); iter != mGridDatumMap.end( ); ++iter ) {
         delete iter->second;
     }
@@ -35,28 +35,33 @@ DataRecorder::DataRecorder( ) {
 
 }
 
-void DataRecorder::Initialise( const Types::StringMatrix& rawOutputParameterData ) {
+bool DataRecorder::Initialise( const Types::StringMatrix& rawOutputParameterData ) {
 
-    for( unsigned int rowIndex = 0; rowIndex < rawOutputParameterData.size( ); ++rowIndex ) {
-        std::string name = rawOutputParameterData[ rowIndex ][ Constants::eOutputDatumName ];
-        std::string units = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eUnits ] );
-        std::string type = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eType ] );
+    if( rawOutputParameterData.size( ) > 0 ) {
+        for( unsigned int rowIndex = 0; rowIndex < rawOutputParameterData.size( ); ++rowIndex ) {
+            std::string name = rawOutputParameterData[ rowIndex ][ Constants::eOutputDatumName ];
+            std::string units = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eUnits ] );
+            std::string type = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eType ] );
 
-        if( type == Constants::cBasicDatumTypeName ) {
-            Types::StringVector basicDatumMetadata;
-            basicDatumMetadata.push_back( name );
-            basicDatumMetadata.push_back( units );
-            mBasicOutputMetadata.push_back( basicDatumMetadata );
+            if( type == Constants::cBasicDatumTypeName ) {
+                Types::StringVector basicDatumMetadata;
+                basicDatumMetadata.push_back( name );
+                basicDatumMetadata.push_back( units );
+                mBasicOutputMetadata.push_back( basicDatumMetadata );
 
-        } else if( type == Constants::cGridDatumTypeName ) {
-            Types::StringVector gridDatumMetadata;
-            gridDatumMetadata.push_back( name );
-            gridDatumMetadata.push_back( units );
-            mGridOutputMetadata.push_back( gridDatumMetadata );
+            } else if( type == Constants::cGridDatumTypeName ) {
+                Types::StringVector gridDatumMetadata;
+                gridDatumMetadata.push_back( name );
+                gridDatumMetadata.push_back( units );
+                mGridOutputMetadata.push_back( gridDatumMetadata );
 
-        } else {
-            Logger::Get( )->LogMessage( "ERROR> Defined output type \"" + type + "\" for datum \"" + name + "\" is not valid." );
+            } else {
+                Logger::Get( )->LogMessage( "ERROR> Defined output type \"" + type + "\" for datum \"" + name + "\" is not valid." );
+            }
         }
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -158,7 +163,7 @@ Types::GridDatumPointer DataRecorder::GetGridDatum( const std::string& name ) {
             }
         }
     }
-    
+
     // It is considered a feature to ignore an attempt to output to a non-existent datum. This could be because output to that datum is been switched off the OutputControlParameters.csv file.
     //    if( gridDatum == NULL ) {
     //        Logger::Get( )->LogMessage( "ERROR> Grid output datum \"" + name + "\" has not been defined in \"" + Constants::cOutputControlParametersFileName + "\"." );

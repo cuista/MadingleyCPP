@@ -79,14 +79,12 @@ public:
     @param initialisationFileName The name of the file with model parameters
     @param OutputPath Where the output will be stored
      */
-    MadingleyModel( string initialisationFileName, string OutputPath ) {
+    MadingleyModel( ) {
         // Set up list of global diagnostics
         SetUpGlobalDiagnosticsList( );
         // Initialise the cohort ID to zero
         NextCohortID = 0;
         params = MadingleyModelInitialisation(
-                initialisationFileName,
-                OutputPath,
                 NextCohortID,
                 GlobalDiagnosticVariables["NumberOfCohortsInModel"],
                 GlobalDiagnosticVariables["NumberOfStocksInModel"],
@@ -116,7 +114,6 @@ public:
             
             DateTime::Get( )->SetTimeStep( timeStep );
             
-            //for (unsigned hh = 0; hh < 2; hh += 1) {
             cout << "Running time step " << timeStep + 1 << "..." << endl;
             // Start the timer
             TimeStepTimer.Start( );
@@ -144,14 +141,8 @@ public:
             cout << "Global Outputs took: " << OutputTimer.GetElapsedTimeSecs( ) << endl;
 
             // Write the results of dispersal to the console
-
             cout << "Total Cohorts remaining " << GlobalDiagnosticVariables["NumberOfCohortsInModel"] << endl;
-            
-            //DataRecorder::Get( )->AddDataTo( "TotalLivingBiomass", 10 );
         }
-
-        //            // Write the final global outputs
-        //            GlobalOutputs.FinalOutputs();
 
     }//----------------------------------------------------------------------------------------------
 
