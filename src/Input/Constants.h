@@ -59,7 +59,7 @@ namespace Constants {
     
     const std::string cBasicOutputsFileName = "BasicOutputs.nc";
     const std::string cGridOutputsFileName = "GridOutputs.nc";
-    const std::string cOutputBaseDirectory = "/home/philju/Development/C++/In Progress/NetCDFIO/output/";
+    const std::string cOutputBaseDirectory = "/home/philju/Development/C++/In Progress/MadingleyCPP/output/";
     const std::string cDataSetNameFormat = "%Y-%m-%d_%H-%M-%S";
     const std::string cUnitsString = "units";
     const std::string cLongitudeVariableUnits = "degrees east";

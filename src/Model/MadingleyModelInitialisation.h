@@ -130,8 +130,8 @@ public:
         ReadInitialisationFiles( initialisationFile, outputPath );
 
         //Set up grid size
-        unsigned NumLatCells = ( unsigned )( ( TopLatitude - BottomLatitude ) / CellSize );
-        unsigned NumLonCells = ( unsigned )( ( RightmostLongitude - LeftmostLongitude ) / CellSize );
+        //unsigned NumLatCells = ( unsigned )( ( TopLatitude - BottomLatitude ) / CellSize );
+        //unsigned NumLonCells = ( unsigned )( ( RightmostLongitude - LeftmostLongitude ) / CellSize );
 
         Grid.SetUpGrid( BottomLatitude, LeftmostLongitude, TopLatitude, RightmostLongitude, CellSize, CellSize );
 

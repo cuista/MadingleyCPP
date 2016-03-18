@@ -500,7 +500,3 @@ void Environment::setHANPP( ) {
         }
     }
 }
-
-
-
-
