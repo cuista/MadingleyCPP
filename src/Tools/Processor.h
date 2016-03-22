@@ -14,7 +14,6 @@ public:
 
     int FindVariableIndexOfValue( const Types::VariablePointer, const double& ) const;
     int CalculateVariableIndexOfValue( const Types::VariablePointer, const double& ) const;
-    //int FindArrayIndexOfValue( const float*, const unsigned int&, const double& ) const;
     int CalculateArrayIndexOfValue( const float*, const unsigned int&, const double& ) const;
     
     template< class T, unsigned int N >

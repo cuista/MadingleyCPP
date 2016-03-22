@@ -3,6 +3,8 @@
 #include "Constants.h"
 #include "Convertor.h"
 #include "Logger.h"
+#include "Maths.h"
+#include "Processor.h"
 
 Types::ParametersPointer Parameters::mThis = NULL;
 
@@ -17,6 +19,7 @@ Parameters::~Parameters( ) {
 
     delete[ ] mLongitudeArray;
     delete[ ] mLatitudeArray;
+    delete[ ] mTimeStepArray;
 
     if( mThis != NULL ) {
         delete mThis;
@@ -40,22 +43,22 @@ bool Parameters::Initialise( const Types::StringMatrix& rawInputParameterData ) 
                 }
                 case Constants::eMinimumLongitude:
                 {
-                    mMinimumLongitude = parameterValue;
+                    mUserMinimumLongitude = parameterValue;
                     break;
                 }
                 case Constants::eMaximumLongitude:
                 {
-                    mMaximumLongitude = parameterValue;
+                    mUserMaximumLongitude = parameterValue;
                     break;
                 }
                 case Constants::eMinimumLatitude:
                 {
-                    mMinimumLatitude = parameterValue;
+                    mUserMinimumLatitude = parameterValue;
                     break;
                 }
                 case Constants::eMaximumLatitude:
                 {
-                    mMaximumLatitude = parameterValue;
+                    mUserMaximumLatitude = parameterValue;
                     break;
                 }
                 case Constants::eGridCellSize:
@@ -67,7 +70,7 @@ bool Parameters::Initialise( const Types::StringMatrix& rawInputParameterData ) 
         }
 
         CalculateParameters( );
-        
+
         return true;
     } else {
         return false;
@@ -85,40 +88,57 @@ void Parameters::CalculateParameters( ) {
     }
 
     // Calculate spatial parameters
-    mLengthLongitudeArray = ( mMaximumLongitude - mMinimumLongitude ) / mGridCellSize;
-    mLengthLatitudeArray = ( mMaximumLatitude - mMinimumLatitude ) / mGridCellSize;
-    mSizeOfGridDatum = mLengthLongitudeArray * mLengthLatitudeArray * mLengthOfSimulationInTimeSteps;
-
+    mLengthLongitudeArray = 360 / mGridCellSize;
     mLongitudeArray = new float[ mLengthLongitudeArray ];
-    mLatitudeArray = new float[ mLengthLatitudeArray ];
-
     for( unsigned int longitudeIndex = 0; longitudeIndex < mLengthLongitudeArray; ++longitudeIndex ) {
-        mLongitudeArray[ longitudeIndex ] = ( mMinimumLongitude + ( mGridCellSize / 2 ) ) + ( longitudeIndex * mGridCellSize );
+        mLongitudeArray[ longitudeIndex ] = ( -180 + ( mGridCellSize / 2 ) ) + ( longitudeIndex * mGridCellSize );
     }
 
+    mLengthLatitudeArray = 180 / mGridCellSize;
+    mLatitudeArray = new float[ mLengthLatitudeArray ];
     for( unsigned int latitudeIndex = 0; latitudeIndex < mLengthLatitudeArray; ++latitudeIndex ) {
-        mLatitudeArray[ latitudeIndex ] = ( mMinimumLatitude + ( mGridCellSize / 2 ) ) + ( latitudeIndex * mGridCellSize );
+        mLatitudeArray[ latitudeIndex ] = ( -90 + ( mGridCellSize / 2 ) ) + ( latitudeIndex * mGridCellSize );
     }
+
+    mIndexOfUserMinimumLongitude = Processor::Get( )->CalculateArrayIndexOfValue( mLongitudeArray, mLengthLongitudeArray, mUserMinimumLongitude );
+    mIndexOfUserMaximumLongitude = Processor::Get( )->CalculateArrayIndexOfValue( mLongitudeArray, mLengthLongitudeArray, mUserMaximumLongitude );
+    mLengthUserLongitudeArray = ( mIndexOfUserMaximumLongitude - mIndexOfUserMinimumLongitude ) + 1;
+
+    mUserLongitudeArray = new float[ mLengthUserLongitudeArray ];
+    for( unsigned int userLongitudeIndex = 0; userLongitudeIndex < mLengthUserLongitudeArray; ++userLongitudeIndex ) {
+        mUserLongitudeArray[ userLongitudeIndex ] = mLongitudeArray[ userLongitudeIndex + mIndexOfUserMinimumLongitude ];
+    }
+
+    mIndexOfUserMinimumLatitude = Processor::Get( )->CalculateArrayIndexOfValue( mLatitudeArray, mLengthLatitudeArray, mUserMinimumLatitude );
+    mIndexOfUserMaximumLatitude = Processor::Get( )->CalculateArrayIndexOfValue( mLatitudeArray, mLengthLatitudeArray, mUserMaximumLatitude );
+    mLengthUserLatitudeArray = ( mIndexOfUserMaximumLatitude - mIndexOfUserMinimumLatitude ) + 1;
+
+    mUserLatitudeArray = new float[ mLengthUserLatitudeArray ];
+    for( unsigned int userLatitudeIndex = 0; userLatitudeIndex < mLengthUserLatitudeArray; ++userLatitudeIndex ) {
+        mUserLatitudeArray[ userLatitudeIndex ] = mLatitudeArray[ userLatitudeIndex + mIndexOfUserMinimumLatitude ];
+    }
+
+    mSizeOfGridDatum = mLengthUserLongitudeArray * mLengthUserLatitudeArray * mLengthOfSimulationInTimeSteps;
 }
 
 unsigned int Parameters::GetLengthOfSimulationInYears( ) const {
     return mLengthOfSimulationInYears;
 }
 
-int Parameters::GetMinimumLongitude( ) const {
-    return mMinimumLongitude;
+int Parameters::GetUserMinimumLongitude( ) const {
+    return mUserMinimumLongitude;
 }
 
-int Parameters::GetMaximumLongitude( ) const {
-    return mMaximumLongitude;
+int Parameters::GetUserMaximumLongitude( ) const {
+    return mUserMaximumLongitude;
 }
 
-int Parameters::GetMinimumLatitude( ) const {
-    return mMinimumLatitude;
+int Parameters::GetUserMinimumLatitude( ) const {
+    return mUserMinimumLatitude;
 }
 
-int Parameters::GetMaximumLatitude( ) const {
-    return mMaximumLatitude;
+int Parameters::GetUserMaximumLatitude( ) const {
+    return mUserMaximumLatitude;
 }
 
 float Parameters::GetGridCellSize( ) const {
@@ -129,20 +149,20 @@ void Parameters::SetLengthOfSimulationInYears( const unsigned int& lengthOfSimul
     mLengthOfSimulationInYears = lengthOfSimulationInYears;
 }
 
-void Parameters::SetMinimumLongitude( const int& minimumLongitude ) {
-    mMinimumLongitude = minimumLongitude;
+void Parameters::SetUserMinimumLongitude( const int& userMinimumLongitude ) {
+    mUserMinimumLongitude = userMinimumLongitude;
 }
 
-void Parameters::SetMaximumLongitude( const int& maximumLongitude ) {
-    mMaximumLongitude = maximumLongitude;
+void Parameters::SetUserMaximumLongitude( const int& userMaximumLongitude ) {
+    mUserMaximumLongitude = userMaximumLongitude;
 }
 
-void Parameters::SetMinimumLatitude( const int& minimumLatitude ) {
-    mMinimumLatitude = minimumLatitude;
+void Parameters::SetUserMinimumLatitude( const int& userMinimumLatitude ) {
+    mUserMinimumLatitude = userMinimumLatitude;
 }
 
-void Parameters::SetMaximumLatitude( const int& maximumLatitude ) {
-    mMaximumLatitude = maximumLatitude;
+void Parameters::SetUserMaximumLatitude( const int& userMaximumLatitude ) {
+    mUserMaximumLatitude = userMaximumLatitude;
 }
 
 void Parameters::SetGridCellSize( const float& gridCellSize ) {
@@ -159,6 +179,30 @@ unsigned int Parameters::GetLengthLongitudeArray( ) const {
 
 unsigned int Parameters::GetLengthLatitudeArray( ) const {
     return mLengthLatitudeArray;
+}
+
+unsigned int Parameters::GetIndexOfUserMinimumLongitude( ) const {
+    return mIndexOfUserMinimumLongitude;
+}
+
+unsigned int Parameters::GetIndexOfUserMaximumLongitude( ) const {
+    return mIndexOfUserMaximumLongitude;
+}
+
+unsigned int Parameters::GetIndexOfUserMinimumLatitude( ) const {
+    return mIndexOfUserMinimumLatitude;
+}
+
+unsigned int Parameters::GetIndexOfUserMaximumLatitude( ) const {
+    return mIndexOfUserMaximumLatitude;
+}
+
+unsigned int Parameters::GetLengthUserLongitudeArray( ) const {
+    return mLengthUserLongitudeArray;
+}
+
+unsigned int Parameters::GetLengthUserLatitudeArray( ) const {
+    return mLengthUserLatitudeArray;
 }
 
 unsigned int Parameters::GetSizeOfGridDatum( ) const {
@@ -183,4 +227,12 @@ float* Parameters::GetLatitudeArray( ) const {
 
 float* Parameters::GetTimeStepArray( ) const {
     return mTimeStepArray;
+}
+
+float* Parameters::GetUserLongitudeArray( ) const {
+    return mUserLongitudeArray;
+}
+
+float* Parameters::GetUserLatitudeArray( ) const {
+    return mUserLatitudeArray;
 }

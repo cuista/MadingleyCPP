@@ -55,8 +55,6 @@ float DataLayer3DwithTime::GetDataAtGeoCoordForVariable( const Types::GeoCoordPo
     unsigned int yMax = Parameters::Get( )->GetLengthLatitudeArray( );
     unsigned int zMax = mDepthVariable->GetSize( );
 
-    delete coord;
-
     return variable->GetDataAtIndex( Processor::Get( )->Indices4DToIndex( xIndex, yIndex, zIndex, tIndex, xMax, yMax, zMax ) );
 }
 
@@ -69,8 +67,6 @@ float DataLayer3DwithTime::GetDataAtIndicesForVariable( const Types::IndicesPoin
     unsigned int yMax = Parameters::Get( )->GetLengthLatitudeArray( );
     unsigned int tIndex = DateTime::Get( )->GetTimeStep( );
     unsigned int zMax = mDepthVariable->GetSize( );
-    
-    delete indices;
 
     return variable->GetDataAtIndex( Processor::Get( )->Indices4DToIndex( xIndex, yIndex, zIndex, tIndex, xMax, yMax, zMax ) );
 }

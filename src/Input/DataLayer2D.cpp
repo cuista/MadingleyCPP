@@ -38,8 +38,6 @@ float DataLayer2D::GetDataAtGeoCoordForVariable( const Types::GeoCoordPointer co
     int yIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLatitudeVariable, coord->GetLatitude( ) );
     unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
 
-    delete coord;
-
     return variable->GetDataAtIndex( Processor::Get( )->Indices2DToIndex( xIndex, yIndex, xMax ) );
 }
 
@@ -48,8 +46,6 @@ float DataLayer2D::GetDataAtIndicesForVariable( const Types::IndicesPointer indi
     unsigned int xIndex = indices->GetX( );
     unsigned int yIndex = indices->GetY( );
     unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
-
-    delete indices;
 
     return variable->GetDataAtIndex( Processor::Get( )->Indices2DToIndex( xIndex, yIndex, xMax ) );
 }

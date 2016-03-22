@@ -132,7 +132,7 @@ Types::BasicDatumPointer DataRecorder::GetBasicDatum( const std::string& name ) 
         }
     }
 
-    // It is considered a feature to ignore an attempt to output to a non-existent datum. This could be because output to that datum is been switched off the OutputControlParameters.csv file.
+    // Attempts to output to a non-existent datum are ignored, so they can be switched off the OutputControlParameters.csv file.
     //    if( basicDatum == NULL ) {
     //        Logger::Get( )->LogMessage( "ERROR> Basic output datum \"" + name + "\" has not been defined in \"" + Constants::cOutputControlParametersFileName + "\"." );
     //    }
@@ -164,7 +164,7 @@ Types::GridDatumPointer DataRecorder::GetGridDatum( const std::string& name ) {
         }
     }
 
-    // It is considered a feature to ignore an attempt to output to a non-existent datum. This could be because output to that datum is been switched off the OutputControlParameters.csv file.
+    // Attempts to output to a non-existent datum are ignored, so they can be switched off the OutputControlParameters.csv file.
     //    if( gridDatum == NULL ) {
     //        Logger::Get( )->LogMessage( "ERROR> Grid output datum \"" + name + "\" has not been defined in \"" + Constants::cOutputControlParametersFileName + "\"." );
     //    }

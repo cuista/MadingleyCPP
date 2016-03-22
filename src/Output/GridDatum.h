@@ -7,8 +7,6 @@ class GridDatum {
 public:
     GridDatum( const std::string&, const std::string& );
     ~GridDatum( );
-
-    void Initialise( );
     
     std::string GetName( ) const;
     std::string GetUnits( ) const;

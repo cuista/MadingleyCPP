@@ -95,30 +95,9 @@ int Processor::CalculateVariableIndexOfValue( const Types::VariablePointer varia
     } else if( calculatedIndex < 0 ) {
         calculatedIndex = 0;
     }
-    
+
     return calculatedIndex;
 }
-
-//int Processor::FindArrayIndexOfValue( const float* array, const unsigned int& arraySize, const double& value ) const {
-//
-//    double lowestAbsoluteDifference = Parameters::Get( )->GetGridCellSize( );
-//    int closestIndex = Constants::cMissingValue;
-//
-//    for( unsigned int arrayIndex = 0; arrayIndex < arraySize; ++arrayIndex ) {
-//
-//        double absoluteDifference = Maths::Get( )->Abs( value - array[ arrayIndex ] );
-//        if( absoluteDifference <= lowestAbsoluteDifference ) {
-//            lowestAbsoluteDifference = absoluteDifference;
-//            closestIndex = arrayIndex;
-//        }
-//    }
-//
-//    if( closestIndex == Constants::cMissingValue ) {
-//        Logger::Get( )->LogMessage( "Value \"" + Convertor::Get( )->ToString( value ) + "\" was not found in array." );
-//    }
-//
-//    return closestIndex;
-//}
 
 int Processor::CalculateArrayIndexOfValue( const float* array, const unsigned int& arraySize, const double& value ) const {
 

@@ -105,14 +105,14 @@ bool FileWriter::WriteGridOutputs( ) const {
     try {
         netCDF::NcFile gridOutputsNcFile( filePath, netCDF::NcFile::replace ); // Creates file
 
-        netCDF::NcDim longitudeDim = gridOutputsNcFile.addDim( Constants::cLongitudeVariableNames[ 0 ], Parameters::Get( )->GetLengthLongitudeArray( ) );
+        netCDF::NcDim longitudeDim = gridOutputsNcFile.addDim( Constants::cLongitudeVariableNames[ 0 ], Parameters::Get( )->GetLengthUserLongitudeArray( ) );
         netCDF::NcVar longitudeNcVar = gridOutputsNcFile.addVar( Constants::cLongitudeVariableNames[ 0 ], netCDF::ncFloat, longitudeDim );
-        longitudeNcVar.putVar( Parameters::Get( )->GetLongitudeArray( ) );
+        longitudeNcVar.putVar( Parameters::Get( )->GetUserLongitudeArray( ) );
         longitudeNcVar.putAtt( Constants::cUnitsString, Constants::cLongitudeVariableUnits );
 
-        netCDF::NcDim latitudeDim = gridOutputsNcFile.addDim( Constants::cLatitudeVariableNames[ 0 ], Parameters::Get( )->GetLengthLatitudeArray( ) );
+        netCDF::NcDim latitudeDim = gridOutputsNcFile.addDim( Constants::cLatitudeVariableNames[ 0 ], Parameters::Get( )->GetLengthUserLatitudeArray( ) );
         netCDF::NcVar latitudeNcVar = gridOutputsNcFile.addVar( Constants::cLatitudeVariableNames[ 0 ], netCDF::ncFloat, latitudeDim );
-        latitudeNcVar.putVar( Parameters::Get( )->GetLatitudeArray( ) );
+        latitudeNcVar.putVar( Parameters::Get( )->GetUserLatitudeArray( ) );
         latitudeNcVar.putAtt( Constants::cUnitsString, Constants::cLatitudeVariableUnits );
 
         netCDF::NcDim timeNcDim = gridOutputsNcFile.addDim( Constants::cTimeVariableNames[ 0 ], Parameters::Get( )->GetLengthOfSimulationInTimeSteps( ) );

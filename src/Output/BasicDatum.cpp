@@ -6,15 +6,11 @@
 BasicDatum::BasicDatum( const std::string& name, const std::string& units ) {
     mName = name;
     mUnits = units;
-    Initialise( );
+    mData = new float[ Parameters::Get( )->GetLengthOfSimulationInTimeSteps( ) ];
 }
 
 BasicDatum::~BasicDatum( ) {
     delete[ ] mData;
-}
-
-void BasicDatum::Initialise( ) {
-    mData = new float[ Parameters::Get( )->GetLengthOfSimulationInTimeSteps( ) ];
 }
 
 std::string BasicDatum::GetName( ) const {
