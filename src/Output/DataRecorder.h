@@ -10,8 +10,8 @@ public:
 
     bool Initialise( const Types::StringMatrix& );
     void AddDataTo( const std::string&, const float& );
-    void AddDataTo( const std::string&, const Types::GeoCoordPointer, const float& );
-    void AddDataTo( const std::string&, const Types::IndicesPointer, const float& );
+    void AddDataTo( const std::string&, const Types::DataCoordsPointer, const float& );
+    void AddDataTo( const std::string&, const Types::DataIndicesPointer, const float& );
     
     Types::BasicDatumMap GetBasicDatumMap( ) const;
     Types::GridDatumMap GetGridDatumMap( ) const;

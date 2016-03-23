@@ -12,7 +12,7 @@
 #include "Logger.h"
 #include "Parameters.h"
 #include "DataLayerSet.h"
-#include "Indices.h"
+#include "DataIndices.h"
 #include "DateTime.h"
 
 Environment* Environment::Instance = 0;
@@ -21,10 +21,6 @@ map<string, layer*> Environment::Layers;
 //------------------------------------------------------------------------------
 
 Environment::Environment( ) {
-    double degreeResolution = 10;
-    //std::string mInputBaseDirectory = "../netCDFdata/";
-    std::string mInputBaseDirectory = "/home/philju/Data/Madingley/Standardised/10deg/";
-
     cout << "Reading netcdf??" << endl;
     Types::FileReaderPointer fileReader = new FileReader( );
 
@@ -138,11 +134,13 @@ void Environment::setTemperature( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", new Indices( lo, la ) );
-                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", new Indices( lo, la ) );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", indices );
+                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", indices );
                 }
+                delete indices;
 
                 Layers["Temperature"]->setTime( tm );
                 if( d == MissingValue ) {
@@ -168,9 +166,11 @@ void Environment::setUVel( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineNorthVel", new Indices( lo, la ) );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineNorthVel", indices );
                 }
+                delete indices;
 
                 Layers["uVel"]->setTime( tm );
                 ( *Layers["uVel"] )[lo][la] = d;
@@ -190,9 +190,11 @@ void Environment::setVVel( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineEastVel", new Indices( lo, la ) );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineEastVel", indices );
                 }
+                delete indices;
 
                 Layers["vVel"]->setTime( tm );
                 ( *Layers["vVel"] )[lo][la] = d;
@@ -213,11 +215,13 @@ void Environment::setDiurnalTemperatureRange( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
+                Types::DataIndicesPointer indices = new DataIndices( lo, la );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
                     d = MissingValue; //MB currently missing
-                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialDTR", new Indices( lo, la ) );
+                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialDTR", indices );
                 }
+                delete indices;
 
                 Layers["DiurnalTemperatureRange"]->setTime( tm );
                 ( *Layers["DiurnalTemperatureRange"] )[lo][la] = d;
@@ -241,9 +245,11 @@ void Environment::setPrecipitation( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialPre", new Indices( lo, la ) );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialPre", indices );
                 }
+                delete indices;
 
                 if( d == MissingValue ) {
                     d = 0;
@@ -271,11 +277,13 @@ void Environment::setNPP( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineNPP", new Indices( lo, la ) );
-                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialNPP", new Indices( lo, la ) );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineNPP", indices );
+                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialNPP", indices );
                 }
+                delete indices;
 
                 if( d == MissingValue ) {
                     d = 0;
@@ -296,11 +304,13 @@ void Environment::setRealm( ) {
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
 
-            if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
+            Types::DataIndicesPointer indices = new DataIndices( lo, la );
+            if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
                 ( *Layers["Realm"] )[lo][la] = 2.0;
-            } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
+            } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
                 ( *Layers["Realm"] )[lo][la] = 1.0;
             }
+            delete indices;
         }
     }
 }
@@ -340,11 +350,13 @@ void Environment::setAVGSDTemp( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", new Indices( lo, la ) );
-                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", new Indices( lo, la ) );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", indices );
+                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", indices );
                 }
+                delete indices;
 
                 if( d == MissingValue )d = 0;
                 avg += d;
@@ -357,11 +369,13 @@ void Environment::setAVGSDTemp( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 1 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", new Indices( lo, la ) );
-                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", new Indices( lo, la ) );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", indices );
+                } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", indices );
                 }
+                delete indices;
 
                 if( d == MissingValue )d = 0;
                 sota += ( d - avg )*( d - avg );
@@ -435,11 +449,13 @@ void Environment::setFrostandFire( ) {
             for( int i = 0; i < 12; i++ ) {
 
                 DateTime::Get( )->SetTimeStep( i );
-                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", new Indices( lo, la ) ) == 2 ) {
-                    FrostDays[i] = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialFrost", new Indices( lo, la ) );
-                    Precipitation[i] = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialPre", new Indices( lo, la ) );
-                    Temperature[i] = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", new Indices( lo, la ) );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la );
+                if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
+                    FrostDays[i] = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialFrost", indices );
+                    Precipitation[i] = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialPre", indices );
+                    Temperature[i] = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialTemp", indices );
                 }
+                delete indices;
             }
             ( *Layers["Fraction Year Frost"] )[lo][la] = CVC.GetNDF( FrostDays, Temperature, MissingValue );
 
@@ -449,7 +465,9 @@ void Environment::setFrostandFire( ) {
                 Layers["Fraction Month Frost"]->setTime( i );
                 ( *Layers["Fraction Month Frost"] )[lo][la] = min( FrostDays[i] / MonthDays[i], 1.0 );
             }
-            double AWC = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialAWC", new Indices( lo, la ) );
+            Types::DataIndicesPointer indices = new DataIndices( lo, la );
+            double AWC = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialAWC", indices );
+            delete indices;
 
             tuple<vector<double>, double, double> TempTuple = CVC.MonthlyActualEvapotranspirationSoilMoisture( AWC, Precipitation, Temperature );
             ( *Layers["TotalAET"] )[lo][la] = 0;

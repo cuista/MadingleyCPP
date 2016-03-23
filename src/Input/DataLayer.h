@@ -16,11 +16,11 @@ public:
         delete mLatitudeVariable;
     };
 
-    virtual float GetDataAtGeoCoord( const Types::GeoCoordPointer ) const = 0;
-    virtual float GetDataAtGeoCoordFor( const Types::GeoCoordPointer, const std::string& ) const = 0;
+    virtual float GetDataAtGeoCoord( const Types::DataCoordsPointer ) const = 0;
+    virtual float GetDataAtGeoCoordFor( const Types::DataCoordsPointer, const std::string& ) const = 0;
 
-    virtual float GetDataAtIndices( const Types::IndicesPointer ) const = 0;
-    virtual float GetDataAtIndicesFor( const Types::IndicesPointer, const std::string& ) const = 0;
+    virtual float GetDataAtIndices( const Types::DataIndicesPointer ) const = 0;
+    virtual float GetDataAtIndicesFor( const Types::DataIndicesPointer, const std::string& ) const = 0;
 
     std::string GetName( );
 
@@ -31,8 +31,8 @@ public:
     Types::VariablePointer GetLatitudeVariable( ) const;
 
 protected:
-    virtual float GetDataAtGeoCoordForVariable( const Types::GeoCoordPointer, const Types::VariablePointer ) const = 0;
-    virtual float GetDataAtIndicesForVariable( const Types::IndicesPointer, const Types::VariablePointer ) const = 0;
+    virtual float GetDataAtGeoCoordForVariable( const Types::DataCoordsPointer, const Types::VariablePointer ) const = 0;
+    virtual float GetDataAtIndicesForVariable( const Types::DataIndicesPointer, const Types::VariablePointer ) const = 0;
 
     Types::VariableVector mVariableVector;
     Types::VariablePointer mLongitudeVariable;

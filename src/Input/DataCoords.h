@@ -1,11 +1,11 @@
-#ifndef GEOCOORD
-#define	GEOCOORD
+#ifndef DATACOORDS
+#define	DATACOORDS
 
-class GeoCoord {
+class DataCoords {
 public:
-    GeoCoord( const float&, const float&, const float& );
-    GeoCoord( const float&, const float& );
-    ~GeoCoord( );
+    DataCoords( const float&, const float&, const float& );
+    DataCoords( const float&, const float& );
+    ~DataCoords( );
 
     float GetLongitude( ) const;
     float GetLatitude( ) const;

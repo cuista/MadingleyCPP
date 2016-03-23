@@ -6,11 +6,11 @@
 
 class Variable {
 public:
-    Variable( const std::string&, const Types::UnsignedIntegerVector&, const unsigned int&, float*, const bool );
+    Variable( const std::string&, const Types::UnsignedIntVector&, const unsigned int&, float*, const bool );
     ~Variable( );
     
     std::string GetName( ) const;
-    Types::UnsignedIntegerVector GetDimensions( ) const;
+    Types::UnsignedIntVector GetDimensions( ) const;
     unsigned int GetDimension( const unsigned int& ) const;
     unsigned int GetSize( ) const;
     
@@ -25,7 +25,7 @@ public:
     
 protected:
     std::string mName;
-    Types::UnsignedIntegerVector mDimensions;
+    Types::UnsignedIntVector mDimensions;
     unsigned int mSize;
     float* mData;
     float mMaximumDataDifference;

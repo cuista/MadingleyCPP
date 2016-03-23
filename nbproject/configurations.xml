@@ -6,6 +6,8 @@
                    projectFiles="true">
       <logicalFolder name="f3" displayName="Input" projectFiles="true">
         <itemPath>src/Input/Constants.h</itemPath>
+        <itemPath>src/Input/DataCoords.h</itemPath>
+        <itemPath>src/Input/DataIndices.h</itemPath>
         <itemPath>src/Input/DataLayer.h</itemPath>
         <itemPath>src/Input/DataLayer2D.h</itemPath>
         <itemPath>src/Input/DataLayer2DwithTime.h</itemPath>
@@ -14,8 +16,6 @@
         <itemPath>src/Input/DataLayerProcessor.h</itemPath>
         <itemPath>src/Input/DataLayerSet.h</itemPath>
         <itemPath>src/Input/FileReader.h</itemPath>
-        <itemPath>src/Input/GeoCoord.h</itemPath>
-        <itemPath>src/Input/Indices.h</itemPath>
         <itemPath>src/Input/InputData.h</itemPath>
         <itemPath>src/Input/InputDatum.h</itemPath>
         <itemPath>src/Input/Parameters.h</itemPath>
@@ -90,6 +90,8 @@
                    displayName="Source Files"
                    projectFiles="true">
       <logicalFolder name="f3" displayName="Input" projectFiles="true">
+        <itemPath>src/Input/DataCoords.cpp</itemPath>
+        <itemPath>src/Input/DataIndices.cpp</itemPath>
         <itemPath>src/Input/DataLayer.cpp</itemPath>
         <itemPath>src/Input/DataLayer2D.cpp</itemPath>
         <itemPath>src/Input/DataLayer2DwithTime.cpp</itemPath>
@@ -98,8 +100,6 @@
         <itemPath>src/Input/DataLayerProcessor.cpp</itemPath>
         <itemPath>src/Input/DataLayerSet.cpp</itemPath>
         <itemPath>src/Input/FileReader.cpp</itemPath>
-        <itemPath>src/Input/GeoCoord.cpp</itemPath>
-        <itemPath>src/Input/Indices.cpp</itemPath>
         <itemPath>src/Input/InputData.cpp</itemPath>
         <itemPath>src/Input/InputDatum.cpp</itemPath>
         <itemPath>src/Input/Parameters.cpp</itemPath>
@@ -175,6 +175,14 @@
       </compileType>
       <item path="src/Input/Constants.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Input/DataCoords.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Input/DataCoords.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/DataIndices.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Input/DataIndices.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Input/DataLayer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Input/DataLayer.h" ex="false" tool="3" flavor2="0">
@@ -206,14 +214,6 @@
       <item path="src/Input/FileReader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Input/FileReader.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Input/GeoCoord.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Input/GeoCoord.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Input/Indices.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Input/Indices.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Input/InputData.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -413,6 +413,14 @@
       </compileType>
       <item path="src/Input/Constants.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Input/DataCoords.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Input/DataCoords.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Input/DataIndices.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Input/DataIndices.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Input/DataLayer.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Input/DataLayer.h" ex="false" tool="3" flavor2="0">
@@ -444,14 +452,6 @@
       <item path="src/Input/FileReader.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Input/FileReader.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Input/GeoCoord.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Input/GeoCoord.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Input/Indices.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Input/Indices.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Input/InputData.cpp" ex="false" tool="1" flavor2="0">
       </item>

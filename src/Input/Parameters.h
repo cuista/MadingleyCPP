@@ -43,6 +43,11 @@ public:
     float* GetTimeStepArray( ) const;
     float* GetUserLongitudeArray( ) const;
     float* GetUserLatitudeArray( ) const;
+    
+    Types::GeoCoords GetCoordsFromDomainIndices( const Types::GeoIndices ) const;
+    Types::GeoCoords GetCoordsFromDomainIndices( const unsigned short&, const unsigned short& ) const;
+    Types::GeoIndices GetDomainIndicesFromCoords( const Types::GeoCoords ) const;
+    Types::GeoIndices GetDomainIndicesFromCoords( const float&, const float& ) const;
 
 private:
     Parameters( );
@@ -74,6 +79,8 @@ private:
     float* mTimeStepArray;
     float* mUserLongitudeArray;
     float* mUserLatitudeArray;
+    
+    Types::GeoCoordsMatrix mDomainCoordsMatrix;
 };
 
 #endif

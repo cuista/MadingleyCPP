@@ -8,7 +8,7 @@ public:
     InputData( );
     ~InputData( );
 
-    void AddVariableToDatum( const std::string&, const std::string&, const Types::UnsignedIntegerVector&, const unsigned int&, float*, const bool );
+    void AddVariableToDatum( const std::string&, const std::string&, const Types::UnsignedIntVector&, const unsigned int&, float*, const bool );
     Types::InputDatumPointer GetInputDatum( const std::string&, const bool isInternalSearch = false );
     Types::InputDatumPointer GetInputDatum( const unsigned int );
     

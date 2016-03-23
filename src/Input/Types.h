@@ -16,9 +16,9 @@ class DataRecorder;
 class DateTime;
 class FileReader;
 class FileWriter;
-class GeoCoord;
+class DataCoords;
 class GridDatum;
-class Indices;
+class DataIndices;
 class InputData;
 class InputDatum;
 class Logger;
@@ -30,6 +30,8 @@ class Variable;
 namespace Types {
     typedef BasicDatum* BasicDatumPointer;
     typedef Convertor* ConvertorPointer;
+    typedef DataCoords* DataCoordsPointer;
+    typedef DataIndices* DataIndicesPointer;
     typedef DataLayer* DataLayerPointer;
     typedef DataLayerProcessor* DataLayerProcessorPointer;
     typedef DataLayerSet* DataLayerSetPointer;
@@ -37,9 +39,7 @@ namespace Types {
     typedef DateTime* DateTimePointer;
     typedef FileReader* FileReaderPointer;
     typedef FileWriter* FileWriterPointer;
-    typedef GeoCoord* GeoCoordPointer;
     typedef GridDatum* GridDatumPointer;
-    typedef Indices* IndicesPointer;
     typedef InputData* InputDataPointer;
     typedef InputDatum* InputDatumPointer;
     typedef Logger* LoggerPointer;
@@ -52,6 +52,9 @@ namespace Types {
     typedef std::map< std::string, DataLayerPointer > DataLayerMap;
     typedef std::map< std::string, GridDatumPointer > GridDatumMap;
     
+    typedef std::pair< float, float > GeoCoords;
+    typedef std::pair< unsigned short, unsigned short > GeoIndices;
+    
     typedef std::vector< InputDatumPointer > InputDatumVector;
     typedef std::vector< VariablePointer > VariableVector;
     
@@ -61,12 +64,16 @@ namespace Types {
     typedef std::vector< short > ShortVector;
     typedef std::vector< unsigned short > UnsignedShortVector;
     typedef std::vector< int > IntegerVector;
-    typedef std::vector< unsigned int > UnsignedIntegerVector;
+    typedef std::vector< unsigned int > UnsignedIntVector;
     typedef std::vector< float > FloatVector;
     typedef std::vector< double > DoubleVector;
-
     typedef std::vector< std::string > StringVector;
+    
+    typedef std::vector< UnsignedIntVector > UnsignedIntMatrix;
     typedef std::vector< StringVector > StringMatrix;
+    
+    typedef std::vector< GeoCoords > GeoCoordsVector;
+    typedef std::vector< GeoCoordsVector > GeoCoordsMatrix;
 }
 
 #endif

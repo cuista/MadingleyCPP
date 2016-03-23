@@ -74,7 +74,7 @@ void DataRecorder::AddDataTo( const std::string& name, const float& data ) {
     }
 }
 
-void DataRecorder::AddDataTo( const std::string& name, const Types::GeoCoordPointer coord, const float& data ) {
+void DataRecorder::AddDataTo( const std::string& name, const Types::DataCoordsPointer coord, const float& data ) {
 
     Types::GridDatumPointer gridDatum = GetGridDatum( name );
 
@@ -83,7 +83,7 @@ void DataRecorder::AddDataTo( const std::string& name, const Types::GeoCoordPoin
     }
 }
 
-void DataRecorder::AddDataTo( const std::string& name, const Types::IndicesPointer indices, const float& data ) {
+void DataRecorder::AddDataTo( const std::string& name, const Types::DataIndicesPointer indices, const float& data ) {
 
     Types::GridDatumPointer gridDatum = GetGridDatum( name );
 

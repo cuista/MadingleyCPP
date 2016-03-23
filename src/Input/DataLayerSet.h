@@ -13,8 +13,8 @@ public:
     void SetDataLayers( const Types::InputDataPointer );
     
     Types::VariablePointer GetDefaultVariableFor( const std::string& );
-    float GetDataAtGeoCoordFor( const std::string, const Types::GeoCoordPointer );
-    float GetDataAtIndicesFor( const std::string, const Types::IndicesPointer );
+    float GetDataAtGeoCoordFor( const std::string, const Types::DataCoordsPointer );
+    float GetDataAtIndicesFor( const std::string, const Types::DataIndicesPointer );
     
 private:
     DataLayerSet( );

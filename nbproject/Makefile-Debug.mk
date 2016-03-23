@@ -35,6 +35,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/src/Input/DataCoords.o \
+	${OBJECTDIR}/src/Input/DataIndices.o \
 	${OBJECTDIR}/src/Input/DataLayer.o \
 	${OBJECTDIR}/src/Input/DataLayer2D.o \
 	${OBJECTDIR}/src/Input/DataLayer2DwithTime.o \
@@ -43,8 +45,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Input/DataLayerProcessor.o \
 	${OBJECTDIR}/src/Input/DataLayerSet.o \
 	${OBJECTDIR}/src/Input/FileReader.o \
-	${OBJECTDIR}/src/Input/GeoCoord.o \
-	${OBJECTDIR}/src/Input/Indices.o \
 	${OBJECTDIR}/src/Input/InputData.o \
 	${OBJECTDIR}/src/Input/InputDatum.o \
 	${OBJECTDIR}/src/Input/Parameters.o \
@@ -97,6 +97,16 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/madingleycpp: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/madingleycpp ${OBJECTFILES} ${LDLIBSOPTIONS} -ldl
 
+${OBJECTDIR}/src/Input/DataCoords.o: src/Input/DataCoords.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Input
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdfcxx-4.2.1/include -I/home/philju/Libraries/netcdfc-4.3.3.1/include -I/home/philju/Libraries/hdf5-1.8.15/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/DataCoords.o src/Input/DataCoords.cpp
+
+${OBJECTDIR}/src/Input/DataIndices.o: src/Input/DataIndices.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Input
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdfcxx-4.2.1/include -I/home/philju/Libraries/netcdfc-4.3.3.1/include -I/home/philju/Libraries/hdf5-1.8.15/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/DataIndices.o src/Input/DataIndices.cpp
+
 ${OBJECTDIR}/src/Input/DataLayer.o: src/Input/DataLayer.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Input
 	${RM} "$@.d"
@@ -136,16 +146,6 @@ ${OBJECTDIR}/src/Input/FileReader.o: src/Input/FileReader.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Input
 	${RM} "$@.d"
 	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdfcxx-4.2.1/include -I/home/philju/Libraries/netcdfc-4.3.3.1/include -I/home/philju/Libraries/hdf5-1.8.15/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/FileReader.o src/Input/FileReader.cpp
-
-${OBJECTDIR}/src/Input/GeoCoord.o: src/Input/GeoCoord.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdfcxx-4.2.1/include -I/home/philju/Libraries/netcdfc-4.3.3.1/include -I/home/philju/Libraries/hdf5-1.8.15/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/GeoCoord.o src/Input/GeoCoord.cpp
-
-${OBJECTDIR}/src/Input/Indices.o: src/Input/Indices.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdfcxx-4.2.1/include -I/home/philju/Libraries/netcdfc-4.3.3.1/include -I/home/philju/Libraries/hdf5-1.8.15/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/Indices.o src/Input/Indices.cpp
 
 ${OBJECTDIR}/src/Input/InputData.o: src/Input/InputData.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Input

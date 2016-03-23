@@ -64,7 +64,7 @@ Types::DataLayerPointer DataLayerSet::GetDataLayerWithName( const std::string& n
     return dataLayer;
 }
 
-float DataLayerSet::GetDataAtGeoCoordFor( const std::string name, const Types::GeoCoordPointer coord ) {
+float DataLayerSet::GetDataAtGeoCoordFor( const std::string name, const Types::DataCoordsPointer coord ) {
 
     float value = Constants::cMissingValue;
 
@@ -77,7 +77,7 @@ float DataLayerSet::GetDataAtGeoCoordFor( const std::string name, const Types::G
     return value;
 }
 
-float DataLayerSet::GetDataAtIndicesFor( const std::string name, Types::IndicesPointer indices ) {
+float DataLayerSet::GetDataAtIndicesFor( const std::string name, Types::DataIndicesPointer indices ) {
 
     float value = Constants::cMissingValue;
 

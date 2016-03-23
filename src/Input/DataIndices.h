@@ -1,11 +1,11 @@
-#ifndef INDICES
-#define	INDICES
+#ifndef DATAINDICES
+#define	DATAINDICES
 
-class Indices {
+class DataIndices {
 public:
-    Indices( const unsigned int&, const unsigned int&, const unsigned int& );
-    Indices( const unsigned int&, const unsigned int& );
-    ~Indices( );
+    DataIndices( const unsigned int&, const unsigned int&, const unsigned int& );
+    DataIndices( const unsigned int&, const unsigned int& );
+    ~DataIndices( );
 
     unsigned int GetX( ) const;
     unsigned int GetY( ) const;

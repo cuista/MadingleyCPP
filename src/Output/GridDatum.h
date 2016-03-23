@@ -12,8 +12,8 @@ public:
     std::string GetUnits( ) const;
     float* GetData( ) const;
     
-    void AddData( const Types::GeoCoordPointer, const float& );
-    void AddData( const Types::IndicesPointer, const float& );
+    void AddData( const Types::DataCoordsPointer, const float& );
+    void AddData( const Types::DataIndicesPointer, const float& );
     
 private:
     std::string mName;

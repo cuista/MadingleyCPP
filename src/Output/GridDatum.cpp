@@ -3,8 +3,8 @@
 #include "Processor.h"
 #include "Maths.h"
 #include "Parameters.h"
-#include "GeoCoord.h"
-#include "Indices.h"
+#include "DataCoords.h"
+#include "DataIndices.h"
 #include "Logger.h"
 #include "DateTime.h"
 
@@ -30,7 +30,7 @@ float* GridDatum::GetData( ) const {
     return mData;
 }
 
-void GridDatum::AddData( const Types::GeoCoordPointer coord, const float& data ) {
+void GridDatum::AddData( const Types::DataCoordsPointer coord, const float& data ) {
 
     int xIndex = Processor::Get( )->CalculateArrayIndexOfValue( Parameters::Get( )->GetUserLongitudeArray( ), Parameters::Get( )->GetLengthUserLongitudeArray( ), coord->GetLongitude( ) );
     int yIndex = Processor::Get( )->CalculateArrayIndexOfValue( Parameters::Get( )->GetUserLatitudeArray( ), Parameters::Get( )->GetLengthUserLatitudeArray( ), coord->GetLatitude( ) );
@@ -43,7 +43,7 @@ void GridDatum::AddData( const Types::GeoCoordPointer coord, const float& data )
     mData[ index ] = data;
 }
 
-void GridDatum::AddData( const Types::IndicesPointer indies, const float& data ) {
+void GridDatum::AddData( const Types::DataIndicesPointer indies, const float& data ) {
 
     unsigned int tIndex = DateTime::Get( )->GetTimeStep( );
     unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
