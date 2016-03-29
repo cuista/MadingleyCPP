@@ -24,7 +24,7 @@ DateTime::DateTime( ) {
 
 void DateTime::StartTiming( ) {
     SetTimeNow( &mTimeStart );
-    mStartTimeAndDate = static_cast < unsigned int >( mTimeStart.tv_sec );
+    mStartTimeAndDate = static_cast < unsigned >( mTimeStart.tv_sec );
     
     mTimeSplit = mTimeStart;
 }
@@ -35,7 +35,7 @@ void DateTime::SplitTiming( ) {
 
 void DateTime::EndTiming( ) {
     SetTimeNow( &mTimeEnd );
-    mEndTimeAndDate = static_cast < unsigned int >( mTimeEnd.tv_sec );
+    mEndTimeAndDate = static_cast < unsigned >( mTimeEnd.tv_sec );
     mTotalTimeInSeconds = mEndTimeAndDate - mStartTimeAndDate;
     
     CalculateTotalTimeInMilliseconds( );
@@ -43,8 +43,8 @@ void DateTime::EndTiming( ) {
 
 void DateTime::CalculateTotalTimeInMilliseconds( ) {
 
-    unsigned int timeStart = static_cast < unsigned int >( mTimeStart.tv_usec );
-    unsigned int timeEnd = static_cast < unsigned int >( mTimeEnd.tv_usec );
+    unsigned timeStart = static_cast < unsigned >( mTimeStart.tv_usec );
+    unsigned timeEnd = static_cast < unsigned >( mTimeEnd.tv_usec );
 
     mTotalTimeInMilliseconds = ( timeEnd - timeStart ) / 1000;
 }
@@ -53,8 +53,8 @@ std::string DateTime::ProduceCumulativeTimeString( ) {
     
     SplitTiming( );
 
-    unsigned int timeDurationSeconds = GetCumulativeTimeInSeconds( );
-    unsigned int timeDurationMicroseconds = GetCumulativeTimeInMicroseconds( );
+    unsigned timeDurationSeconds = GetCumulativeTimeInSeconds( );
+    unsigned timeDurationMicroseconds = GetCumulativeTimeInMicroseconds( );
 
     std::stringstream splitTimeStream;
 
@@ -69,10 +69,10 @@ std::string DateTime::ProduceSplitTimeString( ) {
 
     SplitTiming( );
 
-    unsigned int timeSplitMicroseconds = static_cast < unsigned int >( mTimeSplit.tv_usec );
-    unsigned int timeNowMicroseconds = static_cast < unsigned int >( mTimeNow.tv_usec );
+    unsigned timeSplitMicroseconds = static_cast < unsigned >( mTimeSplit.tv_usec );
+    unsigned timeNowMicroseconds = static_cast < unsigned >( mTimeNow.tv_usec );
 
-    unsigned int timeDurationMicroseconds = timeNowMicroseconds - timeSplitMicroseconds;
+    unsigned timeDurationMicroseconds = timeNowMicroseconds - timeSplitMicroseconds;
 
     std::stringstream splitTimeStream;
 
@@ -116,44 +116,44 @@ void DateTime::SetTimeNow( timeval* time ) const {
     gettimeofday( time, NULL );
 }
 
-unsigned int DateTime::GetCumulativeTimeInSeconds( ) {
+unsigned DateTime::GetCumulativeTimeInSeconds( ) {
 
-    unsigned int timeStart = static_cast < unsigned int >( mTimeStart.tv_sec );
-    unsigned int cumulativeTime = static_cast < unsigned int >( mTimeNow.tv_sec );
+    unsigned timeStart = static_cast < unsigned >( mTimeStart.tv_sec );
+    unsigned cumulativeTime = static_cast < unsigned >( mTimeNow.tv_sec );
 
-    unsigned int cumulativeTimeInSeconds = cumulativeTime - timeStart;
+    unsigned cumulativeTimeInSeconds = cumulativeTime - timeStart;
 
     return cumulativeTimeInSeconds;
 }
 
-unsigned int DateTime::GetCumulativeTimeInMicroseconds( ) {
+unsigned DateTime::GetCumulativeTimeInMicroseconds( ) {
 
-    unsigned int timeStart = static_cast < unsigned int >( mTimeStart.tv_usec );
-    unsigned int cumulativeTime = static_cast < unsigned int >( mTimeNow.tv_usec );
+    unsigned timeStart = static_cast < unsigned >( mTimeStart.tv_usec );
+    unsigned cumulativeTime = static_cast < unsigned >( mTimeNow.tv_usec );
 
-    unsigned int cumulativeTimeInMicroseconds = cumulativeTime - timeStart;
+    unsigned cumulativeTimeInMicroseconds = cumulativeTime - timeStart;
 
     return cumulativeTimeInMicroseconds;
 }
 
-unsigned int DateTime::GetTotalTimeInSeconds( ) const {
+unsigned DateTime::GetTotalTimeInSeconds( ) const {
     return mTotalTimeInSeconds;
 }
 
-unsigned int DateTime::GetTotalTimeInMilliseconds( ) const {
+unsigned DateTime::GetTotalTimeInMilliseconds( ) const {
     return mTotalTimeInMilliseconds;
 }
 
-unsigned int DateTime::GetRandomNumberSeed( ) const {
-    unsigned int seed = static_cast < unsigned int >( mTimeStart.tv_usec );
+unsigned DateTime::GetRandomNumberSeed( ) const {
+    unsigned seed = static_cast < unsigned >( mTimeStart.tv_usec );
 
     return seed;
 }
 
-unsigned int DateTime::GetTimeStep( ) const {
+unsigned DateTime::GetTimeStep( ) const {
     return mTimeStep;
 }
 
-void DateTime::SetTimeStep( const unsigned int& timeIndex ) {
+void DateTime::SetTimeStep( const unsigned& timeIndex ) {
     mTimeStep = timeIndex;
 }

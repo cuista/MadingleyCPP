@@ -129,7 +129,7 @@ public:
         // Read the intialisation files and store values
         ReadInitialisationFiles( );
 
-        Grid.SetUpGrid( BottomLatitude, LeftmostLongitude, TopLatitude, RightmostLongitude, CellSize, CellSize );
+        Grid.SetUpGrid( BottomLatitude, LeftmostLongitude, TopLatitude, RightmostLongitude, CellSize );
 
         //MB THis is currently just used to get units -needs replacing
         //ReadEnvironmentalLayers( InitialisationFileStrings["Environmental"], outputPath, Grid );

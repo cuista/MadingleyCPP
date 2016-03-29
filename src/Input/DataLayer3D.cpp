@@ -43,19 +43,19 @@ float DataLayer3D::GetDataAtGeoCoordForVariable( const Types::DataCoordsPointer 
     int xIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLongitudeVariable, coord->GetLongitude( ) );
     int yIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLatitudeVariable, coord->GetLatitude( ) );
     int zIndex = Processor::Get( )->FindVariableIndexOfValue( mDepthVariable, coord->GetDepth( ) );
-    unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
-    unsigned int yMax = Parameters::Get( )->GetLengthLatitudeArray( );
+    unsigned xMax = Parameters::Get( )->GetLengthDataLongitudeArray( );
+    unsigned yMax = Parameters::Get( )->GetLengthDataLatitudeArray( );
 
     return variable->GetDataAtIndex( Processor::Get( )->Indices3DToIndex( xIndex, yIndex, zIndex, xMax, yMax ) );
 }
 
 float DataLayer3D::GetDataAtIndicesForVariable( const Types::DataIndicesPointer indices, const Types::VariablePointer variable ) const {
 
-    unsigned int xIndex = indices->GetX( );
-    unsigned int yIndex = indices->GetY( );
-    unsigned int zIndex = indices->GetZ( );
-    unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
-    unsigned int yMax = Parameters::Get( )->GetLengthLatitudeArray( );
+    unsigned xIndex = indices->GetDataX( );
+    unsigned yIndex = indices->GetDataY( );
+    unsigned zIndex = indices->GetZ( );
+    unsigned xMax = Parameters::Get( )->GetLengthDataLongitudeArray( );
+    unsigned yMax = Parameters::Get( )->GetLengthDataLatitudeArray( );
 
     return variable->GetDataAtIndex( Processor::Get( )->Indices3DToIndex( xIndex, yIndex, zIndex, xMax, yMax ) );
 }

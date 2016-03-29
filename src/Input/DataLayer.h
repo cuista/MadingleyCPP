@@ -9,7 +9,7 @@ class DataLayer {
 public:
 
     virtual ~DataLayer( ) {
-        for( unsigned int variableIndex = 0; variableIndex < mVariableVector.size( ); ++variableIndex ) {
+        for( unsigned variableIndex = 0; variableIndex < mVariableVector.size( ); ++variableIndex ) {
             delete mVariableVector[ variableIndex ];
         }
         delete mLongitudeVariable;

@@ -26,14 +26,14 @@ public:
     double Pow( const double&, const double& ) const;
     double NthRoot( const double&, const double& ) const;
 
-    unsigned int Mod( const unsigned int&, const unsigned int& ) const;
+    unsigned Mod( const unsigned&, const unsigned& ) const;
 
     template< class T >
     int Sum( const std::vector< T >& values ) const {
 
         int sum = 0;
 
-        for( unsigned int index = 0; index < values.size( ); ++index ) {
+        for( unsigned index = 0; index < values.size( ); ++index ) {
             sum += values[ index ];
         }
 
@@ -45,7 +45,7 @@ public:
 
         int product;
 
-        for( unsigned int index = 0; index < values.size( ); ++index ) {
+        for( unsigned index = 0; index < values.size( ); ++index ) {
             if( index == 0 ) {
                 product = values[ index ];
             } else {

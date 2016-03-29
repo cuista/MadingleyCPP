@@ -38,7 +38,7 @@ DataRecorder::DataRecorder( ) {
 bool DataRecorder::Initialise( const Types::StringMatrix& rawOutputParameterData ) {
 
     if( rawOutputParameterData.size( ) > 0 ) {
-        for( unsigned int rowIndex = 0; rowIndex < rawOutputParameterData.size( ); ++rowIndex ) {
+        for( unsigned rowIndex = 0; rowIndex < rawOutputParameterData.size( ); ++rowIndex ) {
             std::string name = rawOutputParameterData[ rowIndex ][ Constants::eOutputDatumName ];
             std::string units = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eUnits ] );
             std::string type = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eType ] );
@@ -117,7 +117,7 @@ Types::BasicDatumPointer DataRecorder::GetBasicDatum( const std::string& name ) 
     if( iter != mBasicDatumMap.end( ) ) {
         basicDatum = iter->second;
     } else {
-        for( unsigned int datumIndex = 0; datumIndex < mBasicOutputMetadata.size( ); ++datumIndex ) {
+        for( unsigned datumIndex = 0; datumIndex < mBasicOutputMetadata.size( ); ++datumIndex ) {
 
             std::string basicDatumName = mBasicOutputMetadata[ datumIndex ][ Constants::eOutputDatumName ];
 
@@ -149,7 +149,7 @@ Types::GridDatumPointer DataRecorder::GetGridDatum( const std::string& name ) {
     if( iter != mGridDatumMap.end( ) ) {
         gridDatum = iter->second;
     } else {
-        for( unsigned int datumIndex = 0; datumIndex < mGridOutputMetadata.size( ); ++datumIndex ) {
+        for( unsigned datumIndex = 0; datumIndex < mGridOutputMetadata.size( ); ++datumIndex ) {
 
             std::string gridDatumName = mGridOutputMetadata[ datumIndex ][ Constants::eOutputDatumName ];
 

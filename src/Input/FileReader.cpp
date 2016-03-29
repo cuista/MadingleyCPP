@@ -46,7 +46,7 @@ Types::StringMatrix FileReader::ReadAndReturnTextFile( const std::string& filePa
 
     if( fileStream.is_open( ) ) {
         std::string readLine;
-        unsigned int lineCount = 0;
+        unsigned lineCount = 0;
 
         while( std::getline( fileStream, readLine ) ) {
             if( lineCount > 0 && readLine[ 0 ] != Constants::cTextFileCommentCharacter ) {
@@ -67,7 +67,7 @@ bool FileReader::ReadInputDataFiles( const Types::StringMatrix& inputFileMetadat
     if( inputFileMetadata.size( ) > 0 ) {
         Types::InputDataPointer initialInputData = new InputData( );
 
-        for( unsigned int environmentalDataFileIndex = 0; environmentalDataFileIndex < inputFileMetadata.size( ); ++environmentalDataFileIndex ) {
+        for( unsigned environmentalDataFileIndex = 0; environmentalDataFileIndex < inputFileMetadata.size( ); ++environmentalDataFileIndex ) {
 
             std::string filePath = inputFileMetadata[ environmentalDataFileIndex ][ Constants::eFilePath ];
             Logger::Get( )->LogMessage( "Reading NetCDF file \"" + filePath + "\"..." );
@@ -84,10 +84,10 @@ bool FileReader::ReadInputDataFiles( const Types::StringMatrix& inputFileMetadat
                     std::vector< netCDF::NcDim > varDims = variableNcVar.getDims( );
 
                     Types::UnsignedIntVector variableDimensions;
-                    unsigned int variableSize = 0;
+                    unsigned variableSize = 0;
 
                     // Inner variable dimension loop
-                    for( unsigned int dimIndex = 0; dimIndex < varDims.size( ); ++dimIndex ) {
+                    for( unsigned dimIndex = 0; dimIndex < varDims.size( ); ++dimIndex ) {
                         variableDimensions.push_back( varDims[ dimIndex ].getSize( ) );
 
                         if( dimIndex == 0 ) {

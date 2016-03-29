@@ -12,7 +12,7 @@ public:
         
 private:
     Types::DataLayerPointer MakeDataLayer( const Types::InputDatumPointer ) const;
-    unsigned int GetVariableType( const Types::VariablePointer ) const;
+    unsigned GetVariableType( const Types::VariablePointer ) const;
     float FindLargestVectorValueDifference( const Types::VariablePointer ) const;
     bool DoesTheGeographicVariableNeedAdjustment( const Types::VariablePointer ) const;
 };

@@ -64,7 +64,7 @@ namespace Types {
     typedef std::vector< short > ShortVector;
     typedef std::vector< unsigned short > UnsignedShortVector;
     typedef std::vector< int > IntegerVector;
-    typedef std::vector< unsigned int > UnsignedIntVector;
+    typedef std::vector< unsigned > UnsignedIntVector;
     typedef std::vector< float > FloatVector;
     typedef std::vector< double > DoubleVector;
     typedef std::vector< std::string > StringVector;

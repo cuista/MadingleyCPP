@@ -25,21 +25,21 @@ Processor::Processor( ) {
 
 }
 
-int Processor::Indices2DToIndex( const int& x, const int& y, const unsigned int& xMax ) const {
+int Processor::Indices2DToIndex( const int& x, const int& y, const unsigned& xMax ) const {
     if( x != Constants::cMissingValue && y != Constants::cMissingValue )
         return ( y * xMax ) + x;
     else
         return Constants::cMissingValue;
 }
 
-int Processor::Indices3DToIndex( const int& x, const int& y, const int& t, const unsigned int& xMax, const unsigned int& yMax ) const {
+int Processor::Indices3DToIndex( const int& x, const int& y, const int& t, const unsigned& xMax, const unsigned& yMax ) const {
     if( x != Constants::cMissingValue && y != Constants::cMissingValue && t != Constants::cMissingValue )
         return ( t * xMax * yMax ) + ( y * xMax ) + x;
     else
         return Constants::cMissingValue;
 }
 
-int Processor::Indices4DToIndex( const int& x, const int& y, const int& z, const int& t, const unsigned int& xMax, const unsigned int& yMax, const unsigned int& zMax ) const {
+int Processor::Indices4DToIndex( const int& x, const int& y, const int& z, const int& t, const unsigned& xMax, const unsigned& yMax, const unsigned& zMax ) const {
     if( x != Constants::cMissingValue && y != Constants::cMissingValue && z != Constants::cMissingValue && t != Constants::cMissingValue )
         return ( t * xMax * yMax * zMax ) + ( z * xMax * yMax ) + ( y * xMax ) + x;
     else
@@ -54,7 +54,7 @@ int Processor::FindVariableIndexOfValue( const Types::VariablePointer variable, 
     bool increasingVariable = variable->GetDataAtIndex( 0 ) < variable->GetDataAtIndex( variable->GetSize( ) - 1 );
     bool indexHasBeenSet = false;
 
-    for( unsigned int variableIndex = 0; variableIndex < variable->GetSize( ); ++variableIndex ) {
+    for( unsigned variableIndex = 0; variableIndex < variable->GetSize( ); ++variableIndex ) {
         double vectorValue = variable->GetDataAtIndex( variableIndex );
         double absoluteDifference = Maths::Get( )->Abs( value - vectorValue );
 
@@ -86,7 +86,7 @@ int Processor::FindVariableIndexOfValue( const Types::VariablePointer variable, 
 
 int Processor::CalculateVariableIndexOfValue( const Types::VariablePointer variable, const double& value ) const {
 
-    unsigned int variableSize = variable->GetSize( );
+    unsigned variableSize = variable->GetSize( );
 
     int calculatedIndex = Maths::Get( )->Round( ( variableSize - 1 ) * ( ( value - variable->GetDataAtIndex( 0 ) ) / ( variable->GetDataAtIndex( variableSize - 1 ) - variable->GetDataAtIndex( 0 ) ) ) );
 
@@ -99,7 +99,7 @@ int Processor::CalculateVariableIndexOfValue( const Types::VariablePointer varia
     return calculatedIndex;
 }
 
-int Processor::CalculateArrayIndexOfValue( const float* array, const unsigned int& arraySize, const double& value ) const {
+int Processor::CalculateArrayIndexOfValue( const float* array, const unsigned& arraySize, const double& value ) const {
 
     int calculatedIndex = Maths::Get( )->Round( ( arraySize - 1 ) * ( ( value - array[ 0 ] ) / ( array[ arraySize - 1 ] - array[ 0 ] ) ) );
 

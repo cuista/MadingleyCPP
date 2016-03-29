@@ -17,8 +17,8 @@ Types::ParametersPointer Parameters::Get( ) {
 
 Parameters::~Parameters( ) {
 
-    delete[ ] mLongitudeArray;
-    delete[ ] mLatitudeArray;
+    delete[ ] mDataLongitudeArray;
+    delete[ ] mDataLatitudeArray;
     delete[ ] mTimeStepArray;
 
     if( mThis != NULL ) {
@@ -31,42 +31,22 @@ Parameters::Parameters( ) {
 
 bool Parameters::Initialise( const Types::StringMatrix& rawInputParameterData ) {
     if( rawInputParameterData.size( ) > 0 ) {
-        for( unsigned int rowIndex = 0; rowIndex < rawInputParameterData.size( ); ++rowIndex ) {
+        for( unsigned rowIndex = 0; rowIndex < rawInputParameterData.size( ); ++rowIndex ) {
 
-            float parameterValue = Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eValue ] );
+            std::string parameterName = Convertor::Get( )->ToLowercase( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterName ] ) );
 
-            switch( rowIndex ) {
-                case Constants::eLengthOfSimulationInYears:
-                {
-                    mLengthOfSimulationInYears = parameterValue;
-                    break;
-                }
-                case Constants::eMinimumLongitude:
-                {
-                    mUserMinimumLongitude = parameterValue;
-                    break;
-                }
-                case Constants::eMaximumLongitude:
-                {
-                    mUserMaximumLongitude = parameterValue;
-                    break;
-                }
-                case Constants::eMinimumLatitude:
-                {
-                    mUserMinimumLatitude = parameterValue;
-                    break;
-                }
-                case Constants::eMaximumLatitude:
-                {
-                    mUserMaximumLatitude = parameterValue;
-                    break;
-                }
-                case Constants::eGridCellSize:
-                {
-                    mGridCellSize = parameterValue;
-                    break;
-                }
-            }
+            if( parameterName == "timestepunits" ) SetTimeStepUnits( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "lengthofsimulationinyears" ) SetLengthOfSimulationInYears( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            if( parameterName == "minimumlongitude" ) SetUserMinimumLongitude( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            if( parameterName == "maximumlongitude" ) SetUserMaximumLongitude( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            if( parameterName == "minimumlatitude" ) SetUserMinimumLatitude( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            if( parameterName == "maximumlatitude" ) SetUserMaximumLatitude( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            if( parameterName == "gridcellsize" ) SetGridCellSize( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            if( parameterName == "extinctionthreshold" ) SetExtinctionThreshold( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            if( parameterName == "maximumnumberofcohorts" ) SetMaximumNumberOfCohorts( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            if( parameterName == "planktonsizethreshold" ) SetPlanktonSizeThreshold( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            if( parameterName == "drawrandomly" ) SetDrawRandomly( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "humannppextraction" ) SetHumanNPPExtraction( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
         }
 
         CalculateParameters( );
@@ -83,63 +63,58 @@ void Parameters::CalculateParameters( ) {
     mLengthOfSimulationInTimeSteps = mLengthOfSimulationInYears * 12;
     mTimeStepArray = new float[ mLengthOfSimulationInTimeSteps ];
 
-    for( unsigned int timeStep = 0; timeStep < mLengthOfSimulationInTimeSteps; ++timeStep ) {
+    for( unsigned timeStep = 0; timeStep < mLengthOfSimulationInTimeSteps; ++timeStep ) {
         mTimeStepArray[ timeStep ] = timeStep;
     }
 
     // Calculate spatial parameters
-    mLengthLongitudeArray = 360 / mGridCellSize;
-    mLongitudeArray = new float[ mLengthLongitudeArray ];
-    for( unsigned int longitudeIndex = 0; longitudeIndex < mLengthLongitudeArray; ++longitudeIndex ) {
-        mLongitudeArray[ longitudeIndex ] = ( -180 + ( mGridCellSize / 2 ) ) + ( longitudeIndex * mGridCellSize );
+    mLengthDataLongitudeArray = 360 / mGridCellSize;
+    mDataLongitudeArray = new float[ mLengthDataLongitudeArray ];
+    for( unsigned longitudeIndex = 0; longitudeIndex < mLengthDataLongitudeArray; ++longitudeIndex ) {
+        mDataLongitudeArray[ longitudeIndex ] = ( -180 + ( mGridCellSize / 2 ) ) + ( longitudeIndex * mGridCellSize );
     }
 
-    mLengthLatitudeArray = 180 / mGridCellSize;
-    mLatitudeArray = new float[ mLengthLatitudeArray ];
-    for( unsigned int latitudeIndex = 0; latitudeIndex < mLengthLatitudeArray; ++latitudeIndex ) {
-        mLatitudeArray[ latitudeIndex ] = ( -90 + ( mGridCellSize / 2 ) ) + ( latitudeIndex * mGridCellSize );
+    mLengthDataLatitudeArray = 180 / mGridCellSize;
+    mDataLatitudeArray = new float[ mLengthDataLatitudeArray ];
+    for( unsigned latitudeIndex = 0; latitudeIndex < mLengthDataLatitudeArray; ++latitudeIndex ) {
+        mDataLatitudeArray[ latitudeIndex ] = ( -90 + ( mGridCellSize / 2 ) ) + ( latitudeIndex * mGridCellSize );
     }
 
-    mIndexOfUserMinimumLongitude = Processor::Get( )->CalculateArrayIndexOfValue( mLongitudeArray, mLengthLongitudeArray, mUserMinimumLongitude );
-    mIndexOfUserMaximumLongitude = Processor::Get( )->CalculateArrayIndexOfValue( mLongitudeArray, mLengthLongitudeArray, mUserMaximumLongitude );
-    mLengthUserLongitudeArray = ( mIndexOfUserMaximumLongitude - mIndexOfUserMinimumLongitude ) + 1;
+    mDataIndexOfUserMinimumLongitude = Processor::Get( )->CalculateArrayIndexOfValue( mDataLongitudeArray, mLengthDataLongitudeArray, mUserMinimumLongitude );
+    mDataIndexOfUserMaximumLongitude = Processor::Get( )->CalculateArrayIndexOfValue( mDataLongitudeArray, mLengthDataLongitudeArray, mUserMaximumLongitude );
+    mLengthUserLongitudeArray = ( mDataIndexOfUserMaximumLongitude - mDataIndexOfUserMinimumLongitude ) + 1;
 
     mUserLongitudeArray = new float[ mLengthUserLongitudeArray ];
-    for( unsigned int userLongitudeIndex = 0; userLongitudeIndex < mLengthUserLongitudeArray; ++userLongitudeIndex ) {
-        mUserLongitudeArray[ userLongitudeIndex ] = mLongitudeArray[ userLongitudeIndex + mIndexOfUserMinimumLongitude ];
+    for( unsigned userLongitudeIndex = 0; userLongitudeIndex < mLengthUserLongitudeArray; ++userLongitudeIndex ) {
+        mUserLongitudeArray[ userLongitudeIndex ] = mDataLongitudeArray[ userLongitudeIndex + mDataIndexOfUserMinimumLongitude ];
     }
 
-    mIndexOfUserMinimumLatitude = Processor::Get( )->CalculateArrayIndexOfValue( mLatitudeArray, mLengthLatitudeArray, mUserMinimumLatitude );
-    mIndexOfUserMaximumLatitude = Processor::Get( )->CalculateArrayIndexOfValue( mLatitudeArray, mLengthLatitudeArray, mUserMaximumLatitude );
-    mLengthUserLatitudeArray = ( mIndexOfUserMaximumLatitude - mIndexOfUserMinimumLatitude ) + 1;
+    mDataIndexOfUserMinimumLatitude = Processor::Get( )->CalculateArrayIndexOfValue( mDataLatitudeArray, mLengthDataLatitudeArray, mUserMinimumLatitude );
+    mDataIndexOfUserMaximumLatitude = Processor::Get( )->CalculateArrayIndexOfValue( mDataLatitudeArray, mLengthDataLatitudeArray, mUserMaximumLatitude );
+    mLengthUserLatitudeArray = ( mDataIndexOfUserMaximumLatitude - mDataIndexOfUserMinimumLatitude ) + 1;
 
     mUserLatitudeArray = new float[ mLengthUserLatitudeArray ];
-    for( unsigned int userLatitudeIndex = 0; userLatitudeIndex < mLengthUserLatitudeArray; ++userLatitudeIndex ) {
-        mUserLatitudeArray[ userLatitudeIndex ] = mLatitudeArray[ userLatitudeIndex + mIndexOfUserMinimumLatitude ];
+    for( unsigned userLatitudeIndex = 0; userLatitudeIndex < mLengthUserLatitudeArray; ++userLatitudeIndex ) {
+        mUserLatitudeArray[ userLatitudeIndex ] = mDataLatitudeArray[ userLatitudeIndex + mDataIndexOfUserMinimumLatitude ];
     }
 
     mSizeOfGridDatum = mLengthUserLongitudeArray * mLengthUserLatitudeArray * mLengthOfSimulationInTimeSteps;
 
     mDomainCoordsMatrix.resize( mLengthUserLongitudeArray );
-    unsigned int domainLongitudeIndex = 0;
-    for( unsigned int longitudeIndex = mIndexOfUserMinimumLongitude; longitudeIndex <= mIndexOfUserMaximumLongitude; ++longitudeIndex ) {
-        for( unsigned int latitudeIndex = mIndexOfUserMinimumLatitude; latitudeIndex <= mIndexOfUserMaximumLatitude; ++latitudeIndex ) {
-            mDomainCoordsMatrix[ domainLongitudeIndex ].push_back( std::make_pair( mLongitudeArray[ longitudeIndex ], mLatitudeArray[ latitudeIndex ] ) );
+    unsigned domainLongitudeIndex = 0;
+    for( unsigned longitudeIndex = mDataIndexOfUserMinimumLongitude; longitudeIndex <= mDataIndexOfUserMaximumLongitude; ++longitudeIndex ) {
+        for( unsigned latitudeIndex = mDataIndexOfUserMinimumLatitude; latitudeIndex <= mDataIndexOfUserMaximumLatitude; ++latitudeIndex ) {
+            mDomainCoordsMatrix[ domainLongitudeIndex ].push_back( std::make_pair( mDataLongitudeArray[ longitudeIndex ], mDataLatitudeArray[ latitudeIndex ] ) );
         }
         ++domainLongitudeIndex;
     }
-
-    //    for( unsigned int domainLongitudeIndex = 0; domainLongitudeIndex < mLengthUserLongitudeArray; ++domainLongitudeIndex ) {
-    //        for( unsigned int domainLatitudeIndex = 0; domainLatitudeIndex < mLengthUserLatitudeArray; ++domainLatitudeIndex ) {
-    //            Logger::Get( )->LogMessageNoReturn( "lon> " );
-    //            Logger::Get( )->LogMessageNoReturn( mDomainCoordMatrix[ domainLongitudeIndex ][ domainLatitudeIndex ].first );
-    //            Logger::Get( )->LogMessageNoReturn( ", lat> " );
-    //            Logger::Get( )->LogMessage( mDomainCoordMatrix[ domainLongitudeIndex ][ domainLatitudeIndex ].second );
-    //        }
-    //    }
 }
 
-unsigned int Parameters::GetLengthOfSimulationInYears( ) const {
+std::string Parameters::GetTimeStepUnits( ) const {
+    return mTimeStepUnits;
+}
+
+unsigned Parameters::GetLengthOfSimulationInYears( ) const {
     return mLengthOfSimulationInYears;
 }
 
@@ -159,11 +134,35 @@ int Parameters::GetUserMaximumLatitude( ) const {
     return mUserMaximumLatitude;
 }
 
-float Parameters::GetGridCellSize( ) const {
+unsigned Parameters::GetGridCellSize( ) const {
     return mGridCellSize;
 }
 
-void Parameters::SetLengthOfSimulationInYears( const unsigned int& lengthOfSimulationInYears ) {
+float Parameters::GetExtinctionThreshold( ) const {
+    return mExtinctionThreshold;
+}
+
+unsigned Parameters::GetMaximumNumberOfCohorts( ) const {
+    return mMaximumNumberOfCohorts;
+}
+
+float Parameters::GetPlanktonSizeThreshold( ) const {
+    return mPlanktonSizeThreshold;
+}
+
+bool Parameters::GetDrawRandomly( ) const {
+    return mDrawRandomly;
+}
+
+bool Parameters::GetHumanNPPExtraction( ) const {
+    return mHumanNPPExtraction;
+}
+
+void Parameters::SetTimeStepUnits( const std::string timeStepUnits ) {
+    mTimeStepUnits = timeStepUnits;
+}
+
+void Parameters::SetLengthOfSimulationInYears( const unsigned& lengthOfSimulationInYears ) {
     mLengthOfSimulationInYears = lengthOfSimulationInYears;
 }
 
@@ -183,64 +182,90 @@ void Parameters::SetUserMaximumLatitude( const int& userMaximumLatitude ) {
     mUserMaximumLatitude = userMaximumLatitude;
 }
 
-void Parameters::SetGridCellSize( const float& gridCellSize ) {
+void Parameters::SetGridCellSize( const unsigned& gridCellSize ) {
     mGridCellSize = gridCellSize;
 }
 
-unsigned int Parameters::GetLengthOfSimulationInTimeSteps( ) const {
+void Parameters::SetExtinctionThreshold( const float& extinctionThreshold ) {
+    mExtinctionThreshold = extinctionThreshold;
+}
+
+void Parameters::SetMaximumNumberOfCohorts( const unsigned& maximumNumberOfCohorts ) {
+    mMaximumNumberOfCohorts = maximumNumberOfCohorts;
+}
+
+void Parameters::SetPlanktonSizeThreshold( const float& planktonSizeThreshold ) {
+    mPlanktonSizeThreshold = planktonSizeThreshold;
+}
+
+void Parameters::SetDrawRandomly( const std::string drawRandomlyString ) {
+    if( drawRandomlyString == "no" )
+        mDrawRandomly = false;
+    else
+        mDrawRandomly = true;
+}
+
+void Parameters::SetHumanNPPExtraction( const std::string humanNPPExtractionString ) {
+    if( humanNPPExtractionString == "no" )
+        mHumanNPPExtraction = false;
+    else
+        mHumanNPPExtraction = true;
+}
+
+unsigned Parameters::GetLengthOfSimulationInTimeSteps( ) const {
     return mLengthOfSimulationInTimeSteps;
 }
 
-unsigned int Parameters::GetLengthLongitudeArray( ) const {
-    return mLengthLongitudeArray;
+unsigned Parameters::GetLengthDataLongitudeArray( ) const {
+    return mLengthDataLongitudeArray;
 }
 
-unsigned int Parameters::GetLengthLatitudeArray( ) const {
-    return mLengthLatitudeArray;
+unsigned Parameters::GetLengthDataLatitudeArray( ) const {
+    return mLengthDataLatitudeArray;
 }
 
-unsigned int Parameters::GetIndexOfUserMinimumLongitude( ) const {
-    return mIndexOfUserMinimumLongitude;
+unsigned Parameters::GetDataIndexOfUserMinimumLongitude( ) const {
+    return mDataIndexOfUserMinimumLongitude;
 }
 
-unsigned int Parameters::GetIndexOfUserMaximumLongitude( ) const {
-    return mIndexOfUserMaximumLongitude;
+unsigned Parameters::GetDataIndexOfUserMaximumLongitude( ) const {
+    return mDataIndexOfUserMaximumLongitude;
 }
 
-unsigned int Parameters::GetIndexOfUserMinimumLatitude( ) const {
-    return mIndexOfUserMinimumLatitude;
+unsigned Parameters::GetDataIndexOfUserMinimumLatitude( ) const {
+    return mDataIndexOfUserMinimumLatitude;
 }
 
-unsigned int Parameters::GetIndexOfUserMaximumLatitude( ) const {
-    return mIndexOfUserMaximumLatitude;
+unsigned Parameters::GetDataIndexOfUserMaximumLatitude( ) const {
+    return mDataIndexOfUserMaximumLatitude;
 }
 
-unsigned int Parameters::GetLengthUserLongitudeArray( ) const {
+unsigned Parameters::GetLengthUserLongitudeArray( ) const {
     return mLengthUserLongitudeArray;
 }
 
-unsigned int Parameters::GetLengthUserLatitudeArray( ) const {
+unsigned Parameters::GetLengthUserLatitudeArray( ) const {
     return mLengthUserLatitudeArray;
 }
 
-unsigned int Parameters::GetSizeOfGridDatum( ) const {
+unsigned Parameters::GetSizeOfGridDatum( ) const {
     return mSizeOfGridDatum;
 }
 
-float Parameters::GetLongitudeAtIndex( const unsigned int& index ) const {
-    return mLongitudeArray[ index ];
+float Parameters::GetDataLongitudeAtIndex( const unsigned& index ) const {
+    return mDataLongitudeArray[ index ];
 }
 
-float Parameters::GetLatitudeAtIndex( const unsigned int& index ) const {
-    return mLatitudeArray[ index ];
+float Parameters::GetDataLatitudeAtIndex( const unsigned& index ) const {
+    return mDataLatitudeArray[ index ];
 }
 
-float* Parameters::GetLongitudeArray( ) const {
-    return mLongitudeArray;
+float* Parameters::GetDataLongitudeArray( ) const {
+    return mDataLongitudeArray;
 }
 
-float* Parameters::GetLatitudeArray( ) const {
-    return mLatitudeArray;
+float* Parameters::GetDataLatitudeArray( ) const {
+    return mDataLatitudeArray;
 }
 
 float* Parameters::GetTimeStepArray( ) const {

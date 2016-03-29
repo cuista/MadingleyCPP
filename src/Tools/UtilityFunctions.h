@@ -347,7 +347,7 @@ public:
     @param latCellSize The latitudinal dimension of the grid cell
     @return The area in square km of the grid cell
      */
-    double CalculateGridCellArea(double latitude, double lonCellSize, double latCellSize) {
+    double CalculateGridCellArea(double latitude, double cellSize) {
         const double PI = acos(-1.);
         // Convert from degrees to radians
         double latitudeRad = DegreesToRadians(latitude);
@@ -383,7 +383,7 @@ public:
         double LongitudeLength = PI / 180 * cos(latitudeRad) * NPhi / 1000;
 
         // Return the cell area in km^2
-        return LatitudeLength * latCellSize * LongitudeLength * lonCellSize;
+        return LatitudeLength * cellSize * LongitudeLength * cellSize;
     }
     //----------------------------------------------------------------------------------------------
     /** \brief Calculate the length of a degree of latitude at a particular latitude /

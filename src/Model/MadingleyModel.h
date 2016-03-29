@@ -19,6 +19,7 @@
 
 #include "DateTime.h"
 #include "Maths.h"
+#include "Parameters.h"
 /// @todo check private versus public variables
 /** \file MadingleyModel.h
  * \brief The main model header file
@@ -105,15 +106,29 @@ public:
     /** \brief  Run the global ecosystem model     */
     void RunMadingley( ) {
         // Write out model run details to the console
+
+        cout << Parameters::Get( )->GetTimeStepUnits( ) << endl;
+        cout << Parameters::Get( )->GetLengthOfSimulationInYears( ) << endl;
+        cout << Parameters::Get( )->GetUserMinimumLongitude( ) << endl;
+        cout << Parameters::Get( )->GetUserMaximumLongitude( ) << endl;
+        cout << Parameters::Get( )->GetUserMinimumLatitude( ) << endl;
+        cout << Parameters::Get( )->GetUserMaximumLatitude( ) << endl;
+        cout << Parameters::Get( )->GetGridCellSize( ) << endl;
+        cout << Parameters::Get( )->GetExtinctionThreshold( ) << endl;
+        cout << Parameters::Get( )->GetMaximumNumberOfCohorts( ) << endl;
+        cout << Parameters::Get( )->GetPlanktonSizeThreshold( ) << endl;
+        cout << Parameters::Get( )->GetDrawRandomly( ) << endl;
+        cout << Parameters::Get( )->GetHumanNPPExtraction( ) << endl;
+
         cout << "Running model" << endl;
         cout << "Number of time steps is: " << params.NumTimeSteps << endl;
 
         Dispersals = 0;
         /// Run the model
         for( unsigned timeStep = 0; timeStep < params.NumTimeSteps; timeStep += 1 ) {
-            
+
             DateTime::Get( )->SetTimeStep( timeStep );
-            
+
             cout << "Running time step " << timeStep + 1 << "..." << endl;
             // Start the timer
             TimeStepTimer.Start( );

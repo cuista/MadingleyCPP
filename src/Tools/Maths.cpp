@@ -81,6 +81,6 @@ double Maths::NthRoot( const double& root, const double& degree ) const {
     return pow( root, 1.0 / degree );
 }
 
-unsigned int Maths::Mod( const unsigned int& dividend, const unsigned int& divisor ) const {
+unsigned Maths::Mod( const unsigned& dividend, const unsigned& divisor ) const {
     return dividend % divisor;
 }

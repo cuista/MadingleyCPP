@@ -42,7 +42,7 @@ const Types::StringVector Convertor::StringToWords( const std::string& inputStri
     return wordList;
 }
 
-const std::string Convertor::DoubleToPrecisionString( const double& value, const unsigned int& decimals ) const {
+const std::string Convertor::DoubleToPrecisionString( const double& value, const unsigned& decimals ) const {
 
     std::ostringstream outputStringStream;
     outputStringStream << std::fixed << std::setprecision( decimals ) << value;
@@ -50,9 +50,21 @@ const std::string Convertor::DoubleToPrecisionString( const double& value, const
     return outputStringStream.str( );
 }
 
-std::string Convertor::ToLowercase( const std::string instring ) const {
-    std::string outstring;
-    std::transform( instring.begin( ), instring.end( ), std::back_inserter( outstring ), tolower );
+const std::string Convertor::ToLowercase( const std::string& inString ) const {
+    std::string outString;
+    std::transform( inString.begin( ), inString.end( ), std::back_inserter( outString ), tolower );
 
-    return outstring;
+    return outString;
+}
+
+const std::string Convertor::RemoveWhiteSpace( const std::string& inString ) const {
+
+    std::string outString;
+    
+    for( unsigned index = 0; index < inString.length( ); ++index ) {
+        if( inString[ index ] != ' ' )
+            outString += inString[ index ];
+    }
+
+    return outString;
 }

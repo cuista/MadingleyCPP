@@ -22,7 +22,7 @@ Types::DataLayerMap DataLayerProcessor::ConvertReadDataIntoLayers( const Types::
 
     Types::DataLayerMap dataLayerMap;
     
-    for( unsigned int index = 0; index < inputData->GetNumberOfInputDatums( ); ++index ) {
+    for( unsigned index = 0; index < inputData->GetNumberOfInputDatums( ); ++index ) {
         Types::InputDatumPointer inputDatum = inputData->GetInputDatum( index );
         
         Logger::Get( )->LogMessage( "Processing read data for datum \"" + inputDatum->GetName( ) + "\"..." );
@@ -44,11 +44,11 @@ Types::DataLayerPointer DataLayerProcessor::MakeDataLayer( const Types::InputDat
     Types::VariablePointer timeVariable = NULL;
     Types::VariableVector variableVector;
 
-    for( unsigned int variableIndex = 0; variableIndex < datum->GetNumberOfVariables( ); ++variableIndex ) {
+    for( unsigned variableIndex = 0; variableIndex < datum->GetNumberOfVariables( ); ++variableIndex ) {
 
         Types::VariablePointer variable = datum->GetVariable( variableIndex );
 
-        unsigned int variableType = GetVariableType( variable );
+        unsigned variableType = GetVariableType( variable );
 
         switch( variableType ) {
             case Constants::eLongitude:
@@ -58,7 +58,7 @@ Types::DataLayerPointer DataLayerProcessor::MakeDataLayer( const Types::InputDat
 
                 if( DoesTheGeographicVariableNeedAdjustment( longitudeVariable ) == true ) {
                     // Longitude runs from 0 to 360
-                    for( unsigned int longitudeIndex = 0; longitudeIndex < longitudeVariable->GetSize( ); ++longitudeIndex ) {
+                    for( unsigned longitudeIndex = 0; longitudeIndex < longitudeVariable->GetSize( ); ++longitudeIndex ) {
                         longitudeVariable->SetDataAtIndex( longitudeIndex, longitudeVariable->GetDataAtIndex( longitudeIndex ) - 180 );
                     }
                 }
@@ -70,7 +70,7 @@ Types::DataLayerPointer DataLayerProcessor::MakeDataLayer( const Types::InputDat
 
                 if( DoesTheGeographicVariableNeedAdjustment( latitudeVariable ) == true ) {
                     // Latitude runs from 0 to 180
-                    for( unsigned int latitudeIndex = 0; latitudeIndex < latitudeVariable->GetSize( ); ++latitudeIndex ) {
+                    for( unsigned latitudeIndex = 0; latitudeIndex < latitudeVariable->GetSize( ); ++latitudeIndex ) {
                         latitudeVariable->SetDataAtIndex( latitudeIndex, latitudeVariable->GetDataAtIndex( latitudeIndex ) - 90 );
                     }
                 }
@@ -130,14 +130,14 @@ Types::DataLayerPointer DataLayerProcessor::MakeDataLayer( const Types::InputDat
     return concreteDataLayer;
 }
 
-unsigned int DataLayerProcessor::GetVariableType( const Types::VariablePointer variable ) const {
+unsigned DataLayerProcessor::GetVariableType( const Types::VariablePointer variable ) const {
 
     std::string variableName = Convertor::Get( )->ToLowercase( variable->GetName( ) );
 
-    unsigned int variableType = Constants::eOther;
+    unsigned variableType = Constants::eOther;
     bool isFound = false;
 
-    for( unsigned int longitudeNameIndex = 0; longitudeNameIndex < Processor::Get( )->SizeOfArray( Constants::cLongitudeVariableNames ); ++longitudeNameIndex ) {
+    for( unsigned longitudeNameIndex = 0; longitudeNameIndex < Processor::Get( )->SizeOfArray( Constants::cLongitudeVariableNames ); ++longitudeNameIndex ) {
         if( variableName == Constants::cLongitudeVariableNames[ longitudeNameIndex ] ) {
             variableType = Constants::eLongitude;
             isFound = true;
@@ -146,7 +146,7 @@ unsigned int DataLayerProcessor::GetVariableType( const Types::VariablePointer v
     }
 
     if( isFound == false ) {
-        for( unsigned int latitudeNameIndex = 0; latitudeNameIndex < Processor::Get( )->SizeOfArray( Constants::cLatitudeVariableNames ); ++latitudeNameIndex ) {
+        for( unsigned latitudeNameIndex = 0; latitudeNameIndex < Processor::Get( )->SizeOfArray( Constants::cLatitudeVariableNames ); ++latitudeNameIndex ) {
             if( variableName == Constants::cLatitudeVariableNames[ latitudeNameIndex ] ) {
                 variableType = Constants::eLatitude;
                 isFound = true;
@@ -156,7 +156,7 @@ unsigned int DataLayerProcessor::GetVariableType( const Types::VariablePointer v
     }
 
     if( isFound == false ) {
-        for( unsigned int timeNameIndex = 0; timeNameIndex < Processor::Get( )->SizeOfArray( Constants::cTimeVariableNames ); ++timeNameIndex ) {
+        for( unsigned timeNameIndex = 0; timeNameIndex < Processor::Get( )->SizeOfArray( Constants::cTimeVariableNames ); ++timeNameIndex ) {
             if( variableName == Constants::cTimeVariableNames[ timeNameIndex ] ) {
                 variableType = Constants::eTime;
                 isFound = true;
@@ -166,7 +166,7 @@ unsigned int DataLayerProcessor::GetVariableType( const Types::VariablePointer v
     }
 
     if( isFound == false ) {
-        for( unsigned int depthNameIndex = 0; depthNameIndex < Processor::Get( )->SizeOfArray( Constants::cDepthVariableNames ); ++depthNameIndex ) {
+        for( unsigned depthNameIndex = 0; depthNameIndex < Processor::Get( )->SizeOfArray( Constants::cDepthVariableNames ); ++depthNameIndex ) {
             if( variableName == Constants::cDepthVariableNames[ depthNameIndex ] ) {
                 variableType = Constants::eDepth;
                 isFound = true;
@@ -182,7 +182,7 @@ float DataLayerProcessor::FindLargestVectorValueDifference( const Types::Variabl
 
     float largestDifference = 0;
 
-    for( unsigned int variableIndex = 0; variableIndex < variable->GetSize( ) - 1; ++variableIndex ) {
+    for( unsigned variableIndex = 0; variableIndex < variable->GetSize( ) - 1; ++variableIndex ) {
         float difference = Maths::Get( )->Abs( variable->GetDataAtIndex( variableIndex + 1 ) - variable->GetDataAtIndex( variableIndex ) );
 
         if( difference > largestDifference ) {

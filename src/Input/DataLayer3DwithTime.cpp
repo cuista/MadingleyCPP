@@ -50,23 +50,23 @@ float DataLayer3DwithTime::GetDataAtGeoCoordForVariable( const Types::DataCoords
     int xIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLongitudeVariable, coord->GetLongitude( ) );
     int yIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLatitudeVariable, coord->GetLatitude( ) );
     int zIndex = Processor::Get( )->FindVariableIndexOfValue( mDepthVariable, coord->GetDepth( ) );
-    unsigned int tIndex = DateTime::Get( )->GetTimeStep( );
-    unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
-    unsigned int yMax = Parameters::Get( )->GetLengthLatitudeArray( );
-    unsigned int zMax = mDepthVariable->GetSize( );
+    unsigned tIndex = DateTime::Get( )->GetTimeStep( );
+    unsigned xMax = Parameters::Get( )->GetLengthDataLongitudeArray( );
+    unsigned yMax = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    unsigned zMax = mDepthVariable->GetSize( );
 
     return variable->GetDataAtIndex( Processor::Get( )->Indices4DToIndex( xIndex, yIndex, zIndex, tIndex, xMax, yMax, zMax ) );
 }
 
 float DataLayer3DwithTime::GetDataAtIndicesForVariable( const Types::DataIndicesPointer indices, const Types::VariablePointer variable ) const {
 
-    unsigned int xIndex = indices->GetX( );
-    unsigned int yIndex = indices->GetY( );
-    unsigned int zIndex = indices->GetZ( );
-    unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
-    unsigned int yMax = Parameters::Get( )->GetLengthLatitudeArray( );
-    unsigned int tIndex = DateTime::Get( )->GetTimeStep( );
-    unsigned int zMax = mDepthVariable->GetSize( );
+    unsigned xIndex = indices->GetDataX( );
+    unsigned yIndex = indices->GetDataY( );
+    unsigned zIndex = indices->GetZ( );
+    unsigned xMax = Parameters::Get( )->GetLengthDataLongitudeArray( );
+    unsigned yMax = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    unsigned tIndex = DateTime::Get( )->GetTimeStep( );
+    unsigned zMax = mDepthVariable->GetSize( );
 
     return variable->GetDataAtIndex( Processor::Get( )->Indices4DToIndex( xIndex, yIndex, zIndex, tIndex, xMax, yMax, zMax ) );
 }

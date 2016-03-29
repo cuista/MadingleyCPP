@@ -18,16 +18,16 @@ public:
     std::string ProduceTotalTimeString( ) const;
     std::string GetFormattedDateAndTime( const std::string, const bool isEnd = true ) const;
     
-    unsigned int GetRandomNumberSeed( ) const;
+    unsigned GetRandomNumberSeed( ) const;
     
-    unsigned int GetCumulativeTimeInSeconds( );
-    unsigned int GetCumulativeTimeInMicroseconds( );
+    unsigned GetCumulativeTimeInSeconds( );
+    unsigned GetCumulativeTimeInMicroseconds( );
 
-    unsigned int GetTotalTimeInSeconds( ) const;
-    unsigned int GetTotalTimeInMilliseconds( ) const;
+    unsigned GetTotalTimeInSeconds( ) const;
+    unsigned GetTotalTimeInMilliseconds( ) const;
     
-    unsigned int GetTimeStep( ) const;
-    void SetTimeStep( const unsigned int& );
+    unsigned GetTimeStep( ) const;
+    void SetTimeStep( const unsigned& );
 
 private:
     DateTime( );
@@ -41,13 +41,13 @@ private:
     timeval mTimeNow;
     timeval mTimeEnd;
     
-    unsigned int mTotalTimeInSeconds;
-    unsigned int mTotalTimeInMilliseconds;
+    unsigned mTotalTimeInSeconds;
+    unsigned mTotalTimeInMilliseconds;
     
-    unsigned int mStartTimeAndDate;
-    unsigned int mEndTimeAndDate;
+    unsigned mStartTimeAndDate;
+    unsigned mEndTimeAndDate;
     
-    unsigned int mTimeStep;
+    unsigned mTimeStep;
 };
 
 #endif

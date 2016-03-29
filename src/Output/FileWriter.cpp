@@ -40,7 +40,7 @@ void FileWriter::WriteMetadataFiles( ) {
 
     Types::StringVector metadataFilePaths = DataRecorder::Get( )->GetMetadataFilePaths( );
 
-    for( unsigned int stringIndex = 0; stringIndex < metadataFilePaths.size( ); ++stringIndex ) {
+    for( unsigned stringIndex = 0; stringIndex < metadataFilePaths.size( ); ++stringIndex ) {
 
         std::ifstream sourceFileStream( metadataFilePaths[ stringIndex ].c_str( ), std::ios::in );
 

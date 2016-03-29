@@ -16,6 +16,9 @@ Initialise and run the model
 
  */
 #include <MadingleyModel.h>
+
+#include "Convertor.h"
+#include "Logger.h"
 //----------------------------------------------------------------------------------------------
 
 /** \brief Starts a model run or set of model runs */

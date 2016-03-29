@@ -43,20 +43,20 @@ float DataLayer2DwithTime::GetDataAtGeoCoordForVariable( const Types::DataCoords
 
     int xIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLongitudeVariable, coord->GetLongitude( ) );
     int yIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLatitudeVariable, coord->GetLatitude( ) );
-    unsigned int tIndex = DateTime::Get( )->GetTimeStep( );
-    unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
-    unsigned int yMax = Parameters::Get( )->GetLengthLatitudeArray( );
+    unsigned tIndex = DateTime::Get( )->GetTimeStep( );
+    unsigned xMax = Parameters::Get( )->GetLengthDataLongitudeArray( );
+    unsigned yMax = Parameters::Get( )->GetLengthDataLatitudeArray( );
 
     return variable->GetDataAtIndex( Processor::Get( )->Indices3DToIndex( xIndex, yIndex, tIndex, xMax, yMax ) );
 }
 
 float DataLayer2DwithTime::GetDataAtIndicesForVariable( const Types::DataIndicesPointer indices, const Types::VariablePointer variable ) const {
 
-    unsigned int xIndex = indices->GetX( );
-    unsigned int yIndex = indices->GetY( );
-    unsigned int tIndex = DateTime::Get( )->GetTimeStep( );
-    unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
-    unsigned int yMax = Parameters::Get( )->GetLengthLatitudeArray( );
+    unsigned xIndex = indices->GetDataX( );
+    unsigned yIndex = indices->GetDataY( );
+    unsigned tIndex = DateTime::Get( )->GetTimeStep( );
+    unsigned xMax = Parameters::Get( )->GetLengthDataLongitudeArray( );
+    unsigned yMax = Parameters::Get( )->GetLengthDataLatitudeArray( );
 
     return variable->GetDataAtIndex( Processor::Get( )->Indices3DToIndex( xIndex, yIndex, tIndex, xMax, yMax ) );
 }

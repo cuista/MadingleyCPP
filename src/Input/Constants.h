@@ -1,20 +1,28 @@
 #ifndef CONSTANTS
 #define	CONSTANTS
 
+#include <string>
+
 namespace Constants {
     
-    enum eSimulationControlParametersMetadata {
-        eInputParameter,
-        eValue
+    enum eParametersMetadata {
+        eParameterName,
+        eParameterValue
     };
     
-    enum eSimulationControlParameters {
+    enum eInputParameters {
+        eTimeStepUnits,
         eLengthOfSimulationInYears,
         eMinimumLongitude,
         eMaximumLongitude,
         eMinimumLatitude,
         eMaximumLatitude,
-        eGridCellSize
+        eGridCellSize,
+        eExtinctionThreshold,
+        eMaximumNumberOfCohorts,
+        ePlanktonSizeThreshold,
+        eDrawRandomly,
+        eHumanNPPExtraction
     };
     
     enum eOutputControlParametersMetadata {
@@ -42,6 +50,11 @@ namespace Constants {
         eTime,
         eDepth,
         eOther
+    };
+
+    enum eIndexDomainTypes {
+        eDataDomain,
+        eUserDomain
     };
     
     const std::string cLongitudeVariableNames[ ] = { "lon", "long", "longitude", "x" };

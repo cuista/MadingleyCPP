@@ -3,7 +3,7 @@
 #include "Logger.h"
 #include "Convertor.h"
 
-Variable::Variable( const std::string& name, const Types::UnsignedIntVector& dimensions, const unsigned int& size, float* data, const bool isDefault ) {
+Variable::Variable( const std::string& name, const Types::UnsignedIntVector& dimensions, const unsigned& size, float* data, const bool isDefault ) {
     mName = name;
     mDimensions = dimensions;
     mSize = size;
@@ -25,11 +25,11 @@ Types::UnsignedIntVector Variable::GetDimensions( ) const {
     return mDimensions;
 }
 
-unsigned int Variable::GetDimension( const unsigned int& index ) const {
+unsigned Variable::GetDimension( const unsigned& index ) const {
     return mDimensions[ index ];
 }
 
-unsigned int Variable::GetSize( ) const {
+unsigned Variable::GetSize( ) const {
     return mSize;
 }
 

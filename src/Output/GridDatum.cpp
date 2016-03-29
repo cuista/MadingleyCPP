@@ -5,7 +5,6 @@
 #include "Parameters.h"
 #include "DataCoords.h"
 #include "DataIndices.h"
-#include "Logger.h"
 #include "DateTime.h"
 
 GridDatum::GridDatum( const std::string& name, const std::string& units ) {
@@ -33,23 +32,23 @@ float* GridDatum::GetData( ) const {
 void GridDatum::AddData( const Types::DataCoordsPointer coord, const float& data ) {
 
     int xIndex = Processor::Get( )->CalculateArrayIndexOfValue( Parameters::Get( )->GetUserLongitudeArray( ), Parameters::Get( )->GetLengthUserLongitudeArray( ), coord->GetLongitude( ) );
-    int yIndex = Processor::Get( )->CalculateArrayIndexOfValue( Parameters::Get( )->GetUserLatitudeArray( ), Parameters::Get( )->GetLengthUserLatitudeArray( ), coord->GetLatitude( ) );
-    unsigned int tIndex = DateTime::Get( )->GetTimeStep( );
-    unsigned int xMax = Parameters::Get( )->GetLengthUserLongitudeArray( );
-    unsigned int yMax = Parameters::Get( )->GetLengthUserLatitudeArray( );
+    int yIndex = Processor::Get( )->CalculateArrayIndexOfValue( Parameters::Get( )->GetUserLatitudeArray( ), Parameters::Get( )->GetLengthUserLatitudeArray( ), coord->GetLatitude( ) ); 
+    unsigned tIndex = DateTime::Get( )->GetTimeStep( );
+    unsigned xMax = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    unsigned yMax = Parameters::Get( )->GetLengthUserLatitudeArray( );
 
-    unsigned int index = Processor::Get( )->Indices3DToIndex( xIndex, yIndex, tIndex, xMax, yMax );
-    
+    unsigned index = Processor::Get( )->Indices3DToIndex( xIndex, yIndex, tIndex, xMax, yMax );
+
     mData[ index ] = data;
 }
 
 void GridDatum::AddData( const Types::DataIndicesPointer indies, const float& data ) {
 
-    unsigned int tIndex = DateTime::Get( )->GetTimeStep( );
-    unsigned int xMax = Parameters::Get( )->GetLengthLongitudeArray( );
-    unsigned int yMax = Parameters::Get( )->GetLengthLatitudeArray( );
+    unsigned tIndex = DateTime::Get( )->GetTimeStep( );
+    unsigned xMax = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    unsigned yMax = Parameters::Get( )->GetLengthUserLatitudeArray( );
 
-    unsigned int index = Processor::Get( )->Indices3DToIndex( indies->GetX( ), indies->GetY( ), tIndex, xMax, yMax );
+    unsigned index = Processor::Get( )->Indices3DToIndex( indies->GetUserX( ), indies->GetUserY( ), tIndex, xMax, yMax );
 
     mData[ index ] = data;
 }

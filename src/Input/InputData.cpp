@@ -10,12 +10,12 @@ InputData::InputData( ) {
 }
 
 InputData::~InputData( ) {
-    for( unsigned int index = 0; index < mInputDatumVector.size( ); ++index ) {
+    for( unsigned index = 0; index < mInputDatumVector.size( ); ++index ) {
         delete mInputDatumVector[ index ];
     }
 }
 
-void InputData::AddVariableToDatum( const std::string& name, const std::string& variableName, const Types::UnsignedIntVector& variableDimensions, const unsigned int& variableSize, float* variableData, const bool isDefault ) {
+void InputData::AddVariableToDatum( const std::string& name, const std::string& variableName, const Types::UnsignedIntVector& variableDimensions, const unsigned& variableSize, float* variableData, const bool isDefault ) {
 
     Types::InputDatumPointer datum = GetInputDatum( name, true );
 
@@ -30,7 +30,7 @@ Types::InputDatumPointer InputData::GetInputDatum( const std::string& name, cons
 
     Types::InputDatumPointer inputDatum = NULL;
 
-    for( unsigned int index = 0; index < mInputDatumVector.size( ); ++index ) {
+    for( unsigned index = 0; index < mInputDatumVector.size( ); ++index ) {
         if( Convertor::Get( )->ToLowercase( mInputDatumVector[ index ]->GetName( ) ) == Convertor::Get( )->ToLowercase( name ) ) {
             inputDatum = mInputDatumVector[ index ];
             break;
@@ -44,10 +44,10 @@ Types::InputDatumPointer InputData::GetInputDatum( const std::string& name, cons
     return inputDatum;
 }
 
-Types::InputDatumPointer InputData::GetInputDatum( const unsigned int index ) {
+Types::InputDatumPointer InputData::GetInputDatum( const unsigned index ) {
     return mInputDatumVector[ index ];
 }
 
-unsigned int InputData::GetNumberOfInputDatums( ) {
+unsigned InputData::GetNumberOfInputDatums( ) {
     return mInputDatumVector.size( );
 }
