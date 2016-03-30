@@ -15,7 +15,7 @@
 //{
 
 /** \brief  Performs metabolism */
-class Metabolism : public IEcologicalProcessWithinGridCell {
+class Metabolism: public IEcologicalProcessWithinGridCell {
 public:
     /** \brief The available implementations of the metabolism process*/
     //----------------------------------------------------------------------------------------------
@@ -27,31 +27,35 @@ public:
     //----------------------------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
+
     /** \brief Constructor Metabolism: fills the list of available implementations of metabolism*/
-    Metabolism(string globalModelTimeStepUnit) {
+    Metabolism( string globalModelTimeStepUnit ) {
         // Add the basic endotherm metabolism implementation to the list of implementations
-        MetabolismEndotherm* MetabolismEndothermImplementation = new MetabolismEndotherm(globalModelTimeStepUnit);
+        MetabolismEndotherm* MetabolismEndothermImplementation = new MetabolismEndotherm( globalModelTimeStepUnit );
         Implementations["basic endotherm"] = MetabolismEndothermImplementation;
 
         // Add the basic ectotherm metabolism implementation to the list of implementations
-        MetabolismEctotherm* MetabolismEctothermImplementation = new MetabolismEctotherm(globalModelTimeStepUnit);
+        MetabolismEctotherm* MetabolismEctothermImplementation = new MetabolismEctotherm( globalModelTimeStepUnit );
         Implementations["basic ectotherm"] = MetabolismEctothermImplementation;
     }
     //----------------------------------------------------------------------------------------------
+
     /** Destrcutor to tidy up pointers*/
-    ~Metabolism() {
+    ~Metabolism( ) {
         delete Implementations["basic endotherm"];
         delete Implementations["basic ectotherm"];
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Initializes an implementation of metabolism
     @param gcl The current grid cell 
     @param params A bunch of parameters 'n' stuff 'n' things 
     @param implementationKey The name of the implementation of metabolism to initialize  */
-    void InitializeEcologicalProcess(GridCell& gcl, MadingleyModelInitialisation& params, string implementationKey) {
+    void InitializeEcologicalProcess( GridCell& gcl, MadingleyModelInitialisation& params, string implementationKey ) {
 
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Run metabolism
     @param gcl The current grid cell 
     @param actingCohort The acting cohort  
@@ -59,18 +63,18 @@ public:
     @param partial Thread-locked variables 
     @param currentMonth The current model month
     @param params some parameters  */
-    void RunEcologicalProcess(GridCell& gcl,
-            Cohort& actingCohort, 
+    void RunEcologicalProcess( GridCell& gcl,
+            Cohort& actingCohort,
             unsigned currentTimestep,
             ThreadLockedParallelVariables& partial,
-            unsigned currentMonth, MadingleyModelInitialisation& params) {
-        
-        if (params.CohortFunctionalGroupDefinitions.GetTraitNames("Heterotroph/Autotroph", actingCohort.FunctionalGroupIndex) == "heterotroph") {
-            if (params.CohortFunctionalGroupDefinitions.GetTraitNames("Endo/Ectotherm", actingCohort.FunctionalGroupIndex) == "endotherm") {
+            unsigned currentMonth, MadingleyModelInitialisation& params ) {
 
-                Implementations["basic endotherm"]->RunMetabolism(  actingCohort, currentTimestep, currentMonth);
+        if( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Heterotroph/Autotroph", actingCohort.FunctionalGroupIndex ) == "heterotroph" ) {
+            if( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Endo/Ectotherm", actingCohort.FunctionalGroupIndex ) == "endotherm" ) {
+
+                Implementations["basic endotherm"]->RunMetabolism( actingCohort, currentTimestep, currentMonth );
             } else {
-                Implementations["basic ectotherm"]->RunMetabolism(  actingCohort, currentTimestep, currentMonth);
+                Implementations["basic ectotherm"]->RunMetabolism( actingCohort, currentTimestep, currentMonth );
 
             }
 

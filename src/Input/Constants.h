@@ -55,7 +55,6 @@ namespace Constants {
     const std::string cInputDataFileName = "EnvironmentalDataLayers.csv";
     const std::string cOutputVariablesFileName = "OutputControlParameters.csv";
     
-    //const std::string cInitialisationFileName = "EcosystemModelInitialisation.csv";
     const std::string cCohortDefinitionsFileName = "CohortFunctionalGroupDefinitions.csv";
     const std::string cStockDefinitionsFileName = "StockFunctionalGroupDefinitions.csv";
     const std::string cMassBinDefinitionsFileName = "MassBinDefinitions.csv";

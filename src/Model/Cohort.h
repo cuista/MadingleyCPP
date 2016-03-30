@@ -13,6 +13,7 @@ class GridCell;
 
 /** \brief Class to hold properties of a single cohort */
 typedef GridCell Location;
+
 class Cohort {
 public:
     //----------------------------------------------------------------------------------------------
@@ -52,7 +53,7 @@ public:
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
-    
+
     //----------------------------------------------------------------------------------------------
     /** \brief Constructor for the Cohort class: assigns cohort starting properties at beginning of model run
     @param gcl The grid cell that holds this cohort 
@@ -64,7 +65,7 @@ public:
     @param birthTimeStep The birth time step for this cohort 
     @param nextCohortID The unique ID to assign to the next cohort created 
      */
-    Cohort(GridCell& , unsigned , double , double , double , double , double , unsigned short , double , long long &);
+    Cohort( GridCell&, unsigned, double, double, double, double, double, unsigned short, double, long long & );
 
     //----------------------------------------------------------------------------------------------
     /** \brief Constructor for the Cohort class: assigns cohort starting properties on reproduction
@@ -77,18 +78,18 @@ public:
     @param birthTimeStep The birth time step for this cohort 
     @param nextCohortID The unique ID to assign to the next cohort created
      * */
-    Cohort(Cohort& , double , double , double , double , unsigned , long long& ) ;
+    Cohort( Cohort&, double, double, double, double, unsigned, long long& );
     //----------------------------------------------------------------------------------------------
-    Location& Here();
-    bool isMoving();
-    bool isMature();
-    bool isMarine();
-    bool isPlanktonic(MadingleyModelInitialisation&);
-    string dispersalType(MadingleyModelInitialisation&);
-    double Realm();
-    void TryLivingAt(Location* );
-    void Move();
-    static void zeroDeltas();
+    Location& Here( );
+    bool isMoving( );
+    bool isMature( );
+    bool isMarine( );
+    bool isPlanktonic( MadingleyModelInitialisation& );
+    string dispersalType( MadingleyModelInitialisation& );
+    double Realm( );
+    void TryLivingAt( Location* );
+    void Move( );
+    static void zeroDeltas( );
 };
 
 #endif

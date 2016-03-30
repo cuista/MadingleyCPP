@@ -102,12 +102,12 @@ public:
     }
     //----------------------------------------------------------------------------------------------
 
-        /** \brief  Get pointer to a viable cell to move to
-        @param  gcl Pointer to the focal grid cell
-        @param  v latitudinal displacement
-        @param  u longitudinal displacement
-        @return Pointer to cell that lies at displacement u,v from the current cell
-        @remark Currently assumes wrapping in longitude, and a hard upper and lower boundary in latitude
+    /** \brief  Get pointer to a viable cell to move to
+    @param  gcl Pointer to the focal grid cell
+    @param  v latitudinal displacement
+    @param  u longitudinal displacement
+    @return Pointer to cell that lies at displacement u,v from the current cell
+    @remark Currently assumes wrapping in longitude, and a hard upper and lower boundary in latitude
      */
     GridCell* getNewCell( GridCell* gcl, const int& v, const int& u ) {
         GridCell* Cell = 0;

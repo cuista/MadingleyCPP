@@ -9,7 +9,7 @@
  Currently mass assigned to reproductive potential is not metabolised
  Assumes that ectothermic organisms have a body temperature equal to the ambient temperature,
  therefore metabolising at that ambient temperature*/
-class MetabolismEctotherm : public IMetabolismImplementation {
+class MetabolismEctotherm: public IMetabolismImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
@@ -56,41 +56,44 @@ public:
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
-    
+
     //----------------------------------------------------------------------------------------------
+
     /** \brief   Constructor for metabolism: assigns all parameter values
      */
-    MetabolismEctotherm(string globalModelTimeStepUnit) {
-                 
+    MetabolismEctotherm( string globalModelTimeStepUnit ) {
+
         // Initialise ecological parameters for metabolism
-        InitialiseMetabolismParameters();
+        InitialiseMetabolismParameters( );
 
         // Calculate the scalar to convert from the time step units used by this implementation of metabolism to the global  model time step units
-        DeltaT = Utilities.ConvertTimeUnits(globalModelTimeStepUnit, TimeUnitImplementation);
+        DeltaT = Utilities.ConvertTimeUnits( globalModelTimeStepUnit, TimeUnitImplementation );
 
         ProportionTimeActiveCalculatedThisTimestep = false;
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Run metabolism for the acting cohort
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
     @param currentMonth The current model month */
-    void RunMetabolism(Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth) {
+    void RunMetabolism( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {
 
 
         // Calculate metabolic loss for an individual and add the value to the delta biomass for metabolism
-        Cohort::Deltas["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate(actingCohort.IndividualBodyMass,
-                Environment::Get("Temperature",actingCohort.Here()) + TemperatureUnitsConvert, actingCohort.ProportionTimeActive) * DeltaT;
+        Cohort::Deltas["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate( actingCohort.IndividualBodyMass,
+                Environment::Get( "Temperature", actingCohort.Here( ) ) + TemperatureUnitsConvert, actingCohort.ProportionTimeActive ) * DeltaT;
 
 
         // If metabolic loss is greater than individual body mass after herbivory and predation, then set equal to individual body mass
-        Cohort::Deltas["biomass"]["metabolism"] = max(Cohort::Deltas["biomass"]["metabolism"], -(actingCohort.IndividualBodyMass + Cohort::Deltas["biomass"]["predation"] + Cohort::Deltas["biomass"]["herbivory"]));
+        Cohort::Deltas["biomass"]["metabolism"] = max( Cohort::Deltas["biomass"]["metabolism"], -( actingCohort.IndividualBodyMass + Cohort::Deltas["biomass"]["predation"] + Cohort::Deltas["biomass"]["herbivory"] ) );
 
         // Add total metabolic loss for all individuals in the cohort to delta biomass for metabolism in the respiratory CO2 pool
         Cohort::Deltas["respiratoryCO2pool"]["metabolism"] = -Cohort::Deltas["biomass"]["metabolism"] * actingCohort.CohortAbundance;
 
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Initialises values for all ecological parameters for metabolism
     @remark
     Metabolism exponent and normalization constant calculated based on Nagy et al (1999) field metabolic rates.
@@ -98,7 +101,7 @@ public:
     The scalar to convert kJ to grams mass currently a very rough estimate based on the calorific values
     of fat, protein and carbohydrate
      */
-    void InitialiseMetabolismParameters() {
+    void InitialiseMetabolismParameters( ) {
         TimeUnitImplementation = "day";
 
         // Parameters from fitting to Nagy 1999 Field Metabolic Rates for reptiles - assumes that reptile FMR was measured with animals at their optimal temp of 30degC
@@ -108,7 +111,7 @@ public:
         BoltzmannConstant = 8.617e-5;
 
         // BMR normalisation constant from Brown et al 2004 - original units of J/s so scale to kJ/d
-        NormalizationConstantBMR = exp(20)*60 * 60 * 24 / 1000;
+        NormalizationConstantBMR = exp( 20 )*60 * 60 * 24 / 1000;
         BasalMetabolismMassExponent = 0.69;
 
         // Currently a very rough estimate based on calorific values of fat, protein and carbohydrate - assumes organism is metabolising mass of 1/4 protein, 1/4 carbohydrate and 1/2 fat 
@@ -120,21 +123,22 @@ public:
 
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Calculate metabolic loss in grams for an individual
     @param individualBodyMass The body mass of individuals in the acting cohort 
     @param temperature The ambient temperature, in degrees Kelvin 
     @return The metabolic loss for an individual*/
-    double CalculateIndividualMetabolicRate(double individualBodyMass, double temperature, double proportionTimeActive) {
+    double CalculateIndividualMetabolicRate( double individualBodyMass, double temperature, double proportionTimeActive ) {
         // Calculate field metabolic loss in kJ
-        double FieldMetabolicLosskJ = NormalizationConstant * pow(individualBodyMass, MetabolismMassExponent) *
-                exp(-(ActivationEnergy / (BoltzmannConstant * temperature)));
+        double FieldMetabolicLosskJ = NormalizationConstant * pow( individualBodyMass, MetabolismMassExponent ) *
+                exp( -( ActivationEnergy / ( BoltzmannConstant * temperature ) ) );
 
-        double BasalMetabolicLosskJ = NormalizationConstantBMR * pow(individualBodyMass, BasalMetabolismMassExponent) *
-                exp(-(ActivationEnergy / (BoltzmannConstant * temperature)));
+        double BasalMetabolicLosskJ = NormalizationConstantBMR * pow( individualBodyMass, BasalMetabolismMassExponent ) *
+                exp( -( ActivationEnergy / ( BoltzmannConstant * temperature ) ) );
 
         // Return metabolic loss in grams
 
-        return ((proportionTimeActive * FieldMetabolicLosskJ) + ((1 - proportionTimeActive) * (BasalMetabolicLosskJ))) * EnergyScalar;
+        return (( proportionTimeActive * FieldMetabolicLosskJ ) + ( ( 1 - proportionTimeActive ) * ( BasalMetabolicLosskJ ) ) ) * EnergyScalar;
 
         //return FieldMetabolicLosskJ * EnergyScalar;//commented out in original
     }

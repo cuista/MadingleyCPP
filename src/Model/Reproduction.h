@@ -9,7 +9,7 @@
  */
 
 /** \brief Performs reproduction */
-class Reproduction : public IEcologicalProcessWithinGridCell {
+class Reproduction: public IEcologicalProcessWithinGridCell {
 public:
     //----------------------------------------------------------------------------------------------
     //Variables
@@ -19,29 +19,33 @@ public:
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
-    
+
     //----------------------------------------------------------------------------------------------
+
     /**  \brief Constructor for Reproduction: fills the list of available implementations of reproduction */
-    Reproduction(string globalModelTimeStepUnit, bool drawRandomly) {
+    Reproduction( string globalModelTimeStepUnit, bool drawRandomly ) {
         // Add the basic reproduction implementation to the list of implementations
-        ReproductionBasic* ReproductionImplementation = new ReproductionBasic(globalModelTimeStepUnit, drawRandomly);
+        ReproductionBasic* ReproductionImplementation = new ReproductionBasic( globalModelTimeStepUnit, drawRandomly );
         Implementations["reproduction basic"] = ReproductionImplementation;
     }
     //----------------------------------------------------------------------------------------------
+
     /** Destructor ensure we tidy everything up */
-    ~Reproduction() {
+    ~Reproduction( ) {
         delete Implementations["reproduction basic"];
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Initialize an implementation of reproduction. This is only in here to satisfy the requirements of IEcologicalProcessWithinGridCells
 
     @param gcl The current grid cell 
     @param params The definitions for functional groups in the model, among other things 
     @param implementationKey The name of the reproduction implementation to initialize 
      */
-    void InitializeEcologicalProcess(GridCell& gcl, MadingleyModelInitialisation& params, string implementationKey){
+    void InitializeEcologicalProcess( GridCell& gcl, MadingleyModelInitialisation& params, string implementationKey ) {
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Run reproduction
     @param gcl The current grid cell 
     @param actingCohort The acting cohort 
@@ -49,21 +53,21 @@ public:
     @param partial Thread-locked variables for the parallelised version 
     @param currentMonth The current model month 
     @params Parameters defined here */
-    void RunEcologicalProcess(GridCell& gcl,
-            Cohort& actingCohort, 
+    void RunEcologicalProcess( GridCell& gcl,
+            Cohort& actingCohort,
             unsigned currentTimestep,
             ThreadLockedParallelVariables& partial,
-            unsigned currentMonth, MadingleyModelInitialisation& params) {
+            unsigned currentMonth, MadingleyModelInitialisation& params ) {
 
         // Holds the reproductive strategy of a cohort
-        bool _Iteroparous = params.CohortFunctionalGroupDefinitions.GetTraitNames("reproductive strategy", actingCohort.FunctionalGroupIndex) == "iteroparity";
+        bool _Iteroparous = params.CohortFunctionalGroupDefinitions.GetTraitNames( "reproductive strategy", actingCohort.FunctionalGroupIndex ) == "iteroparity";
 
         // Assign mass to reproductive potential
-        Implementations["reproduction basic"]->RunReproductiveMassAssignment(gcl, actingCohort, currentTimestep, params);
+        Implementations["reproduction basic"]->RunReproductiveMassAssignment( gcl, actingCohort, currentTimestep, params );
 
         // Run reproductive events. Note that we can't skip juveniles here as they could conceivably grow to adulthood and get enough biomass to reproduce in a single time step
         // due to other ecological processes
-        Implementations["reproduction basic"]->RunReproductionEvents(gcl, actingCohort, currentTimestep, partial, _Iteroparous, currentMonth,params);
+        Implementations["reproduction basic"]->RunReproductionEvents( gcl, actingCohort, currentTimestep, partial, _Iteroparous, currentMonth, params );
     }
     //----------------------------------------------------------------------------------------------
 };

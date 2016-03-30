@@ -12,7 +12,7 @@
 \remarks Functional form and parameters taken from fitted relationship in Brown's (2004) Metabolic Theory of Ecology.
 Currently mass assigned to reproductive potential is not metabolised
 Assumes that endothermic organisms metabolise at 37degC, and that they can adapt physiologicaly to do this without extra costs*/
-class MetabolismEndotherm : public IMetabolismImplementation {
+class MetabolismEndotherm: public IMetabolismImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
@@ -47,37 +47,40 @@ public:
     //----------------------------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
-    MetabolismEndotherm(string globalModelTimeStepUnit) {
+
+    MetabolismEndotherm( string globalModelTimeStepUnit ) {
         // Initialise ecological parameters for metabolism
-        InitialiseMetabolismParameters();
+        InitialiseMetabolismParameters( );
 
         // Calculate the scalar to convert from the time step units used by this implementation of metabolism to the global  model time step units
-        DeltaT = Utilities.ConvertTimeUnits(globalModelTimeStepUnit, TimeUnitImplementation);
+        DeltaT = Utilities.ConvertTimeUnits( globalModelTimeStepUnit, TimeUnitImplementation );
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Run metabolism for the acting cohort
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
     @param currentMonth The current model month */
-    void RunMetabolism(Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth) {
+    void RunMetabolism( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {
         // Calculate metabolic loss for an individual and add the value to the delta biomass for metabolism
-        Cohort::Deltas["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate(actingCohort.IndividualBodyMass,
-                Environment::Get("Temperature",actingCohort.Here()) + TemperatureUnitsConvert) * DeltaT;
+        Cohort::Deltas["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate( actingCohort.IndividualBodyMass,
+                Environment::Get( "Temperature", actingCohort.Here( ) ) + TemperatureUnitsConvert ) * DeltaT;
 
         // If metabolic loss is greater than individual body mass after herbivory and predation, then set equal to individual body mass
-        Cohort::Deltas["biomass"]["metabolism"] = max(Cohort::Deltas["biomass"]["metabolism"], -(actingCohort.IndividualBodyMass + Cohort::Deltas["biomass"]["predation"] + Cohort::Deltas["biomass"]["herbivory"]));
+        Cohort::Deltas["biomass"]["metabolism"] = max( Cohort::Deltas["biomass"]["metabolism"], -( actingCohort.IndividualBodyMass + Cohort::Deltas["biomass"]["predation"] + Cohort::Deltas["biomass"]["herbivory"] ) );
 
         // Add total metabolic loss for all individuals in the cohort to delta biomass for metabolism in the respiratory CO2 pool
         Cohort::Deltas["respiratoryCO2pool"]["metabolism"] = -Cohort::Deltas["biomass"]["metabolism"] * actingCohort.CohortAbundance;
 
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Initialises values for all ecological parameters for metabolism
     \remarks Metabolism exponent and normalization constant calculated based on Nagy et al (1999) field metabolic rates.
     Use the Brown (2004) functional form and take the activation energy for metabolism from there
     The scalar to convert kJ to grams mass currently a very rough estimate based on the calorific values
     of fat, protein and carbohydrate */
-    void InitialiseMetabolismParameters() {
+    void InitialiseMetabolismParameters( ) {
         TimeUnitImplementation = "day";
 
         // Parameters from fitting to Nagy 1999 Field Metabolic Rates for mammals and birds, and assuming that these endotherms are metabolising with a body temperature of 310K (37C)
@@ -97,14 +100,15 @@ public:
         EndothermBodyTemperature = 37.0 + TemperatureUnitsConvert;
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Calculate metabolic loss in grams for an individual 
     @param individualBodyMass The body mass of individuals in the acting cohort 
     @param temperature The ambient temperature, in degrees Kelvin 
     @return The metabolic loss for an individual*/
-    double CalculateIndividualMetabolicRate(double individualBodyMass, double temperature) {
+    double CalculateIndividualMetabolicRate( double individualBodyMass, double temperature ) {
         // Calculate metabolic loss in kJ
-        double MetabolicLosskJ = NormalizationConstant * pow(individualBodyMass, MetabolismMassExponent) *
-                exp(-(ActivationEnergy / (BoltzmannConstant * EndothermBodyTemperature)));
+        double MetabolicLosskJ = NormalizationConstant * pow( individualBodyMass, MetabolismMassExponent ) *
+                exp( -( ActivationEnergy / ( BoltzmannConstant * EndothermBodyTemperature ) ) );
 
         // Return metabolic loss in grams
         return MetabolicLosskJ * EnergyScalar;

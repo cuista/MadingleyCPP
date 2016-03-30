@@ -19,6 +19,7 @@ Initialise and run the model
 
 #include "Convertor.h"
 #include "Logger.h"
+#include "Maths.h"
 //----------------------------------------------------------------------------------------------
 
 /** \brief Starts a model run or set of model runs */
@@ -29,7 +30,7 @@ int main( ) {
     feenableexcept( FE_INVALID | FE_OVERFLOW );
     // Write out model details to the console
     std::cout << ( "Madingley model C++ v. 0.\n" ) << std::endl;
-    
+
     std::time_t t = system_clock::to_time_t( high_resolution_clock::now( ) );
     cout << "Model Run started at " << std::ctime( &t ) << endl;
 

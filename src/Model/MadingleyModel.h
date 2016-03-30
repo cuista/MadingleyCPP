@@ -247,9 +247,8 @@ public:
 
     /** \brief Carries out extinction on cohorts that have an abundance below a defined extinction threshold */
     void RunExtinction( GridCell& gcl, ThreadLockedParallelVariables& partial ) {
-        bool VarExists;
-        // Loop over cohorts and remove any whose abundance is below the extinction threshold
 
+        // Loop over cohorts and remove any whose abundance is below the extinction threshold
         vector<Cohort>CohortsToRemove;
         gcl.ask( [&]( Cohort & c ) {
             if( c.CohortAbundance < Parameters::Get( )->GetExtinctionThreshold( ) || c.IndividualBodyMass <= 1.e-300 ) {
@@ -260,10 +259,10 @@ public:
 
         // Code to add the biomass to the biomass pool and dispose of the cohort
         for( auto& c: CohortsToRemove ) {
-            // Add biomass of the extinct cohort to the organic matter pool
 
+            // Add biomass of the extinct cohort to the organic matter pool
             double deadMatter = ( c.IndividualBodyMass + c.IndividualReproductivePotentialMass ) * c.CohortAbundance;
-            if( deadMatter < 0 )cout << "Dead " << deadMatter << endl;
+            if( deadMatter < 0 ) cout << "Dead " << deadMatter << endl;
             Environment::Get( "Organic Pool", c.Here( ) ) += deadMatter;
             assert( Environment::Get( "Organic Pool", c.Here( ) ) >= 0 && "Organic pool < 0" );
 

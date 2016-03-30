@@ -7,6 +7,7 @@
 #include <vector>
 #include <FunctionalGroupDefinitions.h>
 class GridCell;
+
 /** \brief  Individual stocks */
 class Stock {
 public:
@@ -23,7 +24,7 @@ public:
 
     /** \brief The total biomass of the stock */
     double TotalBiomass;
-    
+
     GridCell* location;
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -34,8 +35,8 @@ public:
     @param Functional Group The functional group index of the stock being generated 
     @param Environment The cell environment 
     @param Success Whether the stock should be present in this cell */
-    Stock(FunctionalGroupDefinitions& , const unsigned , GridCell&, bool& success);
-        
-     
+    Stock( FunctionalGroupDefinitions&, const unsigned, GridCell&, bool& success );
+
+
 };
 #endif

@@ -12,7 +12,6 @@
 #include "Convertor.h"
 #include "Parameters.h"
 /** \brief Generic functions */
-using namespace std;
 
 class UtilityFunctions {
 public:
@@ -86,8 +85,7 @@ public:
         units["day" ] = 3;
 
         //lowercase the string - a bit clunky...but then C++ strings are a bit
-        switch( units[ Parameters::Get( )->GetTimeStepUnits( ) ] )
-        {
+        switch( units[ Parameters::Get( )->GetTimeStepUnits( ) ] ) {
             case 0://year
                 Month = 0;
                 break;

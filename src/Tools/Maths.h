@@ -9,6 +9,8 @@ class Maths {
 public:
     ~Maths( );
     static Types::MathsPointer Get( );
+    
+    long double Pi( ) const;
 
     int Floor( const double& ) const;
     int Ceil( const double& ) const;
@@ -60,6 +62,8 @@ private:
     Maths( );
 
     static Types::MathsPointer mThis;
+    
+    long double mPi;
 };
 
 #endif

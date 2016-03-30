@@ -5,7 +5,7 @@
  */
 
 /** \brief A formulation of the process of senescence mortality*/
-class SenescenceMortality : public IMortalityImplementation {
+class SenescenceMortality: public IMortalityImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
@@ -23,17 +23,19 @@ public:
     //----------------------------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
+
     /** \brief Constructor for senscence mortality: assigns all parameter values */
-    SenescenceMortality(string globalModelTimeStepUnit) {
+    SenescenceMortality( string globalModelTimeStepUnit ) {
         // Calculate the scalar to convert from the time step units used by this implementation of mortality to the global model time step units
-        DeltaT = Utilities.ConvertTimeUnits(globalModelTimeStepUnit, TimeUnitImplementation);
+        DeltaT = Utilities.ConvertTimeUnits( globalModelTimeStepUnit, TimeUnitImplementation );
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Calculate the rate of individuals in a cohort that die from senescence mortality in a model time step 
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
     @return The rate of individuals in the cohort that die from senescence mortality*/
-    double CalculateMortalityRate( Cohort& actingCohort, double bodyMassIncludingChangeThisTimeStep,  unsigned currentTimestep) {
+    double CalculateMortalityRate( Cohort& actingCohort, double bodyMassIncludingChangeThisTimeStep, unsigned currentTimestep ) {
         // Calculate the age (in model time steps) that the cohort reached maturity
         double TimeToMaturity = actingCohort.MaturityTimeStep - actingCohort.BirthTimeStep;
 
@@ -41,10 +43,10 @@ public:
         double AgePostMaturity = currentTimestep - actingCohort.MaturityTimeStep;
 
         // Calculate the time since maturity as a fraction of the time that it took the cohort to reach maturity
-        double FractionalAgePostMaturity = AgePostMaturity / (TimeToMaturity + 1);
+        double FractionalAgePostMaturity = AgePostMaturity / ( TimeToMaturity + 1 );
 
         // Calculate the mortality rate per mortality formulation time step as a function of the exponential of the previous fraction
-        double AgeRelatedMortalityRate = MortalityRate * exp(FractionalAgePostMaturity);
+        double AgeRelatedMortalityRate = MortalityRate * exp( FractionalAgePostMaturity );
 
         // Convert the mortality rate from formulation time step units to model time step units
         return AgeRelatedMortalityRate * DeltaT;

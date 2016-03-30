@@ -28,8 +28,9 @@ public:
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
+
     /** This class just needs a constructor*/
-    ThreadLockedParallelVariables(int E, int P, int C, long long N) : Extinctions(E), Productions(P), Combinations(C), NextCohortIDThreadLocked(N) {
+    ThreadLockedParallelVariables( int E, int P, int C, long long N ): Extinctions( E ), Productions( P ), Combinations( C ), NextCohortIDThreadLocked( N ) {
         ;
     }
 };

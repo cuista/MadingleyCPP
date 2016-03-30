@@ -18,91 +18,109 @@ class GridCell;
 using namespace std;
 typedef vector <vector<double> > LayerData;
 ////////////////////////////////////////////////////////////////////////////////
-class layer{
+
+class layer {
 public:
-    virtual ~layer(){;}
-    virtual vector<double>& operator[](int i)=0;
-    virtual void setTime(int tm)=0;
+
+    virtual ~layer( ) {
+        ;
+    }
+    virtual vector<double>& operator[]( int i ) = 0;
+    virtual void setTime( int tm ) = 0;
 };
 ////////////////////////////////////////////////////////////////////////////////
-class layer0 : public layer {
+
+class layer0: public layer {
     LayerData data;
 public:
-    layer0(int sx, int sy) {
-        data.resize(sx);
-        for (unsigned m = 0; m < sx; m++)data[m].resize(sy);
+
+    layer0( int sx, int sy ) {
+        data.resize( sx );
+        for( unsigned m = 0; m < sx; m++ )data[m].resize( sy );
     }
     //--------------------------------------------------------------------------
-    ~layer0(){
-       for (unsigned m = 0; m < data.size(); m++)data[m].clear(); 
+
+    ~layer0( ) {
+        for( unsigned m = 0; m < data.size( ); m++ )data[m].clear( );
     }
     //--------------------------------------------------------------------------
-    vector<double>& operator[](int i) {
+
+    vector<double>& operator[]( int i ) {
         return data[i];
     }
     //--------------------------------------------------------------------------
-    void setTime(int tm){;}
+
+    void setTime( int tm ) {
+        ;
+    }
 };
 ////////////////////////////////////////////////////////////////////////////////
-class layerT : public layer {
+
+class layerT: public layer {
     int t;
     vector<LayerData> data;
 public:
-    layerT(int q, int sx, int sy) : t(0) {
-        data.resize(q);
-        for (unsigned u = 0; u < q; u++) {
-            data[u].resize(sx);
-            for (unsigned i = 0; i < sx; i++) {
-                data[u][i].resize(sy);
+
+    layerT( int q, int sx, int sy ): t( 0 ) {
+        data.resize( q );
+        for( unsigned u = 0; u < q; u++ ) {
+            data[u].resize( sx );
+            for( unsigned i = 0; i < sx; i++ ) {
+                data[u][i].resize( sy );
             }
         }
     }
     //--------------------------------------------------------------------------
-    ~layerT(){
-       for (unsigned m = 0; m < data.size(); m++){
-           for (unsigned n=0;n<data[m].size();n++)data[m][n].clear();   
-           data[m].clear();
-       }
+
+    ~layerT( ) {
+        for( unsigned m = 0; m < data.size( ); m++ ) {
+            for( unsigned n = 0; n < data[m].size( ); n++ )data[m][n].clear( );
+            data[m].clear( );
+        }
     }
     //--------------------------------------------------------------------------
-    vector<double>& operator[](int i) {
+
+    vector<double>& operator[]( int i ) {
         return data[t][i];
     }
     //--------------------------------------------------------------------------
-    void setTime(int tm){t=tm;}
+
+    void setTime( int tm ) {
+        t = tm;
+    }
 };
 ////////////////////////////////////////////////////////////////////////////////
+
 class Environment {
-
     static Environment* Instance;
-    static map<string,layer*> Layers;
-    Environment();
+    static map<string, layer*> Layers;
+    Environment( );
 
 
-    void addLayer(string);
-    void addLayerT(string);
-void setUVel();
-void setVVel();
-void setTemperature();
-void setDiurnalTemperatureRange();
-void setPrecipitation() ;
-void setNPP();
-void setRealm();
-void setOrganicPool();
-void setRespiratoryCO2Pool();
-void setAVGSDTemp();
-void setNPPSeasonality();
-void setBreeding();
-void setFrostandFire();
-void setHANPP();
+    void addLayer( string );
+    void addLayerT( string );
+    void setUVel( );
+    void setVVel( );
+    void setTemperature( );
+    void setDiurnalTemperatureRange( );
+    void setPrecipitation( );
+    void setNPP( );
+    void setRealm( );
+    void setOrganicPool( );
+    void setRespiratoryCO2Pool( );
+    void setAVGSDTemp( );
+    void setNPPSeasonality( );
+    void setBreeding( );
+    void setFrostandFire( );
+    void setHANPP( );
 public:
     static const double MissingValue;
-    static Environment* Get();
-    static double Get(string s, GridCell& gcl, int tm);
-    static double& Get(string s, GridCell& gcl);
-    static double& Get(string s, int,int);
+    static Environment* Get( );
+    static double Get( string s, GridCell& gcl, int tm );
+    static double& Get( string s, GridCell& gcl );
+    static double& Get( string s, int, int );
 
-    static void update(int);
+    static void update( int );
 };
 
 #endif	/* ENVIRONMENT_H */

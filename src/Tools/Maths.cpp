@@ -21,7 +21,11 @@ Maths::~Maths( ) {
 }
 
 Maths::Maths( ) {
+    mPi = acos( -1. );
+}
 
+long double Maths::Pi( ) const {
+    return mPi;
 }
 
 int Maths::Floor( const double& value ) const {

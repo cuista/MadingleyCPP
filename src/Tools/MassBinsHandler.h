@@ -20,35 +20,37 @@ public:
     //----------------------------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
+
     /** \brief Sets up mass bins based on an input file
     @param massBinsFile The filename containing the mass bin information 
      */
-    void SetUpMassBins(string massBinsFile) {
+    void SetUpMassBins( string massBinsFile ) {
 
         massBinsFile = Constants::cConfigurationDirectory + massBinsFile;
-        
-        ifstream massFile(massBinsFile.c_str());
+
+        ifstream massFile( massBinsFile.c_str( ) );
         string title;
-        if (massFile.is_open()) {
-            getline(massFile, title);
+        if( massFile.is_open( ) ) {
+            getline( massFile, title );
             float f;
-            while (!massFile.eof()) {
+            while( !massFile.eof( ) ) {
                 massFile>>f;
-                if (!massFile.eof())MassBins.push_back(f);
+                if( !massFile.eof( ) )MassBins.push_back( f );
             }
             // Sort the array of mass bins
-            sort(MassBins.begin(), MassBins.end());
-            massFile.close();
+            sort( MassBins.begin( ), MassBins.end( ) );
+            massFile.close( );
         } else {
             cout << "Problem with Mass Bins file!! " << massBinsFile << endl;
-            exit(1);
+            exit( 1 );
         }
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Returns the mass bins copied from file
     @return the mass bins copied from file
      */
-    vector<float> const& GetSpecifiedMassBins() const {
+    vector<float> const& GetSpecifiedMassBins( ) const {
         return MassBins;
     }
     //----------------------------------------------------------------------------------------------

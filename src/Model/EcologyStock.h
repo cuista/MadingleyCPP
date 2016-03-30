@@ -42,7 +42,7 @@ public:
     @param params Parameters */
 
     void RunWithinCellEcology( GridCell& gcl, Stock& actingStock, unsigned currentTimeStep, unsigned currentMonth, MadingleyModelInitialisation& params ) {
-        
+
         FunctionalGroupDefinitions& madingleyStockDefinitions = params.StockFunctionalGroupDefinitions;
 
         if( gcl.isMarine( ) ) {

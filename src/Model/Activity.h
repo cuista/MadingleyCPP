@@ -2,10 +2,10 @@
 #define ACTIVITY_H
 #include <map>
 #include <vector>
-#include <math.h>
 #include <FunctionalGroupDefinitions.h>
 #include <Cohort.h>
-using namespace std;
+
+#include "Maths.h"
 /** \file Activity.h
  * \brief the Activity header file
  */
@@ -103,7 +103,6 @@ public:
     @return The proportion of the timestep for which this cohort could be active*/
     double CalculateProportionTimeSuitableTerrestrial( GridCell& gcl, unsigned currentMonth, bool endotherm ) {
 
-
         AmbientTemp = Environment::Get( "Temperature", gcl );
         DTR = Environment::Get( "DiurnalTemperatureRange", gcl );
 
@@ -133,29 +132,20 @@ public:
 
     @return The proportion of the day that temperatures are between CTmin and CTmax*/
     double ProportionDaySuitable( ) {
-        const double PI = acos( -1. );
-        double ProportionOfDaySuitable;
-
 
         //Calculate the diurnal maximum in the current month
         double DTmax = AmbientTemp + ( 0.5 * DTR );
         double DTmin = AmbientTemp - ( 0.5 * DTR );
 
-
-        //Proportion of time for which ambient temperatures are greater than the critical upper temperature
-        double POver;
-        //Proportion of time for which ambient temperatures are below the critical lower temperature
-        double PBelow;
-        double temp;
-
+        double temp = 2 * ( CTmax - AmbientTemp ) / DTR;
         if( CTmax - DTmax > 0.0 ) {
             temp = 1.0;
         } else if( CTmax - DTmin < 0.0 ) {
             temp = -1.0;
-        } else {
-            temp = 2 * ( CTmax - AmbientTemp ) / DTR;
         }
-        POver = ( ( PI / 2.0 ) - asin( temp ) ) / PI;
+
+        //Proportion of time for which ambient temperatures are greater than the critical upper temperature
+        double POver = ( ( Maths::Get( )->Pi( ) / 2.0 ) - asin( temp ) ) / Maths::Get( )->Pi( );
 
         if( CTmin - DTmax > 0.0 ) {
             temp = 1.0;
@@ -164,11 +154,10 @@ public:
         } else {
             temp = 2 * ( CTmin - AmbientTemp ) / DTR;
         }
-        PBelow = 1 - ( ( PI / 2.0 ) - asin( temp ) ) / PI;
+        //Proportion of time for which ambient temperatures are below the critical lower temperature
+        double PBelow = 1 - ( ( Maths::Get( )->Pi( ) / 2.0 ) - asin( temp ) ) / Maths::Get( )->Pi( );
 
-        ProportionOfDaySuitable = 1 - ( POver + PBelow );
-
-        return ProportionOfDaySuitable;
+        return 1 - ( POver + PBelow );
     }
     //----------------------------------------------------------------------------------------------
 };
