@@ -29,12 +29,8 @@ public:
 
     //----------------------------------------------------------------------------------------------
 
-    /** \brief Set the seed for the random number generator
-    @param DrawRandomly  
-     */
-    void SetRandom( bool DrawRandomly ) {
-
-        if( DrawRandomly ) {
+    CohortMerge( ) {
+        if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
             unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
             RandomNumberGenerator.seed( seed );
         } else {

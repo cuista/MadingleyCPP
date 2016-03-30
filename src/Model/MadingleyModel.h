@@ -93,14 +93,10 @@ public:
 
         // Set up model outputs
         SetUpOutputs( );
-
         //end of initialisations
-        // Initialise the cohort merger - this is just to set where the random seed comes from
-        CohortMerger.SetRandom( Parameters::Get( )->GetDrawRandomly( ) );
 
         // Initialise cross grid cell ecology
         disperser.setup( params );
-
     }
     //----------------------------------------------------------------------------------------------
 
