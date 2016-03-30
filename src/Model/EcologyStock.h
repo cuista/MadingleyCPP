@@ -5,6 +5,7 @@
 #include <HANPP.h>
 
 #include <MadingleyModelInitialisation.h>
+#include "Parameters.h"
 /** \file EcologyStock.h
  * \brief the EcologyStock header file
  */
@@ -32,6 +33,7 @@ public:
     //----------------------------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
+
     /** \brief Run ecological processes that operate on stocks within a single grid cell 
     @param gcl The current grid cell 
     @param actingStock The acting stock 
@@ -39,23 +41,25 @@ public:
     @param currentMonth The current model month 
     @param params Parameters */
 
-    void RunWithinCellEcology(GridCell& gcl, Stock& actingStock, 
-            unsigned currentTimeStep, unsigned currentMonth,MadingleyModelInitialisation& params) {
-        string globalModelTimeStepUnit=params.GlobalModelTimeStepUnit;
-        string humanNPPExtraction=params.InitialisationFileStrings["HumanNPPExtraction"];
-        FunctionalGroupDefinitions& madingleyStockDefinitions=params.StockFunctionalGroupDefinitions;
-        
-        if (gcl.isMarine()) {
+    void RunWithinCellEcology( GridCell& gcl, Stock& actingStock,
+            unsigned currentTimeStep, unsigned currentMonth, MadingleyModelInitialisation& params ) {
+        string globalModelTimeStepUnit = Parameters::Get( )->GetTimeStepUnits( );
+        string humanNPPExtraction = Parameters::Get( )->GetHumanNPPExtraction( );
+        FunctionalGroupDefinitions& madingleyStockDefinitions = params.StockFunctionalGroupDefinitions;
+
+        if( gcl.isMarine( ) ) {
             // Run the autotroph processor
-            MarineNPPtoAutotrophStock.ConvertNPPToAutotroph(gcl, actingStock, 
-                    currentTimeStep, currentMonth,params);
+            MarineNPPtoAutotrophStock.ConvertNPPToAutotroph( gcl, actingStock,
+                    currentTimeStep, currentMonth, params );
         } else {
             // Run the dynamic plant model to update the leaf stock for this time step
-            DynamicPlantModel.UpdateLeafStock(gcl,  actingStock, currentTimeStep, madingleyStockDefinitions.GetTraitNames("leaf strategy", actingStock.FunctionalGroupIndex) == "deciduous", params.GlobalModelTimeStepUnit, currentMonth);
-            // Apply human appropriation of NPP
-            HANPP.RemoveHumanAppropriatedMatter(gcl, humanNPPExtraction, actingStock, currentTimeStep, currentMonth);
+            //DynamicPlantModel.UpdateLeafStock( gcl, actingStock, currentTimeStep, madingleyStockDefinitions.GetTraitNames( "leaf strategy", actingStock.FunctionalGroupIndex ) == "deciduous", params.GlobalModelTimeStepUnit, currentMonth );
+            DynamicPlantModel.UpdateLeafStock( gcl, actingStock, currentTimeStep, madingleyStockDefinitions.GetTraitNames( "leaf strategy", actingStock.FunctionalGroupIndex ) == "deciduous", Parameters::Get( )->GetTimeStepUnits( ), currentMonth );
 
-        } 
+            // Apply human appropriation of NPP
+            HANPP.RemoveHumanAppropriatedMatter( gcl, humanNPPExtraction, actingStock, currentTimeStep, currentMonth );
+
+        }
     }
     //----------------------------------------------------------------------------------------------
 };

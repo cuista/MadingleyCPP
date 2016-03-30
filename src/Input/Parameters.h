@@ -22,7 +22,7 @@ public:
     unsigned GetMaximumNumberOfCohorts( ) const;
     float GetPlanktonSizeThreshold( ) const;
     bool GetDrawRandomly( ) const;
-    bool GetHumanNPPExtraction( ) const;
+    std::string GetHumanNPPExtraction( ) const;
 
     void SetTimeStepUnits( const std::string& );
     void SetLengthOfSimulationInYears( const unsigned& );
@@ -82,7 +82,7 @@ private:
     unsigned mMaximumNumberOfCohorts;
     float mPlanktonSizeThreshold;
     bool mDrawRandomly;
-    bool mHumanNPPExtraction;
+    std::string mHumanNPPExtraction;
 
     // Calculated parameters
     unsigned mLengthOfSimulationInTimeSteps;

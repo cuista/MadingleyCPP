@@ -5,6 +5,7 @@
 #include <Environment.h>
 #include <GridCell.h>
 
+#include "Parameters.h"
 /** \file AutotrophProcessor.h
  * \brief the AutotrophProcessor header file
  */
@@ -33,27 +34,29 @@ public:
     //----------------------------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
+
     /** \brief Constructor for the autotroph processor: initialises necessary classes */
-    AutotrophProcessor() {
+    AutotrophProcessor( ) {
 
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Convert NPP estimate into biomass of an autotroph stock
     @param gcl The current grid cell 
     @param actingStock The stock to add biomass to 
     @param currentTimestep The current model time step
     @param currentMonth Month as an integer 
     @param params Current parameters */
-    void ConvertNPPToAutotroph(GridCell& gcl, Stock&  actingStock, 
-     unsigned currentTimestep, 
-     unsigned currentMonth, MadingleyModelInitialisation& params) {
+    void ConvertNPPToAutotroph( GridCell& gcl, Stock& actingStock,
+            unsigned currentTimestep,
+            unsigned currentMonth, MadingleyModelInitialisation& params ) {
         // Get NPP from the cell environment
-        double NPP = Environment::Get("NPP",gcl);
+        double NPP = Environment::Get( "NPP", gcl );
         // If NPP is a missing value then set to zero
-        if (NPP == Environment::MissingValue) NPP = 0.0;
+        if( NPP == Environment::MissingValue ) NPP = 0.0;
 
         // Check that this is an ocean cell
-        if (gcl.isMarine()) {
+        if( gcl.isMarine( ) ) {
             // Check that the units of oceanic NPP are gC per m2 per day
             //assert(params.Units["OceanNPP"] == "gC/m2/day" && "Oceanic NPP data are not in the correct units for this formulation of the model");
 
@@ -61,25 +64,27 @@ public:
             NPP *= MsqToKmSqConversion;
 
             //Multiply by cell area to get g/cell/day
-            NPP *= gcl.CellArea();
+            NPP *= gcl.CellArea( );
 
             //Convert to g wet matter, assuming carbon content of phytoplankton is 10% of wet matter
             NPP *= PhytoplanktonConversionRatio;
 
             //Finally convert to g/cell/month and add to the stock totalbiomass
-            NPP *= Utilities.ConvertTimeUnits(params.GlobalModelTimeStepUnit, "day");
+            //NPP *= Utilities.ConvertTimeUnits( params.GlobalModelTimeStepUnit, "day" );
+            NPP *= Utilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), "day" );
+
             actingStock.TotalBiomass += NPP;
 
             // If the biomass of the autotroph stock has been made less than zero (i.e. because of negative NPP) then reset to zero
-            if (actingStock.TotalBiomass < 0.0)
+            if( actingStock.TotalBiomass < 0.0 )
                 actingStock.TotalBiomass = 0.0;
-        }            // Else if neither on land or in the ocean
+        }// Else if neither on land or in the ocean
         else {
             cout << "This is not a marine cell!" << endl;
             // Set the autotroph biomass to zero
             actingStock.TotalBiomass = 0.0;
         }
-        assert(actingStock.TotalBiomass >= 0.0 && "stock negative");
+        assert( actingStock.TotalBiomass >= 0.0 && "stock negative" );
     }
     //----------------------------------------------------------------------------------------------
 };

@@ -96,7 +96,9 @@ public:
 
         //end of initialisations
         // Initialise the cohort merger - this is just to set where the random seed comes from
-        CohortMerger.SetRandom( params.DrawRandomly );
+        //CohortMerger.SetRandom( params.DrawRandomly );
+        CohortMerger.SetRandom( Parameters::Get( )->GetDrawRandomly( ) );
+
         // Initialise cross grid cell ecology
         disperser.setup( params );
 
@@ -121,11 +123,13 @@ public:
         cout << Parameters::Get( )->GetHumanNPPExtraction( ) << endl;
 
         cout << "Running model" << endl;
-        cout << "Number of time steps is: " << params.NumTimeSteps << endl;
+        //cout << "Number of time steps is: " << params.NumTimeSteps << endl;
+        cout << "Number of time steps is: " << Parameters::Get( )->GetLengthOfSimulationInTimeSteps( ) << endl;
 
         Dispersals = 0;
         /// Run the model
-        for( unsigned timeStep = 0; timeStep < params.NumTimeSteps; timeStep += 1 ) {
+        //for( unsigned timeStep = 0; timeStep < params.NumTimeSteps; timeStep += 1 ) {
+        for( unsigned timeStep = 0; timeStep < Parameters::Get( )->GetLengthOfSimulationInTimeSteps( ); timeStep += 1 ) {
 
             DateTime::Get( )->SetTimeStep( timeStep );
 
@@ -134,7 +138,8 @@ public:
             TimeStepTimer.Start( );
             // Get current time step and month
             CurrentTimeStep = timeStep;
-            CurrentMonth = Utilities.GetCurrentMonth( timeStep, params.GlobalModelTimeStepUnit );
+            //CurrentMonth = Utilities.GetCurrentMonth( timeStep, params.GlobalModelTimeStepUnit );
+            CurrentMonth = Utilities.GetCurrentMonth( timeStep, Parameters::Get( )->GetTimeStepUnits( ) );
             EcologyTimer.Start( );
 
             Environment::update( CurrentMonth );
@@ -227,7 +232,8 @@ public:
 
         gcl.ask( [&]( Cohort & c ) {
             // Perform all biological functions except dispersal (which is cross grid cell)
-            if( gcl.GridCellCohorts[c.FunctionalGroupIndex].size( ) != 0 && c.CohortAbundance > params.ExtinctionThreshold ) {
+            //if( gcl.GridCellCohorts[c.FunctionalGroupIndex].size( ) != 0 && c.CohortAbundance > params.ExtinctionThreshold ) {
+            if( gcl.GridCellCohorts[c.FunctionalGroupIndex].size( ) != 0 && c.CohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
 
                 CohortActivity.AssignProportionTimeActive( gcl, c, CurrentTimeStep, CurrentMonth, params );
 
@@ -256,7 +262,8 @@ public:
         RunExtinction( gcl, partial );
 
         // Merge cohorts, if necessary
-        if( gcl.GetNumberOfCohorts( ) > params.MaxNumberOfCohorts ) {
+        //if( gcl.GetNumberOfCohorts( ) > params.MaxNumberOfCohorts ) {
+        if( gcl.GetNumberOfCohorts( ) > Parameters::Get( )->GetMaximumNumberOfCohorts( ) ) {
             partial.Combinations += CohortMerger.MergeToReachThresholdFast( gcl, params );
 
 
@@ -275,7 +282,8 @@ public:
 
         vector<Cohort>CohortsToRemove;
         gcl.ask( [&]( Cohort & c ) {
-            if( c.CohortAbundance < params.ExtinctionThreshold || c.IndividualBodyMass <= 1.e-300 ) {
+            //if( c.CohortAbundance < params.ExtinctionThreshold || c.IndividualBodyMass <= 1.e-300 ) {
+            if( c.CohortAbundance < Parameters::Get( )->GetExtinctionThreshold( ) || c.IndividualBodyMass <= 1.e-300 ) {
                 CohortsToRemove.push_back( c );
                 partial.Extinctions += 1;
             }

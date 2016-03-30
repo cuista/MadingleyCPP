@@ -154,7 +154,7 @@ bool Parameters::GetDrawRandomly( ) const {
     return mDrawRandomly;
 }
 
-bool Parameters::GetHumanNPPExtraction( ) const {
+std::string Parameters::GetHumanNPPExtraction( ) const {
     return mHumanNPPExtraction;
 }
 
@@ -205,11 +205,8 @@ void Parameters::SetDrawRandomly( const std::string& drawRandomlyString ) {
         mDrawRandomly = false;
 }
 
-void Parameters::SetHumanNPPExtraction( const std::string& humanNPPExtractionString ) {
-    if( humanNPPExtractionString == "yes" )
-        mHumanNPPExtraction = true;
-    else
-        mHumanNPPExtraction = false;
+void Parameters::SetHumanNPPExtraction( const std::string& humanNPPExtraction ) {
+    mHumanNPPExtraction = humanNPPExtraction;
 }
 
 unsigned Parameters::GetLengthOfSimulationInTimeSteps( ) const {

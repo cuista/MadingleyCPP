@@ -7,6 +7,8 @@
 #include <Reproduction.h>
 #include <Mortality.h>
 #include <Metabolism.h>
+
+#include "Parameters.h"
 /** \file EcologyCohort.h
  * \brief the EcologyCohort header file
  */
@@ -38,37 +40,49 @@ public:
     //----------------------------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
+
     /** \brief Initalise the ecological processes */
-    EcologyCohort(){;}
-    void setup(MadingleyModelInitialisation& params) {
+    EcologyCohort( ) {
+        ;
+    }
+
+    void setup( MadingleyModelInitialisation& params ) {
         // Declare and attach eating formulations
-        Eating *EatingFormulation = new Eating(params.GlobalModelTimeStepUnit);
+        //Eating *EatingFormulation = new Eating( params.GlobalModelTimeStepUnit );
+        Eating *EatingFormulation = new Eating( Parameters::Get( )->GetTimeStepUnits( ) );
+
         EatingFormulations["Basic eating"] = EatingFormulation;
         // Declare and attach metabolism formulations
-        Metabolism *MetabolismFormulation = new Metabolism(params.GlobalModelTimeStepUnit);
+        //Metabolism *MetabolismFormulation = new Metabolism( params.GlobalModelTimeStepUnit );
+        Metabolism *MetabolismFormulation = new Metabolism( Parameters::Get( )->GetTimeStepUnits( ) );
         MetabolismFormulations["Basic metabolism"] = MetabolismFormulation;
         // Declare and attach mortality formulations
-        Mortality *MortalityFormulation = new Mortality(params.GlobalModelTimeStepUnit);
+        //Mortality *MortalityFormulation = new Mortality( params.GlobalModelTimeStepUnit );
+        Mortality *MortalityFormulation = new Mortality( Parameters::Get( )->GetTimeStepUnits( ) );
         MortalityFormulations["Basic mortality"] = MortalityFormulation;
         // Declare and attach mortality formulations
-        Reproduction *ReproductionFormulation = new Reproduction(params.GlobalModelTimeStepUnit, params.DrawRandomly);
+        //Reproduction *ReproductionFormulation = new Reproduction( params.GlobalModelTimeStepUnit, params.DrawRandomly );
+        Reproduction *ReproductionFormulation = new Reproduction( Parameters::Get( )->GetTimeStepUnits( ), Parameters::Get( )->GetDrawRandomly( ) );
         ReproductionFormulations["Basic reproduction"] = ReproductionFormulation;
     }
-    void initialiseEating(GridCell& gcl, MadingleyModelInitialisation& params){
+
+    void initialiseEating( GridCell& gcl, MadingleyModelInitialisation& params ) {
         // Initialise eating formulations - has to be redone every step?
 
-        EatingFormulations["Basic eating"]->InitializeEcologicalProcess(gcl,params, "revised predation");
+        EatingFormulations["Basic eating"]->InitializeEcologicalProcess( gcl, params, "revised predation" );
 
-        EatingFormulations["Basic eating"]->InitializeEcologicalProcess(gcl,params, "revised herbivory");
+        EatingFormulations["Basic eating"]->InitializeEcologicalProcess( gcl, params, "revised herbivory" );
     }
     //----------------------------------------------------------------------------------------------
-    ~EcologyCohort() {
+
+    ~EcologyCohort( ) {
         delete EatingFormulations["Basic eating"];
         delete MetabolismFormulations["Basic metabolism"];
         delete MortalityFormulations["Basic mortality"];
         delete ReproductionFormulations["Basic reproduction"];
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Run ecological processes that operate on cohorts within a single grid cell
     @param gcl The current grid cell 
     @param actingCohort The acting cohort 
@@ -76,37 +90,38 @@ public:
     @param partial Thread-locked local variables 
     @param currentMonth The current model month
     @param params Things that may be needed */
-    void RunWithinCellEcology(GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, 
-            ThreadLockedParallelVariables& partial,  unsigned currentMonth, MadingleyModelInitialisation& params) {
+    void RunWithinCellEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep,
+            ThreadLockedParallelVariables& partial, unsigned currentMonth, MadingleyModelInitialisation& params ) {
 
         // RUN EATING
         EatingFormulations["Basic eating"]->RunEcologicalProcess(
-                            gcl,actingCohort,currentTimestep, partial,currentMonth, params);
+                gcl, actingCohort, currentTimestep, partial, currentMonth, params );
 
 
         // RUN METABOLISM - THIS TIME TAKE THE METABOLIC LOSS TAKING INTO ACCOUNT WHAT HAS BEEN INGESTED THROUGH EATING
         MetabolismFormulations["Basic metabolism"]->RunEcologicalProcess(
-                            gcl,actingCohort,currentTimestep, partial,currentMonth, params);
+                gcl, actingCohort, currentTimestep, partial, currentMonth, params );
 
 
         // RUN REPRODUCTION - TAKING INTO ACCOUNT NET BIOMASS CHANGES RESULTING FROM EATING AND METABOLISING
         ReproductionFormulations["Basic reproduction"]->RunEcologicalProcess(
-                            gcl,actingCohort,currentTimestep, partial,currentMonth, params);
+                gcl, actingCohort, currentTimestep, partial, currentMonth, params );
 
 
         // RUN MORTALITY - TAKING INTO ACCOUNT NET BIOMASS CHANGES RESULTING FROM EATING, METABOLISM AND REPRODUCTION
         MortalityFormulations["Basic mortality"]->RunEcologicalProcess(
-                            gcl,actingCohort,currentTimestep, partial,currentMonth, params);
+                gcl, actingCohort, currentTimestep, partial, currentMonth, params );
     }
     //----------------------------------------------------------------------------------------------
+
     /** \brief Update the properties of the acting cohort and of the environmental biomass pools after running the ecological processes for a cohort
     @param gridCell The current grid cell 
     @param actingCohort The acting cohort 
     @param currentTimestep The current model time step 
-    */
-    void UpdateEcology(GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep) {
+     */
+    void UpdateEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep ) {
         // Apply the results of within-cell ecological processes
-        ApplyEcologicalProcessResults.UpdateAllEcology(gcl, actingCohort, currentTimestep);
+        ApplyEcologicalProcessResults.UpdateAllEcology( gcl, actingCohort, currentTimestep );
     }
     //----------------------------------------------------------------------------------------------
 };

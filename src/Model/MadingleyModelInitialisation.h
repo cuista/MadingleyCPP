@@ -13,6 +13,7 @@
 #include <cstdlib>
 
 #include "Constants.h"
+#include "Parameters.h"
 
 /**
  \ file *MadingleyModelInitialisation.h
@@ -29,19 +30,19 @@ public:
     //Variables
     //----------------------------------------------------------------------------------------------
     /** String identifying time step units to be used by the simulations */
-    string GlobalModelTimeStepUnit;
+    //string GlobalModelTimeStepUnit;
     /** The number of time steps to be run in the simulations */
-    unsigned NumTimeSteps;
+    //unsigned NumTimeSteps;
     /** The size of cells to be used in the model grid */
-    float CellSize;
+    //float CellSize;
     /** The lowest extent of the model grid in degrees */
-    float BottomLatitude;
+    //float BottomLatitude;
     /** The uppermost extent of the model grid in degrees */
-    float TopLatitude;
+    //float TopLatitude;
     /** The leftmost extent of the model grid in degrees */
-    float LeftmostLongitude;
+    //float LeftmostLongitude;
     /** The rightmost extent of the model grid in degrees */
-    float RightmostLongitude;
+    //float RightmostLongitude;
     /** The rarefaction of active cells in the model grid */
     int CellRarefaction;
     /** Whether to run the model for different grid cells in parallel (??) */
@@ -54,19 +55,19 @@ public:
     string RunRealm;
     /** Whether to draw cohort properties randomly when seeding them and whether cohorts will undergo ecological processes in a random order
      @remark Value should be set in initialization file, but default value is true */
-    bool DrawRandomly;
+    //bool DrawRandomly;
     //MB 6/8/2015 Now set in the constructor
     /** The threshold abundance below which cohorts will be made extinct */
-    double ExtinctionThreshold;
+    //double ExtinctionThreshold;
     /** The threshold difference between cohorts, within which they will be merged */
     double MergeDifference;
     /** The maximum number of cohorts to be in the model, per grid cell, when it is running */
-    int MaxNumberOfCohorts;
+    //int MaxNumberOfCohorts;
     /**Whether to run only dispersal (i.e. turn all other ecological processes off, and set dispersal probability to one temporarily) */
     bool DispersalOnly;
     //MB 6/8/2015 Default now set in the constructor
     /** The weight threshold (grams) below which marine organisms that are not obligate zooplankton will be dispersed planktonically */
-    double PlanktonDispersalThreshold;
+    //double PlanktonDispersalThreshold;
     /** The full path for the output files for a set of simulations */
     string OutputPath;
     /** Whether to output detailed diagnostics for the ecological processes */
@@ -121,7 +122,7 @@ public:
         Environment::Get( );
         cout << "data read" << endl;
         //set default value of cohort random draw properties
-        DrawRandomly = true;
+        //DrawRandomly = true;
         //set default dispersal
         DispersalOnly = false;
         NextCohortID = 0;
@@ -129,7 +130,9 @@ public:
         // Read the intialisation files and store values
         ReadInitialisationFiles( );
 
-        Grid.SetUpGrid( BottomLatitude, LeftmostLongitude, TopLatitude, RightmostLongitude, CellSize );
+        //Grid.SetUpGrid( BottomLatitude, LeftmostLongitude, TopLatitude, RightmostLongitude, CellSize );
+        Grid.SetUpGrid( Parameters::Get( )->GetUserMinimumLatitude( ), Parameters::Get( )->GetUserMinimumLongitude( ), Parameters::Get( )->GetUserMaximumLatitude( ), Parameters::Get( )->GetUserMaximumLongitude( ), Parameters::Get( )->GetGridCellSize( ) );
+
 
         //MB THis is currently just used to get units -needs replacing
         //ReadEnvironmentalLayers( InitialisationFileStrings["Environmental"], outputPath, Grid );
@@ -191,19 +194,19 @@ public:
                 transform( param.begin( ), param.end( ), param.begin( ), ::tolower );
                 transform( val.begin( ), val.end( ), val.begin( ), ::tolower );
 
-                if( param == "timestep units" )GlobalModelTimeStepUnit = val;
-                if( param == "length of simulation (years)" )NumTimeSteps = ( unsigned )Utilities.ConvertTimeUnits( "year", GlobalModelTimeStepUnit ) * atoi( val.c_str( ) );
-                if( param == "number timesteps" ) NumTimeSteps = atoi( val.c_str( ) );
-                if( param == "grid cell size" ) CellSize = atof( val.c_str( ) );
-                if( param == "bottom latitude" ) BottomLatitude = atof( val.c_str( ) );
-                if( param == "top latitude" ) TopLatitude = atof( val.c_str( ) );
-                if( param == "leftmost longitude" ) LeftmostLongitude = atof( val.c_str( ) );
-                if( param == "rightmost longitude" ) RightmostLongitude = atof( val.c_str( ) );
-                if( param == "draw randomly" ) DrawRandomly = ( ( val == "yes" ) ? true : false );
-                if( param == "extinction threshold" ) ExtinctionThreshold = atof( val.c_str( ) );
-                if( param == "maximum number of cohorts" ) MaxNumberOfCohorts = atof( val.c_str( ) );
-                if( param == "plankton size threshold" ) PlanktonDispersalThreshold = atof( val.c_str( ) );
-                if( param == "human npp extraction" ) InitialisationFileStrings["HumanNPPExtraction"] = val;
+                //if( param == "timestep units" )GlobalModelTimeStepUnit = val;
+                //if( param == "length of simulation (years)" )NumTimeSteps = ( unsigned )Utilities.ConvertTimeUnits( "year", GlobalModelTimeStepUnit ) * atoi( val.c_str( ) );
+                //if( param == "number timesteps" ) NumTimeSteps = atoi( val.c_str( ) );
+                //if( param == "grid cell size" ) CellSize = atof( val.c_str( ) );
+                //if( param == "bottom latitude" ) BottomLatitude = atof( val.c_str( ) );
+                //if( param == "top latitude" ) TopLatitude = atof( val.c_str( ) );
+                //if( param == "leftmost longitude" ) LeftmostLongitude = atof( val.c_str( ) );
+                //if( param == "rightmost longitude" ) RightmostLongitude = atof( val.c_str( ) );
+                //if( param == "draw randomly" ) DrawRandomly = ( ( val == "yes" ) ? true : false );
+                //if( param == "extinction threshold" ) ExtinctionThreshold = atof( val.c_str( ) );
+                //if( param == "maximum number of cohorts" ) MaxNumberOfCohorts = atof( val.c_str( ) );
+                //if( param == "plankton size threshold" ) PlanktonDispersalThreshold = atof( val.c_str( ) );
+                //if( param == "human npp extraction" ) InitialisationFileStrings["HumanNPPExtraction"] = val;
 
                 //if( param == "cohort functional group definitions file" ) {
                 //    cout << "Reading functional group definitions..." << endl;
@@ -349,7 +352,7 @@ public:
         long totalCohorts = 0;
         // Set the seed for the random number generator from the system time
         unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
-        if( DrawRandomly ) RandomNumberGenerator.seed( seed );
+        if( Parameters::Get( )->GetDrawRandomly( ) == true ) RandomNumberGenerator.seed( seed );
         else RandomNumberGenerator.seed( 1000 );
 
 

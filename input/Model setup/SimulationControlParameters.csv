@@ -3,11 +3,11 @@ TimeStepUnits,month
 LengthOfSimulationInYears,10
 MinimumLongitude,-180
 MaximumLongitude,180
-MinimumLatitude,-90
-MaximumLatitude,90
+MinimumLatitude,-65
+MaximumLatitude,65
 GridCellSize,10
 ExtinctionThreshold,1
 MaximumNumberOfCohorts,100
 PlanktonSizeThreshold,0.01
-DrawRandomly,yes
-HumanNPPExtraction,yes
+DrawRandomly,no
+HumanNPPExtraction,no

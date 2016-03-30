@@ -3,13 +3,15 @@
 #include <GridCell.h>
 #include <MadingleyModelInitialisation.h>
 #include <Dispersal.h>
+
+#include "Parameters.h"
 /** \file Cohort.cc
  * \brief the Cohort implementation file
  */
-unsigned Cohort::NextID=0;
+unsigned Cohort::NextID = 0;
 //----------------------------------------------------------------------------------------------
 
-Cohort::Cohort(GridCell& gcl, unsigned functionalGroupIndex, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, double optimalPreyBodySizeRatio, unsigned short birthTimeStep, double proportionTimeActive, long long &nextCohortID) {
+Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, double optimalPreyBodySizeRatio, unsigned short birthTimeStep, double proportionTimeActive, long long &nextCohortID ) {
 
     FunctionalGroupIndex = functionalGroupIndex;
     JuvenileMass = juvenileBodyMass;
@@ -17,8 +19,8 @@ Cohort::Cohort(GridCell& gcl, unsigned functionalGroupIndex, double juvenileBody
     IndividualBodyMass = initialBodyMass;
     CohortAbundance = initialAbundance;
     BirthTimeStep = birthTimeStep;
-    MaturityTimeStep = std::numeric_limits<unsigned>::max();
-    LogOptimalPreyBodySizeRatio = log(optimalPreyBodySizeRatio);
+    MaturityTimeStep = std::numeric_limits<unsigned>::max( );
+    LogOptimalPreyBodySizeRatio = log( optimalPreyBodySizeRatio );
     MaximumAchievedBodyMass = juvenileBodyMass;
     Merged = false;
     ProportionTimeActive = proportionTimeActive;
@@ -30,7 +32,7 @@ Cohort::Cohort(GridCell& gcl, unsigned functionalGroupIndex, double juvenileBody
 }
 //----------------------------------------------------------------------------------------------
 
-Cohort::Cohort(Cohort& actingCohort, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, unsigned birthTimeStep, long long& nextCohortID) {
+Cohort::Cohort( Cohort& actingCohort, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, unsigned birthTimeStep, long long& nextCohortID ) {
 
     FunctionalGroupIndex = actingCohort.FunctionalGroupIndex;
     JuvenileMass = juvenileBodyMass;
@@ -38,7 +40,7 @@ Cohort::Cohort(Cohort& actingCohort, double juvenileBodyMass, double adultBodyMa
     IndividualBodyMass = initialBodyMass;
     CohortAbundance = initialAbundance;
     BirthTimeStep = birthTimeStep;
-    MaturityTimeStep = std::numeric_limits<unsigned>::max();
+    MaturityTimeStep = std::numeric_limits<unsigned>::max( );
     LogOptimalPreyBodySizeRatio = actingCohort.LogOptimalPreyBodySizeRatio;
     MaximumAchievedBodyMass = juvenileBodyMass;
     Merged = false;
@@ -52,15 +54,15 @@ Cohort::Cohort(Cohort& actingCohort, double juvenileBodyMass, double adultBodyMa
 }
 //----------------------------------------------------------------------------------------------
 
-bool Cohort::isMature() {
-    return (MaturityTimeStep < std::numeric_limits<unsigned>::max());
+bool Cohort::isMature( ) {
+    return (MaturityTimeStep < std::numeric_limits<unsigned>::max( ) );
 }
 //----------------------------------------------------------------------------------------------
 vector<Cohort> Cohort::newCohorts;
 map<string, map<string, double>>Cohort::Deltas;
 //----------------------------------------------------------------------------------------------
 
-void Cohort::zeroDeltas() {
+void Cohort::zeroDeltas( ) {
     // Initialize delta abundance sorted list with appropriate processes
 
     Deltas["abundance"]["mortality"] = 0.0;
@@ -84,44 +86,49 @@ void Cohort::zeroDeltas() {
     Deltas["respiratoryCO2pool"]["metabolism"] = 0.0;
 }
 //----------------------------------------------------------------------------------------------    
-double Cohort::Realm() {
-    return location->Realm();
+
+double Cohort::Realm( ) {
+    return location->Realm( );
 }
 //----------------------------------------------------------------------------------------------
-void Cohort::TryLivingAt(GridCell* _destination) {
-    if (_destination != 0 && _destination->Realm() == Realm())destination = _destination;
+
+void Cohort::TryLivingAt( GridCell* _destination ) {
+    if( _destination != 0 && _destination->Realm( ) == Realm( ) )destination = _destination;
 }
 //----------------------------------------------------------------------------------------------
-Location& Cohort::Here() {
+
+Location& Cohort::Here( ) {
     return *location;
 }
-bool Cohort::isMoving(){
-    return location!=destination;
-}
-//----------------------------------------------------------------------------------------------
-void Cohort::Move() {
-    location->Move(*this);
+
+bool Cohort::isMoving( ) {
+    return location != destination;
 }
 //----------------------------------------------------------------------------------------------
 
-bool Cohort::isMarine() {
-    return location->isMarine();
+void Cohort::Move( ) {
+    location->Move( *this );
 }
 //----------------------------------------------------------------------------------------------
 
-bool Cohort::isPlanktonic(MadingleyModelInitialisation& params) {
-    return (isMarine() &&
-            ((IndividualBodyMass <= params.PlanktonDispersalThreshold) ||
-            (params.CohortFunctionalGroupDefinitions.GetTraitNames("Mobility", FunctionalGroupIndex) == "planktonic")));
+bool Cohort::isMarine( ) {
+    return location->isMarine( );
 }
 //----------------------------------------------------------------------------------------------
-string Cohort::dispersalType(MadingleyModelInitialisation& params) {
+
+bool Cohort::isPlanktonic( MadingleyModelInitialisation& params ) {
+    //return (isMarine( ) && ( ( IndividualBodyMass <= params.PlanktonDispersalThreshold ) || ( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", FunctionalGroupIndex ) == "planktonic" ) ) );
+    return ( isMarine( ) && ( ( IndividualBodyMass <= Parameters::Get( )->GetPlanktonSizeThreshold( ) ) || ( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", FunctionalGroupIndex ) == "planktonic" ) ) );
+}
+//----------------------------------------------------------------------------------------------
+
+string Cohort::dispersalType( MadingleyModelInitialisation& params ) {
     string dispersalName;
-    if (isPlanktonic(params)) {
+    if( isPlanktonic( params ) ) {
         // Advective dispersal
         dispersalName = "advective";
     }// Otherwise, if mature do responsive dispersal
-    else if (isMature()) {
+    else if( isMature( ) ) {
         dispersalName = "responsive";
     }// If the cohort is immature, run diffusive dispersal
     else {
