@@ -30,17 +30,10 @@ public:
     //----------------------------------------------------------------------------------------------
 
     Dispersal( ) {
-        ;
-    }
-    //----------------------------------------------------------------------------------------------
-
-    /** \brief Setup for dispersal assigns pointers to current possible dispersal methods*/
-    void setup( MadingleyModelInitialisation& params ) {
-
         // Assign dispersal implementations
-        choose["advective"] = new AdvectiveDispersal( Parameters::Get( )->GetTimeStepUnits( ), Parameters::Get( )->GetDrawRandomly( ) );
-        choose["diffusive"] = new DiffusiveDispersal( Parameters::Get( )->GetTimeStepUnits( ), Parameters::Get( )->GetDrawRandomly( ) );
-        choose["responsive"] = new ResponsiveDispersal( Parameters::Get( )->GetTimeStepUnits( ), Parameters::Get( )->GetDrawRandomly( ) );
+        choose["advective"] = new AdvectiveDispersal( );
+        choose["diffusive"] = new DiffusiveDispersal( );
+        choose["responsive"] = new ResponsiveDispersal( );
     }
     //----------------------------------------------------------------------------------------------
 

@@ -94,9 +94,6 @@ public:
         // Set up model outputs
         SetUpOutputs( );
         //end of initialisations
-
-        // Initialise cross grid cell ecology
-        disperser.setup( params );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -117,7 +114,7 @@ public:
             TimeStepTimer.Start( );
             // Get current time step and month
             CurrentTimeStep = timeStep;
-            CurrentMonth = Utilities.GetCurrentMonth( timeStep, Parameters::Get( )->GetTimeStepUnits( ) );
+            CurrentMonth = Utilities.GetCurrentMonth( timeStep );
             EcologyTimer.Start( );
 
             Environment::update( CurrentMonth );
@@ -201,7 +198,6 @@ public:
         // Initialize ecology for stocks and cohorts - needed fresh every timestep?
 
         EcologyCohort mEcologyCohort;
-        mEcologyCohort.setup( params );
         mEcologyCohort.initialiseEating( gcl, params );
         Activity CohortActivity;
 

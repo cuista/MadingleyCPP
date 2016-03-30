@@ -47,9 +47,7 @@ public:
     @param currentTimestep The current model time step
     @param currentMonth Month as an integer 
     @param params Current parameters */
-    void ConvertNPPToAutotroph( GridCell& gcl, Stock& actingStock,
-            unsigned currentTimestep,
-            unsigned currentMonth, MadingleyModelInitialisation& params ) {
+    void ConvertNPPToAutotroph( GridCell& gcl, Stock& actingStock ) {
         // Get NPP from the cell environment
         double NPP = Environment::Get( "NPP", gcl );
         // If NPP is a missing value then set to zero

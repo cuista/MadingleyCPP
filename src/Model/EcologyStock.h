@@ -42,11 +42,12 @@ public:
     @param params Parameters */
 
     void RunWithinCellEcology( GridCell& gcl, Stock& actingStock, unsigned currentTimeStep, unsigned currentMonth, MadingleyModelInitialisation& params ) {
+        
         FunctionalGroupDefinitions& madingleyStockDefinitions = params.StockFunctionalGroupDefinitions;
 
         if( gcl.isMarine( ) ) {
             // Run the autotroph processor
-            MarineNPPtoAutotrophStock.ConvertNPPToAutotroph( gcl, actingStock, currentTimeStep, currentMonth, params );
+            MarineNPPtoAutotrophStock.ConvertNPPToAutotroph( gcl, actingStock );
         } else {
             // Run the dynamic plant model to update the leaf stock for this time step
             DynamicPlantModel.UpdateLeafStock( gcl, actingStock, currentTimeStep, madingleyStockDefinitions.GetTraitNames( "leaf strategy", actingStock.FunctionalGroupIndex ) == "deciduous", Parameters::Get( )->GetTimeStepUnits( ), currentMonth );

@@ -43,10 +43,6 @@ public:
 
     /** \brief Initalise the ecological processes */
     EcologyCohort( ) {
-        ;
-    }
-
-    void setup( MadingleyModelInitialisation& params ) {
         // Declare and attach eating formulations
         Eating *EatingFormulation = new Eating( Parameters::Get( )->GetTimeStepUnits( ) );
 
