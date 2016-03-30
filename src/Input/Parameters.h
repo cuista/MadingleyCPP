@@ -34,8 +34,8 @@ public:
     void SetExtinctionThreshold( const float& );
     void SetMaximumNumberOfCohorts( const unsigned& );
     void SetPlanktonSizeThreshold( const float& );
-    void SetDrawRandomly( const bool );
-    void SetHumanNPPExtraction( const bool );
+    void SetDrawRandomly( const std::string& );
+    void SetHumanNPPExtraction( const std::string& );
 
     // Calculated parameters
     unsigned GetLengthOfSimulationInTimeSteps( ) const;
@@ -52,13 +52,13 @@ public:
     float GetDataLatitudeAtIndex( const unsigned& ) const;
     float GetUserLongitudeAtIndex( const unsigned& ) const;
     float GetUserLatitudeAtIndex( const unsigned& ) const;
-    
+
     float* GetDataLongitudeArray( ) const;
     float* GetDataLatitudeArray( ) const;
     float* GetTimeStepArray( ) const;
     float* GetUserLongitudeArray( ) const;
     float* GetUserLatitudeArray( ) const;
-    
+
     Types::GeoCoords GetCoordsFromDomainIndices( const Types::GeoIndices ) const;
     Types::GeoCoords GetCoordsFromDomainIndices( const unsigned short&, const unsigned short& ) const;
     Types::GeoIndices GetDomainIndicesFromCoords( const Types::GeoCoords ) const;
@@ -67,7 +67,7 @@ public:
 private:
     Parameters( );
     void CalculateParameters( );
-    
+
     static Types::ParametersPointer mThis;
 
     // User defined parameters
@@ -100,7 +100,7 @@ private:
     float* mTimeStepArray;
     float* mUserLongitudeArray;
     float* mUserLatitudeArray;
-    
+
     Types::GeoCoordsMatrix mDomainCoordsMatrix;
 };
 

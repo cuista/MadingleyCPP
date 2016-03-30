@@ -35,12 +35,18 @@ bool Parameters::Initialise( const Types::StringMatrix& rawInputParameterData ) 
 
             std::string parameterName = Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterName ] ) );
 
+            if( parameterName == "timestepunits" ) SetTimeStepUnits( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
             if( parameterName == "lengthofsimulationinyears" ) SetLengthOfSimulationInYears( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
             if( parameterName == "minimumlongitude" ) SetUserMinimumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
             if( parameterName == "maximumlongitude" ) SetUserMaximumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
             if( parameterName == "minimumlatitude" ) SetUserMinimumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
             if( parameterName == "maximumlatitude" ) SetUserMaximumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
             if( parameterName == "gridcellsize" ) SetGridCellSize( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "extinctionthreshold" ) SetExtinctionThreshold( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "maximumnumberofcohorts" ) SetMaximumNumberOfCohorts( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "planktonsizethreshold" ) SetPlanktonSizeThreshold( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "drawrandomly" ) SetDrawRandomly( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            if( parameterName == "humannppextraction" ) SetHumanNPPExtraction( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
         }
 
         CalculateParameters( );
@@ -192,12 +198,18 @@ void Parameters::SetPlanktonSizeThreshold( const float& planktonSizeThreshold ) 
     mPlanktonSizeThreshold = planktonSizeThreshold;
 }
 
-void Parameters::SetDrawRandomly( const bool drawRandomly ) {
-    mDrawRandomly = drawRandomly;
+void Parameters::SetDrawRandomly( const std::string& drawRandomlyString ) {
+    if( drawRandomlyString == "yes" )
+        mDrawRandomly = true;
+    else
+        mDrawRandomly = false;
 }
 
-void Parameters::SetHumanNPPExtraction( const bool humanNPPExtraction ) {
-    mHumanNPPExtraction = humanNPPExtraction;
+void Parameters::SetHumanNPPExtraction( const std::string& humanNPPExtractionString ) {
+    if( humanNPPExtractionString == "yes" )
+        mHumanNPPExtraction = true;
+    else
+        mHumanNPPExtraction = false;
 }
 
 unsigned Parameters::GetLengthOfSimulationInTimeSteps( ) const {
