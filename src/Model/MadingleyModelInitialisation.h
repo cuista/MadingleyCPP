@@ -165,34 +165,34 @@ public:
      //        /// <todo>Need to adjust this file to deal with incorrect inputs, extra columns etc by throwing an error</todo>
      //        /// <todo>Also need to strip leading spaces</todo>*/
     void ReadInitialisationFiles( ) {
-        cout << "Reading initialisation parameters file..." << endl;
+        //cout << "Reading initialisation parameters file..." << endl;
 
-        std::string initialisationFile = Constants::cConfigurationDirectory + Constants::cInitialisationFileName;
-        ifstream infile( initialisationFile.c_str( ) );
-        if( infile.is_open( ) ) {
-            string l, header[2];
-            getline( infile, l );
-            //trim off newline character
-            l.pop_back( );
-            istringstream s( l );
-            for( unsigned i = 0; i < 2; i++ ) {
-                getline( s, header[i], ',' );
-                transform( header[i].begin( ), header[i].end( ), header[i].begin( ), ::tolower );
-            }
-            while( infile.good( ) ) {
-                string l, data[2];
-                getline( infile, l );
-                //trim off newline if there is still more data
-                if( infile.good( ) )l.pop_back( );
-                if( l.length( ) > 1 ) {
-                    istringstream s( l );
-                    for( unsigned i = 0; i < 2; i++ ) {
-                        getline( s, data[i], ',' );
-                    }
-                }
-                string param = data[0], val = data[1];
-                transform( param.begin( ), param.end( ), param.begin( ), ::tolower );
-                transform( val.begin( ), val.end( ), val.begin( ), ::tolower );
+        //std::string initialisationFile = Constants::cConfigurationDirectory + Constants::cInitialisationFileName;
+        //ifstream infile( initialisationFile.c_str( ) );
+        //if( infile.is_open( ) ) {
+        //    string l, header[2];
+        //    getline( infile, l );
+        //    //trim off newline character
+        //    l.pop_back( );
+        //    istringstream s( l );
+        //    for( unsigned i = 0; i < 2; i++ ) {
+        //        getline( s, header[i], ',' );
+        //        transform( header[i].begin( ), header[i].end( ), header[i].begin( ), ::tolower );
+        //    }
+        //    while( infile.good( ) ) {
+        //        string l, data[2];
+        ///        getline( infile, l );
+        //        //trim off newline if there is still more data
+        //        if( infile.good( ) )l.pop_back( );
+        //        if( l.length( ) > 1 ) {
+        //            istringstream s( l );
+        //            for( unsigned i = 0; i < 2; i++ ) {
+        //                getline( s, data[i], ',' );
+        //            }
+        //        }
+        //        string param = data[0], val = data[1];
+        //        transform( param.begin( ), param.end( ), param.begin( ), ::tolower );
+        //        transform( val.begin( ), val.end( ), val.begin( ), ::tolower );
 
                 //if( param == "timestep units" )GlobalModelTimeStepUnit = val;
                 //if( param == "length of simulation (years)" )NumTimeSteps = ( unsigned )Utilities.ConvertTimeUnits( "year", GlobalModelTimeStepUnit ) * atoi( val.c_str( ) );
@@ -250,10 +250,10 @@ public:
                 // The following parameters are not in the original EcosystemModelInitialisation file...
 
                 //if( param == "merge difference" ) MergeDifference = atof( val.c_str( ) );
-            }
-        } else {
-            cout << "Something wrong with initialisation parameter file " << initialisationFile << endl;
-        }
+        //    }
+        //} else {
+        //    cout << "Something wrong with initialisation parameter file " << initialisationFile << endl;
+        // }
 
         cout << "Reading functional group definitions..." << endl;
         InitialisationFileStrings["CohortFunctional"] = Constants::cCohortDefinitionsFileName;
