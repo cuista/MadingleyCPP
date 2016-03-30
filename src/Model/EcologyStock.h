@@ -41,23 +41,18 @@ public:
     @param currentMonth The current model month 
     @param params Parameters */
 
-    void RunWithinCellEcology( GridCell& gcl, Stock& actingStock,
-            unsigned currentTimeStep, unsigned currentMonth, MadingleyModelInitialisation& params ) {
-        string globalModelTimeStepUnit = Parameters::Get( )->GetTimeStepUnits( );
-        string humanNPPExtraction = Parameters::Get( )->GetHumanNPPExtraction( );
+    void RunWithinCellEcology( GridCell& gcl, Stock& actingStock, unsigned currentTimeStep, unsigned currentMonth, MadingleyModelInitialisation& params ) {
         FunctionalGroupDefinitions& madingleyStockDefinitions = params.StockFunctionalGroupDefinitions;
 
         if( gcl.isMarine( ) ) {
             // Run the autotroph processor
-            MarineNPPtoAutotrophStock.ConvertNPPToAutotroph( gcl, actingStock,
-                    currentTimeStep, currentMonth, params );
+            MarineNPPtoAutotrophStock.ConvertNPPToAutotroph( gcl, actingStock, currentTimeStep, currentMonth, params );
         } else {
             // Run the dynamic plant model to update the leaf stock for this time step
-            //DynamicPlantModel.UpdateLeafStock( gcl, actingStock, currentTimeStep, madingleyStockDefinitions.GetTraitNames( "leaf strategy", actingStock.FunctionalGroupIndex ) == "deciduous", params.GlobalModelTimeStepUnit, currentMonth );
             DynamicPlantModel.UpdateLeafStock( gcl, actingStock, currentTimeStep, madingleyStockDefinitions.GetTraitNames( "leaf strategy", actingStock.FunctionalGroupIndex ) == "deciduous", Parameters::Get( )->GetTimeStepUnits( ), currentMonth );
 
             // Apply human appropriation of NPP
-            HANPP.RemoveHumanAppropriatedMatter( gcl, humanNPPExtraction, actingStock, currentTimeStep, currentMonth );
+            HANPP.RemoveHumanAppropriatedMatter( gcl, Parameters::Get( )->GetHumanNPPExtraction( ), actingStock, currentTimeStep, currentMonth );
 
         }
     }

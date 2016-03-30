@@ -29,20 +29,6 @@ public:
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
-    /** String identifying time step units to be used by the simulations */
-    //string GlobalModelTimeStepUnit;
-    /** The number of time steps to be run in the simulations */
-    //unsigned NumTimeSteps;
-    /** The size of cells to be used in the model grid */
-    //float CellSize;
-    /** The lowest extent of the model grid in degrees */
-    //float BottomLatitude;
-    /** The uppermost extent of the model grid in degrees */
-    //float TopLatitude;
-    /** The leftmost extent of the model grid in degrees */
-    //float LeftmostLongitude;
-    /** The rightmost extent of the model grid in degrees */
-    //float RightmostLongitude;
     /** The rarefaction of active cells in the model grid */
     int CellRarefaction;
     /** Whether to run the model for different grid cells in parallel (??) */
@@ -53,21 +39,12 @@ public:
     bool RunSimulationsInParallel;
     /** Include marine realm ? */
     string RunRealm;
-    /** Whether to draw cohort properties randomly when seeding them and whether cohorts will undergo ecological processes in a random order
-     @remark Value should be set in initialization file, but default value is true */
-    //bool DrawRandomly;
-    //MB 6/8/2015 Now set in the constructor
-    /** The threshold abundance below which cohorts will be made extinct */
-    //double ExtinctionThreshold;
     /** The threshold difference between cohorts, within which they will be merged */
     double MergeDifference;
     /** The maximum number of cohorts to be in the model, per grid cell, when it is running */
     //int MaxNumberOfCohorts;
     /**Whether to run only dispersal (i.e. turn all other ecological processes off, and set dispersal probability to one temporarily) */
     bool DispersalOnly;
-    //MB 6/8/2015 Default now set in the constructor
-    /** The weight threshold (grams) below which marine organisms that are not obligate zooplankton will be dispersed planktonically */
-    //double PlanktonDispersalThreshold;
     /** The full path for the output files for a set of simulations */
     string OutputPath;
     /** Whether to output detailed diagnostics for the ecological processes */
@@ -121,21 +98,12 @@ public:
         //read and store environmental layers
         Environment::Get( );
         cout << "data read" << endl;
-        //set default value of cohort random draw properties
-        //DrawRandomly = true;
         //set default dispersal
         DispersalOnly = false;
         NextCohortID = 0;
 
-        // Read the intialisation files and store values
         ReadInitialisationFiles( );
-
-        //Grid.SetUpGrid( BottomLatitude, LeftmostLongitude, TopLatitude, RightmostLongitude, CellSize );
         Grid.SetUpGrid( Parameters::Get( )->GetUserMinimumLatitude( ), Parameters::Get( )->GetUserMinimumLongitude( ), Parameters::Get( )->GetUserMaximumLatitude( ), Parameters::Get( )->GetUserMaximumLongitude( ), Parameters::Get( )->GetGridCellSize( ) );
-
-
-        //MB THis is currently just used to get units -needs replacing
-        //ReadEnvironmentalLayers( InitialisationFileStrings["Environmental"], outputPath, Grid );
 
         // Set up the cohorts and stocks
         InitializationTimer.Start( );
@@ -165,96 +133,6 @@ public:
      //        /// <todo>Need to adjust this file to deal with incorrect inputs, extra columns etc by throwing an error</todo>
      //        /// <todo>Also need to strip leading spaces</todo>*/
     void ReadInitialisationFiles( ) {
-        //cout << "Reading initialisation parameters file..." << endl;
-
-        //std::string initialisationFile = Constants::cConfigurationDirectory + Constants::cInitialisationFileName;
-        //ifstream infile( initialisationFile.c_str( ) );
-        //if( infile.is_open( ) ) {
-        //    string l, header[2];
-        //    getline( infile, l );
-        //    //trim off newline character
-        //    l.pop_back( );
-        //    istringstream s( l );
-        //    for( unsigned i = 0; i < 2; i++ ) {
-        //        getline( s, header[i], ',' );
-        //        transform( header[i].begin( ), header[i].end( ), header[i].begin( ), ::tolower );
-        //    }
-        //    while( infile.good( ) ) {
-        //        string l, data[2];
-        ///        getline( infile, l );
-        //        //trim off newline if there is still more data
-        //        if( infile.good( ) )l.pop_back( );
-        //        if( l.length( ) > 1 ) {
-        //            istringstream s( l );
-        //            for( unsigned i = 0; i < 2; i++ ) {
-        //                getline( s, data[i], ',' );
-        //            }
-        //        }
-        //        string param = data[0], val = data[1];
-        //        transform( param.begin( ), param.end( ), param.begin( ), ::tolower );
-        //        transform( val.begin( ), val.end( ), val.begin( ), ::tolower );
-
-                //if( param == "timestep units" )GlobalModelTimeStepUnit = val;
-                //if( param == "length of simulation (years)" )NumTimeSteps = ( unsigned )Utilities.ConvertTimeUnits( "year", GlobalModelTimeStepUnit ) * atoi( val.c_str( ) );
-                //if( param == "number timesteps" ) NumTimeSteps = atoi( val.c_str( ) );
-                //if( param == "grid cell size" ) CellSize = atof( val.c_str( ) );
-                //if( param == "bottom latitude" ) BottomLatitude = atof( val.c_str( ) );
-                //if( param == "top latitude" ) TopLatitude = atof( val.c_str( ) );
-                //if( param == "leftmost longitude" ) LeftmostLongitude = atof( val.c_str( ) );
-                //if( param == "rightmost longitude" ) RightmostLongitude = atof( val.c_str( ) );
-                //if( param == "draw randomly" ) DrawRandomly = ( ( val == "yes" ) ? true : false );
-                //if( param == "extinction threshold" ) ExtinctionThreshold = atof( val.c_str( ) );
-                //if( param == "maximum number of cohorts" ) MaxNumberOfCohorts = atof( val.c_str( ) );
-                //if( param == "plankton size threshold" ) PlanktonDispersalThreshold = atof( val.c_str( ) );
-                //if( param == "human npp extraction" ) InitialisationFileStrings["HumanNPPExtraction"] = val;
-
-                //if( param == "cohort functional group definitions file" ) {
-                //    cout << "Reading functional group definitions..." << endl;
-                //    CohortFunctionalGroupDefinitions = FunctionalGroupDefinitions( data[1], Constants::cOutputPath );
-                //}
-                //if( param == "stock functional group definitions file" ) {
-                //    cout << "Reading stock group definitions..." << endl;
-                //    //Open a the specified csv file and set up the stock functional group definitions
-                //    StockFunctionalGroupDefinitions = FunctionalGroupDefinitions( data[1], Constants::cOutputPath );
-                //}
-                //if( param == "cohort functional group definitions file" ) InitialisationFileStrings["CohortFunctional"] = val;
-                //if( param == "stock functional group definitions file" ) InitialisationFileStrings["StockFunctional"] = val;
-                //if( param == "mass bin filename" ) ModelMassBins.SetUpMassBins( data[1] ); //read in mass bins : use data[1] so that filename isn't lower-cased
-                //if( param == "grid cell rarefaction" ) CellRarefaction = atoi( val.c_str( ) );
-                //if( param == "run cells in parallel" ) RunCellsInParallel = ( ( val == "yes" ) ? true : false );
-                //if( param == "run simulations in parallel" ) RunSimulationsInParallel = ( ( val == "yes" ) ? true : false );
-                //if( param == "run single realm" ) RunRealm = val;
-                //if( param == "dispersal only" ) DispersalOnly = ( ( val == "yes" ) ? true : false );
-                //if( param == "live outputs" ) LiveOutputs = ( ( val == "yes" ) ? true : false );
-                //if( param == "track marine specifics" ) TrackMarineSpecifics = ( ( val == "yes" ) ? true : false );
-                //if( param == "track processes" ) TrackProcesses = ( ( val == "yes" ) ? true : false );
-                //if( param == "track global processes" ) TrackGlobalProcesses = ( ( val == "yes" ) ? true : false );
-
-                //if( param == "new cohorts filename" ) ProcessTrackingOutputs["NewCohortsOutput"] = val;
-                //if( param == "maturity filename" ) ProcessTrackingOutputs["MaturityOutput"] = val;
-                //if( param == "biomasses eaten filename" ) ProcessTrackingOutputs["BiomassesEatenOutput"] = val;
-                //if( param == "trophic flows filename" ) ProcessTrackingOutputs["TrophicFlowsOutput"] = val;
-                //if( param == "growth filename" ) ProcessTrackingOutputs["GrowthOutput"] = val;
-                //if( param == "metabolism filename" ) ProcessTrackingOutputs["MetabolismOutput"] = val;
-                //if( param == "npp filename" ) ProcessTrackingOutputs["NPPOutput"] = val;
-                //if( param == "predation flows filename" ) ProcessTrackingOutputs["PredationFlowsOutput"] = val;
-                //if( param == "herbivory flows filename" ) ProcessTrackingOutputs["HerbivoryFlowsOutput"] = val;
-                //if( param == "mortality filename" ) ProcessTrackingOutputs["MortalityOutput"] = val;
-                //if( param == "extinction filename" ) ProcessTrackingOutputs["ExtinctionOutput"] = val;
-
-                //if( param == "output detail" )InitialisationFileStrings["OutputDetail"] = val;
-                //if( param == "dispersal only type" ) InitialisationFileStrings["DispersalOnlyType"] = val;
-                //if( param == "specific location file" ) InitialisationFileStrings["Locations"] = val;
-                //if( param == "environmental data file" ) InitialisationFileStrings["Environmental"] = data[1];
-
-                // The following parameters are not in the original EcosystemModelInitialisation file...
-
-                //if( param == "merge difference" ) MergeDifference = atof( val.c_str( ) );
-        //    }
-        //} else {
-        //    cout << "Something wrong with initialisation parameter file " << initialisationFile << endl;
-        // }
-
         cout << "Reading functional group definitions..." << endl;
         InitialisationFileStrings["CohortFunctional"] = Constants::cCohortDefinitionsFileName;
         CohortFunctionalGroupDefinitions = FunctionalGroupDefinitions( Constants::cCohortDefinitionsFileName );
@@ -337,10 +215,6 @@ public:
             exit( 1 );
         }
         infile.close( );
-
-        for( int ii = 0; ii < MethodUnits.size( ); ii++ ) {
-            //Units[LayerName[ii]] = MethodUnits[ii];
-        }
 
     }
     //----------------------------------------------------------------------------------------------

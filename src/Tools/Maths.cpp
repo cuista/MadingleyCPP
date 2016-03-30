@@ -24,19 +24,6 @@ Maths::Maths( ) {
 
 }
 
-// int Maths::RoundWithProbability( const double value ) const {
-//
-//    int flooredValue = RoundDown( value );
-//
-//    double probability = value - flooredValue;
-//
-//    if( Parameters::Get( )->GetRandom( )->UniformDouble( ) < probability ) {
-//        return flooredValue + 1;
-//    } else {
-//        return flooredValue;
-//    }
-//}
-
 int Maths::Floor( const double& value ) const {
     return static_cast < int >( ::floor( value ) );
 }

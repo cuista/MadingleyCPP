@@ -117,7 +117,6 @@ bool Cohort::isMarine( ) {
 //----------------------------------------------------------------------------------------------
 
 bool Cohort::isPlanktonic( MadingleyModelInitialisation& params ) {
-    //return (isMarine( ) && ( ( IndividualBodyMass <= params.PlanktonDispersalThreshold ) || ( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", FunctionalGroupIndex ) == "planktonic" ) ) );
     return ( isMarine( ) && ( ( IndividualBodyMass <= Parameters::Get( )->GetPlanktonSizeThreshold( ) ) || ( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", FunctionalGroupIndex ) == "planktonic" ) ) );
 }
 //----------------------------------------------------------------------------------------------

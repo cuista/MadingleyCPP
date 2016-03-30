@@ -38,10 +38,6 @@ public:
     void setup( MadingleyModelInitialisation& params ) {
 
         // Assign dispersal implementations
-        //choose["advective"] =new AdvectiveDispersal(params.GlobalModelTimeStepUnit, params.DrawRandomly);
-        //choose["diffusive"] =new DiffusiveDispersal(params.GlobalModelTimeStepUnit, params.DrawRandomly);
-        //choose["responsive"]=new ResponsiveDispersal(params.GlobalModelTimeStepUnit, params.DrawRandomly);
-
         choose["advective"] = new AdvectiveDispersal( Parameters::Get( )->GetTimeStepUnits( ), Parameters::Get( )->GetDrawRandomly( ) );
         choose["diffusive"] = new DiffusiveDispersal( Parameters::Get( )->GetTimeStepUnits( ), Parameters::Get( )->GetDrawRandomly( ) );
         choose["responsive"] = new ResponsiveDispersal( Parameters::Get( )->GetTimeStepUnits( ), Parameters::Get( )->GetDrawRandomly( ) );

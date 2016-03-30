@@ -102,7 +102,6 @@ public:
         unsigned MergeCounter = 0;
         std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
 
-        //int NumberToRemove = gcl.GetNumberOfCohorts( ) - params.MaxNumberOfCohorts;
         int NumberToRemove = gcl.GetNumberOfCohorts( ) - Parameters::Get( )->GetMaximumNumberOfCohorts( );
 
         if( NumberToRemove > 0 ) {

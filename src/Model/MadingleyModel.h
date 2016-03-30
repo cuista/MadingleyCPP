@@ -96,7 +96,6 @@ public:
 
         //end of initialisations
         // Initialise the cohort merger - this is just to set where the random seed comes from
-        //CohortMerger.SetRandom( params.DrawRandomly );
         CohortMerger.SetRandom( Parameters::Get( )->GetDrawRandomly( ) );
 
         // Initialise cross grid cell ecology
@@ -108,27 +107,11 @@ public:
     /** \brief  Run the global ecosystem model     */
     void RunMadingley( ) {
         // Write out model run details to the console
-
-        cout << Parameters::Get( )->GetTimeStepUnits( ) << endl;
-        cout << Parameters::Get( )->GetLengthOfSimulationInYears( ) << endl;
-        cout << Parameters::Get( )->GetUserMinimumLongitude( ) << endl;
-        cout << Parameters::Get( )->GetUserMaximumLongitude( ) << endl;
-        cout << Parameters::Get( )->GetUserMinimumLatitude( ) << endl;
-        cout << Parameters::Get( )->GetUserMaximumLatitude( ) << endl;
-        cout << Parameters::Get( )->GetGridCellSize( ) << endl;
-        cout << Parameters::Get( )->GetExtinctionThreshold( ) << endl;
-        cout << Parameters::Get( )->GetMaximumNumberOfCohorts( ) << endl;
-        cout << Parameters::Get( )->GetPlanktonSizeThreshold( ) << endl;
-        cout << Parameters::Get( )->GetDrawRandomly( ) << endl;
-        cout << Parameters::Get( )->GetHumanNPPExtraction( ) << endl;
-
         cout << "Running model" << endl;
-        //cout << "Number of time steps is: " << params.NumTimeSteps << endl;
         cout << "Number of time steps is: " << Parameters::Get( )->GetLengthOfSimulationInTimeSteps( ) << endl;
 
         Dispersals = 0;
         /// Run the model
-        //for( unsigned timeStep = 0; timeStep < params.NumTimeSteps; timeStep += 1 ) {
         for( unsigned timeStep = 0; timeStep < Parameters::Get( )->GetLengthOfSimulationInTimeSteps( ); timeStep += 1 ) {
 
             DateTime::Get( )->SetTimeStep( timeStep );
@@ -138,7 +121,6 @@ public:
             TimeStepTimer.Start( );
             // Get current time step and month
             CurrentTimeStep = timeStep;
-            //CurrentMonth = Utilities.GetCurrentMonth( timeStep, params.GlobalModelTimeStepUnit );
             CurrentMonth = Utilities.GetCurrentMonth( timeStep, Parameters::Get( )->GetTimeStepUnits( ) );
             EcologyTimer.Start( );
 
@@ -203,8 +185,7 @@ public:
             for( auto& ActingStock: gcl.GridCellStocks[FunctionalGroup] ) {
 
                 // Run stock ecology
-                MadingleyEcologyStock.RunWithinCellEcology( gcl, ActingStock,
-                        CurrentTimeStep, CurrentMonth, params );
+                MadingleyEcologyStock.RunWithinCellEcology( gcl, ActingStock, CurrentTimeStep, CurrentMonth, params );
                 //workingGridCellStocks[ActingStock].TotalBiomass *= 0.75;//MB strange line - commented out in original?
             }
         }
@@ -232,7 +213,6 @@ public:
 
         gcl.ask( [&]( Cohort & c ) {
             // Perform all biological functions except dispersal (which is cross grid cell)
-            //if( gcl.GridCellCohorts[c.FunctionalGroupIndex].size( ) != 0 && c.CohortAbundance > params.ExtinctionThreshold ) {
             if( gcl.GridCellCohorts[c.FunctionalGroupIndex].size( ) != 0 && c.CohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
 
                 CohortActivity.AssignProportionTimeActive( gcl, c, CurrentTimeStep, CurrentMonth, params );
@@ -262,10 +242,8 @@ public:
         RunExtinction( gcl, partial );
 
         // Merge cohorts, if necessary
-        //if( gcl.GetNumberOfCohorts( ) > params.MaxNumberOfCohorts ) {
         if( gcl.GetNumberOfCohorts( ) > Parameters::Get( )->GetMaximumNumberOfCohorts( ) ) {
             partial.Combinations += CohortMerger.MergeToReachThresholdFast( gcl, params );
-
 
             //Run extinction a second time to remove those cohorts that have been set to zero abundance when merging
             RunExtinction( gcl, partial );
@@ -282,7 +260,6 @@ public:
 
         vector<Cohort>CohortsToRemove;
         gcl.ask( [&]( Cohort & c ) {
-            //if( c.CohortAbundance < params.ExtinctionThreshold || c.IndividualBodyMass <= 1.e-300 ) {
             if( c.CohortAbundance < Parameters::Get( )->GetExtinctionThreshold( ) || c.IndividualBodyMass <= 1.e-300 ) {
                 CohortsToRemove.push_back( c );
                 partial.Extinctions += 1;
@@ -310,11 +287,8 @@ public:
     void RunCrossGridCellEcology( unsigned& dispersals ) {
         // Loop through each grid cell, and run dispersal for each.
 
-
         EcosystemModelGrid.ask( [&]( GridCell & c ) {
-
             disperser.RunCrossGridCellEcologicalProcess( c, EcosystemModelGrid, params, CurrentMonth );
-
         } );
 
         // Apply the changes from dispersal

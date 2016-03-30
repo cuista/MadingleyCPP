@@ -70,7 +70,6 @@ public:
             NPP *= PhytoplanktonConversionRatio;
 
             //Finally convert to g/cell/month and add to the stock totalbiomass
-            //NPP *= Utilities.ConvertTimeUnits( params.GlobalModelTimeStepUnit, "day" );
             NPP *= Utilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), "day" );
 
             actingStock.TotalBiomass += NPP;
