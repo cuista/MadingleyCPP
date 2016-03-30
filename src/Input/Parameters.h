@@ -24,7 +24,7 @@ public:
     bool GetDrawRandomly( ) const;
     bool GetHumanNPPExtraction( ) const;
 
-    void SetTimeStepUnits( const std::string );
+    void SetTimeStepUnits( const std::string& );
     void SetLengthOfSimulationInYears( const unsigned& );
     void SetUserMinimumLongitude( const int& );
     void SetUserMaximumLongitude( const int& );
@@ -34,8 +34,8 @@ public:
     void SetExtinctionThreshold( const float& );
     void SetMaximumNumberOfCohorts( const unsigned& );
     void SetPlanktonSizeThreshold( const float& );
-    void SetDrawRandomly( const std::string );
-    void SetHumanNPPExtraction( const std::string );
+    void SetDrawRandomly( const bool );
+    void SetHumanNPPExtraction( const bool );
 
     // Calculated parameters
     unsigned GetLengthOfSimulationInTimeSteps( ) const;
@@ -50,6 +50,9 @@ public:
     unsigned GetSizeOfGridDatum( ) const;
     float GetDataLongitudeAtIndex( const unsigned& ) const;
     float GetDataLatitudeAtIndex( const unsigned& ) const;
+    float GetUserLongitudeAtIndex( const unsigned& ) const;
+    float GetUserLatitudeAtIndex( const unsigned& ) const;
+    
     float* GetDataLongitudeArray( ) const;
     float* GetDataLatitudeArray( ) const;
     float* GetTimeStepArray( ) const;

@@ -100,9 +100,9 @@ int Processor::CalculateVariableIndexOfValue( const Types::VariablePointer varia
 }
 
 int Processor::CalculateArrayIndexOfValue( const float* array, const unsigned& arraySize, const double& value ) const {
-
+    
     int calculatedIndex = Maths::Get( )->Round( ( arraySize - 1 ) * ( ( value - array[ 0 ] ) / ( array[ arraySize - 1 ] - array[ 0 ] ) ) );
-
+    
     if( calculatedIndex > ( int )arraySize - 1 ) {
         calculatedIndex = arraySize - 1;
     } else if( calculatedIndex < 0 ) {

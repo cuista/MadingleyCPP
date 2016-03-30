@@ -27,8 +27,8 @@ public:
     const Types::StringVector StringToWords( const std::string&, const char ) const;
     const std::string DoubleToPrecisionString( const double&, const unsigned& ) const;
 
-    const std::string ToLowercase( const std::string& ) const;
-    const std::string RemoveWhiteSpace( const std::string& ) const;
+    std::string ToLowercase( const std::string ) const;
+    std::string RemoveWhiteSpace( const std::string ) const;
 
 private:
     Convertor( );

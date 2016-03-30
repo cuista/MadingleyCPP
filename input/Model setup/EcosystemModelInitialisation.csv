@@ -6,10 +6,10 @@ Bottom Latitude,-65
 Top Latitude,65
 Leftmost Longitude,-180
 Rightmost Longitude,180
-Draw Randomly,no
 Extinction Threshold,1
 Maximum Number Of Cohorts,100
 Plankton size threshold,0.01
+Draw Randomly,no
 Human NPP Extraction,no
 ######################## Cohort Functional Group Definitions File,CohortFunctionalGroupDefinitions.csv
 ######################## Stock Functional Group Definitions File,StockFunctionalGroupDefinitions.csv

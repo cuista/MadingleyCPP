@@ -33,20 +33,14 @@ bool Parameters::Initialise( const Types::StringMatrix& rawInputParameterData ) 
     if( rawInputParameterData.size( ) > 0 ) {
         for( unsigned rowIndex = 0; rowIndex < rawInputParameterData.size( ); ++rowIndex ) {
 
-            std::string parameterName = Convertor::Get( )->ToLowercase( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterName ] ) );
+            std::string parameterName = Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterName ] ) );
 
-            if( parameterName == "timestepunits" ) SetTimeStepUnits( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            if( parameterName == "lengthofsimulationinyears" ) SetLengthOfSimulationInYears( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            if( parameterName == "minimumlongitude" ) SetUserMinimumLongitude( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            if( parameterName == "maximumlongitude" ) SetUserMaximumLongitude( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            if( parameterName == "minimumlatitude" ) SetUserMinimumLatitude( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            if( parameterName == "maximumlatitude" ) SetUserMaximumLatitude( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            if( parameterName == "gridcellsize" ) SetGridCellSize( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            if( parameterName == "extinctionthreshold" ) SetExtinctionThreshold( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            if( parameterName == "maximumnumberofcohorts" ) SetMaximumNumberOfCohorts( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            if( parameterName == "planktonsizethreshold" ) SetPlanktonSizeThreshold( Convertor::Get( )->StringToNumber( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            if( parameterName == "drawrandomly" ) SetDrawRandomly( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            if( parameterName == "humannppextraction" ) SetHumanNPPExtraction( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "lengthofsimulationinyears" ) SetLengthOfSimulationInYears( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "minimumlongitude" ) SetUserMinimumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "maximumlongitude" ) SetUserMaximumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "minimumlatitude" ) SetUserMinimumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "maximumlatitude" ) SetUserMaximumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            if( parameterName == "gridcellsize" ) SetGridCellSize( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
         }
 
         CalculateParameters( );
@@ -71,13 +65,13 @@ void Parameters::CalculateParameters( ) {
     mLengthDataLongitudeArray = 360 / mGridCellSize;
     mDataLongitudeArray = new float[ mLengthDataLongitudeArray ];
     for( unsigned longitudeIndex = 0; longitudeIndex < mLengthDataLongitudeArray; ++longitudeIndex ) {
-        mDataLongitudeArray[ longitudeIndex ] = ( -180 + ( mGridCellSize / 2 ) ) + ( longitudeIndex * mGridCellSize );
+        mDataLongitudeArray[ longitudeIndex ] = ( -180 + ( ( float )mGridCellSize / 2 ) ) + ( longitudeIndex * ( float )mGridCellSize );
     }
 
     mLengthDataLatitudeArray = 180 / mGridCellSize;
     mDataLatitudeArray = new float[ mLengthDataLatitudeArray ];
     for( unsigned latitudeIndex = 0; latitudeIndex < mLengthDataLatitudeArray; ++latitudeIndex ) {
-        mDataLatitudeArray[ latitudeIndex ] = ( -90 + ( mGridCellSize / 2 ) ) + ( latitudeIndex * mGridCellSize );
+        mDataLatitudeArray[ latitudeIndex ] = ( -90 + ( ( float )mGridCellSize / 2 ) ) + ( latitudeIndex * ( float )mGridCellSize );
     }
 
     mDataIndexOfUserMinimumLongitude = Processor::Get( )->CalculateArrayIndexOfValue( mDataLongitudeArray, mLengthDataLongitudeArray, mUserMinimumLongitude );
@@ -158,7 +152,7 @@ bool Parameters::GetHumanNPPExtraction( ) const {
     return mHumanNPPExtraction;
 }
 
-void Parameters::SetTimeStepUnits( const std::string timeStepUnits ) {
+void Parameters::SetTimeStepUnits( const std::string& timeStepUnits ) {
     mTimeStepUnits = timeStepUnits;
 }
 
@@ -198,18 +192,12 @@ void Parameters::SetPlanktonSizeThreshold( const float& planktonSizeThreshold ) 
     mPlanktonSizeThreshold = planktonSizeThreshold;
 }
 
-void Parameters::SetDrawRandomly( const std::string drawRandomlyString ) {
-    if( drawRandomlyString == "no" )
-        mDrawRandomly = false;
-    else
-        mDrawRandomly = true;
+void Parameters::SetDrawRandomly( const bool drawRandomly ) {
+    mDrawRandomly = drawRandomly;
 }
 
-void Parameters::SetHumanNPPExtraction( const std::string humanNPPExtractionString ) {
-    if( humanNPPExtractionString == "no" )
-        mHumanNPPExtraction = false;
-    else
-        mHumanNPPExtraction = true;
+void Parameters::SetHumanNPPExtraction( const bool humanNPPExtraction ) {
+    mHumanNPPExtraction = humanNPPExtraction;
 }
 
 unsigned Parameters::GetLengthOfSimulationInTimeSteps( ) const {
@@ -258,6 +246,14 @@ float Parameters::GetDataLongitudeAtIndex( const unsigned& index ) const {
 
 float Parameters::GetDataLatitudeAtIndex( const unsigned& index ) const {
     return mDataLatitudeArray[ index ];
+}
+
+float Parameters::GetUserLongitudeAtIndex( const unsigned& index ) const {
+    return mUserLongitudeArray[ index ];
+}
+
+float Parameters::GetUserLatitudeAtIndex( const unsigned& index ) const {
+    return mUserLatitudeArray[ index ];
 }
 
 float* Parameters::GetDataLongitudeArray( ) const {

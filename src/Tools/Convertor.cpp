@@ -1,6 +1,7 @@
 #include "Convertor.h"
 
 #include <algorithm>
+#include "Constants.h"
 
 Types::ConvertorPointer Convertor::mThis = NULL;
 
@@ -50,21 +51,18 @@ const std::string Convertor::DoubleToPrecisionString( const double& value, const
     return outputStringStream.str( );
 }
 
-const std::string Convertor::ToLowercase( const std::string& inString ) const {
+std::string Convertor::ToLowercase( const std::string inString ) const {
     std::string outString;
+
     std::transform( inString.begin( ), inString.end( ), std::back_inserter( outString ), tolower );
 
     return outString;
 }
 
-const std::string Convertor::RemoveWhiteSpace( const std::string& inString ) const {
+std::string Convertor::RemoveWhiteSpace( const std::string inString ) const {
+    std::string outString = inString;
 
-    std::string outString;
-    
-    for( unsigned index = 0; index < inString.length( ); ++index ) {
-        if( inString[ index ] != ' ' )
-            outString += inString[ index ];
-    }
+    outString.erase( remove( outString.begin( ), outString.end( ), Constants::cWhiteSpaceCharacter ), outString.end( ) );
 
     return outString;
 }

@@ -10,21 +10,6 @@ namespace Constants {
         eParameterValue
     };
     
-    enum eInputParameters {
-        eTimeStepUnits,
-        eLengthOfSimulationInYears,
-        eMinimumLongitude,
-        eMaximumLongitude,
-        eMinimumLatitude,
-        eMaximumLatitude,
-        eGridCellSize,
-        eExtinctionThreshold,
-        eMaximumNumberOfCohorts,
-        ePlanktonSizeThreshold,
-        eDrawRandomly,
-        eHumanNPPExtraction
-    };
-    
     enum eOutputControlParametersMetadata {
         eOutputDatumName,
         eUnits,
@@ -51,7 +36,7 @@ namespace Constants {
         eDepth,
         eOther
     };
-
+    
     enum eIndexDomainTypes {
         eDataDomain,
         eUserDomain
@@ -70,13 +55,10 @@ namespace Constants {
     const std::string cInputDataFileName = "EnvironmentalDataLayers.csv";
     const std::string cOutputVariablesFileName = "OutputControlParameters.csv";
     
-    // PJU Temporary constants from original C++ implementation ////////////////
     const std::string cInitialisationFileName = "EcosystemModelInitialisation.csv";
     const std::string cCohortDefinitionsFileName = "CohortFunctionalGroupDefinitions.csv";
     const std::string cStockDefinitionsFileName = "StockFunctionalGroupDefinitions.csv";
     const std::string cMassBinDefinitionsFileName = "MassBinDefinitions.csv";
-    const std::string cOutputPath = ".";
-    ////////////////////////////////////////////////////////////////////////////
     
     const std::string cBasicOutputsFileName = "BasicOutputs.nc";
     const std::string cGridOutputsFileName = "GridOutputs.nc";
@@ -94,6 +76,7 @@ namespace Constants {
     const char cDataDelimiterValue = ',';
     const char cTextFileCommentCharacter = '#';
     const char cFolderDelimiter = '/';
+    const char cWhiteSpaceCharacter = ' ';
 }
 
 #endif
