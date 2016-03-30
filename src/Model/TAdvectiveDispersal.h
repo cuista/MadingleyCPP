@@ -126,10 +126,10 @@ public:
         bool varExists;
 
         // Get the u speed and the v speed from the cell data
-        uAdvectiveSpeed = Environment::Get( "uVel", *( c.destination ) );
+        uAdvectiveSpeed = Environment::Get( "uVel", *( c.mDestination ) );
         assert( uAdvectiveSpeed > -9999 );
 
-        vAdvectiveSpeed = Environment::Get( "vVel", *( c.destination ) );
+        vAdvectiveSpeed = Environment::Get( "vVel", *( c.mDestination ) );
         assert( vAdvectiveSpeed > -9999 );
 
         // Calculate the diffusive movement speed, with a direction chosen at random
@@ -146,7 +146,7 @@ public:
         if( abs( uDistanceTravelled ) > LonCellLength ) cout << "BIG U " << uAdvectiveSpeed << endl;
         assert( abs( uDistanceTravelled ) <= LonCellLength && "u velocity greater than cell width" );
         assert( abs( vDistanceTravelled ) <= LatCellLength && "v velocity greater than cell width" );
-        c.TryLivingAt( newCell( madingleyGrid, uDistanceTravelled, vDistanceTravelled, LatCellLength, LonCellLength, c.location ) );
+        c.TryLivingAt( newCell( madingleyGrid, uDistanceTravelled, vDistanceTravelled, LatCellLength, LonCellLength, c.mLocation ) );
     }
     //----------------------------------------------------------------------------------------------
 

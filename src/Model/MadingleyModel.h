@@ -226,7 +226,7 @@ public:
 
         for( auto& c: Cohort::newCohorts ) {
             gcl.insert( c );
-            if( c.destination != &gcl )cout << "whut? wrong cell?" << endl;
+            if( c.mDestination != &gcl )cout << "whut? wrong cell?" << endl;
         }
         partial.Productions += Cohort::newCohorts.size( );
         Cohort::newCohorts.clear( );

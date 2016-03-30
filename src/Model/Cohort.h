@@ -1,18 +1,13 @@
 #ifndef COHORT_H
 #define COHORT_H
-#include <vector>
-#include <map>
-#include <string>
-class MadingleyModelInitialisation;
-using namespace std;
-class GridCell;
+
+#include "Types.h"
 
 /** \file Cohort.h
  * \brief the Cohort header file
  */
 
 /** \brief Class to hold properties of a single cohort */
-typedef GridCell Location;
 
 class Cohort {
 public:
@@ -24,7 +19,7 @@ public:
     /** \brief The time step at which this cohort reached maturity */
     unsigned MaturityTimeStep;
     /** \brief A list of all cohort IDs ever associated with individuals in this current cohort */
-    std::vector<long> CohortID;
+    Types::LongVector CohortID;
     /** \brief The mean juvenile mass of individuals in this cohort */
     double JuvenileMass;
     /** \brief The mean mature adult mass of individuals in this cohort */
@@ -46,9 +41,10 @@ public:
     /** \brief The optimal prey body size for individuals in this cohort */
     double LogOptimalPreyBodySizeRatio;
     long long ID;
-    Location* location, *destination;
-    static map<string, map<string, double>> Deltas;
-    static vector<Cohort> newCohorts;
+    Types::GridCellPointer mLocation;
+    Types::GridCellPointer mDestination;
+    static Types::Double2DMap Deltas;
+    static Types::CohortVector newCohorts;
     static unsigned NextID;
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -80,14 +76,14 @@ public:
      * */
     Cohort( Cohort&, double, double, double, double, unsigned, long long& );
     //----------------------------------------------------------------------------------------------
-    Location& Here( );
+    GridCell& Here( );
     bool isMoving( );
     bool isMature( );
     bool isMarine( );
     bool isPlanktonic( MadingleyModelInitialisation& );
-    string dispersalType( MadingleyModelInitialisation& );
+    std::string dispersalType( MadingleyModelInitialisation& );
     double Realm( );
-    void TryLivingAt( Location* );
+    void TryLivingAt( GridCell* );
     void Move( );
     static void zeroDeltas( );
 };

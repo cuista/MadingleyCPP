@@ -1,7 +1,8 @@
 #ifndef HANPP_H
 #define HANPP_H
 
-#include "GridCell.h"
+#include <GridCell.h>
+#include "Constants.h"
 
 /** \file HANPP.h
  * \brief the HANPP header file
@@ -45,7 +46,7 @@ public:
             double HANPP = Environment::Get( "HANPP", gcl ) * Environment::Get( "Seasonality", gcl );
 
             // If HANPP value is missing, then assume zero
-            if( HANPP == Environment::MissingValue ) HANPP = 0.0;
+            if( HANPP == Constants::cMissingValue ) HANPP = 0.0;
 
             // Allocate HANPP for this stock according to the proportion of total autotroph biomass that the stock represents
             if( TotalAutotrophBiomass == 0.0 ) {

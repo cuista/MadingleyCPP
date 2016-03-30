@@ -15,7 +15,7 @@ InputData::~InputData( ) {
     }
 }
 
-void InputData::AddVariableToDatum( const std::string& name, const std::string& variableName, const Types::UnsignedIntVector& variableDimensions, const unsigned& variableSize, float* variableData, const bool isDefault ) {
+void InputData::AddVariableToDatum( const std::string& name, const std::string& variableName, const Types::UnsignedVector& variableDimensions, const unsigned& variableSize, float* variableData, const bool isDefault ) {
 
     Types::InputDatumPointer datum = GetInputDatum( name, true );
 

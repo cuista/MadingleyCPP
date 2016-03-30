@@ -8,30 +8,23 @@
 
 #ifndef ENVIRONMENT_H
 #define	ENVIRONMENT_H
-#include<iostream>
-#include <string>
-#include <map>
 
-#include <vector>       // For std::vector
-
-class GridCell;
-using namespace std;
-typedef vector <vector<double> > LayerData;
+#include "Types.h"
 ////////////////////////////////////////////////////////////////////////////////
 
-class layer {
+class Layer {
 public:
 
-    virtual ~layer( ) {
+    virtual ~Layer( ) {
         ;
     }
-    virtual vector<double>& operator[]( int i ) = 0;
+    virtual Types::DoubleVector& operator[]( int i ) = 0;
     virtual void setTime( int tm ) = 0;
 };
 ////////////////////////////////////////////////////////////////////////////////
 
-class layer0: public layer {
-    LayerData data;
+class layer0: public Layer {
+    Types::DoubleMatrix data;
 public:
 
     layer0( int sx, int sy ) {
@@ -45,7 +38,7 @@ public:
     }
     //--------------------------------------------------------------------------
 
-    vector<double>& operator[]( int i ) {
+    Types::DoubleVector& operator[]( int i ) {
         return data[i];
     }
     //--------------------------------------------------------------------------
@@ -56,9 +49,9 @@ public:
 };
 ////////////////////////////////////////////////////////////////////////////////
 
-class layerT: public layer {
+class layerT: public Layer {
     int t;
-    vector<LayerData> data;
+    Types::Double3DMatrix data;
 public:
 
     layerT( int q, int sx, int sy ): t( 0 ) {
@@ -80,7 +73,7 @@ public:
     }
     //--------------------------------------------------------------------------
 
-    vector<double>& operator[]( int i ) {
+    Types::DoubleVector& operator[]( int i ) {
         return data[t][i];
     }
     //--------------------------------------------------------------------------
@@ -92,13 +85,12 @@ public:
 ////////////////////////////////////////////////////////////////////////////////
 
 class Environment {
-    static Environment* Instance;
-    static map<string, layer*> Layers;
+    static Types::EnvironmentPointer mThis;
+    static Types::LayerMap mLayers;
     Environment( );
 
-
-    void addLayer( string );
-    void addLayerT( string );
+    void addLayer( std::string );
+    void addLayerT( std::string );
     void setUVel( );
     void setVVel( );
     void setTemperature( );
@@ -114,11 +106,10 @@ class Environment {
     void setFrostandFire( );
     void setHANPP( );
 public:
-    static const double MissingValue;
     static Environment* Get( );
-    static double Get( string s, GridCell& gcl, int tm );
-    static double& Get( string s, GridCell& gcl );
-    static double& Get( string s, int, int );
+    static double Get( std::string s, GridCell& gcl, int tm );
+    static double& Get( std::string s, GridCell& gcl );
+    static double& Get( std::string s, int, int );
 
     static void update( int );
 };

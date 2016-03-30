@@ -6,6 +6,7 @@
 #include <GridCell.h>
 
 #include "Parameters.h"
+#include "Constants.h"
 /** \file AutotrophProcessor.h
  * \brief the AutotrophProcessor header file
  */
@@ -51,7 +52,7 @@ public:
         // Get NPP from the cell environment
         double NPP = Environment::Get( "NPP", gcl );
         // If NPP is a missing value then set to zero
-        if( NPP == Environment::MissingValue ) NPP = 0.0;
+        if( NPP == Constants::cMissingValue ) NPP = 0.0;
 
         // Check that this is an ocean cell
         if( gcl.isMarine( ) ) {

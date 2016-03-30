@@ -13,6 +13,8 @@
 #include "Parameters.h"
 /** \brief Generic functions */
 
+using namespace std;
+
 class UtilityFunctions {
 public:
     //----------------------------------------------------------------------------------------------

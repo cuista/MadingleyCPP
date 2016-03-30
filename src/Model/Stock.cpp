@@ -4,6 +4,8 @@
 #include <RevisedTerrestrialPlantModel.h>
 #include <Environment.h>
 #include <GridCell.h>
+
+#include "Constants.h"
 using namespace std;
 //----------------------------------------------------------------------------------------------
 //Methods
@@ -17,11 +19,10 @@ Stock::Stock( FunctionalGroupDefinitions& StockDefinitions, const unsigned Funct
     // Get the individual body masses for organisms in each stock functional group
     IndividualBodyMass = StockDefinitions.GetBiologicalPropertyOneFunctionalGroup( "individual mass", FunctionalGroup );
 
-    double Mass = 0;
     success = false;
 
     // If it is a functional group that corresponds to the current realm, then seed the stock
-    if( !gcl.isMarine( ) && Environment::Get( "Precipitation", gcl ) != Environment::MissingValue && Environment::Get( "Temperature", gcl ) != Environment::MissingValue ) {
+    if( !gcl.isMarine( ) && Environment::Get( "Precipitation", gcl ) != Constants::cMissingValue && Environment::Get( "Temperature", gcl ) != Constants::cMissingValue ) {
         if( StockDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "terrestrial" ) {
             // An instance of the terrestrial carbon model class
             RevisedTerrestrialPlantModel PlantModel;
@@ -30,7 +31,7 @@ Stock::Stock( FunctionalGroupDefinitions& StockDefinitions, const unsigned Funct
             TotalBiomass = PlantModel.CalculateEquilibriumLeafMass( gcl, StockDefinitions.GetTraitNames( "leaf strategy", FunctionalGroup ) == "deciduous" );
             success = true;
         }
-    } else if( gcl.isMarine( ) && Environment::Get( "NPP", gcl ) != Environment::MissingValue ) {
+    } else if( gcl.isMarine( ) && Environment::Get( "NPP", gcl ) != Constants::cMissingValue ) {
         if( StockDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "marine" ) {
             TotalBiomass = 1.e12;
             success = true;

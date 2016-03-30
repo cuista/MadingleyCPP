@@ -15,9 +15,8 @@
 #include "DataIndices.h"
 #include "DateTime.h"
 
-Environment* Environment::Instance = 0;
-const double Environment::MissingValue = -9999;
-map<string, layer*> Environment::Layers;
+Types::EnvironmentPointer Environment::mThis = NULL;
+Types::LayerMap Environment::mLayers;
 //------------------------------------------------------------------------------
 
 Environment::Environment( ) {
@@ -76,51 +75,51 @@ Environment::Environment( ) {
 //------------------------------------------------------------------------------
 
 void Environment::update( int currentMonth ) {
-    for( auto& L: Layers )L.second->setTime( currentMonth );
+    for( auto& L: mLayers )L.second->setTime( currentMonth );
 }
 //------------------------------------------------------------------------------
 
 void Environment::addLayer( string s ) {
     const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
     const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
-    Layers[s] = new layer0( NumLon, NumLat );
+    mLayers[s] = new layer0( NumLon, NumLat );
 }
 //------------------------------------------------------------------------------
 
 void Environment::addLayerT( string s ) {
     const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
     const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
-    Layers[s] = new layerT( 12, NumLon, NumLat );
+    mLayers[s] = new layerT( 12, NumLon, NumLat );
 }
 //------------------------------------------------------------------------------
 
 Environment* Environment::Get( ) {
-    if( Instance == 0 ) {
-        Instance = new Environment( );
+    if( mThis == 0 ) {
+        mThis = new Environment( );
     }
-    return Instance;
+    return mThis;
 }
 //------------------------------------------------------------------------------
 
 double& Environment::Get( string s, int lo, int la ) {
-    if( Instance == 0 )Instance = new Environment( );
-    if( Layers.count( s ) == 0 ) {
+    if( mThis == 0 )mThis = new Environment( );
+    if( mLayers.count( s ) == 0 ) {
         cout << "Invalid Layer Request in Environment:: " << s << endl;
         exit( 0 );
     }
-    return (*Layers[s] )[lo][la];
+    return (*mLayers[s] )[lo][la];
 }
 //------------------------------------------------------------------------------
 
 double& Environment::Get( string s, GridCell& gcl ) {
-    if( Instance == 0 )Instance = new Environment( );
+    if( mThis == 0 )mThis = new Environment( );
     int lo = gcl.LonIndex( );
     int la = gcl.LatIndex( );
-    if( Layers.count( s ) == 0 ) {
+    if( mLayers.count( s ) == 0 ) {
         cout << "Invalid Layer Request in Environment:: " << s << endl;
         exit( 0 );
     }
-    return (*Layers[s] )[lo][la];
+    return (*mLayers[s] )[lo][la];
 }
 //------------------------------------------------------------------------------
 
@@ -142,12 +141,12 @@ void Environment::setTemperature( ) {
                 }
                 delete indices;
 
-                Layers["Temperature"]->setTime( tm );
-                if( d == MissingValue ) {
+                mLayers["Temperature"]->setTime( tm );
+                if( d == Constants::cMissingValue ) {
                     d = 0;
                     cout << "Warning Environment::setTemperature- missing values in temperature field!!" << endl;
                 }
-                ( *Layers["Temperature"] )[lo][la] = d;
+                ( *mLayers["Temperature"] )[lo][la] = d;
             }
 
         }
@@ -172,8 +171,8 @@ void Environment::setUVel( ) {
                 }
                 delete indices;
 
-                Layers["uVel"]->setTime( tm );
-                ( *Layers["uVel"] )[lo][la] = d;
+                mLayers["uVel"]->setTime( tm );
+                ( *mLayers["uVel"] )[lo][la] = d;
             }
         }
     }
@@ -196,8 +195,8 @@ void Environment::setVVel( ) {
                 }
                 delete indices;
 
-                Layers["vVel"]->setTime( tm );
-                ( *Layers["vVel"] )[lo][la] = d;
+                mLayers["vVel"]->setTime( tm );
+                ( *mLayers["vVel"] )[lo][la] = d;
             }
 
         }
@@ -217,14 +216,14 @@ void Environment::setDiurnalTemperatureRange( ) {
                 DateTime::Get( )->SetTimeStep( tm );
                 Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
-                    d = MissingValue; //MB currently missing
+                    d = Constants::cMissingValue; //MB currently missing
                 } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
                     d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialDTR", indices );
                 }
                 delete indices;
 
-                Layers["DiurnalTemperatureRange"]->setTime( tm );
-                ( *Layers["DiurnalTemperatureRange"] )[lo][la] = d;
+                mLayers["DiurnalTemperatureRange"]->setTime( tm );
+                ( *mLayers["DiurnalTemperatureRange"] )[lo][la] = d;
             }
 
         }
@@ -241,7 +240,7 @@ void Environment::setPrecipitation( ) {
         for( int lo = 0; lo < NumLon; lo++ ) {
             for( int la = 0; la < NumLat; la++ ) {
 
-                ( *Layers["TotalPrecip"] )[lo][la] = 0;
+                ( *mLayers["TotalPrecip"] )[lo][la] = 0;
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
@@ -251,13 +250,13 @@ void Environment::setPrecipitation( ) {
                 }
                 delete indices;
 
-                if( d == MissingValue ) {
+                if( d == Constants::cMissingValue ) {
                     d = 0;
                     cout << "Warning Environment::setPrecipitation- missing values in precipitation field!!" << endl;
                 }
-                Layers["Precipitation"]->setTime( tm );
-                ( *Layers["Precipitation"] )[lo][la] = d;
-                ( *Layers["TotalPrecip"] )[lo][la] += d;
+                mLayers["Precipitation"]->setTime( tm );
+                ( *mLayers["Precipitation"] )[lo][la] = d;
+                ( *mLayers["TotalPrecip"] )[lo][la] += d;
             }
             //cout << endl;
         }
@@ -285,12 +284,12 @@ void Environment::setNPP( ) {
                 }
                 delete indices;
 
-                if( d == MissingValue ) {
+                if( d == Constants::cMissingValue ) {
                     d = 0;
                     cout << "Warning Environment::setNPP- missing values in NPP field!!" << endl;
                 }
-                Layers["NPP"]->setTime( tm );
-                ( *Layers["NPP"] )[lo][la] = d;
+                mLayers["NPP"]->setTime( tm );
+                ( *mLayers["NPP"] )[lo][la] = d;
             }
 
         }
@@ -306,9 +305,9 @@ void Environment::setRealm( ) {
 
             Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
             if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
-                ( *Layers["Realm"] )[lo][la] = 2.0;
+                ( *mLayers["Realm"] )[lo][la] = 2.0;
             } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
-                ( *Layers["Realm"] )[lo][la] = 1.0;
+                ( *mLayers["Realm"] )[lo][la] = 1.0;
             }
             delete indices;
         }
@@ -321,7 +320,7 @@ void Environment::setOrganicPool( ) {
     const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
-            ( *Layers["Organic Pool"] )[lo][la] = 0;
+            ( *mLayers["Organic Pool"] )[lo][la] = 0;
         }
     }
 }
@@ -332,7 +331,7 @@ void Environment::setRespiratoryCO2Pool( ) {
     const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
-            ( *Layers["Respiratory CO2 Pool"] )[lo][la] = 0;
+            ( *mLayers["Respiratory CO2 Pool"] )[lo][la] = 0;
         }
     }
 }
@@ -358,7 +357,7 @@ void Environment::setAVGSDTemp( ) {
                 }
                 delete indices;
 
-                if( d == MissingValue )d = 0;
+                if( d == Constants::cMissingValue )d = 0;
                 avg += d;
             }
             avg = avg / 12;
@@ -377,18 +376,18 @@ void Environment::setAVGSDTemp( ) {
                 }
                 delete indices;
 
-                if( d == MissingValue )d = 0;
+                if( d == Constants::cMissingValue )d = 0;
                 sota += ( d - avg )*( d - avg );
                 exptdev[tm] = exp( -( d - avg ) / 3 );
                 sumExp += exptdev[tm];
             }
             for( int tm = 0; tm < 12; tm++ ) {
-                Layers["ExpTDevWeight"]->setTime( tm );
-                ( *Layers["ExpTDevWeight"] )[lo][la] = exptdev[tm] / sumExp;
+                mLayers["ExpTDevWeight"]->setTime( tm );
+                ( *mLayers["ExpTDevWeight"] )[lo][la] = exptdev[tm] / sumExp;
             }
 
-            ( *Layers["AnnualTemperature"] )[lo][la] = avg;
-            ( *Layers["SDTemperature"] )[lo][la] = sqrt( sota / 12 );
+            ( *mLayers["AnnualTemperature"] )[lo][la] = avg;
+            ( *mLayers["SDTemperature"] )[lo][la] = sqrt( sota / 12 );
         }
     }
 }
@@ -405,29 +404,29 @@ void Environment::setNPPSeasonality( ) {
             // Loop over months and calculate total annual NPP
             double TotalNPP = 0.0;
             for( int i = 0; i < 12; i++ ) {
-                Layers["NPP"]->setTime( i );
-                double N = ( *Layers["NPP"] )[lo][la];
-                if( N != MissingValue && N > 0 ) TotalNPP += N;
+                mLayers["NPP"]->setTime( i );
+                double N = ( *mLayers["NPP"] )[lo][la];
+                if( N != Constants::cMissingValue && N > 0 ) TotalNPP += N;
             }
             if( TotalNPP == 0 ) {
                 // Loop over months and calculate seasonality
                 // If there is no NPP value then assign a uniform flat seasonality
                 for( int i = 0; i < 12; i++ ) {
-                    Layers["Seasonality"]->setTime( i );
-                    ( *Layers["Seasonality"] )[lo][la] = 1.0 / 12.0;
+                    mLayers["Seasonality"]->setTime( i );
+                    ( *mLayers["Seasonality"] )[lo][la] = 1.0 / 12.0;
                 }
 
             } else {
                 // Some NPP data exists for this grid cell so use that to infer the NPP seasonality
                 // Loop over months and calculate seasonality
                 for( int i = 0; i < 12; i++ ) {
-                    Layers["NPP"]->setTime( i );
-                    Layers["Seasonality"]->setTime( i );
-                    double N = ( *Layers["NPP"] )[lo][la];
-                    if( N != MissingValue && N > 0 ) {
-                        ( *Layers["Seasonality"] )[lo][la] = N / TotalNPP;
+                    mLayers["NPP"]->setTime( i );
+                    mLayers["Seasonality"]->setTime( i );
+                    double N = ( *mLayers["NPP"] )[lo][la];
+                    if( N != Constants::cMissingValue && N > 0 ) {
+                        ( *mLayers["Seasonality"] )[lo][la] = N / TotalNPP;
                     } else {
-                        ( *Layers["Seasonality"] )[lo][la] = 0.0;
+                        ( *mLayers["Seasonality"] )[lo][la] = 0.0;
                     }
                 }
             }
@@ -457,26 +456,26 @@ void Environment::setFrostandFire( ) {
                 }
                 delete indices;
             }
-            ( *Layers["Fraction Year Frost"] )[lo][la] = CVC.GetNDF( FrostDays, Temperature, MissingValue );
+            ( *mLayers["Fraction Year Frost"] )[lo][la] = CVC.GetNDF( FrostDays, Temperature, Constants::cMissingValue );
 
             vector<double> MonthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
             for( int i = 0; i < 12; i++ ) {
-                Layers["Fraction Month Frost"]->setTime( i );
-                ( *Layers["Fraction Month Frost"] )[lo][la] = min( FrostDays[i] / MonthDays[i], 1.0 );
+                mLayers["Fraction Month Frost"]->setTime( i );
+                ( *mLayers["Fraction Month Frost"] )[lo][la] = min( FrostDays[i] / MonthDays[i], 1.0 );
             }
             Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
             double AWC = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialAWC", indices );
             delete indices;
 
             tuple<vector<double>, double, double> TempTuple = CVC.MonthlyActualEvapotranspirationSoilMoisture( AWC, Precipitation, Temperature );
-            ( *Layers["TotalAET"] )[lo][la] = 0;
+            ( *mLayers["TotalAET"] )[lo][la] = 0;
             for( int i = 0; i < 12; i++ ) {
-                Layers["AET"]->setTime( i );
-                ( *Layers["AET"] )[lo][la] = get<0>( TempTuple )[i];
-                ( *Layers["TotalAET"] )[lo][la] += get<0>( TempTuple )[i];
+                mLayers["AET"]->setTime( i );
+                ( *mLayers["AET"] )[lo][la] = get<0>( TempTuple )[i];
+                ( *mLayers["TotalAET"] )[lo][la] += get<0>( TempTuple )[i];
             }
-            ( *Layers["Fraction Year Fire"] )[lo][la] = ( get<2> ( TempTuple ) / 360 );
+            ( *mLayers["Fraction Year Fire"] )[lo][la] = ( get<2> ( TempTuple ) / 360 );
         }
     }
 }
@@ -491,17 +490,17 @@ void Environment::setBreeding( ) {
         for( int la = 0; la < NumLat; la++ ) {
             double maxSeason = -1;
             for( int i = 0; i < 12; i++ ) {
-                Layers["Seasonality"]->setTime( i );
-                maxSeason = max( maxSeason, ( *Layers["Seasonality"] )[lo][la] );
+                mLayers["Seasonality"]->setTime( i );
+                maxSeason = max( maxSeason, ( *mLayers["Seasonality"] )[lo][la] );
             }
             for( int i = 0; i < 12; i++ ) {
-                Layers["Seasonality"]->setTime( i );
-                Layers["Breeding Season"]->setTime( i );
+                mLayers["Seasonality"]->setTime( i );
+                mLayers["Breeding Season"]->setTime( i );
 
-                if( ( *Layers["Seasonality"] )[lo][la] / maxSeason > 0.5 ) {
-                    ( *Layers["Breeding Season"] )[lo][la] = 1.0;
+                if( ( *mLayers["Seasonality"] )[lo][la] / maxSeason > 0.5 ) {
+                    ( *mLayers["Breeding Season"] )[lo][la] = 1.0;
                 } else {
-                    ( *Layers["Breeding Season"] )[lo][la] = 0.0;
+                    ( *mLayers["Breeding Season"] )[lo][la] = 0.0;
                 }
             }
         }
@@ -514,7 +513,7 @@ void Environment::setHANPP( ) {
     const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
-            ( *Layers["HANPP"] )[lo][la] = 0;
+            ( *mLayers["HANPP"] )[lo][la] = 0;
         }
     }
 }

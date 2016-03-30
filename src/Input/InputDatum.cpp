@@ -4,7 +4,7 @@
 #include "Logger.h"
 #include "Convertor.h"
 
-InputDatum::InputDatum( const std::string& name, const std::string& variableName, const Types::UnsignedIntVector& variableDimensions, const unsigned& size, float* variableData, const bool isDefault ) {
+InputDatum::InputDatum( const std::string& name, const std::string& variableName, const Types::UnsignedVector& variableDimensions, const unsigned& size, float* variableData, const bool isDefault ) {
     mName = name;
     mVariableVector.push_back( new Variable( variableName, variableDimensions, size, variableData, isDefault ) );
 }
@@ -27,6 +27,6 @@ unsigned InputDatum::GetNumberOfVariables( ) const {
     return mVariableVector.size( );
 }
 
-void InputDatum::AddVariable( const std::string& name, const Types::UnsignedIntVector& dimensions, const unsigned& size, float* data, const bool isDefault ) {
+void InputDatum::AddVariable( const std::string& name, const Types::UnsignedVector& dimensions, const unsigned& size, float* data, const bool isDefault ) {
     mVariableVector.push_back( new Variable( name, dimensions, size, data, isDefault ) );
 }

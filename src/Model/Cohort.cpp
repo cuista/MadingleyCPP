@@ -24,8 +24,8 @@ Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBod
     MaximumAchievedBodyMass = juvenileBodyMass;
     Merged = false;
     ProportionTimeActive = proportionTimeActive;
-    location = &gcl;
-    destination = location;
+    mLocation = &gcl;
+    mDestination = mLocation;
     ID = NextID; //MB added to track this object.
     NextID++;
     nextCohortID++;
@@ -45,8 +45,8 @@ Cohort::Cohort( Cohort& actingCohort, double juvenileBodyMass, double adultBodyM
     MaximumAchievedBodyMass = juvenileBodyMass;
     Merged = false;
     ProportionTimeActive = actingCohort.ProportionTimeActive;
-    location = actingCohort.location;
-    destination = location;
+    mLocation = actingCohort.mLocation;
+    mDestination = mLocation;
     ID = NextID; //MB added to track this object.
     NextID++;
     nextCohortID++;
@@ -58,8 +58,8 @@ bool Cohort::isMature( ) {
     return (MaturityTimeStep < std::numeric_limits<unsigned>::max( ) );
 }
 //----------------------------------------------------------------------------------------------
-vector<Cohort> Cohort::newCohorts;
-map<string, map<string, double>>Cohort::Deltas;
+Types::CohortVector Cohort::newCohorts;
+Types::Double2DMap Cohort::Deltas;
 //----------------------------------------------------------------------------------------------
 
 void Cohort::zeroDeltas( ) {
@@ -88,31 +88,31 @@ void Cohort::zeroDeltas( ) {
 //----------------------------------------------------------------------------------------------    
 
 double Cohort::Realm( ) {
-    return location->Realm( );
+    return mLocation->Realm( );
 }
 //----------------------------------------------------------------------------------------------
 
 void Cohort::TryLivingAt( GridCell* _destination ) {
-    if( _destination != 0 && _destination->Realm( ) == Realm( ) )destination = _destination;
+    if( _destination != 0 && _destination->Realm( ) == Realm( ) )mDestination = _destination;
 }
 //----------------------------------------------------------------------------------------------
 
-Location& Cohort::Here( ) {
-    return *location;
+GridCell& Cohort::Here( ) {
+    return *mLocation;
 }
 
 bool Cohort::isMoving( ) {
-    return location != destination;
+    return mLocation != mDestination;
 }
 //----------------------------------------------------------------------------------------------
 
 void Cohort::Move( ) {
-    location->Move( *this );
+    mLocation->Move( *this );
 }
 //----------------------------------------------------------------------------------------------
 
 bool Cohort::isMarine( ) {
-    return location->isMarine( );
+    return mLocation->isMarine( );
 }
 //----------------------------------------------------------------------------------------------
 

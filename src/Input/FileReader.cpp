@@ -83,7 +83,7 @@ bool FileReader::ReadInputDataFiles( const Types::StringMatrix& inputFileMetadat
                     netCDF::NcVar variableNcVar = ( *it ).second;
                     std::vector< netCDF::NcDim > varDims = variableNcVar.getDims( );
 
-                    Types::UnsignedIntVector variableDimensions;
+                    Types::UnsignedVector variableDimensions;
                     unsigned variableSize = 0;
 
                     // Inner variable dimension loop

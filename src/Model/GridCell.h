@@ -88,7 +88,7 @@ public:
      */
     void Move( Cohort& c ) {
         c.Here( ).remove( c );
-        c.location = c.destination;
+        c.mLocation = c.mDestination;
         c.Here( ).insert( c );
     }
     //----------------------------------------------------------------------------------------------
