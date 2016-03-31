@@ -70,16 +70,16 @@ public:
     //----------------------------------------------------------------------------------------------
 
     void insert( Cohort& c ) {
-        GridCellCohorts[c.FunctionalGroupIndex].push_back( c );
+        GridCellCohorts[c.mFunctionalGroupIndex].push_back( c );
     }
     //----------------------------------------------------------------------------------------------
 
     void remove( Cohort& c ) {
-        vector<Cohort>& z = GridCellCohorts[c.FunctionalGroupIndex];
+        vector<Cohort>& z = GridCellCohorts[c.mFunctionalGroupIndex];
         auto h = find_if( z.begin( ), z.end( ), [c]( Cohort & k ) {
-            return c.ID == k.ID;
+            return c.mID == k.mID;
         } );
-        if( c.ID != ( *h ).ID )cout << "Strange things happening in grid delete? " << c.ID << " " << ( *h ).ID << endl;
+        if( c.mID != ( *h ).ID )cout << "Strange things happening in grid delete? " << c.mID << " " << ( *h ).ID << endl;
         z.erase( h );
     }
     //----------------------------------------------------------------------------------------------

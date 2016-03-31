@@ -60,7 +60,7 @@ public:
             unsigned currentMonth, MadingleyModelInitialisation& params ) {
 
         // Holds the reproductive strategy of a cohort
-        bool _Iteroparous = params.CohortFunctionalGroupDefinitions.GetTraitNames( "reproductive strategy", actingCohort.FunctionalGroupIndex ) == "iteroparity";
+        bool _Iteroparous = params.CohortFunctionalGroupDefinitions.GetTraitNames( "reproductive strategy", actingCohort.mFunctionalGroupIndex ) == "iteroparity";
 
         // Assign mass to reproductive potential
         Implementations["reproduction basic"]->RunReproductiveMassAssignment( gcl, actingCohort, currentTimestep, params );

@@ -8,54 +8,54 @@
 /** \file Cohort.cc
  * \brief the Cohort implementation file
  */
-unsigned Cohort::NextID = 0;
+unsigned Cohort::mNextID = 0;
 //----------------------------------------------------------------------------------------------
 
 Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, double optimalPreyBodySizeRatio, unsigned short birthTimeStep, double proportionTimeActive, long long &nextCohortID ) {
 
-    FunctionalGroupIndex = functionalGroupIndex;
-    JuvenileMass = juvenileBodyMass;
-    AdultMass = adultBodyMass;
-    IndividualBodyMass = initialBodyMass;
-    CohortAbundance = initialAbundance;
-    BirthTimeStep = birthTimeStep;
-    MaturityTimeStep = std::numeric_limits<unsigned>::max( );
-    LogOptimalPreyBodySizeRatio = log( optimalPreyBodySizeRatio );
-    MaximumAchievedBodyMass = juvenileBodyMass;
-    Merged = false;
-    ProportionTimeActive = proportionTimeActive;
+    mFunctionalGroupIndex = functionalGroupIndex;
+    mJuvenileMass = juvenileBodyMass;
+    mAdultMass = adultBodyMass;
+    mIndividualBodyMass = initialBodyMass;
+    mCohortAbundance = initialAbundance;
+    mBirthTimeStep = birthTimeStep;
+    mMaturityTimeStep = std::numeric_limits<unsigned>::max( );
+    mLogOptimalPreyBodySizeRatio = log( optimalPreyBodySizeRatio );
+    mMaximumAchievedBodyMass = juvenileBodyMass;
+    mMerged = false;
+    mProportionTimeActive = proportionTimeActive;
     mLocation = &gcl;
     mDestination = mLocation;
-    ID = NextID; //MB added to track this object.
-    NextID++;
+    mID = mNextID; //MB added to track this object.
+    mNextID++;
     nextCohortID++;
 }
 //----------------------------------------------------------------------------------------------
 
 Cohort::Cohort( Cohort& actingCohort, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, unsigned birthTimeStep, long long& nextCohortID ) {
 
-    FunctionalGroupIndex = actingCohort.FunctionalGroupIndex;
-    JuvenileMass = juvenileBodyMass;
-    AdultMass = adultBodyMass;
-    IndividualBodyMass = initialBodyMass;
-    CohortAbundance = initialAbundance;
-    BirthTimeStep = birthTimeStep;
-    MaturityTimeStep = std::numeric_limits<unsigned>::max( );
-    LogOptimalPreyBodySizeRatio = actingCohort.LogOptimalPreyBodySizeRatio;
-    MaximumAchievedBodyMass = juvenileBodyMass;
-    Merged = false;
-    ProportionTimeActive = actingCohort.ProportionTimeActive;
+    mFunctionalGroupIndex = actingCohort.mFunctionalGroupIndex;
+    mJuvenileMass = juvenileBodyMass;
+    mAdultMass = adultBodyMass;
+    mIndividualBodyMass = initialBodyMass;
+    mCohortAbundance = initialAbundance;
+    mBirthTimeStep = birthTimeStep;
+    mMaturityTimeStep = std::numeric_limits<unsigned>::max( );
+    mLogOptimalPreyBodySizeRatio = actingCohort.mLogOptimalPreyBodySizeRatio;
+    mMaximumAchievedBodyMass = juvenileBodyMass;
+    mMerged = false;
+    mProportionTimeActive = actingCohort.mProportionTimeActive;
     mLocation = actingCohort.mLocation;
     mDestination = mLocation;
-    ID = NextID; //MB added to track this object.
-    NextID++;
+    mID = mNextID; //MB added to track this object.
+    mNextID++;
     nextCohortID++;
 
 }
 //----------------------------------------------------------------------------------------------
 
 bool Cohort::isMature( ) {
-    return (MaturityTimeStep < std::numeric_limits<unsigned>::max( ) );
+    return (mMaturityTimeStep < std::numeric_limits<unsigned>::max( ) );
 }
 //----------------------------------------------------------------------------------------------
 Types::CohortVector Cohort::newCohorts;
@@ -117,7 +117,7 @@ bool Cohort::isMarine( ) {
 //----------------------------------------------------------------------------------------------
 
 bool Cohort::isPlanktonic( MadingleyModelInitialisation& params ) {
-    return ( isMarine( ) && ( ( IndividualBodyMass <= Parameters::Get( )->GetPlanktonSizeThreshold( ) ) || ( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", FunctionalGroupIndex ) == "planktonic" ) ) );
+    return ( isMarine( ) && ( ( mIndividualBodyMass <= Parameters::Get( )->GetPlanktonSizeThreshold( ) ) || ( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", mFunctionalGroupIndex ) == "planktonic" ) ) );
 }
 //----------------------------------------------------------------------------------------------
 

@@ -45,9 +45,9 @@ public:
     @returns The relative distance in trait space
      */
     static double CalculateDistance( Cohort& Cohort1, Cohort& Cohort2 ) {
-        double AdultMassDistance = ( Cohort1.AdultMass - Cohort2.AdultMass ) / Cohort1.AdultMass;
-        double JuvenileMassDistance = ( Cohort1.JuvenileMass - Cohort2.JuvenileMass ) / Cohort1.JuvenileMass;
-        double CurrentMassDistance = ( Cohort1.IndividualBodyMass - Cohort2.IndividualBodyMass ) / Cohort1.IndividualBodyMass;
+        double AdultMassDistance = ( Cohort1.mAdultMass - Cohort2.mAdultMass ) / Cohort1.mAdultMass;
+        double JuvenileMassDistance = ( Cohort1.mJuvenileMass - Cohort2.mJuvenileMass ) / Cohort1.mJuvenileMass;
+        double CurrentMassDistance = ( Cohort1.mIndividualBodyMass - Cohort2.mIndividualBodyMass ) / Cohort1.mIndividualBodyMass;
 
         return (( AdultMassDistance * AdultMassDistance ) + ( JuvenileMassDistance * JuvenileMassDistance ) +
                 ( CurrentMassDistance * CurrentMassDistance ) );
@@ -121,17 +121,17 @@ public:
                 Cohort& CohortToMergeFrom = *( I->a );
                 Cohort& CohortToMergeTo = *( I->b );
 
-                if( CohortToMergeFrom.CohortAbundance > 0 && CohortToMergeTo.CohortAbundance > 0 ) {
+                if( CohortToMergeFrom.mCohortAbundance > 0 && CohortToMergeTo.mCohortAbundance > 0 ) {
                     // Add the abundance of the second cohort to that of the first
 
-                    CohortToMergeTo.CohortAbundance += CohortToMergeFrom.CohortAbundance * CohortToMergeFrom.IndividualBodyMass / CohortToMergeTo.IndividualBodyMass;
+                    CohortToMergeTo.mCohortAbundance += CohortToMergeFrom.mCohortAbundance * CohortToMergeFrom.mIndividualBodyMass / CohortToMergeTo.mIndividualBodyMass;
                     // Add the reproductive potential mass of the second cohort to that of the first
-                    CohortToMergeTo.IndividualReproductivePotentialMass += CohortToMergeFrom.IndividualReproductivePotentialMass * CohortToMergeFrom.CohortAbundance / CohortToMergeTo.CohortAbundance;
+                    CohortToMergeTo.mIndividualReproductivePotentialMass += CohortToMergeFrom.mIndividualReproductivePotentialMass * CohortToMergeFrom.mCohortAbundance / CohortToMergeTo.mCohortAbundance;
                     // Set the abundance of the second cohort to zero
-                    CohortToMergeFrom.CohortAbundance = 0.0;
+                    CohortToMergeFrom.mCohortAbundance = 0.0;
                     // Designate both cohorts as having merged
-                    CohortToMergeTo.Merged = true;
-                    CohortToMergeFrom.Merged = true;
+                    CohortToMergeTo.mMerged = true;
+                    CohortToMergeFrom.mMerged = true;
                     MergeCounter++;
                 }
                 ++I;

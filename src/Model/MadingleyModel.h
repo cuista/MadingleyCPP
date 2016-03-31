@@ -205,7 +205,7 @@ public:
 
         gcl.ask( [&]( Cohort & c ) {
             // Perform all biological functions except dispersal (which is cross grid cell)
-            if( gcl.GridCellCohorts[c.FunctionalGroupIndex].size( ) != 0 && c.CohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
+            if( gcl.GridCellCohorts[c.mFunctionalGroupIndex].size( ) != 0 && c.mCohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
 
                 CohortActivity.AssignProportionTimeActive( gcl, c, CurrentTimeStep, CurrentMonth, params );
 
@@ -216,11 +216,11 @@ public:
                 Cohort::zeroDeltas( );
 
                 // Check that the mass of individuals in this cohort is still >= 0 after running ecology
-                assert( c.IndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
+                assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
             }
 
             // Check that the mass of individuals in this cohort is still >= 0 after running ecology
-            if( gcl.GridCellCohorts[c.FunctionalGroupIndex].size( ) > 0 )assert( c.IndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
+            if( gcl.GridCellCohorts[c.mFunctionalGroupIndex].size( ) > 0 )assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
         } );
 
 
@@ -251,7 +251,7 @@ public:
         // Loop over cohorts and remove any whose abundance is below the extinction threshold
         vector<Cohort>CohortsToRemove;
         gcl.ask( [&]( Cohort & c ) {
-            if( c.CohortAbundance < Parameters::Get( )->GetExtinctionThreshold( ) || c.IndividualBodyMass <= 1.e-300 ) {
+            if( c.mCohortAbundance < Parameters::Get( )->GetExtinctionThreshold( ) || c.mIndividualBodyMass <= 1.e-300 ) {
                 CohortsToRemove.push_back( c );
                 partial.Extinctions += 1;
             }
@@ -261,7 +261,7 @@ public:
         for( auto& c: CohortsToRemove ) {
 
             // Add biomass of the extinct cohort to the organic matter pool
-            double deadMatter = ( c.IndividualBodyMass + c.IndividualReproductivePotentialMass ) * c.CohortAbundance;
+            double deadMatter = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance;
             if( deadMatter < 0 ) cout << "Dead " << deadMatter << endl;
             Environment::Get( "Organic Pool", c.Here( ) ) += deadMatter;
             assert( Environment::Get( "Organic Pool", c.Here( ) ) >= 0 && "Organic pool < 0" );
@@ -316,9 +316,9 @@ public:
             organicPool += Environment::Get( "Organic Pool", gcl ) / 1000.;
             respiratoryPool += Environment::Get( "Respiratory CO2 Pool", gcl ) / 1000.;
                     gcl.ask( [&]( Cohort & c ) {
-                        totalAbundance += c.CohortAbundance;
+                        totalAbundance += c.mCohortAbundance;
 
-                        double CohortBiomass = ( c.IndividualBodyMass + c.IndividualReproductivePotentialMass ) * c.CohortAbundance / 1000.;
+                        double CohortBiomass = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance / 1000.;
                                 totalCohortBiomass += CohortBiomass;
                     } );
             gcl.askStocks( [&]( Stock & s ) {

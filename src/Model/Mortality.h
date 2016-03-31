@@ -98,7 +98,7 @@ public:
             BodyMassIncludingChangeThisTimeStep += Biomass.second;
         }
 
-        BodyMassIncludingChangeThisTimeStep = min( actingCohort.AdultMass, BodyMassIncludingChangeThisTimeStep + actingCohort.IndividualBodyMass );
+        BodyMassIncludingChangeThisTimeStep = min( actingCohort.mAdultMass, BodyMassIncludingChangeThisTimeStep + actingCohort.mIndividualBodyMass );
         //if (BodyMassIncludingChangeThisTimeStep<0)cout<<BodyMassIncludingChangeThisTimeStep<<" "<<actingCohort.IndividualBodyMass<<" "<<actingCohort.ID<<endl;
         // Temporary variable to hold net reproductive biomass change of individuals in this cohort as a result of other ecological processes
         ReproductiveMassIncludingChangeThisTimeStep = 0.0;
@@ -109,13 +109,13 @@ public:
             ReproductiveMassIncludingChangeThisTimeStep += Biomass.second;
         }
 
-        ReproductiveMassIncludingChangeThisTimeStep += actingCohort.IndividualReproductivePotentialMass;
+        ReproductiveMassIncludingChangeThisTimeStep += actingCohort.mIndividualReproductivePotentialMass;
 
         // Check to see if the cohort has already been killed by predation etc
         if( BodyMassIncludingChangeThisTimeStep <= 1.e-14 ) //MB a small number ! maybe should be larger? 1.e-15 fails to exclude negatives
         {
             // If individual body mass is not greater than zero, then all individuals become extinct
-            MortalityTotal = actingCohort.CohortAbundance;
+            MortalityTotal = actingCohort.mCohortAbundance;
             BodyMassIncludingChangeThisTimeStep = 0; //MB kludged to exclude negative values below - need mass checking through the code
         } else {
             // Calculate background mortality rate
@@ -123,7 +123,7 @@ public:
                     actingCohort, BodyMassIncludingChangeThisTimeStep, currentTimestep );
 
             // If the cohort has matured, then calculate senescence mortality rate, otherwise set rate to zero
-            if( actingCohort.MaturityTimeStep != std::numeric_limits<unsigned>::max( ) ) {
+            if( actingCohort.mMaturityTimeStep != std::numeric_limits<unsigned>::max( ) ) {
                 MortalityRateSenescence = Implementations["basic senescence mortality"]->CalculateMortalityRate(
                         actingCohort, BodyMassIncludingChangeThisTimeStep, currentTimestep );
             } else {
@@ -136,7 +136,7 @@ public:
 
             // Calculate the number of individuals that suffer mortality this time step from all sources of mortality
             MortalityTotal = ( 1 - exp( -MortalityRateBackground - MortalityRateSenescence -
-                    MortalityRateStarvation ) ) * actingCohort.CohortAbundance;
+                    MortalityRateStarvation ) ) * actingCohort.mCohortAbundance;
         }
 
         // Remove individuals that have died from the delta abundance for this cohort

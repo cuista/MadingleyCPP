@@ -37,10 +37,10 @@ public:
     @return The rate of individuals in the cohort that die from senescence mortality*/
     double CalculateMortalityRate( Cohort& actingCohort, double bodyMassIncludingChangeThisTimeStep, unsigned currentTimestep ) {
         // Calculate the age (in model time steps) that the cohort reached maturity
-        double TimeToMaturity = actingCohort.MaturityTimeStep - actingCohort.BirthTimeStep;
+        double TimeToMaturity = actingCohort.mMaturityTimeStep - actingCohort.mBirthTimeStep;
 
         // Calculate how many model time steps since the cohort reached maturity
-        double AgePostMaturity = currentTimestep - actingCohort.MaturityTimeStep;
+        double AgePostMaturity = currentTimestep - actingCohort.mMaturityTimeStep;
 
         // Calculate the time since maturity as a fraction of the time that it took the cohort to reach maturity
         double FractionalAgePostMaturity = AgePostMaturity / ( TimeToMaturity + 1 );

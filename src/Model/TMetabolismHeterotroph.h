@@ -59,14 +59,14 @@ class MetabolismHeterotroph: public IMetabolismImplementation {
     @param currentMonth the current month as an integer */
     void RunMetabolism( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {
         // Calculate metabolic loss for an individual and add the value to the delta biomass for metabolism
-        Cohort::Deltas["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate( actingCohort.IndividualBodyMass,
+        Cohort::Deltas["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate( actingCohort.mIndividualBodyMass,
                 Environment::Get( "Temperature", actingCohort.Here( ) ) + TemperatureUnitsConvert ) * DeltaT;
 
         // If metabolic loss is greater than individual body mass after herbivory and predation, then set equal to individual body mass
-        Cohort::Deltas["biomass"]["metabolism"] = max( Cohort::Deltas["biomass"]["metabolism"], -( actingCohort.IndividualBodyMass + Cohort::Deltas["biomass"]["predation"] + Cohort::Deltas["biomass"]["herbivory"] ) );
+        Cohort::Deltas["biomass"]["metabolism"] = max( Cohort::Deltas["biomass"]["metabolism"], -( actingCohort.mIndividualBodyMass + Cohort::Deltas["biomass"]["predation"] + Cohort::Deltas["biomass"]["herbivory"] ) );
 
         // Add total metabolic loss for all individuals in the cohort to delta biomass for metabolism in the respiratory CO2 pool
-        Cohort::Deltas["respiratoryCO2pool"]["metabolism"] = -Cohort::Deltas["biomass"]["metabolism"] * actingCohort.CohortAbundance;
+        Cohort::Deltas["respiratoryCO2pool"]["metabolism"] = -Cohort::Deltas["biomass"]["metabolism"] * actingCohort.mCohortAbundance;
     }
     //----------------------------------------------------------------------------------------------
 

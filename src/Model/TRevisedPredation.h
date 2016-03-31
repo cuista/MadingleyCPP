@@ -196,10 +196,10 @@ public:
         TimeUnitsToHandlePotentialFoodItems = 0.0;
 
         // Get the individual body mass of the acting (predator) cohort
-        BodyMassPredator = actingCohort.IndividualBodyMass;
+        BodyMassPredator = actingCohort.mIndividualBodyMass;
 
         // Get the abundance of the acting (predator) cohort
-        AbundancePredator = actingCohort.CohortAbundance;
+        AbundancePredator = actingCohort.mCohortAbundance;
 
         // Pre-calculate individual values for this predator to speed things up
         SpecificPredatorKillRateConstant = KillRateConstant * pow( BodyMassPredator, ( KillRateConstantMassExponent ) );
@@ -207,16 +207,16 @@ public:
         PredatorAssimilationEfficiency = AssimilationEfficiency;
         PredatorNonAssimilation = ( 1 - AssimilationEfficiency );
 
-        DietIsAllSpecial = params.CohortFunctionalGroupDefinitions.GetTraitNames( "Diet", actingCohort.FunctionalGroupIndex ) == "allspecial";
+        DietIsAllSpecial = params.CohortFunctionalGroupDefinitions.GetTraitNames( "Diet", actingCohort.mFunctionalGroupIndex ) == "allspecial";
 
-        PredatorLogOptimalPreyBodySizeRatio = actingCohort.LogOptimalPreyBodySizeRatio;
+        PredatorLogOptimalPreyBodySizeRatio = actingCohort.mLogOptimalPreyBodySizeRatio;
 
         // If a filter feeder, then optimal body size is a value not a ratio: convert it to a ratio to ensure that all calculations work correctly
         if( DietIsAllSpecial ) {
             // Optimal body size is actually a value, not a ratio, so convert it to a ratio based on the present body size
             //MB take log of exp ??? really??
             PredatorLogOptimalPreyBodySizeRatio =
-                    log( exp( actingCohort.LogOptimalPreyBodySizeRatio ) / actingCohort.IndividualBodyMass ); //actingCohort.LogOptimalPreyBodySizeRatio-log(actingCohort.IndividualBodyMass);
+                    log( exp( actingCohort.mLogOptimalPreyBodySizeRatio ) / actingCohort.mIndividualBodyMass ); //actingCohort.LogOptimalPreyBodySizeRatio-log(actingCohort.IndividualBodyMass);
         }
 
 
@@ -235,13 +235,13 @@ public:
             // Loop over cohorts within the functional group
             for( int i = 0; i < NumberCohortsPerFunctionalGroupNoNewCohorts[FunctionalGroup]; i++ ) {
                 //No Cannibalism
-                if( gcl.GridCellCohorts[FunctionalGroup][i].ID == actingCohort.ID ) {
+                if( gcl.GridCellCohorts[FunctionalGroup][i].ID == actingCohort.mID ) {
                     PotentialAbundanceEaten[FunctionalGroup][i] = 0.0;
                 } else {
                     if( DietIsAllSpecial ) {
 
                         // Get the body mass of individuals in this cohort
-                        BodyMassPrey = gcl.GridCellCohorts[FunctionalGroup][i].IndividualBodyMass;
+                        BodyMassPrey = gcl.GridCellCohorts[FunctionalGroup][i].mIndividualBodyMass;
 
                         // Get the bin number of this prey cohort
                         if( BodyMassPrey > 0 )PreyMassBinNumber = GetBinNumber( BodyMassPrey, BodyMassPredator, PredatorLogOptimalPreyBodySizeRatio );
@@ -255,9 +255,9 @@ public:
                                 ( PreyMassBinNumber < NumberOfBins ) ) {
                             // Calculate the potential abundance from this cohort eaten by the acting cohort
                             PotentialAbundanceEaten[FunctionalGroup][i] = CalculateExpectedNumberKilledMarine(
-                                    gcl.GridCellCohorts[FunctionalGroup][i].CohortAbundance, BodyMassPrey, PreyMassBinNumber, FunctionalGroup,
+                                    gcl.GridCellCohorts[FunctionalGroup][i].mCohortAbundance, BodyMassPrey, PreyMassBinNumber, FunctionalGroup,
                                     BodyMassPredator, CarnivoreFunctionalGroups[FunctionalGroup], OmnivoreFunctionalGroups[FunctionalGroup],
-                                    OmnivoreFunctionalGroups[actingCohort.FunctionalGroupIndex], PredatorLogOptimalPreyBodySizeRatio );
+                                    OmnivoreFunctionalGroups[actingCohort.mFunctionalGroupIndex], PredatorLogOptimalPreyBodySizeRatio );
 
                             // Add the time required to handle the potential abundance eaten from this cohort to the cumulative total for all cohorts
                             TimeUnitsToHandlePotentialFoodItems += PotentialAbundanceEaten[FunctionalGroup][i] *
@@ -270,7 +270,7 @@ public:
                     } else {
 
                         // Get the body mass of individuals in this cohort
-                        BodyMassPrey = gcl.GridCellCohorts[FunctionalGroup][i].IndividualBodyMass;
+                        BodyMassPrey = gcl.GridCellCohorts[FunctionalGroup][i].mIndividualBodyMass;
 
                         // Get the bin number of this prey cohort
                         if( BodyMassPrey > 0 )PreyMassBinNumber = GetBinNumber( BodyMassPrey, BodyMassPredator, PredatorLogOptimalPreyBodySizeRatio );
@@ -281,9 +281,9 @@ public:
                         if( ( BodyMassPrey > 0 ) && ( 0 < PreyMassBinNumber ) && ( PreyMassBinNumber < NumberOfBins ) ) {
                             // Calculate the potential abundance from this cohort eaten by the acting cohort
                             PotentialAbundanceEaten[FunctionalGroup][i] = CalculateExpectedNumberKilledMarine(
-                                    gcl.GridCellCohorts[FunctionalGroup][i].CohortAbundance, BodyMassPrey, PreyMassBinNumber, FunctionalGroup,
+                                    gcl.GridCellCohorts[FunctionalGroup][i].mCohortAbundance, BodyMassPrey, PreyMassBinNumber, FunctionalGroup,
                                     BodyMassPredator, CarnivoreFunctionalGroups[FunctionalGroup], OmnivoreFunctionalGroups[FunctionalGroup],
-                                    OmnivoreFunctionalGroups[actingCohort.FunctionalGroupIndex], PredatorLogOptimalPreyBodySizeRatio );
+                                    OmnivoreFunctionalGroups[actingCohort.mFunctionalGroupIndex], PredatorLogOptimalPreyBodySizeRatio );
 
                             // Add the time required to handle the potential abundance eaten from this cohort to the cumulative total for all cohorts
                             TimeUnitsToHandlePotentialFoodItems += PotentialAbundanceEaten[FunctionalGroup][i] *
@@ -319,12 +319,12 @@ public:
                 // Calculate the difference between the actual body size ratio and the optimal ratio, 
                 // and then divide by the standard deviation in log ratio space to determine in 
                 // which bin to assign the prey item.
-                if( cohort.IndividualBodyMass > 0 ) {
-                    BinNumber = GetBinNumber( cohort.IndividualBodyMass, actingCohort.IndividualBodyMass,
+                if( cohort.mIndividualBodyMass > 0 ) {
+                    BinNumber = GetBinNumber( cohort.mIndividualBodyMass, actingCohort.mIndividualBodyMass,
                             logOptimalPreyBodySizeRatio );
 
                     if( ( 0 < BinNumber ) && ( BinNumber < NumberOfBins ) ) {
-                        BinnedPreyDensities[fg][ BinNumber] += cohort.CohortAbundance / CellAreaHectares;
+                        BinnedPreyDensities[fg][ BinNumber] += cohort.mCohortAbundance / CellAreaHectares;
                     }
                 }
             }
@@ -363,10 +363,10 @@ public:
         TimeUnitsToHandlePotentialFoodItems = 0.0;
 
         // Get the individual body mass of the acting (predator) cohort
-        BodyMassPredator = actingCohort.IndividualBodyMass;
+        BodyMassPredator = actingCohort.mIndividualBodyMass;
 
         // Get the abundance of the acting (predator) cohort
-        AbundancePredator = actingCohort.CohortAbundance;
+        AbundancePredator = actingCohort.mCohortAbundance;
 
         // Pre-calculate individual values for this predator
         SpecificPredatorKillRateConstant = KillRateConstant * pow( BodyMassPredator, ( KillRateConstantMassExponent ) );
@@ -387,7 +387,7 @@ public:
         PredatorAbundanceMultipliedByTimeEating = AbundancePredator * SpecificPredatorTimeUnitsEatingPerGlobalTimeStep;
 
 
-        PredatorLogOptimalPreyBodySizeRatio = actingCohort.LogOptimalPreyBodySizeRatio;
+        PredatorLogOptimalPreyBodySizeRatio = actingCohort.mLogOptimalPreyBodySizeRatio;
 
         // Calculate the abundance of prey in each of the prey mass bins
         PopulateBinnedPreyAbundance( gcl, actingCohort, PredatorLogOptimalPreyBodySizeRatio );
@@ -397,11 +397,11 @@ public:
 
             // Loop over cohorts within the functional group
             for( int i = 0; i < NumberCohortsPerFunctionalGroupNoNewCohorts[FunctionalGroup]; i++ ) {
-                if( gcl.GridCellCohorts[FunctionalGroup][i].ID == actingCohort.ID ) {
+                if( gcl.GridCellCohorts[FunctionalGroup][i].ID == actingCohort.mID ) {
                     PotentialAbundanceEaten[FunctionalGroup][i] = 0.0;
                 } else {
                     // Get the body mass of individuals in this cohort
-                    BodyMassPrey = gcl.GridCellCohorts[FunctionalGroup][i].IndividualBodyMass;
+                    BodyMassPrey = gcl.GridCellCohorts[FunctionalGroup][i].mIndividualBodyMass;
 
                     // Get the bin number of this prey cohort
                     if( BodyMassPrey > 0 )PreyMassBinNumber = GetBinNumber( BodyMassPrey, BodyMassPredator, PredatorLogOptimalPreyBodySizeRatio );
@@ -410,9 +410,9 @@ public:
                     if( ( BodyMassPrey > 0 ) && ( 0 < PreyMassBinNumber ) && ( PreyMassBinNumber < NumberOfBins ) ) {
                         // Calculate the potential abundance from this cohort eaten by the acting cohort
                         PotentialAbundanceEaten[FunctionalGroup][i] = CalculateExpectedNumberKilledTerrestrial(
-                                gcl.GridCellCohorts[FunctionalGroup][i].CohortAbundance, BodyMassPrey, PreyMassBinNumber, FunctionalGroup,
+                                gcl.GridCellCohorts[FunctionalGroup][i].mCohortAbundance, BodyMassPrey, PreyMassBinNumber, FunctionalGroup,
                                 BodyMassPredator, CarnivoreFunctionalGroups[FunctionalGroup], OmnivoreFunctionalGroups[FunctionalGroup],
-                                OmnivoreFunctionalGroups[actingCohort.FunctionalGroupIndex], PredatorLogOptimalPreyBodySizeRatio );
+                                OmnivoreFunctionalGroups[actingCohort.mFunctionalGroupIndex], PredatorLogOptimalPreyBodySizeRatio );
 
                         // Add the time required to handle the potential abundance eaten from this cohort to the cumulative total for all cohorts
                         TimeUnitsToHandlePotentialFoodItems += PotentialAbundanceEaten[FunctionalGroup][i] *
@@ -451,31 +451,31 @@ public:
             // Loop over cohorts within the functional group
             for( int i = 0; i < NumberCohortsPerFunctionalGroupNoNewCohorts[FunctionalGroup]; i++ ) {
                 // Get the individual body mass of this cohort
-                BodyMassPrey = gcl.GridCellCohorts[FunctionalGroup][i].IndividualBodyMass;
+                BodyMassPrey = gcl.GridCellCohorts[FunctionalGroup][i].mIndividualBodyMass;
 
                 // Calculate the actual abundance of prey eaten from this cohort
-                if( gcl.GridCellCohorts[FunctionalGroup][i].CohortAbundance > 0 ) {
+                if( gcl.GridCellCohorts[FunctionalGroup][i].mCohortAbundance > 0 ) {
 
 
                     // Calculate the actual abundance of prey eaten from this cohort
                     AbundancesEaten[FunctionalGroup][i] = CalculateAbundanceEaten( PotentialAbundanceEaten[FunctionalGroup][i], PredatorAbundanceMultipliedByTimeEating,
-                            TotalTimeUnitsToHandlePlusOne, gcl.GridCellCohorts[FunctionalGroup][i].CohortAbundance );
+                            TotalTimeUnitsToHandlePlusOne, gcl.GridCellCohorts[FunctionalGroup][i].mCohortAbundance );
 
                 } else
                     AbundancesEaten[FunctionalGroup][i] = 0;
 
                 // Remove number of prey eaten from the prey cohort
-                gcl.GridCellCohorts[FunctionalGroup][i].CohortAbundance -= AbundancesEaten[FunctionalGroup][i];
+                gcl.GridCellCohorts[FunctionalGroup][i].mCohortAbundance -= AbundancesEaten[FunctionalGroup][i];
 
 
                 // Check that the abundance eaten from this cohort is not negative
                 if( AbundancesEaten[FunctionalGroup][i] < 0. ) {
-                    cout << "Predation negative for this prey cohort" << actingCohort.FunctionalGroupIndex << " " << actingCohort.ID << AbundancesEaten[FunctionalGroup][i] << endl;
+                    cout << "Predation negative for this prey cohort" << actingCohort.mFunctionalGroupIndex << " " << actingCohort.mID << AbundancesEaten[FunctionalGroup][i] << endl;
                 }
                 // Create a temporary value to speed up the predation function
                 // This is equivalent to the body mass of the prey cohort including reproductive potential mass, times the abundance eaten of the prey cohort,
                 // divided by the abundance of the predator
-                TempDouble += ( BodyMassPrey + gcl.GridCellCohorts[FunctionalGroup][i].IndividualReproductivePotentialMass ) * AbundancesEaten[FunctionalGroup][i] / AbundancePredator;
+                TempDouble += ( BodyMassPrey + gcl.GridCellCohorts[FunctionalGroup][i].mIndividualReproductivePotentialMass ) * AbundancesEaten[FunctionalGroup][i] / AbundancePredator;
 
 
             }

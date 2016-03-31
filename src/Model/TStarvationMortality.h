@@ -58,10 +58,10 @@ public:
     @param bodyMassIncludingChangeThisTimeStep Body mass including change from other ecological functions this time step; should not exceed adult mass 
     @return The starvation mortality rate in mortality formulation time step units*/
     double CalculateStarvationRate( Cohort& actingCohort, double bodyMassIncludingChangeThisTimeStep ) {
-        if( bodyMassIncludingChangeThisTimeStep < actingCohort.MaximumAchievedBodyMass ) {
+        if( bodyMassIncludingChangeThisTimeStep < actingCohort.mMaximumAchievedBodyMass ) {
             // Calculate the first part of the relationship between body mass and mortality rate
             double k = -( bodyMassIncludingChangeThisTimeStep - _LogisticInflectionPoint * actingCohort.
-                    MaximumAchievedBodyMass ) / ( _LogisticScalingParameter * actingCohort.MaximumAchievedBodyMass );
+                    mMaximumAchievedBodyMass ) / ( _LogisticScalingParameter * actingCohort.mMaximumAchievedBodyMass );
 
             // Calculate mortality rate
             return _MaximumStarvationRate / ( 1 + exp( -k ) );

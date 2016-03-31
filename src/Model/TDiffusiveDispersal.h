@@ -61,7 +61,7 @@ public:
     @param currentMonth The current model month */
     void RunDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
         // Calculate dispersal speed for the cohort         
-        double DispersalSpeed = CalculateDispersalSpeed( cohortToDisperse.IndividualBodyMass );
+        double DispersalSpeed = CalculateDispersalSpeed( cohortToDisperse.mIndividualBodyMass );
 
         CalculateDispersalProbability( gridForDispersal, cohortToDisperse, DispersalSpeed );
 

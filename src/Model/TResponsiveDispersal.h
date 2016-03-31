@@ -89,8 +89,8 @@ public:
         // Check for starvation driven dispersal
         // What is the present body mass of the cohort?
         // Note that at present we are just tracking starvation for adults
-        double IndividualBodyMass = cohortToDisperse.IndividualBodyMass;
-        double AdultMass = cohortToDisperse.AdultMass;
+        double IndividualBodyMass = cohortToDisperse.mIndividualBodyMass;
+        double AdultMass = cohortToDisperse.mAdultMass;
 
         // Assume a linear relationship between probability of dispersal and body mass loss, up to _StarvationDispersalBodyMassThreshold
         // at which point the cohort will try to disperse every time step
@@ -128,16 +128,16 @@ public:
 
     void CheckDensityDrivenDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse ) {
         // Check the population density
-        double NumberOfIndividuals = cohortToDisperse.CohortAbundance;
+        double NumberOfIndividuals = cohortToDisperse.mCohortAbundance;
 
         // Get the cell area, in kilometres squared
         double CellArea = cohortToDisperse.mLocation->CellArea( );
 
         // If below the density threshold
-        if( ( NumberOfIndividuals / CellArea ) < DensityThresholdScaling / cohortToDisperse.AdultMass ) {
+        if( ( NumberOfIndividuals / CellArea ) < DensityThresholdScaling / cohortToDisperse.mAdultMass ) {
             // Check to see if it disperses (based on the same movement scaling as used in diffusive movement)
             // Calculate dispersal speed for that cohort
-            double DispersalSpeed = CalculateDispersalSpeed( cohortToDisperse.AdultMass );
+            double DispersalSpeed = CalculateDispersalSpeed( cohortToDisperse.mAdultMass );
 
             // Cohort tries to disperse
             CalculateDispersalProbability( gridForDispersal, cohortToDisperse, DispersalSpeed );

@@ -15,37 +15,37 @@ public:
     //Variables
     //----------------------------------------------------------------------------------------------
     /** \brief Time step when the cohort was generated */
-    unsigned BirthTimeStep;
+    unsigned mBirthTimeStep;
     /** \brief The time step at which this cohort reached maturity */
-    unsigned MaturityTimeStep;
+    unsigned mMaturityTimeStep;
     /** \brief A list of all cohort IDs ever associated with individuals in this current cohort */
-    Types::LongVector CohortID;
+    Types::LongVector mCohortID;
     /** \brief The mean juvenile mass of individuals in this cohort */
-    double JuvenileMass;
+    double mJuvenileMass;
     /** \brief The mean mature adult mass of individuals in this cohort */
-    double AdultMass;
+    double mAdultMass;
     /** \brief The mean body mass of an individual in this cohort */
-    double IndividualBodyMass;
+    double mIndividualBodyMass;
     /** \brief Individual biomass assigned to reproductive potential */
-    double IndividualReproductivePotentialMass;
+    double mIndividualReproductivePotentialMass;
     /** \brief The maximum mean body mass ever achieved by individuals in this cohort */
-    double MaximumAchievedBodyMass;
+    double mMaximumAchievedBodyMass;
     /** \brief The number of individuals in the cohort */
-    double CohortAbundance;
+    double mCohortAbundance;
     /** \brief The index of the functional group that the cohort belongs to */
-    unsigned FunctionalGroupIndex;
+    unsigned mFunctionalGroupIndex;
     /** \brief Whether this cohort has ever been merged with another cohort */
-    bool Merged;
+    bool mMerged;
     /** \brief The proportion of the timestep for which this cohort is active */
-    double ProportionTimeActive;
+    double mProportionTimeActive;
     /** \brief The optimal prey body size for individuals in this cohort */
-    double LogOptimalPreyBodySizeRatio;
-    long long ID;
+    double mLogOptimalPreyBodySizeRatio;
+    long long mID;
     Types::GridCellPointer mLocation;
     Types::GridCellPointer mDestination;
     static Types::Double2DMap Deltas;
     static Types::CohortVector newCohorts;
-    static unsigned NextID;
+    static unsigned mNextID;
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------

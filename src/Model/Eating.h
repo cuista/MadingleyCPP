@@ -65,7 +65,7 @@ public:
             ThreadLockedParallelVariables& partial,
             unsigned currentMonth, MadingleyModelInitialisation& params){
         // Get the nutrition source (herbivory, carnivory or omnivory) of the acting cohort
-        string NutritionSource = params.CohortFunctionalGroupDefinitions.GetTraitNames("Nutrition source", actingCohort.FunctionalGroupIndex);
+        string NutritionSource = params.CohortFunctionalGroupDefinitions.GetTraitNames("Nutrition source", actingCohort.mFunctionalGroupIndex);
         map<string, int> vores;
         vores["herbivore"] = 0;
         vores["carnivore"] = 1;
@@ -78,10 +78,10 @@ public:
                 // Get the assimilation efficiency for herbivory for this cohort from the functional group definitions
                 Implementations["revised herbivory"]->AssimilationEfficiency =
                         params.CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup
-                        ("herbivory assimilation", actingCohort.FunctionalGroupIndex);
+                        ("herbivory assimilation", actingCohort.mFunctionalGroupIndex);
 
                 // Get the proportion of time spent eating for this cohort from the functional group definitions
-                Implementations["revised herbivory"]->ProportionTimeEating = actingCohort.ProportionTimeActive;
+                Implementations["revised herbivory"]->ProportionTimeEating = actingCohort.mProportionTimeActive;
 
                 // Calculate the potential biomass available from herbivory
                 if (gcl.isMarine())
@@ -103,9 +103,9 @@ public:
                 // Get the assimilation efficiency for predation for this cohort from the functional group definitions
                 Implementations["revised predation"]->AssimilationEfficiency =
                         params.CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup
-                        ("carnivory assimilation", actingCohort.FunctionalGroupIndex);
+                        ("carnivory assimilation", actingCohort.mFunctionalGroupIndex);
 
-                Implementations["revised predation"]->ProportionTimeEating = actingCohort.ProportionTimeActive;
+                Implementations["revised predation"]->ProportionTimeEating = actingCohort.mProportionTimeActive;
 
                 // Calculate the potential biomass available from predation
                 if (gcl.isMarine())
@@ -126,17 +126,17 @@ public:
                 // Get the assimilation efficiency for predation for this cohort from the functional group definitions 
                 Implementations["revised predation"]->AssimilationEfficiency =
                         params.CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup
-                        ("carnivory assimilation", actingCohort.FunctionalGroupIndex);
+                        ("carnivory assimilation", actingCohort.mFunctionalGroupIndex);
 
                 // Get the assimilation efficiency for herbivory for this cohort from the functional group definitions
                 Implementations["revised herbivory"]->AssimilationEfficiency =
                         params.CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup
-                        ("herbivory assimilation", actingCohort.FunctionalGroupIndex);
+                        ("herbivory assimilation", actingCohort.mFunctionalGroupIndex);
 
                 // Get the proportion of time spent eating and assign to both the herbivory and predation implementations
                 //                   double ProportionTimeEating = actingCohort.ProportionTimeActive;
-                Implementations["revised predation"]->ProportionTimeEating = actingCohort.ProportionTimeActive;
-                Implementations["revised herbivory"]->ProportionTimeEating = actingCohort.ProportionTimeActive;
+                Implementations["revised predation"]->ProportionTimeEating = actingCohort.mProportionTimeActive;
+                Implementations["revised herbivory"]->ProportionTimeEating = actingCohort.mProportionTimeActive;
 
                 // Calculate the potential biomass available from herbivory
                 if (gcl.isMarine())

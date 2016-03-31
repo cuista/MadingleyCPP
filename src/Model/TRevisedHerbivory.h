@@ -106,7 +106,7 @@ public:
         TotalBiomassEatenByCohort = 0.0;
 
         // Get the individual body mass of the acting cohort
-        BodyMassHerbivore = actingCohort.IndividualBodyMass;
+        BodyMassHerbivore = actingCohort.mIndividualBodyMass;
 
         // Set the total number of units to handle all potential biomass eaten to zero
         TimeUnitsToHandlePotentialFoodItems = 0.0;
@@ -150,7 +150,7 @@ public:
         TotalBiomassEatenByCohort = 0.0;
 
         // Get the individual body mass of the acting cohort
-        BodyMassHerbivore = actingCohort.IndividualBodyMass;
+        BodyMassHerbivore = actingCohort.mIndividualBodyMass;
 
         // Set the total number of units to handle all potential biomass eaten to zero
         TimeUnitsToHandlePotentialFoodItems = 0.0;
@@ -207,7 +207,7 @@ public:
 
                 // Calculate the biomass actually eaten from this stock by the acting cohort
                 BiomassesEaten[FunctionalGroup][i] = CalculateBiomassesEaten( PotentialBiomassesEaten[FunctionalGroup][i],
-                        TimeUnitsToHandlePotentialFoodItems, actingCohort.CohortAbundance, EdibleMass );
+                        TimeUnitsToHandlePotentialFoodItems, actingCohort.mCohortAbundance, EdibleMass );
 
                 // Remove the biomass eaten from the autotroph stock
                 gcl.GridCellStocks[FunctionalGroup][i].TotalBiomass -= BiomassesEaten[FunctionalGroup][i];
@@ -215,12 +215,12 @@ public:
 
                 // Check that the biomass eaten is not a negative value
                 if( BiomassesEaten[FunctionalGroup][i] < 0 ) {
-                    std::cout << "Herbivory negative for this herbivore cohort " << actingCohort.FunctionalGroupIndex << " " << actingCohort.ID << endl;
+                    std::cout << "Herbivory negative for this herbivore cohort " << actingCohort.mFunctionalGroupIndex << " " << actingCohort.mID << endl;
                     exit( 1 );
                 }
                 // Add the biomass eaten and assimilated by an individual to the delta biomass for the acting cohort
                 //MB should we be able to get here if abundance is zero?
-                if( actingCohort.CohortAbundance > 0 )Cohort::Deltas["biomass"]["herbivory"] += BiomassesEaten[FunctionalGroup][i] * AssimilationEfficiency / actingCohort.CohortAbundance;
+                if( actingCohort.mCohortAbundance > 0 )Cohort::Deltas["biomass"]["herbivory"] += BiomassesEaten[FunctionalGroup][i] * AssimilationEfficiency / actingCohort.mCohortAbundance;
 
                 // Move the biomass eaten but not assimilated by an individual into the organic matter pool
                 Cohort::Deltas["organicpool"]["herbivory"] += BiomassesEaten[FunctionalGroup][i] * ( 1 - AssimilationEfficiency );
@@ -231,7 +231,7 @@ public:
             assert( Cohort::Deltas["biomass"]["herbivory"] >= 0 && "Delta biomass from herbviory is negative" );
 
             // Calculate the total biomass eaten by the acting (herbivore) cohort
-            TotalBiomassEatenByCohort = Cohort::Deltas["biomass"]["herbivory"] * actingCohort.CohortAbundance;
+            TotalBiomassEatenByCohort = Cohort::Deltas["biomass"]["herbivory"] * actingCohort.mCohortAbundance;
 
 
 
