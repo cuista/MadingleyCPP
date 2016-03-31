@@ -1,6 +1,6 @@
 Parameter,Value
 TimeStepUnits,month
-LengthOfSimulationInYears,1
+LengthOfSimulationInYears,10
 MinimumLongitude,-180
 MaximumLongitude,180
 MinimumLatitude,-65

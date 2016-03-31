@@ -5,6 +5,10 @@ using namespace std;
 #include <map>
 #include <limits>
 #include <string>
+
+#include "Parameters.h"
+#include "Processor.h"
+#include "Logger.h"
 //class MadingleyModelInitialisation;
 
 /** \brief A class containing the model grid (composed of individual grid cells) along with grid attributes.
@@ -18,24 +22,6 @@ public:
 
     // Variable to make sure that not more than one grid is instantiated
     unsigned NumGrids = 0;
-    /** \brief   minimum latitude of the grid */
-    float MinLatitude;
-    /** \brief leftmost longitude of the leftmost cell of the grid */
-    float MinLongitude;
-    /** \brief lowest latitude of the highest cell in the grid */
-    float MaxLatitude;
-    /** \brief leftmost longitude of the rightmost cell in the grid */
-    float MaxLongitude;
-    /** \brief length of each grid cell. Currently assumes all cells are equal sized. */
-    float CellSize;
-    /** \brief The number of latitudinal cells in the model grid */
-    long NumLatCells;
-    /** \brief The number of longitudinal cells in the model grid */
-    long NumLonCells;
-    /** \brief The bottom (southern-most) latitude of each row of grid cells */
-    vector<float> Lats;
-    /** \brief The left (western-most) longitude of each column of grid cells */
-    vector<float> Lons;
     /** \brief Array of grid cells */
     map<long, GridCell > Cells;
 
@@ -50,50 +36,19 @@ public:
     //----------------------------------------------------------------------------------------------
 
     /** \brief Constructor for model grid to construct the grid for the globe
-    @param minLat Minimum grid latitude (degrees) 
-    @param minLon Minimum grid longitude (degrees, currently -180 to 180) 
-    @param maxLat Maximum grid latitude (degrees) 
-    @param maxLon Maximum grid longitude (degrees, currently -180 to 180) 
-    @param latCellSize Latitudinal size of grid cells 
-    @param lonCellSize Longitudinal size of grid cells 
      */
-    void SetUpGrid( float minLat, float minLon, float maxLat, float maxLon, float cellSize ) {
+    void SetUpGrid( ) {
         // Add one to the counter of the number of grids. If there is more than one model grid, exit the program with a debug crash.
         NumGrids = NumGrids + 1;
         assert( NumGrids < 2 && "You have initialised more than one grid on which to apply models. At present, this is not supported" );
-        cout << "Initialising grid cell environment:" << endl;
-
-        // CURRENTLY DEFINING MODEL CELLS BY BOTTOM LEFT CORNER
-        MinLatitude = minLat;
-        MinLongitude = minLon;
-        MaxLatitude = maxLat;
-        MaxLongitude = maxLon;
-        CellSize = cellSize;
-
-        // Check to see if the number of grid cells is an integer
-        double u = ( MaxLatitude - MinLatitude ) / CellSize - floor( ( MaxLatitude - MinLatitude ) / CellSize );
-        assert( ( u <= 1.e-15 ) && "Error: number of grid cells is non-integer: check cell size" );
-
-        NumLatCells = ( long )( ( MaxLatitude - MinLatitude ) / CellSize );
-        NumLonCells = ( long )( ( MaxLongitude - MinLongitude ) / CellSize );
-        Lats.resize( NumLatCells );
-        Lons.resize( NumLonCells );
-
-        // Set up latitude and longitude vectors 
-        for( int ii = 0; ii < NumLatCells; ii++ ) {
-            Lats[ii] = MinLatitude + ii * CellSize;
-        }
-        for( int jj = 0; jj < NumLonCells; jj++ ) {
-            Lons[jj] = MinLongitude + jj * CellSize;
-        }
+        Logger::Get( )->LogMessage( "Initialising grid cell environment" );
 
         // Instantiate a grid of grid cells
-
-        // Loop over cells to set up the model grid
-        for( unsigned jj = 0; jj < NumLonCells; jj++ ) {
-            for( unsigned ii = 0; ii < NumLatCells; ii++ ) {
+        for( unsigned longitudeIndex = 0; longitudeIndex < Parameters::Get( )->GetLengthUserLongitudeArray( ); longitudeIndex++ ) {
+            for( unsigned latitudeIndex = 0; latitudeIndex < Parameters::Get( )->GetLengthUserLatitudeArray( ); latitudeIndex++ ) {
                 // Create the grid cell at the specified position
-                Cells[ii + NumLatCells * jj].setCellCoords( Lats[ii], ii, Lons[jj], jj, CellSize );
+                unsigned index = latitudeIndex + Parameters::Get( )->GetLengthUserLatitudeArray( ) * longitudeIndex;
+                Cells[ index ].setCellCoords( Parameters::Get( )->GetUserLatitudeAtIndex( latitudeIndex ), latitudeIndex, Parameters::Get( )->GetUserLongitudeAtIndex( longitudeIndex ), longitudeIndex );
             }
         }
 
@@ -112,11 +67,11 @@ public:
     GridCell* getNewCell( GridCell* gcl, const int& v, const int& u ) {
         GridCell* Cell = 0;
         unsigned latCell = gcl->LatIndex( ), lonCell = gcl->LonIndex( );
-        if( latCell + v >= 0 && latCell + v < NumLatCells ) {
+        if( latCell + v >= 0 && latCell + v < Parameters::Get( )->GetLengthUserLatitudeArray( ) ) {
             int lnc = lonCell + u;
-            while( lnc < 0 )lnc += NumLonCells;
-            while( lnc >= NumLonCells )lnc -= NumLonCells;
-            long idx = ( latCell + v ) + NumLatCells*lnc;
+            while( lnc < 0 )lnc += Parameters::Get( )->GetLengthUserLongitudeArray( );
+            while( lnc >= Parameters::Get( )->GetLengthUserLongitudeArray( ) )lnc -= Parameters::Get( )->GetLengthUserLongitudeArray( );
+            long idx = ( latCell + v ) + Parameters::Get( )->GetLengthUserLatitudeArray( ) * lnc;
             if( Cells.count( idx != 0 ) )Cell = &( Cells[idx] );
         }
         return Cell;
@@ -129,7 +84,6 @@ public:
         for( auto& j: Cells ) {
             f( j.second );
         }
-
     }
 };
 #endif

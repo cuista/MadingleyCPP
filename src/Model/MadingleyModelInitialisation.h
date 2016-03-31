@@ -29,34 +29,8 @@ public:
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
-    /** The rarefaction of active cells in the model grid */
-    int CellRarefaction;
-    /** Whether to run the model for different grid cells in parallel (??) */
-    bool RunInParallel;
-    /** Whether to run the model for different grid cells in parallel */
-    bool RunCellsInParallel;
-    /** Whether to run the model for different simulations in parallel */
-    bool RunSimulationsInParallel;
-    /** Include marine realm ? */
-    string RunRealm;
-    /** The threshold difference between cohorts, within which they will be merged */
-    double MergeDifference;
-    /** The maximum number of cohorts to be in the model, per grid cell, when it is running */
-    //int MaxNumberOfCohorts;
-    /**Whether to run only dispersal (i.e. turn all other ecological processes off, and set dispersal probability to one temporarily) */
-    bool DispersalOnly;
     /** The full path for the output files for a set of simulations */
     string OutputPath;
-    /** Whether to output detailed diagnostics for the ecological processes */
-    bool TrackProcesses;
-    //MB 6/8/2015 default set in constructor
-    /** Whether to output detailed diagnostics for the ecological processes*/
-    bool TrackGlobalProcesses;
-    //MB 6/8/2015 default set in constructor
-    /** Whether to display live outputs using Dataset Viewer during the model runs */
-    bool LiveOutputs;
-    /** Whether or not to track trophic level biomass and flow information specific to the marine realm */
-    bool TrackMarineSpecifics;
     StopWatch InitializationTimer;
     /** \brief Information from the initialization file  */
     map<string, string> InitialisationFileStrings;
@@ -98,12 +72,10 @@ public:
         //read and store environmental layers
         Environment::Get( );
         cout << "data read" << endl;
-        //set default dispersal
-        DispersalOnly = false;
         NextCohortID = 0;
 
         ReadInitialisationFiles( );
-        Grid.SetUpGrid( Parameters::Get( )->GetUserMinimumLatitude( ), Parameters::Get( )->GetUserMinimumLongitude( ), Parameters::Get( )->GetUserMaximumLatitude( ), Parameters::Get( )->GetUserMaximumLongitude( ), Parameters::Get( )->GetGridCellSize( ) );
+        Grid.SetUpGrid( );
 
         // Set up the cohorts and stocks
         InitializationTimer.Start( );

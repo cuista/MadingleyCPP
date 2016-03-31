@@ -80,15 +80,15 @@ void Environment::update( int currentMonth ) {
 //------------------------------------------------------------------------------
 
 void Environment::addLayer( string s ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     mLayers[s] = new layer0( NumLon, NumLat );
 }
 //------------------------------------------------------------------------------
 
 void Environment::addLayerT( string s ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     mLayers[s] = new layerT( 12, NumLon, NumLat );
 }
 //------------------------------------------------------------------------------
@@ -124,8 +124,8 @@ double& Environment::Get( string s, GridCell& gcl ) {
 //------------------------------------------------------------------------------
 
 void Environment::setTemperature( ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             for( int tm = 0; tm < 12; tm++ ) {
@@ -133,7 +133,7 @@ void Environment::setTemperature( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
                     d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", indices );
                 } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
@@ -155,8 +155,8 @@ void Environment::setTemperature( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setUVel( ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
 
     for( int tm = 0; tm < 12; tm++ ) {
         for( int lo = 0; lo < NumLon; lo++ ) {
@@ -165,7 +165,7 @@ void Environment::setUVel( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
                     d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineNorthVel", indices );
                 }
@@ -180,8 +180,8 @@ void Environment::setUVel( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setVVel( ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             for( int tm = 0; tm < 12; tm++ ) {
@@ -189,7 +189,7 @@ void Environment::setVVel( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
                     d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineEastVel", indices );
                 }
@@ -205,8 +205,8 @@ void Environment::setVVel( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setDiurnalTemperatureRange( ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             for( int tm = 0; tm < 12; tm++ ) {
@@ -214,7 +214,7 @@ void Environment::setDiurnalTemperatureRange( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
                     d = Constants::cMissingValue; //MB currently missing
                 } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
@@ -233,8 +233,8 @@ void Environment::setDiurnalTemperatureRange( ) {
 
 void Environment::setPrecipitation( ) {
 
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
 
     for( int tm = 0; tm < 12; tm++ ) {
         for( int lo = 0; lo < NumLon; lo++ ) {
@@ -244,7 +244,7 @@ void Environment::setPrecipitation( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
                     d = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialPre", indices );
                 }
@@ -267,8 +267,8 @@ void Environment::setPrecipitation( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setNPP( ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             for( int tm = 0; tm < 12; tm++ ) {
@@ -276,7 +276,7 @@ void Environment::setNPP( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
                     d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineNPP", indices );
                 } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
@@ -298,12 +298,12 @@ void Environment::setNPP( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setRealm( ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
 
-            Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
+            Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
             if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
                 ( *mLayers["Realm"] )[lo][la] = 2.0;
             } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
@@ -316,8 +316,8 @@ void Environment::setRealm( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setOrganicPool( ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             ( *mLayers["Organic Pool"] )[lo][la] = 0;
@@ -327,8 +327,8 @@ void Environment::setOrganicPool( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setRespiratoryCO2Pool( ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             ( *mLayers["Respiratory CO2 Pool"] )[lo][la] = 0;
@@ -339,8 +339,8 @@ void Environment::setRespiratoryCO2Pool( ) {
 
 void Environment::setAVGSDTemp( ) {
 
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             double avg = 0;
@@ -349,7 +349,7 @@ void Environment::setAVGSDTemp( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
                     d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", indices );
                 } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
@@ -368,7 +368,7 @@ void Environment::setAVGSDTemp( ) {
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
-                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
                     d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineTemp", indices );
                 } else if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
@@ -397,8 +397,8 @@ void Environment::setAVGSDTemp( ) {
 then assign 1/12 for each month.
  */
 void Environment::setNPPSeasonality( ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             // Loop over months and calculate total annual NPP
@@ -439,8 +439,8 @@ void Environment::setFrostandFire( ) {
     // Calculate other climate variables from temperature and precipitation
     // Declare an instance of the climate variables calculator
     ClimateVariablesCalculator CVC;
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             // Calculate the fraction of the year that experiences frost
@@ -448,7 +448,7 @@ void Environment::setFrostandFire( ) {
             for( int i = 0; i < 12; i++ ) {
 
                 DateTime::Get( )->SetTimeStep( i );
-                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
+                Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 2 ) {
                     FrostDays[i] = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialFrost", indices );
                     Precipitation[i] = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialPre", indices );
@@ -464,7 +464,7 @@ void Environment::setFrostandFire( ) {
                 mLayers["Fraction Month Frost"]->setTime( i );
                 ( *mLayers["Fraction Month Frost"] )[lo][la] = min( FrostDays[i] / MonthDays[i], 1.0 );
             }
-            Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eDataDomain );
+            Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
             double AWC = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialAWC", indices );
             delete indices;
 
@@ -484,8 +484,8 @@ void Environment::setFrostandFire( ) {
 void Environment::setBreeding( ) {
     // Designate a breeding season for this grid cell, where a month is considered to be part of the breeding season if its NPP is at
     // least 80% of the maximum NPP throughout the whole year
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             double maxSeason = -1;
@@ -509,8 +509,8 @@ void Environment::setBreeding( ) {
 //------------------------------------------------------------------------------
 
 void Environment::setHANPP( ) {
-    const unsigned int NumLon = Parameters::Get( )->GetLengthDataLongitudeArray( );
-    const unsigned int NumLat = Parameters::Get( )->GetLengthDataLatitudeArray( );
+    const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
+    const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
             ( *mLayers["HANPP"] )[lo][la] = 0;

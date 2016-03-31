@@ -7,6 +7,7 @@
 #include <Cohort.h>
 
 #include "Environment.h"
+#include "Parameters.h"
 using namespace std;
 
 /** \file GridCell.h
@@ -46,7 +47,7 @@ public:
     }
     //----------------------------------------------------------------------------------------------
 
-    void setCellCoords( float _latitude, unsigned _latIndex, float _longitude, unsigned _lonIndex, float cellSize ) {
+    void setCellCoords( float _latitude, unsigned _latIndex, float _longitude, unsigned _lonIndex ) {
         // set values for this grid cell
         // Also standardise missing values
 
@@ -57,11 +58,11 @@ public:
         // Add the grid cell area (in km2) to the cell environment with an initial value of 0
         // Calculate the area of this grid cell
         // Add it to the cell environment
-        Cell_Area = Utilities.CalculateGridCellArea( latitude, cellSize );
+        Cell_Area = Utilities.CalculateGridCellArea( latitude, Parameters::Get( )->GetGridCellSize( ) );
         // Calculate the lengths of widths of grid cells in each latitudinal strip
         // Assume that we are at the midpoint of each cell when calculating lengths
-        CellHeightKm = Utilities.CalculateLengthOfDegreeLatitude( latitude + cellSize / 2 ) * cellSize;
-        CellWidthKm = Utilities.CalculateLengthOfDegreeLongitude( latitude + cellSize / 2 ) * cellSize;
+        CellHeightKm = Utilities.CalculateLengthOfDegreeLatitude( latitude + Parameters::Get( )->GetGridCellSize( ) / 2 ) * Parameters::Get( )->GetGridCellSize( );
+        CellWidthKm = Utilities.CalculateLengthOfDegreeLongitude( latitude + Parameters::Get( )->GetGridCellSize( ) / 2 ) * Parameters::Get( )->GetGridCellSize( );
         //Add the latitude and longitude indices
         latIndex = _latIndex;
         lonIndex = _lonIndex;
