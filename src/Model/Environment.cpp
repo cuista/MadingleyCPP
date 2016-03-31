@@ -94,7 +94,7 @@ void Environment::addLayerT( string s ) {
 //------------------------------------------------------------------------------
 
 Environment* Environment::Get( ) {
-    if( mThis == 0 ) {
+    if( mThis == NULL ) {
         mThis = new Environment( );
     }
     return mThis;
@@ -102,7 +102,7 @@ Environment* Environment::Get( ) {
 //------------------------------------------------------------------------------
 
 double& Environment::Get( string s, int lo, int la ) {
-    if( mThis == 0 )mThis = new Environment( );
+    if( mThis == NULL ) mThis = new Environment( );
     if( mLayers.count( s ) == 0 ) {
         cout << "Invalid Layer Request in Environment:: " << s << endl;
         exit( 0 );
@@ -258,10 +258,7 @@ void Environment::setPrecipitation( ) {
                 ( *mLayers["Precipitation"] )[lo][la] = d;
                 ( *mLayers["TotalPrecip"] )[lo][la] += d;
             }
-            //cout << endl;
         }
-
-        //Logger::Get( )->LogString( "" );
     }
 }
 //------------------------------------------------------------------------------
@@ -291,7 +288,6 @@ void Environment::setNPP( ) {
                 mLayers["NPP"]->setTime( tm );
                 ( *mLayers["NPP"] )[lo][la] = d;
             }
-
         }
     }
 }
