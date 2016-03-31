@@ -1,13 +1,13 @@
 Parameter,Value
 TimeStepUnits,month
-LengthOfSimulationInYears,10
+LengthOfSimulationInYears,100
 MinimumLongitude,-180
 MaximumLongitude,180
 MinimumLatitude,-65
 MaximumLatitude,65
 GridCellSize,10
 ExtinctionThreshold,1
-MaximumNumberOfCohorts,100
+MaximumNumberOfCohorts,1000
 PlanktonSizeThreshold,0.01
 DrawRandomly,no
 HumanNPPExtraction,no

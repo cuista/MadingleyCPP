@@ -235,7 +235,7 @@ public:
             // Loop over cohorts within the functional group
             for( int i = 0; i < NumberCohortsPerFunctionalGroupNoNewCohorts[FunctionalGroup]; i++ ) {
                 //No Cannibalism
-                if( gcl.GridCellCohorts[FunctionalGroup][i].ID == actingCohort.mID ) {
+                if( gcl.GridCellCohorts[FunctionalGroup][i].mID == actingCohort.mID ) {
                     PotentialAbundanceEaten[FunctionalGroup][i] = 0.0;
                 } else {
                     if( DietIsAllSpecial ) {
@@ -397,7 +397,7 @@ public:
 
             // Loop over cohorts within the functional group
             for( int i = 0; i < NumberCohortsPerFunctionalGroupNoNewCohorts[FunctionalGroup]; i++ ) {
-                if( gcl.GridCellCohorts[FunctionalGroup][i].ID == actingCohort.mID ) {
+                if( gcl.GridCellCohorts[FunctionalGroup][i].mID == actingCohort.mID ) {
                     PotentialAbundanceEaten[FunctionalGroup][i] = 0.0;
                 } else {
                     // Get the body mass of individuals in this cohort

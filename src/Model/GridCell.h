@@ -79,7 +79,7 @@ public:
         auto h = find_if( z.begin( ), z.end( ), [c]( Cohort & k ) {
             return c.mID == k.mID;
         } );
-        if( c.mID != ( *h ).ID )cout << "Strange things happening in grid delete? " << c.mID << " " << ( *h ).ID << endl;
+        if( c.mID != ( *h ).mID )cout << "Strange things happening in grid delete? " << c.mID << " " << ( *h ).mID << endl;
         z.erase( h );
     }
     //----------------------------------------------------------------------------------------------
