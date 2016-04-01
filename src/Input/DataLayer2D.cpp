@@ -40,7 +40,7 @@ float DataLayer2D::GetDataAtIndicesFor( const Types::DataIndicesPointer indices,
     return GetDataAtIndicesForVariable( indices->GetDataX( ), indices->GetDataY( ), GetVariable( variableName ) );
 }
 
-float DataLayer2D::GetDataAtGridCell( const Types::GridCellPointer gridCell ) const {
+float DataLayer2D::GetDataAtGridCell( const Types::GridCellPointer gridCell ) const {  
     return 1.0;
 }
 

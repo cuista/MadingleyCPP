@@ -45,7 +45,7 @@ public:
             for( unsigned latitudeIndex = 0; latitudeIndex < Parameters::Get( )->GetLengthUserLatitudeArray( ); latitudeIndex++ ) {
                 // Create the grid cell at the specified position
                 unsigned index = latitudeIndex + Parameters::Get( )->GetLengthUserLatitudeArray( ) * longitudeIndex;
-                Cells[ index ].setCellCoords( Parameters::Get( )->GetUserLatitudeAtIndex( latitudeIndex ), latitudeIndex, Parameters::Get( )->GetUserLongitudeAtIndex( longitudeIndex ), longitudeIndex );
+                Cells[ index ].SetCellCoords( Parameters::Get( )->GetUserLatitudeAtIndex( latitudeIndex ), latitudeIndex, Parameters::Get( )->GetUserLongitudeAtIndex( longitudeIndex ), longitudeIndex );
             }
         }
         Logger::Get( )->LogMessage( "" );

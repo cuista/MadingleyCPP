@@ -41,7 +41,7 @@ public:
         double AreaOutsideV = abs( vSpeed * LonCellLength ) - AreaOutsideBoth;
 
         // Get the cell area, in kilometres squared
-        double CellArea = c->CellArea( );
+        double CellArea = c->GetCellArea( );
 
         // Convert areas to a probability
         double DispersalProbability = ( AreaOutsideU + AreaOutsideV + AreaOutsideBoth ) / CellArea;

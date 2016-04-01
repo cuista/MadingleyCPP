@@ -6,6 +6,7 @@
  */
 #include <Environment.h>
 #include <GridCell.h>
+#include <ClimateVariablesCalculator.h>
 
 #include "Types.h"
 #include "FileReader.h"

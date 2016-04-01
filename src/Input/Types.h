@@ -30,6 +30,7 @@ class MadingleyModelInitialisation;
 class Maths;
 class Parameters;
 class Processor;
+class Stock;
 class Variable;
 
 namespace Types {
@@ -56,20 +57,15 @@ namespace Types {
     typedef Processor* ProcessorPointer;
     typedef Variable* VariablePointer;
     
-    typedef std::map< std::string, double > DoubleMap;
-    typedef std::map< std::string, BasicDatumPointer > BasicDatumMap;
-    typedef std::map< std::string, DataLayerPointer > DataLayerMap;
-    typedef std::map< std::string, GridDatumPointer > GridDatumMap;
-    typedef std::map< std::string, LayerPointer > LayerMap;
-    
-    typedef std::map< std::string, DoubleMap > Double2DMap;
-    
     typedef std::pair< float, float > GeoCoords;
     typedef std::pair< unsigned short, unsigned short > GeoIndices;
     
     typedef std::vector< Cohort > CohortVector;
+    typedef std::vector< Stock > StockVector;
     typedef std::vector< InputDatumPointer > InputDatumVector;
     typedef std::vector< VariablePointer > VariableVector;
+    
+    typedef std::vector< CohortVector > Cohort2DVector;
     
     typedef std::vector< bool > BooleanVector;
     typedef std::vector< char > CharVector;
@@ -91,6 +87,16 @@ namespace Types {
     
     typedef std::vector< GeoCoords > GeoCoordsVector;
     typedef std::vector< GeoCoordsVector > GeoCoordsMatrix;
+    
+    typedef std::map< std::string, double > DoubleMap;
+    typedef std::map< std::string, BasicDatumPointer > BasicDatumMap;
+    typedef std::map< std::string, DataLayerPointer > DataLayerMap;
+    typedef std::map< std::string, GridDatumPointer > GridDatumMap;
+    typedef std::map< std::string, LayerPointer > LayerMap;
+    
+    typedef std::map< std::string, DoubleMap > Double2DMap;
+    
+    typedef std::map< int, StockVector > StocksMap;
 }
 
 #endif

@@ -148,7 +148,7 @@ public:
 
         EcosystemModelGrid.ask( [&]( GridCell & gcl ) {
 
-            gcl.randomizeCohorts( );
+            gcl.RandomizeCohorts( );
 
             RunWithinCellStockEcology( gcl );
 
@@ -175,7 +175,7 @@ public:
         vector<int> AutotrophStockFunctionalGroups = params.StockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
         // Loop over autotroph functional groups
         for( unsigned FunctionalGroup: AutotrophStockFunctionalGroups ) {
-            for( auto& ActingStock: gcl.GridCellStocks[FunctionalGroup] ) {
+            for( auto& ActingStock: gcl.mGridCellStocks[FunctionalGroup] ) {
 
                 // Run stock ecology
                 MadingleyEcologyStock.RunWithinCellEcology( gcl, ActingStock, CurrentTimeStep, CurrentMonth, params );
@@ -203,9 +203,9 @@ public:
 
         // Loop over randomly ordered gridCellCohorts to implement biological functions
 
-        gcl.ask( [&]( Cohort & c ) {
+        gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
             // Perform all biological functions except dispersal (which is cross grid cell)
-            if( gcl.GridCellCohorts[c.mFunctionalGroupIndex].size( ) != 0 && c.mCohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
+            if( gcl.mGridCellCohorts[c.mFunctionalGroupIndex].size( ) != 0 && c.mCohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
 
                 CohortActivity.AssignProportionTimeActive( gcl, c, CurrentTimeStep, CurrentMonth, params );
 
@@ -220,12 +220,12 @@ public:
             }
 
             // Check that the mass of individuals in this cohort is still >= 0 after running ecology
-            if( gcl.GridCellCohorts[c.mFunctionalGroupIndex].size( ) > 0 )assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
+            if( gcl.mGridCellCohorts[c.mFunctionalGroupIndex].size( ) > 0 )assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
         } );
 
 
         for( auto& c: Cohort::newCohorts ) {
-            gcl.insert( c );
+            gcl.InsertCohort( c );
             if( c.mDestination != &gcl )cout << "whut? wrong cell?" << endl;
         }
         partial.Productions += Cohort::newCohorts.size( );
@@ -250,7 +250,7 @@ public:
 
         // Loop over cohorts and remove any whose abundance is below the extinction threshold
         vector<Cohort>CohortsToRemove;
-        gcl.ask( [&]( Cohort & c ) {
+        gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
             if( c.mCohortAbundance < Parameters::Get( )->GetExtinctionThreshold( ) || c.mIndividualBodyMass <= 1.e-300 ) {
                 CohortsToRemove.push_back( c );
                 partial.Extinctions += 1;
@@ -267,7 +267,7 @@ public:
             assert( Environment::Get( "Organic Pool", c.Here( ) ) >= 0 && "Organic pool < 0" );
 
             // Remove the extinct cohort from the list of cohorts
-            gcl.remove( c );
+            gcl.RemoveCohort( c );
 
         }
 
@@ -315,13 +315,13 @@ public:
         EcosystemModelGrid.ask( [&]( GridCell & gcl ) {
             organicPool += Environment::Get( "Organic Pool", gcl ) / 1000.;
             respiratoryPool += Environment::Get( "Respiratory CO2 Pool", gcl ) / 1000.;
-                    gcl.ask( [&]( Cohort & c ) {
+                    gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
                         totalAbundance += c.mCohortAbundance;
 
                         double CohortBiomass = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance / 1000.;
                                 totalCohortBiomass += CohortBiomass;
                     } );
-            gcl.askStocks( [&]( Stock & s ) {
+            gcl.ApplyFunctionToAllStocks( [&]( Stock & s ) {
                 totalStockBiomass += s.TotalBiomass / 1000.; //convert from g to kg
             } );
         } );

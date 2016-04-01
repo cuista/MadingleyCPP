@@ -208,7 +208,7 @@ public:
         double EquilibriumLeafCarbon = LeafCFixation / LeafCMortality;
 
         // Convert to equilibrium leaf wet matter content
-        double LeafWetMatter = ConvertToLeafWetMass( EquilibriumLeafCarbon, gcl.CellArea( ) );
+        double LeafWetMatter = ConvertToLeafWetMass( EquilibriumLeafCarbon, gcl.GetCellArea( ) );
 
         return LeafWetMatter;
     }
@@ -294,7 +294,7 @@ public:
         double LeafCFixation = NPP * FracLeaves;
 
         // Convert from carbon to leaf wet matter
-        double WetMatterIncrement = ConvertToLeafWetMass( LeafCFixation, gcl.CellArea( ) );
+        double WetMatterIncrement = ConvertToLeafWetMass( LeafCFixation, gcl.GetCellArea( ) );
 
         // Convert from the monthly time step used for this process to the global model time step unit
         WetMatterIncrement *= Utilities.ConvertTimeUnits( GlobalModelTimeStepUnit, "month" );

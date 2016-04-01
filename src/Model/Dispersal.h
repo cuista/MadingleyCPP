@@ -54,7 +54,7 @@ public:
     @param currentMonth The current model month */
     void RunCrossGridCellEcologicalProcess( GridCell& gcl, ModelGrid& gridForDispersal, MadingleyModelInitialisation& params, unsigned currentMonth ) {
 
-        gcl.ask( [&]( Cohort & c ) {
+        gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
             if( choose.count( c.dispersalType( params ) ) != 0 ) {
                 choose[c.dispersalType( params )]->RunDispersal( gridForDispersal, c, currentMonth );
             }

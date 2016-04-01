@@ -214,7 +214,7 @@ public:
 
         //Variable for altering the juvenile to adult mass ratio for marine cells when handling certain functional groups eg baleen whales
         double Scaling = 0.0;
-        gcl.setCohortSize( CohortFunctionalGroupDefinitions.AllFunctionalGroupsIndex.size( ) );
+        gcl.SetCohortSize( CohortFunctionalGroupDefinitions.AllFunctionalGroupsIndex.size( ) );
         for( int FunctionalGroup: CohortFunctionalGroupDefinitions.AllFunctionalGroupsIndex ) {
             int N = CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Initial number of GridCellCohorts", FunctionalGroup );
             if( ( CohortFunctionalGroupDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "terrestrial" && !gcl.IsMarine( ) ) ||
@@ -301,7 +301,7 @@ public:
 
 
                         double NewBiomass = ( 3300 / NumCohortsThisCell ) * 100 * 3000 *
-                                pow( 0.6, ( log10( CohortJuvenileMass ) ) ) * ( gcl.CellArea( ) );
+                                pow( 0.6, ( log10( CohortJuvenileMass ) ) ) * ( gcl.GetCellArea( ) );
                         TotalNewBiomass += NewBiomass;
                         double NewAbund = 0.0;
 
@@ -313,7 +313,7 @@ public:
                                 OptimalPreyBodySizeRatio, 0, ProportionTimeActive, NextCohortID );
 
                         // Add the new cohort to the list of grid cell cohorts
-                        gcl.GridCellCohorts[FunctionalGroup].push_back( NewCohort );
+                        gcl.mGridCellCohorts[FunctionalGroup].push_back( NewCohort );
 
                         // Increment the variable tracking the total number of cohorts in the model
                         totalCohorts++;
@@ -340,7 +340,7 @@ public:
             Stock NewStock( StockFunctionalGroupDefinitions, FunctionalGroup, gcl, success );
             // Add the new stock to the list of grid cell stocks
             if( success ) {
-                gcl.GridCellStocks[FunctionalGroup].push_back( NewStock );
+                gcl.mGridCellStocks[FunctionalGroup].push_back( NewStock );
 
                 totalStocks++;
             }

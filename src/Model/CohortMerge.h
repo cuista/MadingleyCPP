@@ -103,13 +103,13 @@ public:
         if( NumberToRemove > 0 ) {
 
             //Loop through functional groups
-            for( unsigned ff = 0; ff < gcl.GridCellCohorts.size( ); ff++ ) {
-                if( gcl.GridCellCohorts[ff].size( ) > 1 ) {
+            for( unsigned ff = 0; ff < gcl.mGridCellCohorts.size( ); ff++ ) {
+                if( gcl.mGridCellCohorts[ff].size( ) > 1 ) {
                     // Loop through cohorts within functional groups
-                    for( int cc = 0; cc < gcl.GridCellCohorts[ff].size( ) - 1; cc++ ) {
+                    for( int cc = 0; cc < gcl.mGridCellCohorts[ff].size( ) - 1; cc++ ) {
                         // Loop through comparison cohorts
-                        for( int dd = cc + 1; dd < gcl.GridCellCohorts[ff].size( ); dd++ ) {
-                            Pear PairwiseDistance( &gcl.GridCellCohorts[ff][cc], &gcl.GridCellCohorts[ff][dd], randomNumber( RandomNumberGenerator ) );
+                        for( int dd = cc + 1; dd < gcl.mGridCellCohorts[ff].size( ); dd++ ) {
+                            Pear PairwiseDistance( &gcl.mGridCellCohorts[ff][cc], &gcl.mGridCellCohorts[ff][dd], randomNumber( RandomNumberGenerator ) );
                             SortedDistances.insert( PairwiseDistance );
                         }
                     }

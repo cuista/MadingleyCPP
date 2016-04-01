@@ -141,8 +141,8 @@ public:
 
         // Check that the u distance travelled and v distance travelled are not greater than the cell length
 
-        LatCellLength = c.Here( ).CellHeightKm;
-        LonCellLength = c.Here( ).CellWidthKm;
+        LatCellLength = c.Here( ).GetCellHeight( );
+        LonCellLength = c.Here( ).GetCellWidth( );
         if( abs( uDistanceTravelled ) > LonCellLength ) cout << "BIG U " << uAdvectiveSpeed << endl;
         assert( abs( uDistanceTravelled ) <= LonCellLength && "u velocity greater than cell width" );
         assert( abs( vDistanceTravelled ) <= LatCellLength && "v velocity greater than cell width" );

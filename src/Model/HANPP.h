@@ -35,7 +35,7 @@ public:
         if( humanNPPExtraction == "hanpp" ) {
             // Loop over stocks in the grid cell and calculate the total biomass of all stocks
             double TotalAutotrophBiomass = 0.0;
-            for( auto& stockFunctionalGrouping: gcl.GridCellStocks ) {
+            for( auto& stockFunctionalGrouping: gcl.mGridCellStocks ) {
                 vector<Stock> stockFunctionalGroup = stockFunctionalGrouping.second;
                 for( int i = 0; i < stockFunctionalGroup.size( ); i++ ) {
                     TotalAutotrophBiomass += stockFunctionalGroup[i].TotalBiomass;
@@ -60,7 +60,7 @@ public:
             HANPP *= m2Tokm2Conversion;
 
             // Multiply by cell area (in km2) to get g/cell/day
-            HANPP *= gcl.CellArea( );
+            HANPP *= gcl.GetCellArea( );
 
             // Convert from gC to g dry matter
             double DryMatterAppropriated = HANPP * 2;

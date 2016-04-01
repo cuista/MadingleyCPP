@@ -63,7 +63,7 @@ public:
             NPP *= MsqToKmSqConversion;
 
             //Multiply by cell area to get g/cell/day
-            NPP *= gcl.CellArea( );
+            NPP *= gcl.GetCellArea( );
 
             //Convert to g wet matter, assuming carbon content of phytoplankton is 10% of wet matter
             NPP *= PhytoplanktonConversionRatio;
