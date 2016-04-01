@@ -8,7 +8,6 @@
 
 #include "Environment.h"
 #include "Parameters.h"
-using namespace std;
 
 /** \file GridCell.h
  * \brief the GridCell header file
@@ -20,18 +19,11 @@ public:
     //Variables
     //----------------------------------------------------------------------------------------------
     /** \brief The handler for the cohorts in this grid cell */
-    vector< vector< Cohort> > GridCellCohorts;
+    std::vector< std::vector< Cohort> > GridCellCohorts;
     /** \brief The handler for the stocks in this grid cell */
-    map<signed, vector<Stock> > GridCellStocks;
+    std::map<signed, std::vector<Stock> > GridCellStocks;
 
-    /** \brief The latitude of this grid cell */
-    float latitude;
-    /** \brief The longitude of this grid cell */
-    float longitude;
-    /** \brief The latitude index in the grid*/
-    unsigned latIndex;
-    /** \brief The longitude index in the grid*/
-    unsigned lonIndex;
+
     double Cell_Area, CellHeightKm, CellWidthKm;
     /** \brief  Instance of the class to perform general functions*/
     UtilityFunctions Utilities;
@@ -47,25 +39,25 @@ public:
     }
     //----------------------------------------------------------------------------------------------
 
-    void setCellCoords( float _latitude, unsigned _latIndex, float _longitude, unsigned _lonIndex ) {
+    void setCellCoords( float latitude, unsigned latitudeIndex, float longitude, unsigned longitudeIndex ) {
         // set values for this grid cell
         // Also standardise missing values
 
         // Set the grid cell values of latitude, longitude and missing value as specified
-        latitude = _latitude;
-        longitude = _longitude;
+        mLatitude = latitude;
+        mLongitude = longitude;
 
         // Add the grid cell area (in km2) to the cell environment with an initial value of 0
         // Calculate the area of this grid cell
         // Add it to the cell environment
-        Cell_Area = Utilities.CalculateGridCellArea( latitude, Parameters::Get( )->GetGridCellSize( ) );
+        Cell_Area = Utilities.CalculateGridCellArea( mLatitude, Parameters::Get( )->GetGridCellSize( ) );
         // Calculate the lengths of widths of grid cells in each latitudinal strip
         // Assume that we are at the midpoint of each cell when calculating lengths
-        CellHeightKm = Utilities.CalculateLengthOfDegreeLatitude( latitude + Parameters::Get( )->GetGridCellSize( ) / 2 ) * Parameters::Get( )->GetGridCellSize( );
-        CellWidthKm = Utilities.CalculateLengthOfDegreeLongitude( latitude + Parameters::Get( )->GetGridCellSize( ) / 2 ) * Parameters::Get( )->GetGridCellSize( );
+        CellHeightKm = Utilities.CalculateLengthOfDegreeLatitude( mLatitude + Parameters::Get( )->GetGridCellSize( ) / 2 ) * Parameters::Get( )->GetGridCellSize( );
+        CellWidthKm = Utilities.CalculateLengthOfDegreeLongitude( mLatitude + Parameters::Get( )->GetGridCellSize( ) / 2 ) * Parameters::Get( )->GetGridCellSize( );
         //Add the latitude and longitude indices
-        latIndex = _latIndex;
-        lonIndex = _lonIndex;
+        mLatitudeIndex = latitudeIndex;
+        mLongitudeIndex = longitudeIndex;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -131,18 +123,18 @@ public:
     }
     //----------------------------------------------------------------------------------------------
 
-    bool isMarine( ) {
+    bool IsMarine( ) {
         return (Environment::Get( "Realm", *this ) == 2.0 );
     }
     //----------------------------------------------------------------------------------------------
 
-    unsigned LatIndex( ) {
-        return latIndex;
+    unsigned GetLatitudeIndex( ) {
+        return mLatitudeIndex;
     }
     //----------------------------------------------------------------------------------------------
 
-    unsigned LonIndex( ) {
-        return lonIndex;
+    unsigned GetLongitudeIndex( ) {
+        return mLongitudeIndex;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -165,5 +157,10 @@ public:
         return sum;
     }
 
+private:
+    float mLatitude;
+    float mLongitude;
+    unsigned mLatitudeIndex;
+    unsigned mLongitudeIndex;
 };
 #endif

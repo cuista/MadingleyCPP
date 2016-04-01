@@ -84,7 +84,7 @@ public:
                 Implementations["revised herbivory"]->ProportionTimeEating = actingCohort.mProportionTimeActive;
 
                 // Calculate the potential biomass available from herbivory
-                if (gcl.isMarine())
+                if (gcl.IsMarine())
                     Implementations["revised herbivory"]->GetEatingPotentialMarine
                         (gcl, actingCohort,params);
                 else
@@ -108,7 +108,7 @@ public:
                 Implementations["revised predation"]->ProportionTimeEating = actingCohort.mProportionTimeActive;
 
                 // Calculate the potential biomass available from predation
-                if (gcl.isMarine())
+                if (gcl.IsMarine())
                     Implementations["revised predation"]->GetEatingPotentialMarine
                         (gcl, actingCohort,params);
                 else
@@ -139,7 +139,7 @@ public:
                 Implementations["revised herbivory"]->ProportionTimeEating = actingCohort.mProportionTimeActive;
 
                 // Calculate the potential biomass available from herbivory
-                if (gcl.isMarine())
+                if (gcl.IsMarine())
                     Implementations["revised herbivory"]->GetEatingPotentialMarine
                         (gcl, actingCohort,params);
                 else
@@ -147,7 +147,7 @@ public:
                         (gcl, actingCohort,params);
 
                 // Calculate the potential biomass available from predation
-                if (gcl.isMarine())
+                if (gcl.IsMarine())
                     Implementations["revised predation"]->GetEatingPotentialMarine
                         (gcl, actingCohort,params);
                 else

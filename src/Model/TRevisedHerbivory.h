@@ -196,7 +196,7 @@ public:
             MadingleyModelInitialisation& params ) {
 
         EdibleScaling = 1.0;
-        if( !gcl.isMarine( ) ) EdibleScaling = 0.1;
+        if( !gcl.IsMarine( ) ) EdibleScaling = 0.1;
 
         // Loop over autotroph functional groups that can be eaten
         for( int FunctionalGroup: FunctionalGroupIndicesToEat ) {

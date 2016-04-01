@@ -45,7 +45,7 @@ public:
 
         FunctionalGroupDefinitions& madingleyStockDefinitions = params.StockFunctionalGroupDefinitions;
 
-        if( gcl.isMarine( ) ) {
+        if( gcl.IsMarine( ) ) {
             // Run the autotroph processor
             MarineNPPtoAutotrophStock.ConvertNPPToAutotroph( gcl, actingStock );
         } else {

@@ -1,6 +1,5 @@
 #ifndef MODELGRID_H
 #define MODELGRID_H
-using namespace std;
 #include <GridCell.h>
 #include <map>
 #include <limits>
@@ -9,8 +8,6 @@ using namespace std;
 #include "Parameters.h"
 #include "Processor.h"
 #include "Logger.h"
-//class MadingleyModelInitialisation;
-
 /** \brief A class containing the model grid (composed of individual grid cells) along with grid attributes.
            The model grid is referenced by [Lat index, Lon index]
  */
@@ -23,7 +20,7 @@ public:
     // Variable to make sure that not more than one grid is instantiated
     unsigned NumGrids = 0;
     /** \brief Array of grid cells */
-    map<long, GridCell > Cells;
+    std::map<long, GridCell > Cells;
 
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -51,9 +48,7 @@ public:
                 Cells[ index ].setCellCoords( Parameters::Get( )->GetUserLatitudeAtIndex( latitudeIndex ), latitudeIndex, Parameters::Get( )->GetUserLongitudeAtIndex( longitudeIndex ), longitudeIndex );
             }
         }
-
-        cout << "\n" << endl;
-
+        Logger::Get( )->LogMessage( "" );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -65,13 +60,13 @@ public:
     @remark Currently assumes wrapping in longitude, and a hard upper and lower boundary in latitude
      */
     GridCell* getNewCell( GridCell* gcl, const int& v, const int& u ) {
+        
         GridCell* Cell = 0;
-        unsigned latCell = gcl->LatIndex( ), lonCell = gcl->LonIndex( );
-        if( latCell + v >= 0 && latCell + v < Parameters::Get( )->GetLengthUserLatitudeArray( ) ) {
-            int lnc = lonCell + u;
+        if( gcl->GetLatitudeIndex( ) + v >= 0 && gcl->GetLatitudeIndex( ) + v < Parameters::Get( )->GetLengthUserLatitudeArray( ) ) {
+            int lnc = gcl->GetLongitudeIndex( ) + u;
             while( lnc < 0 )lnc += Parameters::Get( )->GetLengthUserLongitudeArray( );
             while( lnc >= Parameters::Get( )->GetLengthUserLongitudeArray( ) )lnc -= Parameters::Get( )->GetLengthUserLongitudeArray( );
-            long idx = ( latCell + v ) + Parameters::Get( )->GetLengthUserLatitudeArray( ) * lnc;
+            long idx = ( gcl->GetLatitudeIndex( ) + v ) + Parameters::Get( )->GetLengthUserLatitudeArray( ) * lnc;
             if( Cells.count( idx != 0 ) )Cell = &( Cells[idx] );
         }
         return Cell;

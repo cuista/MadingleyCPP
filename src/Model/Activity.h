@@ -81,7 +81,7 @@ public:
                 actingCohort.mProportionTimeActive = params.CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "proportion suitable time active", actingCohort.mFunctionalGroupIndex );
             } else {
                 //If ectotherm then use realm specific function
-                if( !gcl.isMarine( ) ) {
+                if( !gcl.IsMarine( ) ) {
                     actingCohort.mProportionTimeActive = CalculateProportionTimeSuitableTerrestrial( gcl, currentMonth, Endotherm ) *
                             params.CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "proportion suitable time active", actingCohort.mFunctionalGroupIndex );
                 } else {

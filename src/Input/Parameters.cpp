@@ -100,14 +100,15 @@ void Parameters::CalculateParameters( ) {
 
     mSizeOfGridDatum = mLengthUserLongitudeArray * mLengthUserLatitudeArray * mLengthOfSimulationInTimeSteps;
 
-    mDomainCoordsMatrix.resize( mLengthUserLongitudeArray );
-    unsigned domainLongitudeIndex = 0;
-    for( unsigned longitudeIndex = mDataIndexOfUserMinimumLongitude; longitudeIndex <= mDataIndexOfUserMaximumLongitude; ++longitudeIndex ) {
-        for( unsigned latitudeIndex = mDataIndexOfUserMinimumLatitude; latitudeIndex <= mDataIndexOfUserMaximumLatitude; ++latitudeIndex ) {
-            mDomainCoordsMatrix[ domainLongitudeIndex ].push_back( std::make_pair( mDataLongitudeArray[ longitudeIndex ], mDataLatitudeArray[ latitudeIndex ] ) );
-        }
-        ++domainLongitudeIndex;
-    }
+    // Is this code necessary?
+    //    mDomainCoordsMatrix.resize( mLengthUserLongitudeArray );
+    //    unsigned domainLongitudeIndex = 0;
+    //    for( unsigned longitudeIndex = mDataIndexOfUserMinimumLongitude; longitudeIndex <= mDataIndexOfUserMaximumLongitude; ++longitudeIndex ) {
+    //        for( unsigned latitudeIndex = mDataIndexOfUserMinimumLatitude; latitudeIndex <= mDataIndexOfUserMaximumLatitude; ++latitudeIndex ) {
+    //            mDomainCoordsMatrix[ domainLongitudeIndex ].push_back( std::make_pair( mDataLongitudeArray[ longitudeIndex ], mDataLatitudeArray[ latitudeIndex ] ) );
+    //        }
+    //        ++domainLongitudeIndex;
+    //    }
 }
 
 std::string Parameters::GetTimeStepUnits( ) const {
@@ -285,29 +286,29 @@ float* Parameters::GetUserLatitudeArray( ) const {
     return mUserLatitudeArray;
 }
 
-Types::GeoCoords Parameters::GetCoordsFromDomainIndices( const Types::GeoIndices indices ) const {
-    return GetCoordsFromDomainIndices( indices.first, indices.second );
-}
-
-Types::GeoCoords Parameters::GetCoordsFromDomainIndices( const unsigned short& domainLonditudeIndex, const unsigned short& domainLatitudeIndex ) const {
-
-    Types::GeoCoords coords;
-
-    coords = mDomainCoordsMatrix[ domainLonditudeIndex ][ domainLatitudeIndex ];
-
-    return coords;
-}
-
-Types::GeoIndices Parameters::GetDomainIndicesFromCoords( const Types::GeoCoords coords ) const {
-    return GetDomainIndicesFromCoords( coords.first, coords.second );
-}
-
-Types::GeoIndices Parameters::GetDomainIndicesFromCoords( const float& longitude, const float& latitude ) const {
-
-    Types::GeoIndices indices;
-
-    indices.first = Processor::Get( )->CalculateArrayIndexOfValue( mUserLongitudeArray, mLengthUserLongitudeArray, longitude );
-    indices.second = Processor::Get( )->CalculateArrayIndexOfValue( mUserLatitudeArray, mLengthUserLatitudeArray, latitude );
-
-    return indices;
-}
+//Types::GeoCoords Parameters::GetCoordsFromDomainIndices( const Types::GeoIndices indices ) const {
+//    return GetCoordsFromDomainIndices( indices.first, indices.second );
+//}
+//
+//Types::GeoCoords Parameters::GetCoordsFromDomainIndices( const unsigned short& domainLonditudeIndex, const unsigned short& domainLatitudeIndex ) const {
+//
+//    Types::GeoCoords coords;
+//
+//    coords = mDomainCoordsMatrix[ domainLonditudeIndex ][ domainLatitudeIndex ];
+//
+//    return coords;
+//}
+//
+//Types::GeoIndices Parameters::GetDomainIndicesFromCoords( const Types::GeoCoords coords ) const {
+//    return GetDomainIndicesFromCoords( coords.first, coords.second );
+//}
+//
+//Types::GeoIndices Parameters::GetDomainIndicesFromCoords( const float& longitude, const float& latitude ) const {
+//
+//    Types::GeoIndices indices;
+//
+//    indices.first = Processor::Get( )->CalculateArrayIndexOfValue( mUserLongitudeArray, mLengthUserLongitudeArray, longitude );
+//    indices.second = Processor::Get( )->CalculateArrayIndexOfValue( mUserLatitudeArray, mLengthUserLatitudeArray, latitude );
+//
+//    return indices;
+//}

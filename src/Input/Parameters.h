@@ -101,7 +101,7 @@ private:
     float* mUserLongitudeArray;
     float* mUserLatitudeArray;
 
-    Types::GeoCoordsMatrix mDomainCoordsMatrix;
+    //Types::GeoCoordsMatrix mDomainCoordsMatrix;
 };
 
 #endif

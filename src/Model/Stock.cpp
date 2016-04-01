@@ -22,7 +22,7 @@ Stock::Stock( FunctionalGroupDefinitions& StockDefinitions, const unsigned Funct
     success = false;
 
     // If it is a functional group that corresponds to the current realm, then seed the stock
-    if( !gcl.isMarine( ) && Environment::Get( "Precipitation", gcl ) != Constants::cMissingValue && Environment::Get( "Temperature", gcl ) != Constants::cMissingValue ) {
+    if( !gcl.IsMarine( ) && Environment::Get( "Precipitation", gcl ) != Constants::cMissingValue && Environment::Get( "Temperature", gcl ) != Constants::cMissingValue ) {
         if( StockDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "terrestrial" ) {
             // An instance of the terrestrial carbon model class
             RevisedTerrestrialPlantModel PlantModel;
@@ -31,7 +31,7 @@ Stock::Stock( FunctionalGroupDefinitions& StockDefinitions, const unsigned Funct
             TotalBiomass = PlantModel.CalculateEquilibriumLeafMass( gcl, StockDefinitions.GetTraitNames( "leaf strategy", FunctionalGroup ) == "deciduous" );
             success = true;
         }
-    } else if( gcl.isMarine( ) && Environment::Get( "NPP", gcl ) != Constants::cMissingValue ) {
+    } else if( gcl.IsMarine( ) && Environment::Get( "NPP", gcl ) != Constants::cMissingValue ) {
         if( StockDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "marine" ) {
             TotalBiomass = 1.e12;
             success = true;

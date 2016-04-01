@@ -55,7 +55,7 @@ public:
         if( NPP == Constants::cMissingValue ) NPP = 0.0;
 
         // Check that this is an ocean cell
-        if( gcl.isMarine( ) ) {
+        if( gcl.IsMarine( ) ) {
             // Check that the units of oceanic NPP are gC per m2 per day
             //assert(params.Units["OceanNPP"] == "gC/m2/day" && "Oceanic NPP data are not in the correct units for this formulation of the model");
 

@@ -113,8 +113,8 @@ double& Environment::Get( string s, int lo, int la ) {
 
 double& Environment::Get( string s, GridCell& gcl ) {
     if( mThis == 0 )mThis = new Environment( );
-    int lo = gcl.LonIndex( );
-    int la = gcl.LatIndex( );
+    int lo = gcl.GetLongitudeIndex( );
+    int la = gcl.GetLatitudeIndex( );
     if( mLayers.count( s ) == 0 ) {
         cout << "Invalid Layer Request in Environment:: " << s << endl;
         exit( 0 );

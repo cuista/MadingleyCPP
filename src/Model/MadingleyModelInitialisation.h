@@ -217,8 +217,8 @@ public:
         gcl.setCohortSize( CohortFunctionalGroupDefinitions.AllFunctionalGroupsIndex.size( ) );
         for( int FunctionalGroup: CohortFunctionalGroupDefinitions.AllFunctionalGroupsIndex ) {
             int N = CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Initial number of GridCellCohorts", FunctionalGroup );
-            if( ( CohortFunctionalGroupDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "terrestrial" && !gcl.isMarine( ) ) ||
-                    ( CohortFunctionalGroupDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "marine" && gcl.isMarine( ) ) ) {
+            if( ( CohortFunctionalGroupDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "terrestrial" && !gcl.IsMarine( ) ) ||
+                    ( CohortFunctionalGroupDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "marine" && gcl.IsMarine( ) ) ) {
 
                 NumCohortsThisCell += N;
             }
@@ -228,8 +228,8 @@ public:
             //Loop over all functional groups in the model
             for( int FunctionalGroup: CohortFunctionalGroupDefinitions.AllFunctionalGroupsIndex ) {
                 // If it is a functional group that corresponds to the current realm, then seed cohorts
-                if( ( CohortFunctionalGroupDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "terrestrial" && !gcl.isMarine( ) ) ||
-                        ( CohortFunctionalGroupDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "marine" && gcl.isMarine( ) ) ) {
+                if( ( CohortFunctionalGroupDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "terrestrial" && !gcl.IsMarine( ) ) ||
+                        ( CohortFunctionalGroupDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "marine" && gcl.IsMarine( ) ) ) {
                     // Get the minimum and maximum possible body masses for organisms in each functional group
                     double MassMinimum = CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "minimum mass", FunctionalGroup );
                     double MassMaximum = CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "maximum mass", FunctionalGroup );
@@ -250,7 +250,7 @@ public:
                         CohortAdultMass = pow( 10, ( randomNumber( RandomNumberGenerator ) * ( log10( MassMaximum ) - log10( 50 * MassMinimum ) ) + log10( 50 * MassMinimum ) ) );
 
                         // Terrestrial and marine organisms have different optimal prey/predator body mass ratios
-                        if( !gcl.isMarine( ) ) {
+                        if( !gcl.IsMarine( ) ) {
                             // Optimal prey body size 10%
                             std::normal_distribution<double> randomNumber( 0.1, 0.02 );
                             OptimalPreyBodySizeRatio = max( 0.01, randomNumber( RandomNumberGenerator ) );
@@ -273,7 +273,7 @@ public:
                         // Draw from a log-normal distribution with mean 10.0 and standard deviation 5.0, then add one to obtain 
                         // the ratio of adult to juvenile body mass, and then calculate juvenile mass based on this ratio and within the
                         // bounds of the minimum and maximum body masses for this functional group
-                        if( !gcl.isMarine( ) ) {
+                        if( !gcl.IsMarine( ) ) {
                             do {
                                 ExpectedLnAdultMassRatio = 2.24 + 0.13 * log( CohortAdultMass );
                                 std::lognormal_distribution<double> randomNumber( ExpectedLnAdultMassRatio, 0.5 );
