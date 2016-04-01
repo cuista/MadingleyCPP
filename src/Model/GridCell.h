@@ -53,9 +53,9 @@ public:
     }
 
     void MoveCohort( Cohort& c ) {
-        c.Here( ).RemoveCohort( c );
-        c.mLocation = c.mDestination;
-        c.Here( ).InsertCohort( c );
+        c.GetCurrentLocation( ).RemoveCohort( c );
+        c.SetCurrentLocation( c.mDestination );
+        c.GetCurrentLocation( ).InsertCohort( c );
     }
 
     void RandomizeCohorts( ) {

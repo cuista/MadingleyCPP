@@ -213,7 +213,7 @@ public:
                 mEcologyCohort.RunWithinCellEcology( gcl, c, CurrentTimeStep, partial, CurrentMonth, params );
                 // Update the properties of the acting cohort
                 mEcologyCohort.UpdateEcology( gcl, c, CurrentTimeStep );
-                Cohort::zeroDeltas( );
+                Cohort::ResetMassFluxes( );
 
                 // Check that the mass of individuals in this cohort is still >= 0 after running ecology
                 assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
@@ -224,12 +224,12 @@ public:
         } );
 
 
-        for( auto& c: Cohort::newCohorts ) {
+        for( auto& c: Cohort::mNewCohorts ) {
             gcl.InsertCohort( c );
             if( c.mDestination != &gcl )cout << "whut? wrong cell?" << endl;
         }
-        partial.Productions += Cohort::newCohorts.size( );
-        Cohort::newCohorts.clear( );
+        partial.Productions += Cohort::mNewCohorts.size( );
+        Cohort::mNewCohorts.clear( );
 
         RunExtinction( gcl, partial );
 
@@ -263,8 +263,8 @@ public:
             // Add biomass of the extinct cohort to the organic matter pool
             double deadMatter = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance;
             if( deadMatter < 0 ) cout << "Dead " << deadMatter << endl;
-            Environment::Get( "Organic Pool", c.Here( ) ) += deadMatter;
-            assert( Environment::Get( "Organic Pool", c.Here( ) ) >= 0 && "Organic pool < 0" );
+            Environment::Get( "Organic Pool", c.GetCurrentLocation( ) ) += deadMatter;
+            assert( Environment::Get( "Organic Pool", c.GetCurrentLocation( ) ) >= 0 && "Organic pool < 0" );
 
             // Remove the extinct cohort from the list of cohorts
             gcl.RemoveCohort( c );

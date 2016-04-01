@@ -93,7 +93,7 @@ public:
         BodyMassIncludingChangeThisTimeStep = 0.0;
 
         // Loop over all items in the biomass deltas
-        for( auto Biomass: Cohort::Deltas["biomass"] ) {
+        for( auto Biomass: Cohort::mMassFluxes["biomass"] ) {
             // Add the delta biomass to net biomass
             BodyMassIncludingChangeThisTimeStep += Biomass.second;
         }
@@ -104,7 +104,7 @@ public:
         ReproductiveMassIncludingChangeThisTimeStep = 0.0;
 
         // Loop over all items in the biomass Cohort::Deltas
-        for( auto Biomass: Cohort::Deltas["reproductivebiomass"] ) {
+        for( auto Biomass: Cohort::mMassFluxes["reproductivebiomass"] ) {
             // Add the delta biomass to net biomass
             ReproductiveMassIncludingChangeThisTimeStep += Biomass.second;
         }
@@ -140,11 +140,11 @@ public:
         }
 
         // Remove individuals that have died from the delta abundance for this cohort
-        Cohort::Deltas["abundance"]["mortality"] = -MortalityTotal;
+        Cohort::mMassFluxes["abundance"]["mortality"] = -MortalityTotal;
 
         // Add the biomass of individuals that have died to the delta biomass in the organic pool (including reproductive 
         // potential mass, and mass gained through eating, and excluding mass lost through metabolism)
-        Cohort::Deltas["organicpool"]["mortality"] = MortalityTotal * ( BodyMassIncludingChangeThisTimeStep + ReproductiveMassIncludingChangeThisTimeStep );
+        Cohort::mMassFluxes["organicpool"]["mortality"] = MortalityTotal * ( BodyMassIncludingChangeThisTimeStep + ReproductiveMassIncludingChangeThisTimeStep );
     }
     //----------------------------------------------------------------------------------------------
 };

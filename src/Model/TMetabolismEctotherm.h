@@ -81,15 +81,15 @@ public:
 
 
         // Calculate metabolic loss for an individual and add the value to the delta biomass for metabolism
-        Cohort::Deltas["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate( actingCohort.mIndividualBodyMass,
-                Environment::Get( "Temperature", actingCohort.Here( ) ) + TemperatureUnitsConvert, actingCohort.mProportionTimeActive ) * DeltaT;
+        Cohort::mMassFluxes["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate( actingCohort.mIndividualBodyMass,
+                Environment::Get( "Temperature", actingCohort.GetCurrentLocation( ) ) + TemperatureUnitsConvert, actingCohort.mProportionTimeActive ) * DeltaT;
 
 
         // If metabolic loss is greater than individual body mass after herbivory and predation, then set equal to individual body mass
-        Cohort::Deltas["biomass"]["metabolism"] = max( Cohort::Deltas["biomass"]["metabolism"], -( actingCohort.mIndividualBodyMass + Cohort::Deltas["biomass"]["predation"] + Cohort::Deltas["biomass"]["herbivory"] ) );
+        Cohort::mMassFluxes["biomass"]["metabolism"] = max( Cohort::mMassFluxes["biomass"]["metabolism"], -( actingCohort.mIndividualBodyMass + Cohort::mMassFluxes["biomass"]["predation"] + Cohort::mMassFluxes["biomass"]["herbivory"] ) );
 
         // Add total metabolic loss for all individuals in the cohort to delta biomass for metabolism in the respiratory CO2 pool
-        Cohort::Deltas["respiratoryCO2pool"]["metabolism"] = -Cohort::Deltas["biomass"]["metabolism"] * actingCohort.mCohortAbundance;
+        Cohort::mMassFluxes["respiratoryCO2pool"]["metabolism"] = -Cohort::mMassFluxes["biomass"]["metabolism"] * actingCohort.mCohortAbundance;
 
     }
     //----------------------------------------------------------------------------------------------

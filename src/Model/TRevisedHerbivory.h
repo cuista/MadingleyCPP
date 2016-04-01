@@ -220,18 +220,18 @@ public:
                 }
                 // Add the biomass eaten and assimilated by an individual to the delta biomass for the acting cohort
                 //MB should we be able to get here if abundance is zero?
-                if( actingCohort.mCohortAbundance > 0 )Cohort::Deltas["biomass"]["herbivory"] += BiomassesEaten[FunctionalGroup][i] * AssimilationEfficiency / actingCohort.mCohortAbundance;
+                if( actingCohort.mCohortAbundance > 0 )Cohort::mMassFluxes["biomass"]["herbivory"] += BiomassesEaten[FunctionalGroup][i] * AssimilationEfficiency / actingCohort.mCohortAbundance;
 
                 // Move the biomass eaten but not assimilated by an individual into the organic matter pool
-                Cohort::Deltas["organicpool"]["herbivory"] += BiomassesEaten[FunctionalGroup][i] * ( 1 - AssimilationEfficiency );
+                Cohort::mMassFluxes["organicpool"]["herbivory"] += BiomassesEaten[FunctionalGroup][i] * ( 1 - AssimilationEfficiency );
 
             }
 
             // Check that the delta biomass from eating for the acting cohort is not negative
-            assert( Cohort::Deltas["biomass"]["herbivory"] >= 0 && "Delta biomass from herbviory is negative" );
+            assert( Cohort::mMassFluxes["biomass"]["herbivory"] >= 0 && "Delta biomass from herbviory is negative" );
 
             // Calculate the total biomass eaten by the acting (herbivore) cohort
-            TotalBiomassEatenByCohort = Cohort::Deltas["biomass"]["herbivory"] * actingCohort.mCohortAbundance;
+            TotalBiomassEatenByCohort = Cohort::mMassFluxes["biomass"]["herbivory"] * actingCohort.mCohortAbundance;
 
 
 

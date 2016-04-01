@@ -42,7 +42,7 @@ public:
         double NetAbundanceChange = 0.0;
 
         // Loop over all abundance deltas
-        for( auto& d: Cohort::Deltas["abundance"] ) {
+        for( auto& d: Cohort::mMassFluxes["abundance"] ) {
             // Update net abundance change
             NetAbundanceChange += d.second;
         }
@@ -50,7 +50,7 @@ public:
         assert( ( actingCohort.mCohortAbundance + NetAbundanceChange ) >= 0 && "Cohort abundance < 0" );
 
         //Loop over all keys in the abundance deltas sorted list
-        for( auto& d: Cohort::Deltas["abundance"] ) {
+        for( auto& d: Cohort::mMassFluxes["abundance"] ) {
             // Update the abundance of the acting cohort
             actingCohort.mCohortAbundance += d.second;
         }
@@ -69,7 +69,7 @@ public:
         double NetBiomass = 0.0;
 
         // Loop over all biomass deltas
-        for( auto& d: Cohort::Deltas["biomass"] ) {
+        for( auto& d: Cohort::mMassFluxes["biomass"] ) {
             // Update net biomass change
             NetBiomass += d.second;
         }
@@ -86,7 +86,7 @@ public:
         }
 
         //Loop over all keys in the abundance deltas sorted list
-        for( auto& d: Cohort::Deltas["biomass"] ) {
+        for( auto& d: Cohort::mMassFluxes["biomass"] ) {
             // If cohort abundance is zero, then set cohort individual body mass to zero and reset the biomass delta to zero, 
             // otherwise update cohort individual body mass and reset the biomass delta to zero
             if( actingCohort.mCohortAbundance == 0 ) {
@@ -111,13 +111,13 @@ public:
         double NetReproductiveBiomass = 0.0;
 
         // Loop over all reproductive biomass deltas
-        for( auto& d: Cohort::Deltas["reproductivebiomass"] ) {
+        for( auto& d: Cohort::mMassFluxes["reproductivebiomass"] ) {
             // Update net reproductive biomass change
             NetReproductiveBiomass += d.second;
         }
 
         //Loop over all keys in the abundance deltas sorted list
-        for( auto& d: Cohort::Deltas["reproductivebiomass"] ) {
+        for( auto& d: Cohort::mMassFluxes["reproductivebiomass"] ) {
             // If cohort abundance is zero, then set cohort reproductive body mass to zero and reset the biomass delta to zero, 
             // otherwise update cohort reproductive body mass and reset the biomass delta to zero
             if( actingCohort.mCohortAbundance == 0 ) {
@@ -136,7 +136,7 @@ public:
     void UpdatePools( GridCell& gcl ) {
 
         // Loop over all keys in the organic pool deltas sorted list
-        for( auto &D: Cohort::Deltas["organicpool"] ) {
+        for( auto &D: Cohort::mMassFluxes["organicpool"] ) {
             // Check that the delta value is not negative
             if( D.second < 0 )cout << "organic pool " << D.first << " " << D.second << endl;
             //assert(D.second >= 0.0 && "A delta value for the organic pool is negative " );
@@ -146,7 +146,7 @@ public:
         }
 
         // Loop over all keys in the respiratory pool deltas sorted list
-        for( auto &D: Cohort::Deltas["respiratoryCO2pool"] ) {
+        for( auto &D: Cohort::mMassFluxes["respiratoryCO2pool"] ) {
             // Check that the delta value is not negative
             assert( D.second >= 0.0 && "A delta value for the respiratory CO2 pool is negative" );
             // Update the respiratory CO2 pool

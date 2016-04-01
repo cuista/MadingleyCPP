@@ -94,7 +94,7 @@ public:
         TC = totalCohorts;
         TS = totalStocks;
         InitializationTimer.Stop( );
-        Cohort::zeroDeltas( );
+        Cohort::ResetMassFluxes( );
         cout << "Time required: " << InitializationTimer.GetElapsedTimeSecs( ) << endl;
     }
     //----------------------------------------------------------------------------------------------

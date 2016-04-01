@@ -482,16 +482,16 @@ public:
         }
 
         // Add the biomass eaten and assimilated by an individual to the delta biomass for the acting (predator) cohort
-        Cohort::Deltas["biomass"]["predation"] = TempDouble * PredatorAssimilationEfficiency;
+        Cohort::mMassFluxes["biomass"]["predation"] = TempDouble * PredatorAssimilationEfficiency;
 
         // Move the biomass eaten but not assimilated by an individual into the organic matter pool
-        Cohort::Deltas["organicpool"]["predation"] = TempDouble * PredatorNonAssimilation * AbundancePredator;
+        Cohort::mMassFluxes["organicpool"]["predation"] = TempDouble * PredatorNonAssimilation * AbundancePredator;
 
         // Check that the delta biomass from eating for the acting cohort is not negative
-        assert( Cohort::Deltas["biomass"]["predation"] >= 0 && "Predation yields negative biomass" );
+        assert( Cohort::mMassFluxes["biomass"]["predation"] >= 0 && "Predation yields negative biomass" );
 
         // Calculate the total biomass eaten by the acting (predator) cohort
-        TotalBiomassEatenByCohort = Cohort::Deltas["biomass"]["predation"] * AbundancePredator;
+        TotalBiomassEatenByCohort = Cohort::mMassFluxes["biomass"]["predation"] * AbundancePredator;
     }
     //----------------------------------------------------------------------------------------------
 

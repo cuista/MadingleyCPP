@@ -55,10 +55,10 @@ public:
     void RunCrossGridCellEcologicalProcess( GridCell& gcl, ModelGrid& gridForDispersal, MadingleyModelInitialisation& params, unsigned currentMonth ) {
 
         gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
-            if( choose.count( c.dispersalType( params ) ) != 0 ) {
-                choose[c.dispersalType( params )]->RunDispersal( gridForDispersal, c, currentMonth );
+            if( choose.count( c.DispersalType( params ) ) != 0 ) {
+                choose[c.DispersalType( params )]->RunDispersal( gridForDispersal, c, currentMonth );
             }
-            if( c.isMoving( ) )dispersers.push_back( c );
+            if( c.IsMoving( ) )dispersers.push_back( c );
 
         } );
 

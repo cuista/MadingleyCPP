@@ -90,7 +90,7 @@ public:
         // Calculate the biomass of an individual in this cohort including changes this time step from other ecological processes  
         BodyMassIncludingChangeThisTimeStep = 0.0;
 
-        for( auto& Biomass: Cohort::Deltas["biomass"] ) {
+        for( auto& Biomass: Cohort::mMassFluxes["biomass"] ) {
             // Add the delta biomass to net biomass
             BodyMassIncludingChangeThisTimeStep += Biomass.second;
 
@@ -101,7 +101,7 @@ public:
         // Calculate the reproductive biomass of an individual in this cohort including changes this time step from other ecological processes  
         ReproductiveMassIncludingChangeThisTimeStep = 0.0;
 
-        for( auto& ReproBiomass: Cohort::Deltas["reproductivebiomass"] ) {
+        for( auto& ReproBiomass: Cohort::mMassFluxes["reproductivebiomass"] ) {
             // Add the delta reproductive biomass to net biomass
             ReproductiveMassIncludingChangeThisTimeStep += ReproBiomass.second;
         }
@@ -112,7 +112,7 @@ public:
             CurrentMassRatio = ( BodyMassIncludingChangeThisTimeStep + ReproductiveMassIncludingChangeThisTimeStep ) / actingCohort.mAdultMass;
 
             // Must have enough mass to hit reproduction threshold criterion, and either (1) be in breeding season, or (2) be a marine cell (no breeding season in marine cells)
-            if( ( CurrentMassRatio > MassRatioThreshold ) && ( ( Environment::Get( "Breeding Season", actingCohort.Here( ) ) == 1.0 ) || ( gcl.IsMarine( ) ) ) ) {
+            if( ( CurrentMassRatio > MassRatioThreshold ) && ( ( Environment::Get( "Breeding Season", actingCohort.GetCurrentLocation( ) ) == 1.0 ) || ( gcl.IsMarine( ) ) ) ) {
                 // Iteroparous and semelparous organisms have different strategies
                 if( iteroparous ) {
                     // Iteroparous organisms do not allocate any of their current non-reproductive biomass to reproduction
@@ -144,12 +144,12 @@ public:
                 Cohort OffspringCohort( actingCohort, OffspringJuvenileAndAdultBodyMasses[0], OffspringJuvenileAndAdultBodyMasses[1], OffspringJuvenileAndAdultBodyMasses[0], OffspringCohortAbundance, currentTimestep, partial.NextCohortIDThreadLocked );
 
                 // Add the offspring cohort to the grid cell cohorts array
-                Cohort::newCohorts.push_back( OffspringCohort );
+                Cohort::mNewCohorts.push_back( OffspringCohort );
 
                 // Subtract all of the reproductive potential mass of the parent cohort, which has been used to generate the new
                 // cohort, from the delta reproductive potential mass and delta adult body mass
-                Cohort::Deltas["reproductivebiomass"]["reproduction"] -= ReproductiveMassIncludingChangeThisTimeStep;
-                Cohort::Deltas["biomass"]["reproduction"] -= AdultMassLost;
+                Cohort::mMassFluxes["reproductivebiomass"]["reproduction"] -= ReproductiveMassIncludingChangeThisTimeStep;
+                Cohort::mMassFluxes["biomass"]["reproduction"] -= AdultMassLost;
             } else {
                 // Organism is not large enough, or it is not the breeding season, so take no action
             }
@@ -174,7 +174,7 @@ public:
         NetBiomassFromOtherEcologicalFunctionsThisTimeStep = 0.0;
 
         // Loop over all items in the biomass deltas
-        for( auto Biomass: Cohort::Deltas["biomass"] ) {
+        for( auto Biomass: Cohort::mMassFluxes["biomass"] ) {
             // Add the delta biomass to net biomass
             NetBiomassFromOtherEcologicalFunctionsThisTimeStep += Biomass.second;
         }
@@ -196,8 +196,8 @@ public:
             }
 
             // Assign the specified mass to reproductive potential mass and remove it from individual biomass
-            Cohort::Deltas["reproductivebiomass"]["reproduction"] += BiomassToAssignToReproductivePotential;
-            Cohort::Deltas["biomass"]["reproduction"] -= BiomassToAssignToReproductivePotential;
+            Cohort::mMassFluxes["reproductivebiomass"]["reproduction"] += BiomassToAssignToReproductivePotential;
+            Cohort::mMassFluxes["biomass"]["reproduction"] -= BiomassToAssignToReproductivePotential;
 
         } else {
             // Cohort has not gained sufficient biomass to assign any to reproductive potential, so take no action
