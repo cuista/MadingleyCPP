@@ -17,35 +17,37 @@ DataLayer2D::~DataLayer2D( ) {
 }
 
 float DataLayer2D::GetDataAtGeoCoord( const Types::DataCoordsPointer coord ) const {
-    return GetDataAtGeoCoordForVariable( coord, mVariableVector[ 0 ] );
+    
+    int longitudeIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLongitudeVariable, coord->GetLongitude( ) );
+    int latitudeIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLatitudeVariable, coord->GetLatitude( ) );
+    
+    return GetDataAtIndicesForVariable( longitudeIndex, latitudeIndex, mVariableVector[ 0 ] );
 }
 
 float DataLayer2D::GetDataAtGeoCoordFor( const Types::DataCoordsPointer coord, const std::string& variableName ) const {
-    return GetDataAtGeoCoordForVariable( coord, GetVariable( variableName ) );
+    
+    int longitudeIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLongitudeVariable, coord->GetLongitude( ) );
+    int latitudeIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLatitudeVariable, coord->GetLatitude( ) );
+    
+    return GetDataAtIndicesForVariable( longitudeIndex, latitudeIndex, GetVariable( variableName ) );
 }
 
 float DataLayer2D::GetDataAtIndices( const Types::DataIndicesPointer indices ) const {
-    return GetDataAtIndicesForVariable( indices, mVariableVector[ 0 ] );
+    return GetDataAtIndicesForVariable( indices->GetDataX( ), indices->GetDataY( ), mVariableVector[ 0 ] );
 }
 
 float DataLayer2D::GetDataAtIndicesFor( const Types::DataIndicesPointer indices, const std::string& variableName ) const {
-    return GetDataAtIndicesForVariable( indices, GetVariable( variableName ) );
+    return GetDataAtIndicesForVariable( indices->GetDataX( ), indices->GetDataY( ), GetVariable( variableName ) );
 }
 
-float DataLayer2D::GetDataAtGeoCoordForVariable( const Types::DataCoordsPointer coord, const Types::VariablePointer variable ) const {
-
-    int xIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLongitudeVariable, coord->GetLongitude( ) );
-    int yIndex = Processor::Get( )->CalculateVariableIndexOfValue( mLatitudeVariable, coord->GetLatitude( ) );
-    unsigned xMax = Parameters::Get( )->GetLengthDataLongitudeArray( );
-
-    return variable->GetDataAtIndex( Processor::Get( )->Indices2DToIndex( xIndex, yIndex, xMax ) );
+float DataLayer2D::GetDataAtGridCell( const Types::GridCellPointer gridCell ) const {
+    return 1.0;
 }
 
-float DataLayer2D::GetDataAtIndicesForVariable( const Types::DataIndicesPointer indices, const Types::VariablePointer variable ) const {
+float DataLayer2D::GetDataAtGridCellFor( const Types::GridCellPointer gridCell, const std::string& variableName ) const {
+    return 1.0;
+}
 
-    unsigned xIndex = indices->GetDataX( );
-    unsigned yIndex = indices->GetDataY( );
-    unsigned xMax = Parameters::Get( )->GetLengthDataLongitudeArray( );
-
-    return variable->GetDataAtIndex( Processor::Get( )->Indices2DToIndex( xIndex, yIndex, xMax ) );
+float DataLayer2D::GetDataAtIndicesForVariable( const unsigned longitudeIndex, const unsigned latitudeIndex, const Types::VariablePointer variable ) const {
+    return variable->GetDataAtIndex( Processor::Get( )->Indices2DToIndex( longitudeIndex, latitudeIndex, Parameters::Get( )->GetLengthDataLongitudeArray( ) ) );
 }

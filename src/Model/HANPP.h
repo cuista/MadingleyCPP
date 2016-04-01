@@ -43,7 +43,7 @@ public:
             }
 
             // Get the total amount of NPP appropriated by humans from this cell
-            double HANPP = Environment::Get( "HANPP", gcl ) * Environment::Get( "Seasonality", gcl );
+            double HANPP = Environment::Get( "TerrestrialHANPP", gcl ) * Environment::Get( "Seasonality", gcl );
 
             // If HANPP value is missing, then assume zero
             if( HANPP == Constants::cMissingValue ) HANPP = 0.0;

@@ -13,10 +13,12 @@ public:
 
     float GetDataAtIndices( const Types::DataIndicesPointer ) const;
     float GetDataAtIndicesFor( const Types::DataIndicesPointer, const std::string& ) const;
+    
+    float GetDataAtGridCell( const Types::GridCellPointer ) const;
+    float GetDataAtGridCellFor( const Types::GridCellPointer, const std::string& ) const;
 
 private:
-    float GetDataAtGeoCoordForVariable( const Types::DataCoordsPointer, const Types::VariablePointer ) const;
-    float GetDataAtIndicesForVariable( const Types::DataIndicesPointer, const Types::VariablePointer ) const;
+    float GetDataAtIndicesForVariable( const unsigned, const unsigned, const Types::VariablePointer ) const;
 };
 
 #endif

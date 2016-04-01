@@ -21,6 +21,9 @@ public:
 
     virtual float GetDataAtIndices( const Types::DataIndicesPointer ) const = 0;
     virtual float GetDataAtIndicesFor( const Types::DataIndicesPointer, const std::string& ) const = 0;
+    
+    virtual float GetDataAtGridCell( const Types::GridCellPointer ) const = 0;
+    virtual float GetDataAtGridCellFor( const Types::GridCellPointer, const std::string& ) const = 0;
 
     std::string GetName( );
 
@@ -31,9 +34,6 @@ public:
     Types::VariablePointer GetLatitudeVariable( ) const;
 
 protected:
-    virtual float GetDataAtGeoCoordForVariable( const Types::DataCoordsPointer, const Types::VariablePointer ) const = 0;
-    virtual float GetDataAtIndicesForVariable( const Types::DataIndicesPointer, const Types::VariablePointer ) const = 0;
-
     Types::VariableVector mVariableVector;
     Types::VariablePointer mLongitudeVariable;
     Types::VariablePointer mLatitudeVariable;

@@ -29,6 +29,11 @@ Environment::Environment( ) {
         Logger::Get( )->LogMessage( "Files read successfully..." );
 
         cout << endl;
+        addLayer( "Realm" );
+        setRealm( );
+        addLayer( "TerrestrialHANPP" );
+        setHANPP( );
+        
         addLayerT( "uVel" );
         setUVel( );
         addLayerT( "vVel" );
@@ -47,8 +52,7 @@ Environment::Environment( ) {
         addLayerT( "Breeding Season" );
         setBreeding( );
 
-        addLayer( "Realm" );
-        setRealm( );
+        
         addLayer( "Organic Pool" );
         setOrganicPool( );
         addLayer( "Respiratory CO2 Pool" );
@@ -64,8 +68,7 @@ Environment::Environment( ) {
         addLayer( "Fraction Year Frost" );
         addLayer( "Fraction Year Fire" );
         setFrostandFire( );
-        addLayer( "HANPP" );
-        setHANPP( );
+        
         //make sure all time dependent fields set to the start
         update( 0 );
     } else {
@@ -509,7 +512,7 @@ void Environment::setHANPP( ) {
     const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
-            ( *mLayers["HANPP"] )[lo][la] = 0;
+            ( *mLayers["TerrestrialHANPP"] )[lo][la] = 0;
         }
     }
 }
