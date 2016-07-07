@@ -8,7 +8,7 @@
 
 unsigned Cohort::mNextID = 0;
 Types::CohortVector Cohort::mNewCohorts;
-Types::Double2DMap Cohort::mMassFluxes;
+Types::double2DMap Cohort::mMassFluxes;
 
 Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, double optimalPreyBodySizeRatio, unsigned short birthTimeStep, double proportionTimeActive, long long &nextCohortID ) {
 
@@ -25,7 +25,10 @@ Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBod
     mProportionTimeActive = proportionTimeActive;
     mCurrentLocation = &gcl;
     mDestination = mCurrentLocation;
+    mIndividualReproductivePotentialMass= (double)0.;
+
     mID = mNextID; //MB added to track this object.
+
     mNextID++;
     nextCohortID++;
 }
@@ -45,6 +48,7 @@ Cohort::Cohort( Cohort& actingCohort, double juvenileBodyMass, double adultBodyM
     mProportionTimeActive = actingCohort.mProportionTimeActive;
     mCurrentLocation = actingCohort.mCurrentLocation;
     mDestination = mCurrentLocation;
+    mIndividualReproductivePotentialMass= (double)0.;
     mID = mNextID; //MB added to track this object.
     mNextID++;
     nextCohortID++;
@@ -86,7 +90,9 @@ double Cohort::Realm( ) {
 void Cohort::TryLivingAt( Types::GridCellPointer destination ) {
     if( destination != 0 && destination->Realm( ) == Realm( ) ) mDestination = destination;
 }
-
+GridCell& Cohort::GetDestination(){
+    return *mDestination;
+}
 GridCell& Cohort::GetCurrentLocation( ) {
     return *mCurrentLocation;
 }
@@ -101,6 +107,7 @@ bool Cohort::IsMoving( ) {
 
 void Cohort::Move( ) {
     mCurrentLocation->MoveCohort( *this );
+    mDestination=mCurrentLocation;
 }
 
 bool Cohort::IsMarine( ) {

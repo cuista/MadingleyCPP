@@ -85,7 +85,9 @@ public:
                     actingCohort.mProportionTimeActive = CalculateProportionTimeSuitableTerrestrial( gcl, currentMonth, Endotherm ) *
                             params.CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "proportion suitable time active", actingCohort.mFunctionalGroupIndex );
                 } else {
-                    actingCohort.mProportionTimeActive = 1.0;
+                    //update from PLOS biology code which just had 1.0 here
+                    actingCohort.mProportionTimeActive = CalculateProportionTimeSuitableMarine( gcl, currentMonth, Endotherm )*
+                            params.CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "proportion suitable time active", actingCohort.mFunctionalGroupIndex );
                 }
             }
         }
@@ -120,6 +122,10 @@ public:
 
         return ProportionDaySuitable( );
 
+    }
+    //----------------------------------------------------------------------------------------------
+    double CalculateProportionTimeSuitableMarine(GridCell& gcl, unsigned currentMonth, bool endotherm){
+        return 1.0;
     }
     //----------------------------------------------------------------------------------------------
 

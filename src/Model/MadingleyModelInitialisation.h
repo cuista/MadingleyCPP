@@ -14,6 +14,7 @@
 
 #include "Constants.h"
 #include "Parameters.h"
+#include <nonStaticSimpleRNG.h>
 
 /**
  \ file *MadingleyModelInitialisation.h
@@ -46,8 +47,8 @@ public:
     MassBinsHandler ModelMassBins;
     /** Instance of Utilities for timestep conversions */
     UtilityFunctions Utilities;
-    /** \brief An instance of the simple random number generator class */
-    std::default_random_engine RandomNumberGenerator;
+    /** \brief An instance of the mersenne twister generator class */
+    std::mt19937_64 RandomNumberGenerator; 
     /** track cohort ID number*/
     long long NextCohortID;
 
@@ -81,14 +82,14 @@ public:
         InitializationTimer.Start( );
 
         long totalCohorts = 0, totalStocks = 0;
-        Grid.ask( [&]( GridCell & c ) {
-
+        Grid.ApplyFunctionToAllCells( [&]( GridCell & c ) {
             totalCohorts += SeedGridCellCohorts( c );
             totalStocks += SeedGridCellStocks( c );
         } );
 
         cout << "Total cohorts initialised: " << totalCohorts << endl;
         cout << "Total stocks created " << totalStocks << endl;
+
         cout << "" << endl;
         NC = NextCohortID;
         TC = totalCohorts;
@@ -195,6 +196,7 @@ public:
     @param g A reference to a grid cell 
      */
     long SeedGridCellCohorts( GridCell& gcl ) {
+        
         long totalCohorts = 0;
         // Set the seed for the random number generator from the system time
         unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
@@ -246,10 +248,33 @@ public:
 
                         // Draw adult mass from a log-normal distribution with mean -6.9 and standard deviation 10.0,
                         // within the bounds of the minimum and maximum body masses for the functional group
-                        std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
-                        CohortAdultMass = pow( 10, ( randomNumber( RandomNumberGenerator ) * ( log10( MassMaximum ) - log10( 50 * MassMinimum ) ) + log10( 50 * MassMinimum ) ) );
+                        std::uniform_real_distribution<double> unifrandomNumber( 0.0, 1.0 );
+                        CohortAdultMass = pow( 10, ( unifrandomNumber( RandomNumberGenerator ) * ( log10( MassMaximum ) - log10( 50 * MassMinimum ) ) + log10( 50 * MassMinimum ) ) );
+                        //Changes from original code
+                        std::normal_distribution<double> randomNumber( 0.1, 0.02 );
+                        OptimalPreyBodySizeRatio = max( 0.01, randomNumber( RandomNumberGenerator ) );
 
-                        // Terrestrial and marine organisms have different optimal prey/predator body mass ratios
+                        if( !gcl.IsMarine( ) ) {
+                            do {
+                                ExpectedLnAdultMassRatio = 2.24 + 0.13 * log( CohortAdultMass );
+                                std::lognormal_distribution<double> randomNumber( ExpectedLnAdultMassRatio, 0.5 );
+                                
+                                CohortAdultMassRatio = 1.0 + randomNumber( RandomNumberGenerator );
+                                
+                                CohortJuvenileMass = CohortAdultMass * 1.0 / CohortAdultMassRatio;
+                            } while( CohortAdultMass <= CohortJuvenileMass || CohortJuvenileMass < MassMinimum );
+                        } else{
+                            do {
+                                ExpectedLnAdultMassRatio = 2.24 + 0.13 * log( CohortAdultMass );
+                                std::lognormal_distribution<double> randomNumber( ExpectedLnAdultMassRatio, 0.5 );
+                                
+                                CohortAdultMassRatio = 1.0 + 10*randomNumber( RandomNumberGenerator );
+                                
+                                CohortJuvenileMass = CohortAdultMass * 1.0 / CohortAdultMassRatio;
+                            } while( CohortAdultMass <= CohortJuvenileMass || CohortJuvenileMass < MassMinimum );
+                        }
+                        //original code
+/* // Terrestrial and marine organisms have different optimal prey/predator body mass ratios
                         if( !gcl.IsMarine( ) ) {
                             // Optimal prey body size 10%
                             std::normal_distribution<double> randomNumber( 0.1, 0.02 );
@@ -298,16 +323,16 @@ public:
                                 }
                             } while( CohortAdultMass <= CohortJuvenileMass || CohortJuvenileMass < MassMinimum );
                         }
+*/
 
-
-                        double NewBiomass = ( 3300 / NumCohortsThisCell ) * 100 * 3000 *
+                        double NewBiomass = ( 3300. / NumCohortsThisCell ) * 100 * 3000 *
                                 pow( 0.6, ( log10( CohortJuvenileMass ) ) ) * ( gcl.GetCellArea( ) );
+
                         TotalNewBiomass += NewBiomass;
                         double NewAbund = 0.0;
 
                         NewAbund = NewBiomass / CohortJuvenileMass;
-
-
+                        
                         // Initialise the new cohort with the relevant properties
                         Cohort NewCohort( gcl, FunctionalGroup, CohortJuvenileMass, CohortAdultMass, CohortJuvenileMass, NewAbund,
                                 OptimalPreyBodySizeRatio, 0, ProportionTimeActive, NextCohortID );
@@ -332,7 +357,7 @@ public:
     long SeedGridCellStocks( GridCell& gcl ) {
 
         long totalStocks = 0;
-
+        
         // Loop over all stock functional groups in the model
         for( int FunctionalGroup: StockFunctionalGroupDefinitions.AllFunctionalGroupsIndex ) {
             // Initialise the new stock with the relevant properties

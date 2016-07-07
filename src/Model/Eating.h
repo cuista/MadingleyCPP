@@ -19,7 +19,7 @@ class Eating : public IEcologicalProcessWithinGridCell {
     /** \brief Tracks the total time to handle all potential food for omnivores */
     double TotalTimeToEatForOmnivores;
     /** \brief An instance of the simple random number generator class */
-    std::default_random_engine RandomNumberGenerator;
+    std::mt19937_64 RandomNumberGenerator;
 public:
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -106,7 +106,7 @@ public:
                         ("carnivory assimilation", actingCohort.mFunctionalGroupIndex);
 
                 Implementations["revised predation"]->ProportionTimeEating = actingCohort.mProportionTimeActive;
-
+                
                 // Calculate the potential biomass available from predation
                 if (gcl.IsMarine())
                     Implementations["revised predation"]->GetEatingPotentialMarine

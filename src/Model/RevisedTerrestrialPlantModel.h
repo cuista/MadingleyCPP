@@ -135,7 +135,7 @@ public:
         stm_max = 1;
         stm_min = 0.001;
         BaseScalar_Fire = 2.0;
-        MinReturnInterval = exp( -13.0 );
+        MinReturnInterval = 0.00000226032940698105;// changed in most recent version was exp( -13.0 );
 
         // mass of Leaf C per g leaf dry matter = 0.4761 g g-1 (from Kattge et al. (2011), TRY- A global database of plant traits, Global Change Biology)
         MassCarbonPerMassLeafDryMatter = 0.476;
@@ -209,7 +209,6 @@ public:
 
         // Convert to equilibrium leaf wet matter content
         double LeafWetMatter = ConvertToLeafWetMass( EquilibriumLeafCarbon, gcl.GetCellArea( ) );
-
         return LeafWetMatter;
     }
     //----------------------------------------------------------------------------------------------
@@ -221,7 +220,7 @@ public:
     @param deciduous Whether the acting stock consists of deciduous leaves 
     @param GlobalModelTimeStepUnit The time step unit used in the model 
     @param currentMonth The current model month */
-    void UpdateLeafStock( GridCell& gcl, Stock& actingStock, unsigned currentTimeStep, bool deciduous, string GlobalModelTimeStepUnit, unsigned currentMonth ) {
+    double UpdateLeafStock( GridCell& gcl, Stock& actingStock, unsigned currentTimeStep, bool deciduous, string GlobalModelTimeStepUnit, unsigned currentMonth ) {
 
 
         //ESTIMATE ANNUAL LEAF CARBON FIXATION ASSUMING ENVIRONMENT THROUGHOUT THE YEAR IS THE SAME AS IN THIS MONTH
@@ -295,18 +294,23 @@ public:
 
         // Convert from carbon to leaf wet matter
         double WetMatterIncrement = ConvertToLeafWetMass( LeafCFixation, gcl.GetCellArea( ) );
-
         // Convert from the monthly time step used for this process to the global model time step unit
         WetMatterIncrement *= Utilities.ConvertTimeUnits( GlobalModelTimeStepUnit, "month" );
+        
+        // Add the leaf wet matter to the acting stock - this line has been change in the latest version!
+        //actingStock.TotalBiomass += max( -actingStock.TotalBiomass, WetMatterIncrement );
+        double NPPWetMatter = max(-actingStock.TotalBiomass, WetMatterIncrement);
 
-        // Add the leaf wet matter to the acting stock
-        actingStock.TotalBiomass += max( -actingStock.TotalBiomass, WetMatterIncrement );
 
         // Calculate fractional leaf mortality
         double LeafMortFrac = 1 - exp( -TimeStepLeafMortRate );
 
         // Update the leaf stock biomass owing to the leaf mortality
         actingStock.TotalBiomass *= ( 1 - LeafMortFrac );
+        NPPWetMatter *=(1-LeafMortFrac);
+
+        return NPPWetMatter;
+        
     }
     //----------------------------------------------------------------------------------------------
 
@@ -377,10 +381,11 @@ public:
     @param FRootMort The mortality rate of fine roots 
     @return The fractional mortality of leaves*/
     double CalculateLeafFracAllocation( double LeafMortRate, double DecidLeafMortRate, double EvergreenLeafMortRate, double FracEvergreen, double FRootMort ) {
+        //Changed in the latest version!
+        //double CombinedLeafMortRate = exp( ( FracEvergreen * log( EvergreenLeafMortRate ) ) + ( ( 1 - FracEvergreen ) * log( DecidLeafMortRate ) ) );
 
-        double CombinedLeafMortRate = exp( ( FracEvergreen * log( EvergreenLeafMortRate ) ) + ( ( 1 - FracEvergreen ) * log( DecidLeafMortRate ) ) );
-
-        return LeafMortRate / ( CombinedLeafMortRate + FRootMort );
+        //return LeafMortRate / ( CombinedLeafMortRate + FRootMort );
+        return LeafMortRate / (LeafMortRate + FRootMort);
     }
     //----------------------------------------------------------------------------------------------
 

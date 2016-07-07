@@ -59,7 +59,7 @@ class RevisedPredation: public IEatingImplementation {
     vector< vector < double> > AbundancesEaten;
     /** \brief Jagged array mirroring the grid cell cohorts to store the potential abundance gained (given the number of encounters) from predation on each cohort */
     vector< vector < double> > PotentialAbundanceEaten;
-    /** \brief List of cohort functional group indices ot be eaten in predation */
+    /** \brief List of cohort functional group indices to be eaten in predation */
     //        vector<int> FunctionalGroupIndicesToEat; //defined in base class
     /** \brief The total biomass eaten by the acting cohort  */
     //double TotalBiomassEatenByCohort; defined in base class
@@ -77,7 +77,7 @@ class RevisedPredation: public IEatingImplementation {
     double PredatorNonAssimilation;
     /** \brief bool to indicate if the diet of marine species is "allspecial" */
     bool DietIsAllSpecial;
-    /** \brief Double to hold the log optimal prey body size ratio for the acting predator cohort */
+    /** \brief double to hold the log optimal prey body size ratio for the acting predator cohort */
     double PredatorLogOptimalPreyBodySizeRatio;
     /** \brief Individual body mass of the prey cohort */
     double BodyMassPrey;
@@ -107,11 +107,11 @@ class RevisedPredation: public IEatingImplementation {
     /** The mass bin number of an individual prey cohort */
     int PreyMassBinNumber;
     /** Temporary value to hold calculations */
-    double TempDouble;
+    double Tempdouble;
     /** \brief Instance of the class to perform general functions */
     UtilityFunctions Utilities;
     /** \brief An instance of the simple random number generator class */
-    std::default_random_engine RandomNumberGenerator;
+    std::mt19937_64 RandomNumberGenerator;
 public:
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -206,7 +206,7 @@ public:
         SpecificPredatorTimeUnitsEatingPerGlobalTimeStep = DeltaT * ProportionTimeEating;
         PredatorAssimilationEfficiency = AssimilationEfficiency;
         PredatorNonAssimilation = ( 1 - AssimilationEfficiency );
-
+        
         DietIsAllSpecial = params.CohortFunctionalGroupDefinitions.GetTraitNames( "Diet", actingCohort.mFunctionalGroupIndex ) == "allspecial";
 
         PredatorLogOptimalPreyBodySizeRatio = actingCohort.mLogOptimalPreyBodySizeRatio;
@@ -297,7 +297,6 @@ public:
             }
 
         }
-
         // No cannibalism; do this outside the loop to speed up the calculations
         //MB Now moved back into the loop
         //  TimeUnitsToHandlePotentialFoodItems -= PotentialAbundanceEaten[actingCohort.FunctionalGroupIndex][actingCohort.positionInList] *
@@ -355,7 +354,7 @@ public:
 
         BinnedPreyDensities.resize( gcl.mGridCellCohorts.size( ) );
         for( auto& b: BinnedPreyDensities )b.resize( NumberOfBins );
-
+        for(auto& b: BinnedPreyDensities)for(auto& n:b)n=0;
         // Set the total eaten by the acting cohort to zero
         TotalBiomassEatenByCohort = 0.0;
 
@@ -440,7 +439,7 @@ public:
     void RunEating( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep,
             MadingleyModelInitialisation& params ) {
 
-        TempDouble = 0.0;
+        Tempdouble = 0.0;
 
         // Temporary variable to hold the total time spent eating + 1. Saves an extra calculation in CalculateAbundanceEaten
         double TotalTimeUnitsToHandlePlusOne = TimeUnitsToHandlePotentialFoodItems + 1;
@@ -460,7 +459,6 @@ public:
                     // Calculate the actual abundance of prey eaten from this cohort
                     AbundancesEaten[FunctionalGroup][i] = CalculateAbundanceEaten( PotentialAbundanceEaten[FunctionalGroup][i], PredatorAbundanceMultipliedByTimeEating,
                             TotalTimeUnitsToHandlePlusOne, gcl.mGridCellCohorts[FunctionalGroup][i].mCohortAbundance );
-
                 } else
                     AbundancesEaten[FunctionalGroup][i] = 0;
 
@@ -475,17 +473,17 @@ public:
                 // Create a temporary value to speed up the predation function
                 // This is equivalent to the body mass of the prey cohort including reproductive potential mass, times the abundance eaten of the prey cohort,
                 // divided by the abundance of the predator
-                TempDouble += ( BodyMassPrey + gcl.mGridCellCohorts[FunctionalGroup][i].mIndividualReproductivePotentialMass ) * AbundancesEaten[FunctionalGroup][i] / AbundancePredator;
+                Tempdouble += ( BodyMassPrey + gcl.mGridCellCohorts[FunctionalGroup][i].mIndividualReproductivePotentialMass ) * AbundancesEaten[FunctionalGroup][i] / AbundancePredator;
 
 
             }
         }
 
         // Add the biomass eaten and assimilated by an individual to the delta biomass for the acting (predator) cohort
-        Cohort::mMassFluxes["biomass"]["predation"] = TempDouble * PredatorAssimilationEfficiency;
+        Cohort::mMassFluxes["biomass"]["predation"] = Tempdouble * PredatorAssimilationEfficiency;
 
         // Move the biomass eaten but not assimilated by an individual into the organic matter pool
-        Cohort::mMassFluxes["organicpool"]["predation"] = TempDouble * PredatorNonAssimilation * AbundancePredator;
+        Cohort::mMassFluxes["organicpool"]["predation"] = Tempdouble * PredatorNonAssimilation * AbundancePredator;
 
         // Check that the delta biomass from eating for the acting cohort is not negative
         assert( Cohort::mMassFluxes["biomass"]["predation"] >= 0 && "Predation yields negative biomass" );

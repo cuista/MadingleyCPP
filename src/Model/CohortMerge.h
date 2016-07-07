@@ -4,7 +4,7 @@
 #include <set>
 
 #include <MadingleyModelInitialisation.h>
-
+#include <nonStaticSimpleRNG.h>
 #include "Parameters.h"
 /** \file CohortMerge.h
  * \brief The CohortMerge header file
@@ -20,8 +20,8 @@ public:
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
-    /** \brief An instance of the simple random number generator class */
-    std::default_random_engine RandomNumberGenerator;
+    /** \brief An instance of simple random number generator class */
+    NonStaticSimpleRNG randomNumber;
 
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -32,9 +32,9 @@ public:
     CohortMerge( ) {
         if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
             unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
-            RandomNumberGenerator.seed( seed );
+            randomNumber.SetSeed( seed );
         } else {
-            RandomNumberGenerator.seed( 4000 );
+            randomNumber.SetSeed( 4000 );
         }
     }
     //----------------------------------------------------------------------------------------------
@@ -96,20 +96,20 @@ public:
         multiset< Pear, pearComparator > SortedDistances;
         // How many cohorts to remove to hit the threshold
         unsigned MergeCounter = 0;
-        std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
 
         int NumberToRemove = gcl.GetNumberOfCohorts( ) - Parameters::Get( )->GetMaximumNumberOfCohorts( );
 
         if( NumberToRemove > 0 ) {
 
             //Loop through functional groups
+
             for( unsigned ff = 0; ff < gcl.mGridCellCohorts.size( ); ff++ ) {
                 if( gcl.mGridCellCohorts[ff].size( ) > 1 ) {
                     // Loop through cohorts within functional groups
                     for( int cc = 0; cc < gcl.mGridCellCohorts[ff].size( ) - 1; cc++ ) {
                         // Loop through comparison cohorts
                         for( int dd = cc + 1; dd < gcl.mGridCellCohorts[ff].size( ); dd++ ) {
-                            Pear PairwiseDistance( &gcl.mGridCellCohorts[ff][cc], &gcl.mGridCellCohorts[ff][dd], randomNumber( RandomNumberGenerator ) );
+                            Pear PairwiseDistance( &gcl.mGridCellCohorts[ff][cc], &gcl.mGridCellCohorts[ff][dd], randomNumber.GetUniform() );
                             SortedDistances.insert( PairwiseDistance );
                         }
                     }

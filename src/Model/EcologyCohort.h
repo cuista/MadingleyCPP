@@ -85,19 +85,25 @@ public:
     void RunWithinCellEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadLockedParallelVariables& partial, unsigned currentMonth, MadingleyModelInitialisation& params ) {
 
         // RUN EATING
+        if (actingCohort.mIndividualBodyMass>0){
         EatingFormulations["Basic eating"]->RunEcologicalProcess( gcl, actingCohort, currentTimestep, partial, currentMonth, params );
 
 
         // RUN METABOLISM - THIS TIME TAKE THE METABOLIC LOSS TAKING INTO ACCOUNT WHAT HAS BEEN INGESTED THROUGH EATING
+        
         MetabolismFormulations["Basic metabolism"]->RunEcologicalProcess( gcl, actingCohort, currentTimestep, partial, currentMonth, params );
 
 
         // RUN REPRODUCTION - TAKING INTO ACCOUNT NET BIOMASS CHANGES RESULTING FROM EATING AND METABOLISING
+        
         ReproductionFormulations["Basic reproduction"]->RunEcologicalProcess( gcl, actingCohort, currentTimestep, partial, currentMonth, params );
 
 
         // RUN MORTALITY - TAKING INTO ACCOUNT NET BIOMASS CHANGES RESULTING FROM EATING, METABOLISM AND REPRODUCTION
+        
         MortalityFormulations["Basic mortality"]->RunEcologicalProcess( gcl, actingCohort, currentTimestep, partial, currentMonth, params );
+
+        }
     }
     //----------------------------------------------------------------------------------------------
 

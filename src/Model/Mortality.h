@@ -5,6 +5,8 @@
 #include <TSenescenceMortality.h>
 #include <TStarvationMortality.h>
 #include <limits>
+
+#include "Cohort.h"
 /** \file Mortality.h
  * \brief the Mortality header file
  */
@@ -99,7 +101,7 @@ public:
         }
 
         BodyMassIncludingChangeThisTimeStep = min( actingCohort.mAdultMass, BodyMassIncludingChangeThisTimeStep + actingCohort.mIndividualBodyMass );
-        //if (BodyMassIncludingChangeThisTimeStep<0)cout<<BodyMassIncludingChangeThisTimeStep<<" "<<actingCohort.IndividualBodyMass<<" "<<actingCohort.ID<<endl;
+
         // Temporary variable to hold net reproductive biomass change of individuals in this cohort as a result of other ecological processes
         ReproductiveMassIncludingChangeThisTimeStep = 0.0;
 
@@ -110,20 +112,23 @@ public:
         }
 
         ReproductiveMassIncludingChangeThisTimeStep += actingCohort.mIndividualReproductivePotentialMass;
-
         // Check to see if the cohort has already been killed by predation etc
-        if( BodyMassIncludingChangeThisTimeStep <= 1.e-14 ) //MB a small number ! maybe should be larger? 1.e-15 fails to exclude negatives
+        if( BodyMassIncludingChangeThisTimeStep < 1.e-7 ) //MB a small number ! maybe should be larger? (e.g. min cohort body mass))
+            //This causes a difference between C# and c++ versions as there is a rounding error issue - changed in C# code to match
         {
             // If individual body mass is not greater than zero, then all individuals become extinct
-            MortalityTotal = actingCohort.mCohortAbundance;
-            BodyMassIncludingChangeThisTimeStep = 0; //MB kludged to exclude negative values below - need mass checking through the code
+            MortalityTotal = 0.0;
+            // used to be actingCohort.mCohortAbundance, but this leads to a large cancellation in applyEcology
+            //so mortality total is changed here  - now we only multiply by mortality total - so values can never be negative
+            
+            //BodyMassIncludingChangeThisTimeStep = 0; //MB would be a kludge to exclude negative values below - need mass checking throughout the code
         } else {
             // Calculate background mortality rate
             MortalityRateBackground = Implementations["basic background mortality"]->CalculateMortalityRate(
                     actingCohort, BodyMassIncludingChangeThisTimeStep, currentTimestep );
 
             // If the cohort has matured, then calculate senescence mortality rate, otherwise set rate to zero
-            if( actingCohort.mMaturityTimeStep != std::numeric_limits<unsigned>::max( ) ) {
+            if( actingCohort.mMaturityTimeStep < std::numeric_limits<unsigned>::max( ) ) {
                 MortalityRateSenescence = Implementations["basic senescence mortality"]->CalculateMortalityRate(
                         actingCohort, BodyMassIncludingChangeThisTimeStep, currentTimestep );
             } else {
@@ -135,16 +140,17 @@ public:
             MortalityRateStarvation = Implementations["basic starvation mortality"]->CalculateMortalityRate( actingCohort, BodyMassIncludingChangeThisTimeStep, currentTimestep );
 
             // Calculate the number of individuals that suffer mortality this time step from all sources of mortality
-            MortalityTotal = ( 1 - exp( -MortalityRateBackground - MortalityRateSenescence -
-                    MortalityRateStarvation ) ) * actingCohort.mCohortAbundance;
+
+            MortalityTotal=exp( -MortalityRateBackground - MortalityRateSenescence - MortalityRateStarvation );
+
         }
 
         // Remove individuals that have died from the delta abundance for this cohort
-        Cohort::mMassFluxes["abundance"]["mortality"] = -MortalityTotal;
+        Cohort::mMassFluxes["abundance"]["mortality"] =  MortalityTotal;
 
         // Add the biomass of individuals that have died to the delta biomass in the organic pool (including reproductive 
         // potential mass, and mass gained through eating, and excluding mass lost through metabolism)
-        Cohort::mMassFluxes["organicpool"]["mortality"] = MortalityTotal * ( BodyMassIncludingChangeThisTimeStep + ReproductiveMassIncludingChangeThisTimeStep );
+        Cohort::mMassFluxes["organicpool"]["mortality"] = (1-MortalityTotal)*actingCohort.mCohortAbundance * ( BodyMassIncludingChangeThisTimeStep + ReproductiveMassIncludingChangeThisTimeStep );
     }
     //----------------------------------------------------------------------------------------------
 };

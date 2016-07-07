@@ -64,11 +64,13 @@ public:
     UtilityFunctions Utilities;
     /** \brief An instance of the merging class */
     CohortMerge CohortMerger;
-    /** \brief An instance of the simple random number generator class */
-    std::default_random_engine RandomNumberGenerator;
+    /** \brief An instance of the mersenne twister random number generator class */
+    std::mt19937_64 RandomNumberGenerator;
     //
     MadingleyModelInitialisation params;
-    Dispersal disperser;
+    //Because the parameters are initialised late (!!!!!!!PARAMETERS::GET() levaes parameters uninitialised!!!!!!!ARG!!!!!)
+    //this has to be a pointer
+    Dispersal* disperser;
     ofstream outputFile;
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -81,8 +83,7 @@ public:
     @param OutputPath Where the output will be stored
      */
     MadingleyModel( ) {
-        // Set up list of global diagnostics
-        SetUpGlobalDiagnosticsList( );
+
         // Initialise the cohort ID to zero
         NextCohortID = 0;
         params = MadingleyModelInitialisation(
@@ -90,7 +91,9 @@ public:
                 GlobalDiagnosticVariables["NumberOfCohortsInModel"],
                 GlobalDiagnosticVariables["NumberOfStocksInModel"],
                 EcosystemModelGrid );
-
+        disperser=new Dispersal();
+        // Set up list of global diagnostics
+        SetUpGlobalDiagnosticsList( );
         // Set up model outputs
         SetUpOutputs( );
         //end of initialisations
@@ -102,6 +105,7 @@ public:
         // Write out model run details to the console
         cout << "Running model" << endl;
         cout << "Number of time steps is: " << Parameters::Get( )->GetLengthOfSimulationInTimeSteps( ) << endl;
+
 
         Dispersals = 0;
         /// Run the model
@@ -137,6 +141,8 @@ public:
 
             // Write the results of dispersal to the console
             cout << "Total Cohorts remaining " << GlobalDiagnosticVariables["NumberOfCohortsInModel"] << endl;
+
+
         }
 
     }//----------------------------------------------------------------------------------------------
@@ -146,13 +152,14 @@ public:
         // Instantiate a class to hold thread locked global diagnostic variables
         ThreadLockedParallelVariables singleThreadDiagnostics( 0, 0, 0, NextCohortID );
 
-        EcosystemModelGrid.ask( [&]( GridCell & gcl ) {
+        EcosystemModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
 
             gcl.RandomizeCohorts( );
 
             RunWithinCellStockEcology( gcl );
 
-                    RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
+            RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
+
         } );
         // Update the variable tracking cohort unique IDs
         NextCohortID = singleThreadDiagnostics.NextCohortIDThreadLocked;
@@ -179,7 +186,6 @@ public:
 
                 // Run stock ecology
                 MadingleyEcologyStock.RunWithinCellEcology( gcl, ActingStock, CurrentTimeStep, CurrentMonth, params );
-                //workingGridCellStocks[ActingStock].TotalBiomass *= 0.75;//MB strange line - commented out in original?
             }
         }
 
@@ -205,6 +211,7 @@ public:
 
         gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
             // Perform all biological functions except dispersal (which is cross grid cell)
+
             if( gcl.mGridCellCohorts[c.mFunctionalGroupIndex].size( ) != 0 && c.mCohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
 
                 CohortActivity.AssignProportionTimeActive( gcl, c, CurrentTimeStep, CurrentMonth, params );
@@ -214,15 +221,14 @@ public:
                 // Update the properties of the acting cohort
                 mEcologyCohort.UpdateEcology( gcl, c, CurrentTimeStep );
                 Cohort::ResetMassFluxes( );
-
                 // Check that the mass of individuals in this cohort is still >= 0 after running ecology
                 assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
             }
 
             // Check that the mass of individuals in this cohort is still >= 0 after running ecology
             if( gcl.mGridCellCohorts[c.mFunctionalGroupIndex].size( ) > 0 )assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
-        } );
 
+        } );
 
         for( auto& c: Cohort::mNewCohorts ) {
             gcl.InsertCohort( c );
@@ -235,6 +241,7 @@ public:
 
         // Merge cohorts, if necessary
         if( gcl.GetNumberOfCohorts( ) > Parameters::Get( )->GetMaximumNumberOfCohorts( ) ) {
+
             partial.Combinations += CohortMerger.MergeToReachThresholdFast( gcl, params );
 
             //Run extinction a second time to remove those cohorts that have been set to zero abundance when merging
@@ -251,7 +258,7 @@ public:
         // Loop over cohorts and remove any whose abundance is below the extinction threshold
         vector<Cohort>CohortsToRemove;
         gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
-            if( c.mCohortAbundance < Parameters::Get( )->GetExtinctionThreshold( ) || c.mIndividualBodyMass <= 1.e-300 ) {
+            if( c.mCohortAbundance - Parameters::Get( )->GetExtinctionThreshold( )<=0 || c.mIndividualBodyMass <= 0 ) {
                 CohortsToRemove.push_back( c );
                 partial.Extinctions += 1;
             }
@@ -277,13 +284,14 @@ public:
     /** \brief Run ecological processes that operate across grid cells */
     void RunCrossGridCellEcology( unsigned& dispersals ) {
         // Loop through each grid cell, and run dispersal for each.
-
-        EcosystemModelGrid.ask( [&]( GridCell & c ) {
-            disperser.RunCrossGridCellEcologicalProcess( c, EcosystemModelGrid, params, CurrentMonth );
+        // In the original model a new dispersal object is made every timestep - this resets the random number generators
+        disperser->resetRandoms();
+        EcosystemModelGrid.ApplyFunctionToAllCells( [&]( GridCell & c ) {
+            disperser->RunCrossGridCellEcologicalProcess( c, EcosystemModelGrid, params, CurrentMonth );
         } );
 
         // Apply the changes from dispersal
-        disperser.UpdateCrossGridCellEcology( dispersals );
+        disperser->UpdateCrossGridCellEcology( dispersals );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -312,14 +320,14 @@ public:
 
         double organicPool = 0, respiratoryPool = 0, totalAbundance = 0;
         double totalStockBiomass = 0, totalCohortBiomass = 0;
-        EcosystemModelGrid.ask( [&]( GridCell & gcl ) {
+        EcosystemModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
             organicPool += Environment::Get( "Organic Pool", gcl ) / 1000.;
             respiratoryPool += Environment::Get( "Respiratory CO2 Pool", gcl ) / 1000.;
                     gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
                         totalAbundance += c.mCohortAbundance;
 
                         double CohortBiomass = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance / 1000.;
-                                totalCohortBiomass += CohortBiomass;
+                        totalCohortBiomass += CohortBiomass;
                     } );
             gcl.ApplyFunctionToAllStocks( [&]( Stock & s ) {
                 totalStockBiomass += s.TotalBiomass / 1000.; //convert from g to kg
@@ -327,8 +335,8 @@ public:
         } );
         double totalLivingBiomass = totalCohortBiomass + totalStockBiomass;
         double totalBiomass = totalCohortBiomass + totalStockBiomass + respiratoryPool + organicPool;
-        outputFile << step << " " << Dispersals << " " << GlobalDiagnosticVariables["NumberOfCohortsExtinct"] << " " << GlobalDiagnosticVariables["NumberOfCohortsProduced"] << " " << GlobalDiagnosticVariables["NumberOfCohortsCombined"] << " " << GlobalDiagnosticVariables["NumberOfCohortsInModel"] << " " << GlobalDiagnosticVariables["NumberOfStocksInModel"] << " " << totalAbundance << " " << organicPool << " " << respiratoryPool << " " << totalStockBiomass << " " << totalCohortBiomass << " " << totalLivingBiomass << " " << totalBiomass << " " << EcologyTimer.GetElapsedTimeSecs( ) << " " << DispersalTimer.GetElapsedTimeSecs( ) << endl;
     }
+
 };
 
 #endif

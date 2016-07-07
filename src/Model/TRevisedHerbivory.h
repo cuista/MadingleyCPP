@@ -1,5 +1,8 @@
 #ifndef TREVISEDHERBIVORY_H
 #define TREVISEDHERBIVORY_H
+
+#include "GridCell.h"
+
 /** \file TRevisedHerbivory.h
  * \brief the TRevisedHerbivory header file
  */
@@ -172,7 +175,6 @@ public:
                 // Get the mass from this stock that is available for eating (assumes all marine autotrophic organisms are edible)
                 //EdibleMass = gridCellStocks[FunctionalGroup][i].TotalBiomass * 0.1; //MB weird line
                 EdibleMass = gcl.mGridCellStocks[FunctionalGroup][i].TotalBiomass;
-
                 // Calculate the potential biomass eaten from this stock by the acting cohort
                 PotentialBiomassesEaten[FunctionalGroup][i] = CalculatePotentialBiomassEatenMarine( EdibleMass, BodyMassHerbivore );
 
@@ -276,6 +278,7 @@ public:
     @return The herbivory rate of an individual herbivore per unit autotroph mass-density per hectare*/
     double CalculateIndividualHerbivoryRatePerHectare( double herbivoreIndividualMass ) {
         // Calculate the individual herbivory rate
+
         return HerbivoryRateConstant * pow( herbivoreIndividualMass, ( HerbivoryRateMassExponent ) );
 
     }

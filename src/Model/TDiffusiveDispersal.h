@@ -88,14 +88,15 @@ public:
         double LonCellLength = c.mCurrentLocation->GetCellWidth( );
 
         // Pick a direction at random
-        std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
-        double RandomDirection = randomNumber( RandomNumberGenerator )* 2 * acos( -1. );
+        double RandomDirection = randomNumber.GetUniform()* 2 * acos( -1. );
 
 
         // Calculate the u and v components given the dispersal speed
         double uSpeed = dispersalSpeed * cos( RandomDirection );
         double vSpeed = dispersalSpeed * sin( RandomDirection );
-        c.TryLivingAt( newCell( madingleyGrid, uSpeed, vSpeed, LatCellLength, LonCellLength, c.mCurrentLocation ) );
+        GridCell* nc =newCell( madingleyGrid, uSpeed, vSpeed, LonCellLength, LatCellLength, c.mDestination );
+
+        if (nc!=0)c.TryLivingAt(nc);
     }
     //----------------------------------------------------------------------------------------------
 };

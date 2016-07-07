@@ -1,5 +1,8 @@
 #ifndef TMETABOLISMECTOTHERMH
 #define TMETABOLISMECTOTHERMH
+
+#include "Cohort.h"
+
 /** \file TMetabolismEctotherm.h
  * \brief the TMetabolismEctotherm header file
  */
@@ -84,7 +87,6 @@ public:
         Cohort::mMassFluxes["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate( actingCohort.mIndividualBodyMass,
                 Environment::Get( "Temperature", actingCohort.GetCurrentLocation( ) ) + TemperatureUnitsConvert, actingCohort.mProportionTimeActive ) * DeltaT;
 
-
         // If metabolic loss is greater than individual body mass after herbivory and predation, then set equal to individual body mass
         Cohort::mMassFluxes["biomass"]["metabolism"] = max( Cohort::mMassFluxes["biomass"]["metabolism"], -( actingCohort.mIndividualBodyMass + Cohort::mMassFluxes["biomass"]["predation"] + Cohort::mMassFluxes["biomass"]["herbivory"] ) );
 
@@ -106,16 +108,16 @@ public:
 
         // Parameters from fitting to Nagy 1999 Field Metabolic Rates for reptiles - assumes that reptile FMR was measured with animals at their optimal temp of 30degC
         MetabolismMassExponent = 0.88;
-        NormalizationConstant = 1.4898373851E+11;
+        NormalizationConstant = 148984000000;//1.4898373851E+11;
         ActivationEnergy = 0.69; // includes endotherms in hibernation and torpor
         BoltzmannConstant = 8.617e-5;
 
         // BMR normalisation constant from Brown et al 2004 - original units of J/s so scale to kJ/d
-        NormalizationConstantBMR = exp( 20 )*60 * 60 * 24 / 1000;
+        NormalizationConstantBMR = 41918272883;//exp( 20 )*60 * 60 * 24 / 1000;
         BasalMetabolismMassExponent = 0.69;
 
         // Currently a very rough estimate based on calorific values of fat, protein and carbohydrate - assumes organism is metabolising mass of 1/4 protein, 1/4 carbohydrate and 1/2 fat 
-        EnergyScalar = 1 / 27.25;
+        EnergyScalar = 0.036697248;//1 / 27.25;
 
 
         // Set the constant to convert temperature in degrees Celsius to Kelvin

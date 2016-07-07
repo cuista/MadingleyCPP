@@ -43,6 +43,12 @@ public:
         delete choose["diffusive"];
         delete choose["responsive"];
     }
+    void resetRandoms(){
+        // the original model resets the random number sequence every timestep by creating a new dispersal object
+        choose["advective"]->ResetRandom();
+        choose["diffusive"]->ResetRandom();
+        choose["responsive"]->ResetRandom();
+    }
     //----------------------------------------------------------------------------------------------
 
     /** \brief Run dispersal 
@@ -57,6 +63,7 @@ public:
         gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
             if( choose.count( c.DispersalType( params ) ) != 0 ) {
                 choose[c.DispersalType( params )]->RunDispersal( gridForDispersal, c, currentMonth );
+
             }
             if( c.IsMoving( ) )dispersers.push_back( c );
 

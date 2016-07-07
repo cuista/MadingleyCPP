@@ -1,0 +1,25 @@
+Activity.h : return a calculated value for proportion time active on land rather than just 1.0
+ApplyEcology.h: modified the abundance changes from mortality.h so as to fix a large abundance cancellation
+Mortality.h: Changes in abundance calcution to match the above
+Cohort.h/Cohort.cpp: Initialised the IndividualRproductivePotential mass to 0. Added a method to get the destination cell. Corrected the destination in the Move() method to point to current location
+CohortMerge.h: Changed to use the explicit nonStaticSimpleRNG code from the original C# model rather than C++ builtin.
+Dispersal.h: Added a resetRandom method - in the original code the dispersal object is created fresh every timestep - this sets the RNG back to the start...
+Eating.h: Now uses built in C++ mersenne twister RNG - probably should use nonStaticSompleRNG for consistency...
+EcologyCohort.h: There's now a line that excludes eating by things with a body mass not > 0 - this should have no effect!
+EcologyStock.h: Some of the lines that determine how HANPP is applied were changedin the C# merge and refactor branch- the C++ version is now consistent with this. Also needs a change in the plant model
+Environment.h/Environment.cpp: Some changes to make sure precipitation is initialised to zero everywhere. U and V velocities made consistent with Eastward and Northward directions.
+nonStaticSimpleRNG.h: Added the explcit random number code from the original C# model
+GridCell.h: Added twon methods to return cell latitude and longitude
+HANPP.h:There's a whole new section in the C# model that deals with this, which remains to be ported. These new functions require HANPP to return a double, which it now does but currently always 0
+IDispersalImplementation.h:Now uses nonStaticSimpleRNG. Resets added for random number generators (it needs 2 in order to match the C# code)
+ModelGrid.h:Cells re-ordered to set longitude as the fastest changing index, to match C# (good for mathcing dispersal). Function name change for teh grid cell loop.
+RevisedTerrestrialPlantModel.h:A few small changes to the code propagated in from C#. UpdateLeafStock now needs to return a double.
+TAdvectiveDispersal.h: Random numbers now come from nonStaticSimpleRNG. Some bugs in cell destination updates fixed.
+TDiffusiveDispersal.h: Random number changes and bug fix as above
+TMetabolismEctotherm.h: The format of the parameters was altered slightly to match the C# input file.
+TReproductionBasic.h:Now has mersenne twister C++ builtin as RNG
+TResponsiveDispersal.h:As for other dispersals, now uses nonStaticSimpleRNG and has cell bugs fixed
+TRevisedHerbivory.h:Added in clude for GridCell.h
+TRevisedPredation.h:Made sure BinnedPreyDensisites very initialised to 0
+MadingleyModel.h:Disperser had to be set to be a pointer since some paramteres are left unititialised by the parameters singleton. Some name changes to function calls for looping over cells.
+MadingelyModelInitialisation.h:Some changes propagated in from C# version. Some updates to function names - RNG changed to C== builtin mersenne twister.

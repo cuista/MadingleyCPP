@@ -91,7 +91,13 @@ public:
     bool IsMarine( ) {
         return ( Environment::Get( "Realm", *this ) == 2.0 );
     }
+    float GetLatitude( ) const {
+        return mLatitude;
+    }
 
+    float GetLongitude( ) const {
+        return mLongitude;
+    }
     unsigned GetLatitudeIndex( ) const {
         return mLatitudeIndex;
     }

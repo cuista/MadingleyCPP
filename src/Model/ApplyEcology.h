@@ -40,20 +40,24 @@ public:
 
         // Variable to calculate net abundance change to check that cohort abundance will not become negative
         double NetAbundanceChange = 0.0;
-
         // Loop over all abundance deltas
         for( auto& d: Cohort::mMassFluxes["abundance"] ) {
             // Update net abundance change
             NetAbundanceChange += d.second;
         }
         // Check that cohort abundance will not become negative
-        assert( ( actingCohort.mCohortAbundance + NetAbundanceChange ) >= 0 && "Cohort abundance < 0" );
-
+        assert( NetAbundanceChange  >= 0 && "Cohort abundance < 0" );
+        //this is a variation from the original below - 
+        //the abundance here only changes in Mortality.h where the change was mortalityTotal=(1-exp(-sum-of-Mortalities))*abundance
+        //this is now change to mortalityTotal=exp(-sum-of-mortalities) - avoiding possibilities of negatives arising.
+        actingCohort.mCohortAbundance*=NetAbundanceChange;
+        
+        //original code
         //Loop over all keys in the abundance deltas sorted list
-        for( auto& d: Cohort::mMassFluxes["abundance"] ) {
-            // Update the abundance of the acting cohort
-            actingCohort.mCohortAbundance += d.second;
-        }
+        //for( auto& d: Cohort::mMassFluxes["abundance"] ) {
+        //    // Update the abundance of the acting cohort
+          //  actingCohort.mCohortAbundance += d.second;
+        //}
 
     }
     //----------------------------------------------------------------------------------------------
@@ -98,7 +102,6 @@ public:
                 }
             }
         }
-
         // Check that individual body mass is still greater than zero
         assert( actingCohort.mIndividualBodyMass >= 0 && "biomass < 0" );
 
@@ -121,8 +124,9 @@ public:
             // If cohort abundance is zero, then set cohort reproductive body mass to zero and reset the biomass delta to zero, 
             // otherwise update cohort reproductive body mass and reset the biomass delta to zero
             if( actingCohort.mCohortAbundance == 0 ) {
-                actingCohort.mIndividualReproductivePotentialMass = 0.0;
+                actingCohort.mIndividualReproductivePotentialMass =  0.0;
             } else {
+
                 actingCohort.mIndividualReproductivePotentialMass += d.second;
             }
         }
@@ -139,6 +143,7 @@ public:
         for( auto &D: Cohort::mMassFluxes["organicpool"] ) {
             // Check that the delta value is not negative
             if( D.second < 0 )cout << "organic pool " << D.first << " " << D.second << endl;
+
             //assert(D.second >= 0.0 && "A delta value for the organic pool is negative " );
             // Update the organic pool biomass
             Environment::Get( "Organic Pool", gcl ) += D.second;

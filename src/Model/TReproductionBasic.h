@@ -2,6 +2,9 @@
 #define TREPRODUCTIONBASIC_H
 #include <limits>
 #include <assert.h>
+
+#include "Cohort.h"
+#include "GridCell.h"
 /** \file TReproductionBasic.h
  * \brief the TReproductionBasic header file
  */
@@ -29,7 +32,7 @@ class ReproductionBasic: public IReproductionImplementation {
     /** \brief Include Utility class */
     UtilityFunctions Utilities;
     /** \brief An instance of the simple random number generator class */
-    std::default_random_engine RandomNumberGenerator;
+    std::mt19937_64 RandomNumberGenerator;
 public:
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -104,13 +107,15 @@ public:
         for( auto& ReproBiomass: Cohort::mMassFluxes["reproductivebiomass"] ) {
             // Add the delta reproductive biomass to net biomass
             ReproductiveMassIncludingChangeThisTimeStep += ReproBiomass.second;
+
         }
+
 
         ReproductiveMassIncludingChangeThisTimeStep += actingCohort.mIndividualReproductivePotentialMass;
         if( actingCohort.mIndividualBodyMass > 1.e-200 ) {
             // Get the current ratio of total individual mass (including reproductive potential) to adult body mass
             CurrentMassRatio = ( BodyMassIncludingChangeThisTimeStep + ReproductiveMassIncludingChangeThisTimeStep ) / actingCohort.mAdultMass;
-
+            
             // Must have enough mass to hit reproduction threshold criterion, and either (1) be in breeding season, or (2) be a marine cell (no breeding season in marine cells)
             if( ( CurrentMassRatio > MassRatioThreshold ) && ( ( Environment::Get( "Breeding Season", actingCohort.GetCurrentLocation( ) ) == 1.0 ) || ( gcl.IsMarine( ) ) ) ) {
                 // Iteroparous and semelparous organisms have different strategies
@@ -124,12 +129,11 @@ public:
                 } else {
                     // Semelparous organisms allocate a proportion of their current non-reproductive biomass (including the effects of other ecological processes) to reproduction
                     AdultMassLost = SemelparityAdultMassAllocation * BodyMassIncludingChangeThisTimeStep;
-
+                    
                     // Calculate the number of offspring that could be produced given the reproductive potential mass of individuals
-                    OffspringCohortAbundance = actingCohort.mCohortAbundance * ( AdultMassLost + ReproductiveMassIncludingChangeThisTimeStep ) /
+                    OffspringCohortAbundance = ( (actingCohort.mCohortAbundance) *  ( AdultMassLost + ReproductiveMassIncludingChangeThisTimeStep )) /
                             actingCohort.mJuvenileMass;
                 }
-
                 // Check that the abundance in the cohort to produce is greater than or equal to zero
                 assert( OffspringCohortAbundance >= 0.0 && "Offspring abundance < 0" );
 
@@ -137,12 +141,11 @@ public:
                 OffspringJuvenileAndAdultBodyMasses = GetOffspringCohortProperties( actingCohort, params.CohortFunctionalGroupDefinitions );
 
                 // Update cohort abundance in case juvenile mass has been altered through 'evolution'
-                OffspringCohortAbundance = ( OffspringCohortAbundance * actingCohort.mJuvenileMass ) / OffspringJuvenileAndAdultBodyMasses[0];
-
+                OffspringCohortAbundance = OffspringCohortAbundance * (actingCohort.mJuvenileMass  / OffspringJuvenileAndAdultBodyMasses[0]);
+               
                 // Create the offspring cohort
 
                 Cohort OffspringCohort( actingCohort, OffspringJuvenileAndAdultBodyMasses[0], OffspringJuvenileAndAdultBodyMasses[1], OffspringJuvenileAndAdultBodyMasses[0], OffspringCohortAbundance, currentTimestep, partial.NextCohortIDThreadLocked );
-
                 // Add the offspring cohort to the grid cell cohorts array
                 Cohort::mNewCohorts.push_back( OffspringCohort );
 
@@ -181,11 +184,10 @@ public:
 
         // If individual body mass after the addition of the net biomass from processes this time step will yield a body mass 
         // greater than the adult body mass for this cohort, then assign the surplus to reproductive potential
-        if( ( actingCohort.mIndividualBodyMass + NetBiomassFromOtherEcologicalFunctionsThisTimeStep ) > actingCohort.mAdultMass ) {
+        if( ( actingCohort.mIndividualBodyMass + NetBiomassFromOtherEcologicalFunctionsThisTimeStep ) > actingCohort.mAdultMass) {
             // Calculate the biomass for each individual in this cohort to be assigned to reproductive potential
             BiomassToAssignToReproductivePotential = actingCohort.mIndividualBodyMass + NetBiomassFromOtherEcologicalFunctionsThisTimeStep -
                     actingCohort.mAdultMass;
-
             // Check that a positive biomass is to be assigned to reproductive potential
             assert( BiomassToAssignToReproductivePotential >= 0.0 && "Assignment of negative reproductive potential mass" );
 
@@ -216,8 +218,10 @@ public:
         // Determine whether offspring cohort 'evolves' in terms of adult and juvenile body masses
         std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
         double RandomValue = randomNumber( RandomNumberGenerator );
+
         if( RandomValue > MassEvolutionProbabilityThreshold ) {
-            // Determine the new juvenile body mass //MB correctly formulated?
+       
+        // Determine the new juvenile body mass //MB correctly formulated?
             std::normal_distribution<double> randomNumberJ( actingCohort.mJuvenileMass, MassEvolutionStandardDeviation * actingCohort.mJuvenileMass );
             double RandomValueJ = randomNumberJ( RandomNumberGenerator );
             CohortJuvenileAdultMasses[0] = max( RandomValueJ,

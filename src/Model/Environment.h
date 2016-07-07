@@ -110,7 +110,6 @@ public:
     static double Get( std::string s, GridCell& gcl, int tm );
     static double& Get( std::string s, GridCell& gcl );
     static double& Get( std::string s, int, int );
-
     static void update( int );
 };
 

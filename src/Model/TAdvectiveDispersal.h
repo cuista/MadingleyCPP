@@ -61,6 +61,7 @@ public:
         } else {
             RandomNumberGenerator.seed( 14141 );
         }
+        randomNumber.SetSeed(14141);
 
     }
     //----------------------------------------------------------------------------------------------
@@ -131,22 +132,23 @@ public:
 
         vAdvectiveSpeed = Environment::Get( "vVel", *( c.mDestination ) );
         assert( vAdvectiveSpeed > -9999 );
-
         // Calculate the diffusive movement speed, with a direction chosen at random
         DiffusiveUandVComponents = CalculateDiffusion( );
-
         // Calculate the distance travelled in this dispersal (not global) time step. both advective and diffusive speeds need to have been converted to km / advective model time step
         uDistanceTravelled = RescaleDispersalSpeed( uAdvectiveSpeed ) + DiffusiveUandVComponents[0];
         vDistanceTravelled = RescaleDispersalSpeed( vAdvectiveSpeed ) + DiffusiveUandVComponents[1];
 
         // Check that the u distance travelled and v distance travelled are not greater than the cell length
 
-        LatCellLength = c.GetCurrentLocation( ).GetCellHeight( );
-        LonCellLength = c.GetCurrentLocation( ).GetCellWidth( );
+        LatCellLength = c.GetDestination( ).GetCellHeight( );
+        LonCellLength = c.GetDestination( ).GetCellWidth( );
         if( abs( uDistanceTravelled ) > LonCellLength ) cout << "BIG U " << uAdvectiveSpeed << endl;
         assert( abs( uDistanceTravelled ) <= LonCellLength && "u velocity greater than cell width" );
         assert( abs( vDistanceTravelled ) <= LatCellLength && "v velocity greater than cell width" );
-        c.TryLivingAt( newCell( madingleyGrid, uDistanceTravelled, vDistanceTravelled, LatCellLength, LonCellLength, c.mCurrentLocation ) );
+        GridCell* nc =newCell( madingleyGrid, uDistanceTravelled, vDistanceTravelled, LonCellLength, LatCellLength, c.mDestination );
+
+        if (nc!=0){c.TryLivingAt(nc);}
+
     }
     //----------------------------------------------------------------------------------------------
 
@@ -161,9 +163,9 @@ public:
 
         // Note that this formulation drops the delta t because we set the horizontal diffusivity to be at the same temporal
         // scale as the time step
-        std::normal_distribution<double> randomNumber( 0., 1.0 );
-        UandVOutputs[0] = randomNumber( RandomNumberGenerator ) * sqrt( ( 2.0 * HorizontalDiffusivityKmSqPerADTimeStep ) );
-        UandVOutputs[1] = randomNumber( RandomNumberGenerator ) * sqrt( ( 2.0 * HorizontalDiffusivityKmSqPerADTimeStep ) );
+
+        UandVOutputs[0] = randomNumber.GetNormal() * sqrt( ( 2.0 * HorizontalDiffusivityKmSqPerADTimeStep ) );
+        UandVOutputs[1] = randomNumber.GetNormal() * sqrt( ( 2.0 * HorizontalDiffusivityKmSqPerADTimeStep ) );
 
         return UandVOutputs;
     }

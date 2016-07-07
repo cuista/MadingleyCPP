@@ -111,8 +111,8 @@ public:
 
                 // Cohort tries to disperse with a particular probability
                 // Draw a random number
-                std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
-                double RandomValue = randomNumber( RandomNumberGenerator );
+                //std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
+                double RandomValue = randomNumber.GetUniform();
                 if( ( ( 1.0 - ProportionalPresentMass ) / ( 1.0 - StarvationDispersalBodyMassThreshold ) ) > RandomValue ) {
 
                     CalculateDispersalProbability( gridForDispersal, cohortToDisperse, CalculateDispersalSpeed( AdultMass ) );
@@ -164,8 +164,8 @@ public:
         double LonCellLength = c.mCurrentLocation->GetCellWidth( );
 
         // Pick a direction at random
-        std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
-        double RandomDirection = randomNumber( RandomNumberGenerator )* 2 * acos( -1. );
+        //std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
+        double RandomDirection = randomNumber.GetUniform()* 2 * acos( -1. );
 
         // Calculate the u and v components given the dispersal speed
         double uSpeed = dispersalSpeed * cos( RandomDirection );
@@ -178,7 +178,9 @@ public:
 
         assert( ( ( uSpeed < LonCellLength ) && ( vSpeed < LatCellLength ) ) && "Dispersal probability should always be <= 1" );
 
-        c.TryLivingAt( newCell( madingleyGrid, uSpeed, vSpeed, LatCellLength, LonCellLength, c.mCurrentLocation ) );
+        GridCell* nc =newCell( madingleyGrid, uSpeed, vSpeed, LonCellLength, LatCellLength, c.mDestination );
+
+        if (nc!=0)c.TryLivingAt(nc);
 
     }
 

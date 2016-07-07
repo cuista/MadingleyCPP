@@ -32,32 +32,41 @@ Environment::Environment( ) {
         cout << endl;
         addLayer( "Realm" );
         setRealm( );
+
         addLayer( "TerrestrialHANPP" );
         setHANPP( );
-        
+
         addLayerT( "uVel" );
         setUVel( );
         addLayerT( "vVel" );
         setVVel( );
+
         addLayerT( "Temperature" );
         setTemperature( );
         addLayerT( "DiurnalTemperatureRange" );
+
         setDiurnalTemperatureRange( );
+
         addLayerT( "Precipitation" );
+        
         addLayer( "TotalPrecip" );
         setPrecipitation( );
+
         addLayerT( "NPP" );
         setNPP( );
+
         addLayerT( "Seasonality" );
         setNPPSeasonality( );
         addLayerT( "Breeding Season" );
         setBreeding( );
 
-        
+
         addLayer( "Organic Pool" );
         setOrganicPool( );
+
         addLayer( "Respiratory CO2 Pool" );
         setRespiratoryCO2Pool( );
+
         addLayer( "AnnualTemperature" );
         addLayer( "SDTemperature" );
         addLayerT( "ExpTDevWeight" );
@@ -72,9 +81,11 @@ Environment::Environment( ) {
         
         //make sure all time dependent fields set to the start
         update( 0 );
+
     } else {
         Logger::Get( )->LogMessage( "ERROR> File reading failed." );
     }
+
 }
 //------------------------------------------------------------------------------
 
@@ -96,7 +107,6 @@ void Environment::addLayerT( string s ) {
     mLayers[s] = new layerT( 12, NumLon, NumLat );
 }
 //------------------------------------------------------------------------------
-
 Environment* Environment::Get( ) {
     if( mThis == NULL ) {
         mThis = new Environment( );
@@ -171,7 +181,7 @@ void Environment::setUVel( ) {
                 DateTime::Get( )->SetTimeStep( tm );
                 Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineNorthVel", indices );
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineEastVel", indices );
                 }
                 delete indices;
 
@@ -195,7 +205,7 @@ void Environment::setVVel( ) {
                 DateTime::Get( )->SetTimeStep( tm );
                 Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
                 if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
-                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineEastVel", indices );
+                    d = DataLayerSet::Get( )->GetDataAtIndicesFor( "MarineNorthVel", indices );
                 }
                 delete indices;
 
@@ -239,12 +249,16 @@ void Environment::setPrecipitation( ) {
 
     const unsigned int NumLon = Parameters::Get( )->GetLengthUserLongitudeArray( );
     const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
-
+    for( int lo = 0; lo < NumLon; lo++ ) {
+        for( int la = 0; la < NumLat; la++ ) {
+                    ( *mLayers["TotalPrecip"] )[lo][la] = 0;
+        }
+    }
     for( int tm = 0; tm < 12; tm++ ) {
         for( int lo = 0; lo < NumLon; lo++ ) {
             for( int la = 0; la < NumLat; la++ ) {
 
-                ( *mLayers["TotalPrecip"] )[lo][la] = 0;
+
                 double d = 0;
 
                 DateTime::Get( )->SetTimeStep( tm );
@@ -462,7 +476,7 @@ void Environment::setFrostandFire( ) {
 
             for( int i = 0; i < 12; i++ ) {
                 mLayers["Fraction Month Frost"]->setTime( i );
-                ( *mLayers["Fraction Month Frost"] )[lo][la] = min( FrostDays[i] / MonthDays[i], 1.0 );
+                ( *mLayers["Fraction Month Frost"] )[lo][la] = min( FrostDays[i] / MonthDays[i],(double) 1.0 );
             }
             Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
             double AWC = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialAWC", indices );

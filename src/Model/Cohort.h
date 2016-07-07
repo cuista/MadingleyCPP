@@ -38,8 +38,8 @@ public:
     /** \brief The optimal prey body size for individuals in this cohort */
     double mLogOptimalPreyBodySizeRatio;
     long long mID;
-    Types::GridCellPointer mCurrentLocation;
-    Types::GridCellPointer mDestination;
+    GridCell* mCurrentLocation;
+    GridCell* mDestination;
     static Types::Double2DMap mMassFluxes;
     static Types::CohortVector mNewCohorts;
     static unsigned mNextID;
@@ -67,6 +67,7 @@ public:
     Cohort( Cohort&, double, double, double, double, unsigned, long long& );
     
     GridCell& GetCurrentLocation( );
+    GridCell& GetDestination();
     void SetCurrentLocation( Types::GridCellPointer );
     
     bool IsMoving( );

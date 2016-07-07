@@ -41,10 +41,11 @@ public:
         Logger::Get( )->LogMessage( "Initialising grid cell environment" );
 
         // Instantiate a grid of grid cells
+        // Note the cell ordering in the original model is longitude increasing first
         for( unsigned longitudeIndex = 0; longitudeIndex < Parameters::Get( )->GetLengthUserLongitudeArray( ); longitudeIndex++ ) {
             for( unsigned latitudeIndex = 0; latitudeIndex < Parameters::Get( )->GetLengthUserLatitudeArray( ); latitudeIndex++ ) {
                 // Create the grid cell at the specified position
-                unsigned index = latitudeIndex + Parameters::Get( )->GetLengthUserLatitudeArray( ) * longitudeIndex;
+                unsigned index = longitudeIndex + (Parameters::Get( )->GetLengthUserLongitudeArray( )) * latitudeIndex;
                 Cells[ index ].SetCellCoords( Parameters::Get( )->GetUserLatitudeAtIndex( latitudeIndex ), latitudeIndex, Parameters::Get( )->GetUserLongitudeAtIndex( longitudeIndex ), longitudeIndex );
             }
         }
@@ -59,23 +60,23 @@ public:
     @return Pointer to cell that lies at displacement u,v from the current cell
     @remark Currently assumes wrapping in longitude, and a hard upper and lower boundary in latitude
      */
-    GridCell* getNewCell( GridCell* gcl, const int& v, const int& u ) {
+    GridCell* getNewCell( const GridCell* gcl, const int& v, const int& u ) {
         
         GridCell* Cell = 0;
         if( gcl->GetLatitudeIndex( ) + v >= 0 && gcl->GetLatitudeIndex( ) + v < Parameters::Get( )->GetLengthUserLatitudeArray( ) ) {
             int lnc = gcl->GetLongitudeIndex( ) + u;
             while( lnc < 0 )lnc += Parameters::Get( )->GetLengthUserLongitudeArray( );
             while( lnc >= Parameters::Get( )->GetLengthUserLongitudeArray( ) )lnc -= Parameters::Get( )->GetLengthUserLongitudeArray( );
-            long idx = ( gcl->GetLatitudeIndex( ) + v ) + Parameters::Get( )->GetLengthUserLatitudeArray( ) * lnc;
-            if( Cells.count( idx != 0 ) )Cell = &( Cells[idx] );
+            long idx = lnc + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( gcl->GetLatitudeIndex( ) + v );
+            if( Cells.count( idx) != 0  )Cell = &( Cells[idx] );
         }
         return Cell;
     }
     //----------------------------------------------------------------------------------------------
     //Apply any function that operates on a cell to all cells in the collection
 
-    template <typename F>
-    void ask( F f ) {
+    template <typename Function>
+    void ApplyFunctionToAllCells( Function f ) {
         for( auto& j: Cells ) {
             f( j.second );
         }
