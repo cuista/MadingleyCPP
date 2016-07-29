@@ -17,11 +17,11 @@ public:
 
     //----------------------------------------------------------------------------------------------
     /** \brief Thread-local variable to track the extinction of cohorts */
-    int Extinctions;
+    long Extinctions;
     /** \brief Thread-local variable to track the production of cohorts */
-    int Productions;
+    long Productions;
     /** \brief Variable to track the number of cohorts combined */
-    int Combinations;
+    long Combinations;
     //----------------------------------------------------------------------------------------------
     /** \brief Thread-locked variable to track the cohort ID to assign to newly produced cohorts */
     long long NextCohortIDThreadLocked;

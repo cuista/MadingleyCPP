@@ -8,7 +8,7 @@
 
 unsigned Cohort::mNextID = 0;
 Types::CohortVector Cohort::mNewCohorts;
-Types::double2DMap Cohort::mMassFluxes;
+Types::Double2DMap Cohort::mMassFluxes;
 
 Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, double optimalPreyBodySizeRatio, unsigned short birthTimeStep, double proportionTimeActive, long long &nextCohortID ) {
 

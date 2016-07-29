@@ -83,7 +83,8 @@ public:
     @param OutputPath Where the output will be stored
      */
     MadingleyModel( ) {
-
+        // Set up list of global diagnostics
+        SetUpGlobalDiagnosticsList( );
         // Initialise the cohort ID to zero
         NextCohortID = 0;
         params = MadingleyModelInitialisation(
@@ -92,8 +93,7 @@ public:
                 GlobalDiagnosticVariables["NumberOfStocksInModel"],
                 EcosystemModelGrid );
         disperser=new Dispersal();
-        // Set up list of global diagnostics
-        SetUpGlobalDiagnosticsList( );
+
         // Set up model outputs
         SetUpOutputs( );
         //end of initialisations
@@ -319,11 +319,12 @@ public:
     void Output( unsigned step ) {
 
         double organicPool = 0, respiratoryPool = 0, totalAbundance = 0;
-        double totalStockBiomass = 0, totalCohortBiomass = 0;
+        double totalStockBiomass = 0, totalCohortBiomass = 0;long totalCohorts=0;
         EcosystemModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
             organicPool += Environment::Get( "Organic Pool", gcl ) / 1000.;
             respiratoryPool += Environment::Get( "Respiratory CO2 Pool", gcl ) / 1000.;
                     gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
+                        totalCohorts+=1;
                         totalAbundance += c.mCohortAbundance;
 
                         double CohortBiomass = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance / 1000.;
