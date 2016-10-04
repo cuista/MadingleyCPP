@@ -35,20 +35,20 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/src/Input/DataCoords.o \
-	${OBJECTDIR}/src/Input/DataIndices.o \
-	${OBJECTDIR}/src/Input/DataLayer.o \
-	${OBJECTDIR}/src/Input/DataLayer2D.o \
-	${OBJECTDIR}/src/Input/DataLayer2DwithTime.o \
-	${OBJECTDIR}/src/Input/DataLayer3D.o \
-	${OBJECTDIR}/src/Input/DataLayer3DwithTime.o \
-	${OBJECTDIR}/src/Input/DataLayerProcessor.o \
-	${OBJECTDIR}/src/Input/DataLayerSet.o \
+	${OBJECTDIR}/src/Data/DataCoords.o \
+	${OBJECTDIR}/src/Data/DataIndices.o \
+	${OBJECTDIR}/src/Data/DataLayer.o \
+	${OBJECTDIR}/src/Data/DataLayer2D.o \
+	${OBJECTDIR}/src/Data/DataLayer2DwithTime.o \
+	${OBJECTDIR}/src/Data/DataLayer3D.o \
+	${OBJECTDIR}/src/Data/DataLayer3DwithTime.o \
+	${OBJECTDIR}/src/Data/DataLayerProcessor.o \
+	${OBJECTDIR}/src/Data/DataLayerSet.o \
+	${OBJECTDIR}/src/Data/Variable.o \
 	${OBJECTDIR}/src/Input/FileReader.o \
 	${OBJECTDIR}/src/Input/InputData.o \
 	${OBJECTDIR}/src/Input/InputDatum.o \
 	${OBJECTDIR}/src/Input/Parameters.o \
-	${OBJECTDIR}/src/Input/Variable.o \
 	${OBJECTDIR}/src/Model/Cohort.o \
 	${OBJECTDIR}/src/Model/Environment.o \
 	${OBJECTDIR}/src/Model/Stock.o \
@@ -97,135 +97,135 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/madingleycpp: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/madingleycpp ${OBJECTFILES} ${LDLIBSOPTIONS} -ldl
 
-${OBJECTDIR}/src/Input/DataCoords.o: src/Input/DataCoords.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
+${OBJECTDIR}/src/Data/DataCoords.o: src/Data/DataCoords.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Data
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/DataCoords.o src/Input/DataCoords.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Data/DataCoords.o src/Data/DataCoords.cpp
 
-${OBJECTDIR}/src/Input/DataIndices.o: src/Input/DataIndices.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
+${OBJECTDIR}/src/Data/DataIndices.o: src/Data/DataIndices.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Data
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/DataIndices.o src/Input/DataIndices.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Data/DataIndices.o src/Data/DataIndices.cpp
 
-${OBJECTDIR}/src/Input/DataLayer.o: src/Input/DataLayer.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
+${OBJECTDIR}/src/Data/DataLayer.o: src/Data/DataLayer.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Data
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/DataLayer.o src/Input/DataLayer.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Data/DataLayer.o src/Data/DataLayer.cpp
 
-${OBJECTDIR}/src/Input/DataLayer2D.o: src/Input/DataLayer2D.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
+${OBJECTDIR}/src/Data/DataLayer2D.o: src/Data/DataLayer2D.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Data
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/DataLayer2D.o src/Input/DataLayer2D.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Data/DataLayer2D.o src/Data/DataLayer2D.cpp
 
-${OBJECTDIR}/src/Input/DataLayer2DwithTime.o: src/Input/DataLayer2DwithTime.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
+${OBJECTDIR}/src/Data/DataLayer2DwithTime.o: src/Data/DataLayer2DwithTime.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Data
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/DataLayer2DwithTime.o src/Input/DataLayer2DwithTime.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Data/DataLayer2DwithTime.o src/Data/DataLayer2DwithTime.cpp
 
-${OBJECTDIR}/src/Input/DataLayer3D.o: src/Input/DataLayer3D.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
+${OBJECTDIR}/src/Data/DataLayer3D.o: src/Data/DataLayer3D.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Data
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/DataLayer3D.o src/Input/DataLayer3D.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Data/DataLayer3D.o src/Data/DataLayer3D.cpp
 
-${OBJECTDIR}/src/Input/DataLayer3DwithTime.o: src/Input/DataLayer3DwithTime.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
+${OBJECTDIR}/src/Data/DataLayer3DwithTime.o: src/Data/DataLayer3DwithTime.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Data
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/DataLayer3DwithTime.o src/Input/DataLayer3DwithTime.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Data/DataLayer3DwithTime.o src/Data/DataLayer3DwithTime.cpp
 
-${OBJECTDIR}/src/Input/DataLayerProcessor.o: src/Input/DataLayerProcessor.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
+${OBJECTDIR}/src/Data/DataLayerProcessor.o: src/Data/DataLayerProcessor.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Data
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/DataLayerProcessor.o src/Input/DataLayerProcessor.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Data/DataLayerProcessor.o src/Data/DataLayerProcessor.cpp
 
-${OBJECTDIR}/src/Input/DataLayerSet.o: src/Input/DataLayerSet.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
+${OBJECTDIR}/src/Data/DataLayerSet.o: src/Data/DataLayerSet.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Data
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/DataLayerSet.o src/Input/DataLayerSet.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Data/DataLayerSet.o src/Data/DataLayerSet.cpp
+
+${OBJECTDIR}/src/Data/Variable.o: src/Data/Variable.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Data
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Data/Variable.o src/Data/Variable.cpp
 
 ${OBJECTDIR}/src/Input/FileReader.o: src/Input/FileReader.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Input
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/FileReader.o src/Input/FileReader.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/FileReader.o src/Input/FileReader.cpp
 
 ${OBJECTDIR}/src/Input/InputData.o: src/Input/InputData.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Input
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/InputData.o src/Input/InputData.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/InputData.o src/Input/InputData.cpp
 
 ${OBJECTDIR}/src/Input/InputDatum.o: src/Input/InputDatum.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Input
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/InputDatum.o src/Input/InputDatum.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/InputDatum.o src/Input/InputDatum.cpp
 
 ${OBJECTDIR}/src/Input/Parameters.o: src/Input/Parameters.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Input
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/Parameters.o src/Input/Parameters.cpp
-
-${OBJECTDIR}/src/Input/Variable.o: src/Input/Variable.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Input
-	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/Variable.o src/Input/Variable.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Input/Parameters.o src/Input/Parameters.cpp
 
 ${OBJECTDIR}/src/Model/Cohort.o: src/Model/Cohort.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Cohort.o src/Model/Cohort.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Cohort.o src/Model/Cohort.cpp
 
 ${OBJECTDIR}/src/Model/Environment.o: src/Model/Environment.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Environment.o src/Model/Environment.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Environment.o src/Model/Environment.cpp
 
 ${OBJECTDIR}/src/Model/Stock.o: src/Model/Stock.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Stock.o src/Model/Stock.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Stock.o src/Model/Stock.cpp
 
 ${OBJECTDIR}/src/Output/BasicDatum.o: src/Output/BasicDatum.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Output
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Output/BasicDatum.o src/Output/BasicDatum.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Output/BasicDatum.o src/Output/BasicDatum.cpp
 
 ${OBJECTDIR}/src/Output/DataRecorder.o: src/Output/DataRecorder.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Output
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Output/DataRecorder.o src/Output/DataRecorder.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Output/DataRecorder.o src/Output/DataRecorder.cpp
 
 ${OBJECTDIR}/src/Output/GridDatum.o: src/Output/GridDatum.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Output
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Output/GridDatum.o src/Output/GridDatum.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Output/GridDatum.o src/Output/GridDatum.cpp
 
 ${OBJECTDIR}/src/Output/Logger.o: src/Output/Logger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Output
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Output/Logger.o src/Output/Logger.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Output/Logger.o src/Output/Logger.cpp
 
 ${OBJECTDIR}/src/Program.o: src/Program.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Program.o src/Program.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Program.o src/Program.cpp
 
 ${OBJECTDIR}/src/Tools/Convertor.o: src/Tools/Convertor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Tools
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/Convertor.o src/Tools/Convertor.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/Convertor.o src/Tools/Convertor.cpp
 
 ${OBJECTDIR}/src/Tools/DateTime.o: src/Tools/DateTime.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Tools
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/DateTime.o src/Tools/DateTime.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/DateTime.o src/Tools/DateTime.cpp
 
 ${OBJECTDIR}/src/Tools/Maths.o: src/Tools/Maths.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Tools
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/Maths.o src/Tools/Maths.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/Maths.o src/Tools/Maths.cpp
 
 ${OBJECTDIR}/src/Tools/Processor.o: src/Tools/Processor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Tools
 	${RM} "$@.d"
-	$(COMPILE.cc) -g -Isrc -Isrc/Model -Isrc/Tools -Isrc/Input -Isrc/Output -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/Processor.o src/Tools/Processor.cpp
+	$(COMPILE.cc) -g -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/Processor.o src/Tools/Processor.cpp
 
 # Subprojects
 .build-subprojects:

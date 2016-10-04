@@ -7,8 +7,6 @@ xAxisText = 'Time step';
 frequencyText = 'Frequency';
 concentrationText = 'Kg/km^2';
 fileFormat = 'png';
-optionPlotImageWidth = 12; % cm
-optionPlotImageHeight = 10; % cm
 
 filePath = [ basePath fileName ];
 
@@ -30,7 +28,8 @@ if exist( filePath, 'file' ) == 2
             title( dataSetName );
             xlabel( xAxisText );
             xlim( [ 1 maxTimeSteps ] );
-            printPlotToFile( handle, [ optionPlotImageWidth optionPlotImageHeight ], [ basePath fileName '_' dataSetName ], fileFormat );
+            printPlotToFile( handle, [ basePath fileName '_' dataSetName ], fileFormat );
+            printPlotToFile( handle, [ optionPlotImageWidth optionPlotImageHeight ], [ optionOutputDirectory optionCurrentDataSet dataSetName ], fileFormat );
         end
     end
 else
