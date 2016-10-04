@@ -336,6 +336,8 @@ public:
         } );
         double totalLivingBiomass = totalCohortBiomass + totalStockBiomass;
         double totalBiomass = totalCohortBiomass + totalStockBiomass + respiratoryPool + organicPool;
+        
+        outputFile << step << " " << Dispersals << " " << GlobalDiagnosticVariables["NumberOfCohortsExtinct"] << " " << GlobalDiagnosticVariables["NumberOfCohortsProduced"] << " " << GlobalDiagnosticVariables["NumberOfCohortsCombined"] << " " << GlobalDiagnosticVariables["NumberOfCohortsInModel"] << " " << GlobalDiagnosticVariables["NumberOfStocksInModel"] << " " << totalAbundance << " " << organicPool << " " << respiratoryPool << " " << totalStockBiomass << " " << totalCohortBiomass << " " << totalLivingBiomass << " " << totalBiomass << " " << EcologyTimer.GetElapsedTimeSecs( ) << " " << DispersalTimer.GetElapsedTimeSecs( ) << endl;
     }
 
 };

@@ -155,19 +155,19 @@
             <pElem>src/Tools</pElem>
             <pElem>src/Input</pElem>
             <pElem>src/Output</pElem>
-            <pElem>/home/philju/Libraries/netcdfcxx-4.2.1/include</pElem>
-            <pElem>/home/philju/Libraries/netcdfc-4.3.3.1/include</pElem>
-            <pElem>/home/philju/Libraries/hdf5-1.8.15/include</pElem>
+            <pElem>/home/philju/Libraries/netcdf-cxx4-4.3/include</pElem>
+            <pElem>/home/philju/Libraries/netcdf-4.4.1/include</pElem>
+            <pElem>/home/philju/Libraries/hdf5-1.8.17/include</pElem>
             <pElem>/home/philju/Libraries/zlib-1.2.8/include/</pElem>
           </incDir>
           <commandLine>-g -std=c++11</commandLine>
         </ccTool>
         <linkerTool>
           <linkerLibItems>
-            <linkerLibFileItem>/home/philju/Libraries/netcdfcxx-4.2.1/lib/libnetcdf_c++4.a</linkerLibFileItem>
-            <linkerLibFileItem>/home/philju/Libraries/netcdfc-4.3.3.1/lib/libnetcdf.a</linkerLibFileItem>
-            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.15/lib/libhdf5_hl.a</linkerLibFileItem>
-            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.15/lib/libhdf5.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/netcdf-cxx4-4.3/lib/libnetcdf_c++4.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/netcdf-4.4.1/lib/libnetcdf.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.17/lib/libhdf5_hl.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.17/lib/libhdf5.a</linkerLibFileItem>
             <linkerLibFileItem>/home/philju/Libraries/zlib-1.2.8/lib/libz.a</linkerLibFileItem>
           </linkerLibItems>
           <commandLine>-ldl</commandLine>
@@ -403,6 +403,18 @@
         </cTool>
         <ccTool>
           <developmentMode>5</developmentMode>
+          <incDir>
+            <pElem>src</pElem>
+            <pElem>src/Model</pElem>
+            <pElem>src/Tools</pElem>
+            <pElem>src/Input</pElem>
+            <pElem>src/Output</pElem>
+            <pElem>/home/philju/Libraries/netcdf-cxx4-4.3/include</pElem>
+            <pElem>/home/philju/Libraries/netcdf-4.4.1/include</pElem>
+            <pElem>/home/philju/Libraries/hdf5-1.8.17/include</pElem>
+            <pElem>/home/philju/Libraries/zlib-1.2.8/include/</pElem>
+          </incDir>
+          <commandLine>-std=c++11</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -410,6 +422,16 @@
         <asmTool>
           <developmentMode>5</developmentMode>
         </asmTool>
+        <linkerTool>
+          <linkerLibItems>
+            <linkerLibFileItem>/home/philju/Libraries/netcdf-cxx4-4.3/lib/libnetcdf_c++4.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/netcdf-4.4.1/lib/libnetcdf.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.17/lib/libhdf5_hl.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.17/lib/libhdf5.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/zlib-1.2.8/lib/libz.a</linkerLibFileItem>
+          </linkerLibItems>
+          <commandLine>-ldl</commandLine>
+        </linkerTool>
       </compileType>
       <item path="src/Input/Constants.h" ex="false" tool="3" flavor2="0">
       </item>
