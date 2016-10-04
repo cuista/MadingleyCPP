@@ -12,12 +12,19 @@ public:
     bool ReadFiles( );
 
 private:
-    bool ReadMetadataFile( const std::string& );
+    bool ReadTextFile( const std::string& );
     
-    Types::StringMatrix ReadAndReturnTextFile( const std::string& );
-    bool ReadInputDataFiles( const Types::StringMatrix& );
+    bool ReadInputParameters( );
+    bool SetUpOutputVariables( );
+    bool ReadInputDataFiles( );
+    
+    void ClearMetadata( );
     
     std::string mFilePath;
+    Types::StringVector mMetadataHeadings;
+    Types::StringMatrix mMetadata;
+    
+    Types::IntegerVector mAllocatedCellIndices;
 };
 
 #endif

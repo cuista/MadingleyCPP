@@ -7,6 +7,7 @@
 #include "DataLayerSet.h"
 #include "DataRecorder.h"
 #include "Parameters.h"
+#include "DataCoords.h"
 
 #include <netcdf>
 
@@ -19,30 +20,28 @@ FileReader::~FileReader( ) {
 }
 
 bool FileReader::ReadFiles( ) {
-    
-    // Input parameters
-    bool success = Parameters::Get( )->Initialise( ReadAndReturnTextFile( Constants::cConfigurationDirectory + Constants::cInputParametersFileName ) );
-    
-    // Output variables
-    if( success == true )
-        success = DataRecorder::Get( )->Initialise( ReadAndReturnTextFile( Constants::cConfigurationDirectory + Constants::cOutputVariablesFileName ) );
-    
-    // Input data
-    if( success == true )
-        success = ReadInputDataFiles( ReadAndReturnTextFile( Constants::cConfigurationDirectory + Constants::cInputDataFileName ) );
 
+    bool success = false;
+
+    success = ReadInputParameters( );
+
+    if( success == true )
+        success = SetUpOutputVariables( );
+
+    if( success == true )
+        success = ReadInputDataFiles( );
+    
     return success;
 }
 
-Types::StringMatrix FileReader::ReadAndReturnTextFile( const std::string& filePath ) {
+bool FileReader::ReadTextFile( const std::string& filePath ) {
 
-    Types::StringMatrix metadata;
+    bool success = false;
 
-    DataRecorder::Get( )->AddMetadataFilePath( filePath );
+    ClearMetadata( );
 
     Logger::Get( )->LogMessage( "Reading text file \"" + filePath + "\"..." );
-    std::ifstream fileStream;
-    fileStream.open( filePath.c_str( ) );
+    std::ifstream fileStream( filePath.c_str( ), std::ios::in );
 
     if( fileStream.is_open( ) ) {
         std::string readLine;
@@ -50,68 +49,105 @@ Types::StringMatrix FileReader::ReadAndReturnTextFile( const std::string& filePa
 
         while( std::getline( fileStream, readLine ) ) {
             if( lineCount > 0 && readLine[ 0 ] != Constants::cTextFileCommentCharacter ) {
-                metadata.push_back( Convertor::Get( )->StringToWords( readLine, Constants::cDataDelimiterValue ) );
+                mMetadata.push_back( Convertor::Get( )->StringToWords( readLine, Constants::cDataDelimiterValue ) );
+            } else if( lineCount == 0 ) {
+                mMetadataHeadings = Convertor::Get( )->StringToWords( readLine, Constants::cDataDelimiterValue );
             }
             ++lineCount;
         }
+        success = true;
+        fileStream.close( );
+        DataRecorder::Get( )->AddMetadataFilePath( filePath );
     } else {
         Logger::Get( )->LogMessage( "File path \"" + filePath + "\" is invalid." );
     }
-    fileStream.close( );
 
-    return metadata;
+    return success;
 }
 
-bool FileReader::ReadInputDataFiles( const Types::StringMatrix& inputFileMetadata ) {
+bool FileReader::ReadInputParameters( ) {
 
-    if( inputFileMetadata.size( ) > 0 ) {
-        Types::InputDataPointer initialInputData = new InputData( );
+    bool success = ReadTextFile( Constants::cConfigurationDirectory + Constants::cInputParametersFileName );
 
-        for( unsigned environmentalDataFileIndex = 0; environmentalDataFileIndex < inputFileMetadata.size( ); ++environmentalDataFileIndex ) {
+    if( success == true )
+        success = Parameters::Get( )->Initialise( mMetadata );
 
-            std::string filePath = inputFileMetadata[ environmentalDataFileIndex ][ Constants::eFilePath ];
-            Logger::Get( )->LogMessage( "Reading NetCDF file \"" + filePath + "\"..." );
+    return success;
+}
 
-            try {
-                netCDF::NcFile inputNcFile( filePath, netCDF::NcFile::read ); // Open the file for read access
-                std::multimap< std::string, netCDF::NcVar > multiMap = inputNcFile.getVars( );
+bool FileReader::SetUpOutputVariables( ) {
 
-                // Outer variable loop
-                for( std::multimap<std::string, netCDF::NcVar>::iterator it = multiMap.begin( ); it != multiMap.end( ); ++it ) {
+    bool success = ReadTextFile( Constants::cConfigurationDirectory + Constants::cOutputVariablesFileName );
 
-                    std::string variableName = ( *it ).first;
-                    netCDF::NcVar variableNcVar = ( *it ).second;
-                    std::vector< netCDF::NcDim > varDims = variableNcVar.getDims( );
+    if( success == true )
+        success = DataRecorder::Get( )->Initialise( mMetadata );
 
-                    Types::UnsignedVector variableDimensions;
-                    unsigned variableSize = 0;
+    return success;
+}
 
-                    // Inner variable dimension loop
-                    for( unsigned dimIndex = 0; dimIndex < varDims.size( ); ++dimIndex ) {
-                        variableDimensions.push_back( varDims[ dimIndex ].getSize( ) );
+bool FileReader::ReadInputDataFiles( ) {
 
-                        if( dimIndex == 0 ) {
-                            variableSize = varDims[ dimIndex ].getSize( );
-                        } else {
+    bool success = ReadTextFile( Constants::cConfigurationDirectory + Constants::cInputDataFileName );
+
+    if( success == true ) {
+        if( mMetadata.size( ) > 0 ) {
+            Types::InputDataPointer initialInputData = new InputData( );
+
+            for( unsigned environmentalDataFileIndex = 0; environmentalDataFileIndex < mMetadata.size( ); ++environmentalDataFileIndex ) {
+
+                //std::string filePath = Parameters::Get( )->GetRootDataDirectory( );
+                std::string filePath = "/home/philju/Data/Madingley/Standardised/"; // FIX: Make this a configurable option
+                filePath.append( Convertor::Get( )->ToString( Parameters::Get( )->GetGridCellSize( ) ) );
+                filePath.append( "deg/" );
+                filePath.append( mMetadata[ environmentalDataFileIndex ][ Constants::eFilePath ] );
+                Logger::Get( )->LogMessage( "Reading NetCDF file \"" + filePath + "\"..." );
+
+                try {
+                    netCDF::NcFile inputNcFile( filePath, netCDF::NcFile::read ); // Open the file for read access
+                    std::multimap< std::string, netCDF::NcVar > multiMap = inputNcFile.getVars( );
+
+                    // Outer variable loop
+                    for( std::multimap<std::string, netCDF::NcVar>::iterator it = multiMap.begin( ); it != multiMap.end( ); ++it ) {
+                        std::string variableName = ( *it ).first;
+                        netCDF::NcVar variableNcVar = ( *it ).second;
+                        std::vector< netCDF::NcDim > varDims = variableNcVar.getDims( );
+
+                        Types::UnsignedVector variableDimensions;
+                        unsigned variableSize = 1;
+
+                        // Inner variable dimension loop
+                        for( unsigned dimIndex = 0; dimIndex < varDims.size( ); ++dimIndex ) {
+                            variableDimensions.push_back( varDims[ dimIndex ].getSize( ) );
                             variableSize *= varDims[ dimIndex ].getSize( );
                         }
+
+                        float* variableData = new float[ variableSize ];
+                        variableNcVar.getVar( variableData );
+                        bool isDefault = variableName == Convertor::Get( )->ToLowercase( mMetadata[ environmentalDataFileIndex ][ Constants::eDefaultVariableName ] );
+                        initialInputData->AddVariableToDatum( mMetadata[ environmentalDataFileIndex ][ Constants::eInternalName ], variableName, variableDimensions, variableSize, variableData, isDefault );
                     }
 
-                    float* variableData = new float[ variableSize ];
-                    variableNcVar.getVar( variableData );
-                    bool isDefault = variableName == inputFileMetadata[ environmentalDataFileIndex ][ Constants::eDefaultVariableName ];
-                    initialInputData->AddVariableToDatum( inputFileMetadata[ environmentalDataFileIndex ][ Constants::eInternalName ], variableName, variableDimensions, variableSize, variableData, isDefault );
+                } catch( netCDF::exceptions::NcException& e ) {
+                    e.what( );
+                    Logger::Get( )->LogMessage( "ERROR> File path \"" + filePath + "\" is invalid." );
                 }
-
-            } catch( netCDF::exceptions::NcException& e ) {
-                e.what( );
-                Logger::Get( )->LogMessage( "ERROR> File path \"" + filePath + "\" is invalid." );
             }
-        }
 
-        DataLayerSet::Get( )->SetDataLayers( initialInputData );
-        return true;
-    } else {
-        return false;
+            DataLayerSet::Get( )->SetDataLayers( initialInputData );
+            success = true;
+        } else {
+
+            success = false;
+        }
     }
+
+    return success;
+}
+
+void FileReader::ClearMetadata( ) {
+    for( unsigned rowIndex = 0; rowIndex < mMetadata.size( ); ++rowIndex ) {
+        mMetadata[ rowIndex ].clear( );
+    }
+    mMetadata.clear( );
+    mMetadataHeadings.clear( );
 }

@@ -17,9 +17,8 @@ Initialise and run the model
  */
 #include <MadingleyModel.h>
 
-#include "Convertor.h"
+#include "FileReader.h"
 #include "Logger.h"
-#include "Maths.h"
 //----------------------------------------------------------------------------------------------
 
 /** \brief Starts a model run or set of model runs */
@@ -34,21 +33,30 @@ int main( ) {
     std::time_t t = system_clock::to_time_t( high_resolution_clock::now( ) );
     cout << "Model Run started at " << std::ctime( &t ) << endl;
 
-    // Initialise the model
-    // Declare an instance of the class that runs a Madingley model simulation
-    MadingleyModel MadingleyEcosystemModel;
+    Types::FileReaderPointer fileReader = new FileReader( );
 
-    // Declare and start a timer
-    StopWatch s;
-    s.Start( );
+    if( fileReader->ReadFiles( ) == true ) {
+        Logger::Get( )->LogMessage( "Files read successfully..." );
 
-    // Run the simulation
-    MadingleyEcosystemModel.RunMadingley( );
 
-    // Stop the timer and write out the time taken to run this simulation
-    s.Stop( );
-    cout << "Model run finished" << endl;
-    cout << "Total elapsed time was " << s.GetElapsedTimeSecs( ) << " seconds " << endl;
+        // Initialise the model
+        // Declare an instance of the class that runs a Madingley model simulation
+        MadingleyModel MadingleyEcosystemModel;
+
+        // Declare and start a timer
+        StopWatch s;
+        s.Start( );
+
+        // Run the simulation
+        MadingleyEcosystemModel.RunMadingley( );
+
+        // Stop the timer and write out the time taken to run this simulation
+        s.Stop( );
+        cout << "Model run finished" << endl;
+        cout << "Total elapsed time was " << s.GetElapsedTimeSecs( ) << " seconds " << endl;
+    } else {
+        Logger::Get( )->LogMessage( "ERROR> Cannot read input files. System exiting..." );
+    }
     return 0;
 }
 //----------------------------------------------------------------------------------------------

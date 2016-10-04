@@ -1,7 +1,7 @@
 clear;
 
 fileName = 'LATEST_OUTPUT';
-basePath = '/home/philju/Dropbox/Development/MadingleyCPP/';
+basePath = '/home/philju/Dropbox/Development/MadingleyCPP/output/v35_3/';
 
 xAxisText = 'Time step';
 frequencyText = 'Frequency';

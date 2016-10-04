@@ -21,71 +21,57 @@ Types::LayerMap Environment::mLayers;
 //------------------------------------------------------------------------------
 
 Environment::Environment( ) {
-    cout << "Reading netcdf??" << endl;
-    Types::FileReaderPointer fileReader = new FileReader( );
+    addLayer( "Realm" );
+    setRealm( );
 
-    bool completedSuccessfully = fileReader->ReadFiles( );
+    addLayer( "TerrestrialHANPP" );
+    setHANPP( );
 
-    if( completedSuccessfully == true ) {
-        Logger::Get( )->LogMessage( "Files read successfully..." );
+    addLayerT( "uVel" );
+    setUVel( );
+    addLayerT( "vVel" );
+    setVVel( );
 
-        cout << endl;
-        addLayer( "Realm" );
-        setRealm( );
+    addLayerT( "Temperature" );
+    setTemperature( );
+    addLayerT( "DiurnalTemperatureRange" );
 
-        addLayer( "TerrestrialHANPP" );
-        setHANPP( );
+    setDiurnalTemperatureRange( );
 
-        addLayerT( "uVel" );
-        setUVel( );
-        addLayerT( "vVel" );
-        setVVel( );
+    addLayerT( "Precipitation" );
 
-        addLayerT( "Temperature" );
-        setTemperature( );
-        addLayerT( "DiurnalTemperatureRange" );
+    addLayer( "TotalPrecip" );
+    setPrecipitation( );
 
-        setDiurnalTemperatureRange( );
+    addLayerT( "NPP" );
+    setNPP( );
 
-        addLayerT( "Precipitation" );
-        
-        addLayer( "TotalPrecip" );
-        setPrecipitation( );
-
-        addLayerT( "NPP" );
-        setNPP( );
-
-        addLayerT( "Seasonality" );
-        setNPPSeasonality( );
-        addLayerT( "Breeding Season" );
-        setBreeding( );
+    addLayerT( "Seasonality" );
+    setNPPSeasonality( );
+    addLayerT( "Breeding Season" );
+    setBreeding( );
 
 
-        addLayer( "Organic Pool" );
-        setOrganicPool( );
+    addLayer( "Organic Pool" );
+    setOrganicPool( );
 
-        addLayer( "Respiratory CO2 Pool" );
-        setRespiratoryCO2Pool( );
+    addLayer( "Respiratory CO2 Pool" );
+    setRespiratoryCO2Pool( );
 
-        addLayer( "AnnualTemperature" );
-        addLayer( "SDTemperature" );
-        addLayerT( "ExpTDevWeight" );
-        setAVGSDTemp( );
+    addLayer( "AnnualTemperature" );
+    addLayer( "SDTemperature" );
+    addLayerT( "ExpTDevWeight" );
+    setAVGSDTemp( );
 
-        addLayerT( "AET" );
-        addLayer( "TotalAET" );
-        addLayerT( "Fraction Month Frost" );
-        addLayer( "Fraction Year Frost" );
-        addLayer( "Fraction Year Fire" );
-        setFrostandFire( );
-        
-        //make sure all time dependent fields set to the start
-        update( 0 );
+    addLayerT( "AET" );
+    addLayer( "TotalAET" );
+    addLayerT( "Fraction Month Frost" );
+    addLayer( "Fraction Year Frost" );
+    addLayer( "Fraction Year Fire" );
+    setFrostandFire( );
 
-    } else {
-        Logger::Get( )->LogMessage( "ERROR> File reading failed." );
-    }
-
+    //make sure all time dependent fields set to the start
+    update( 0 );
 }
 //------------------------------------------------------------------------------
 
@@ -107,6 +93,7 @@ void Environment::addLayerT( string s ) {
     mLayers[s] = new layerT( 12, NumLon, NumLat );
 }
 //------------------------------------------------------------------------------
+
 Environment* Environment::Get( ) {
     if( mThis == NULL ) {
         mThis = new Environment( );
@@ -251,7 +238,7 @@ void Environment::setPrecipitation( ) {
     const unsigned int NumLat = Parameters::Get( )->GetLengthUserLatitudeArray( );
     for( int lo = 0; lo < NumLon; lo++ ) {
         for( int la = 0; la < NumLat; la++ ) {
-                    ( *mLayers["TotalPrecip"] )[lo][la] = 0;
+            ( *mLayers["TotalPrecip"] )[lo][la] = 0;
         }
     }
     for( int tm = 0; tm < 12; tm++ ) {
@@ -476,7 +463,7 @@ void Environment::setFrostandFire( ) {
 
             for( int i = 0; i < 12; i++ ) {
                 mLayers["Fraction Month Frost"]->setTime( i );
-                ( *mLayers["Fraction Month Frost"] )[lo][la] = min( FrostDays[i] / MonthDays[i],(double) 1.0 );
+                ( *mLayers["Fraction Month Frost"] )[lo][la] = min( FrostDays[i] / MonthDays[i], ( double )1.0 );
             }
             Types::DataIndicesPointer indices = new DataIndices( lo, la, Constants::eUserDomain );
             double AWC = DataLayerSet::Get( )->GetDataAtIndicesFor( "TerrestrialAWC", indices );

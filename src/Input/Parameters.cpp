@@ -16,10 +16,11 @@ Types::ParametersPointer Parameters::Get( ) {
 }
 
 Parameters::~Parameters( ) {
-
     delete[ ] mDataLongitudeArray;
     delete[ ] mDataLatitudeArray;
     delete[ ] mTimeStepArray;
+    delete[ ] mUserLongitudeArray;
+    delete[ ] mUserLatitudeArray;
 
     if( mThis != NULL ) {
         delete mThis;
