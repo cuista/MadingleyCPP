@@ -113,15 +113,6 @@ void Parameters::CalculateParameters( ) {
     mSizeOfMonthlyGridDatum = mNumberOfGridCells * mLengthOfSimulationInMonths;
     mSizeOfAnnualGridDatum = mNumberOfGridCells * mLengthOfSimulationInYears;
 
-    mDomainCoordsMatrix.resize( mLengthUserLongitudeArray );
-    unsigned domainLongitudeIndex = 0;
-    for( unsigned longitudeIndex = mDataIndexOfUserMinimumLongitude; longitudeIndex <= mDataIndexOfUserMaximumLongitude; ++longitudeIndex ) {
-        for( unsigned latitudeIndex = mDataIndexOfUserMinimumLatitude; latitudeIndex <= mDataIndexOfUserMaximumLatitude; ++latitudeIndex ) {
-            mDomainCoordsMatrix[ domainLongitudeIndex ].push_back( std::make_pair( mDataLongitudeArray[ longitudeIndex ], mDataLatitudeArray[ latitudeIndex ] ) );
-        }
-        ++domainLongitudeIndex;
-    }
-
     unsigned cellIndex = 0;
     mCoordsIndicesLookup.resize( mNumberOfGridCells );
     for( unsigned latitudeIndex = 0; latitudeIndex < mLengthUserLatitudeArray; ++latitudeIndex ) {
@@ -333,33 +324,6 @@ float* Parameters::GetUserLongitudeArray( ) const {
 
 float* Parameters::GetUserLatitudeArray( ) const {
     return mUserLatitudeArray;
-}
-
-Types::GeoCoords Parameters::GetCoordsFromDomainIndices( const Types::GeoIndices indices ) const {
-    return GetCoordsFromDomainIndices( indices.first, indices.second );
-}
-
-Types::GeoCoords Parameters::GetCoordsFromDomainIndices( const unsigned short& domainLonditudeIndex, const unsigned short& domainLatitudeIndex ) const {
-
-    Types::GeoCoords coords;
-
-    coords = mDomainCoordsMatrix[ domainLonditudeIndex ][ domainLatitudeIndex ];
-
-    return coords;
-}
-
-Types::GeoIndices Parameters::GetDomainIndicesFromCoords( const Types::GeoCoords coords ) const {
-    return GetDomainIndicesFromCoords( coords.first, coords.second );
-}
-
-Types::GeoIndices Parameters::GetDomainIndicesFromCoords( const float& longitude, const float& latitude ) const {
-
-    Types::GeoIndices indices;
-
-    indices.first = Processor::Get( )->CalculateArrayIndexOfValue( mUserLongitudeArray, mLengthUserLongitudeArray, longitude );
-    indices.second = Processor::Get( )->CalculateArrayIndexOfValue( mUserLatitudeArray, mLengthUserLatitudeArray, latitude );
-
-    return indices;
 }
 
 int Parameters::GetCellIndexFromDataIndices( const unsigned& longitudeIndex, const unsigned& latitudeIndex ) const {

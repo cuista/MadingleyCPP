@@ -22,6 +22,10 @@ bool FileWriter::WriteFiles( ) {
     return WriteNetCDFFiles( );
 }
 
+std::string& FileWriter::GetOutputDirectory( ) {
+    return mOutputDirectory;
+}
+
 void FileWriter::InitialiseOutputDirectory( ) {
     Date date;
 

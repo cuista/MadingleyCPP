@@ -7,6 +7,7 @@
 
 #include "Environment.h"
 #include "Parameters.h"
+#include "DataIndices.h"
 
 class GridCell {
 public:
@@ -18,28 +19,25 @@ public:
 
     }
 
-    void SetCellCoords( float latitude, unsigned latitudeIndex, float longitude, unsigned longitudeIndex ) {
+    void SetCellCoords( unsigned index ) {
         // set values for this grid cell
         // Also standardise missing values
 
-        // FIX - Pass index as a parameter and drop other unnecessary ones
-        mIndex = Parameters::Get()->GetCellIndexFromDataIndices( longitudeIndex, latitudeIndex );
-        
-        // Set the grid cell values of latitude, longitude and missing value as specified
-        mLatitude = latitude;
-        mLongitude = longitude;
+        mIndex = index;
+        Types::DataIndicesPointer indices = Parameters::Get( )->GetDataIndicesFromCellIndex( mIndex );
+
+        //Add the latitude and longitude indices
+        mLatitudeIndex = indices->GetY( );
+        mLongitudeIndex = indices->GetX( );
 
         // Add the grid cell area (in km2) to the cell environment with an initial value of 0
         // Calculate the area of this grid cell
         // Add it to the cell environment
-        mCellArea = mUtilities.CalculateGridCellArea( mLatitude, Parameters::Get( )->GetGridCellSize( ) );
+        mCellArea = mUtilities.CalculateGridCellArea( Parameters::Get( )->GetUserLatitudeAtIndex( indices->GetY( )  ), Parameters::Get( )->GetGridCellSize( ) );
         // Calculate the lengths of widths of grid cells in each latitudinal strip
         // Assume that we are at the midpoint of each cell when calculating lengths
-        mCellHeightKm = mUtilities.CalculateLengthOfDegreeLatitude( mLatitude + Parameters::Get( )->GetGridCellSize( ) / 2 ) * Parameters::Get( )->GetGridCellSize( );
-        mCellWidthKm = mUtilities.CalculateLengthOfDegreeLongitude( mLatitude + Parameters::Get( )->GetGridCellSize( ) / 2 ) * Parameters::Get( )->GetGridCellSize( );
-        //Add the latitude and longitude indices
-        mLatitudeIndex = latitudeIndex;
-        mLongitudeIndex = longitudeIndex;
+        mCellHeightKm = mUtilities.CalculateLengthOfDegreeLatitude( Parameters::Get( )->GetUserLatitudeAtIndex( indices->GetY( )  ) + Parameters::Get( )->GetGridCellSize( ) / 2 ) * Parameters::Get( )->GetGridCellSize( );
+        mCellWidthKm = mUtilities.CalculateLengthOfDegreeLongitude( Parameters::Get( )->GetUserLatitudeAtIndex( indices->GetY( )  ) + Parameters::Get( )->GetGridCellSize( ) / 2 ) * Parameters::Get( )->GetGridCellSize( );
     }
 
     void InsertCohort( Cohort& c ) {
@@ -71,7 +69,7 @@ public:
     void ApplyFunctionToAllCohorts( F f ) {
         for( int index = 0; index < mGridCellCohorts.size( ); index++ ) {
             // Work through the list of cohorts 
-            for( Cohort& c: mGridCellCohorts[ index ] ) {
+            for( Cohort& c : mGridCellCohorts[ index ] ) {
                 f( c );
             }
         }
@@ -81,7 +79,7 @@ public:
     void ApplyFunctionToAllStocks( F f ) {
         for( int index = 0; index < mGridCellStocks.size( ); index++ ) {
             // Work through the list of cohorts 
-            for( Stock& s: mGridCellStocks[ index ] ) {
+            for( Stock& s : mGridCellStocks[ index ] ) {
                 f( s );
             }
         }
@@ -94,18 +92,11 @@ public:
     bool IsMarine( ) {
         return ( Environment::Get( "Realm", *this ) == 2.0 );
     }
-    
+
     unsigned GetIndex( ) const {
         return mIndex;
     }
-    
-    float GetLatitude( ) const {
-        return mLatitude;
-    }
 
-    float GetLongitude( ) const {
-        return mLongitude;
-    }
     unsigned GetLatitudeIndex( ) const {
         return mLatitudeIndex;
     }
@@ -141,8 +132,6 @@ public:
 
 private:
     unsigned mIndex;
-    float mLatitude;
-    float mLongitude;
     unsigned mLatitudeIndex;
     unsigned mLongitudeIndex;
     double mCellArea;

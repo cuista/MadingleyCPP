@@ -10,6 +10,8 @@ public:
     
     bool WriteFiles( );
     
+    std::string& GetOutputDirectory( );
+    
 private:
     void InitialiseOutputDirectory( );
     void WriteInputFiles( );

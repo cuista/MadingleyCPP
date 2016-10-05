@@ -54,7 +54,7 @@ int main( ) {
         // Write output files
         FileWriter fileWriter;
         if( fileWriter.WriteFiles( ) == true )
-            Logger::Get( )->LogMessage( "Files written successfully..." );
+            Logger::Get( )->LogMessage( "Files written to \"" + fileWriter.GetOutputDirectory( ) + "\" successfully..." );
         else
             Logger::Get( )->LogMessage( "ERROR> Cannot write output files." );
 

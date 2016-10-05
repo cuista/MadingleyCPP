@@ -1,7 +1,7 @@
 Parameter,Value
 RootDataDirectory,/home/philju/Data/Madingley/Standardised/
 TimeStepUnits,month
-LengthOfSimulationInYears,1
+LengthOfSimulationInYears,100
 MinimumLongitude,-180
 MaximumLongitude,180
 MinimumLatitude,-65

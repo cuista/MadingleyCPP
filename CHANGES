@@ -1,5 +1,8 @@
-Planned Future Changes
+PLANNED FUTURE CHANGES
+Primary
+- Output grid-based data for all available datums. Are there any other calculations that need to take place?
 
+Secondary
+- Move hard-coded constants to Constants.h
 - Change DrawRandomly parameter to RandomSeed and use this to seed a centralised random object, accessible via a singleton design pattern.
 - Move library directories into the Madingley tree for increased portability.
-- Add a configurable data file path for ease of switching to new datasets.

@@ -102,7 +102,6 @@ public:
         cout << "Running model" << endl;
         cout << "Number of time steps is: " << Parameters::Get( )->GetLengthOfSimulationInMonths( ) << endl;
 
-
         Dispersals = 0;
         /// Run the model
         for( unsigned timeStep = 0; timeStep < Parameters::Get( )->GetLengthOfSimulationInMonths( ); timeStep += 1 ) {
@@ -137,10 +136,7 @@ public:
 
             // Write the results of dispersal to the console
             cout << "Total Cohorts remaining " << GlobalDiagnosticVariables["NumberOfCohortsInModel"] << endl;
-
-
         }
-
     }//----------------------------------------------------------------------------------------------
 
     /** \brief  Run processes for cells*/

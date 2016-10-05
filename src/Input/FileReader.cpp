@@ -96,7 +96,6 @@ bool FileReader::ReadInputDataFiles( ) {
             for( unsigned environmentalDataFileIndex = 0; environmentalDataFileIndex < mMetadata.size( ); ++environmentalDataFileIndex ) {
 
                 std::string filePath = Parameters::Get( )->GetRootDataDirectory( );
-                //std::string filePath = "/home/philju/Data/Madingley/Standardised/"; // FIX: Make this a configurable option
                 filePath.append( Convertor::Get( )->ToString( Parameters::Get( )->GetGridCellSize( ) ) );
                 filePath.append( "deg/" );
                 filePath.append( mMetadata[ environmentalDataFileIndex ][ Constants::eFilePath ] );

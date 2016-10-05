@@ -447,7 +447,7 @@
             <pElem>/home/philju/Libraries/hdf5-1.8.17/include</pElem>
             <pElem>/home/philju/Libraries/zlib-1.2.8/include/</pElem>
           </incDir>
-          <commandLine>-std=c++11</commandLine>
+          <commandLine>-O2 -std=c++11</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>

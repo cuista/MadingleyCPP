@@ -79,9 +79,6 @@ namespace Types {
     // Containers of primitives
     typedef std::map< std::string, double > DoubleMap;
     
-    typedef std::pair< float, float > GeoCoords;
-    typedef std::pair< unsigned short, unsigned short > GeoIndices;
-    
     typedef std::vector< bool > BooleanVector;
     typedef std::vector< char > CharVector;
     typedef std::vector< unsigned char > UnsignedCharVector;
@@ -104,12 +101,10 @@ namespace Types {
     typedef std::vector< UnsignedVector > UnsignedMatrix;
     
     // Containers of containers of primitives
-    typedef std::vector< GeoCoords > GeoCoordsVector;
     typedef std::map< std::string, DoubleMap > Double2DMap;
     
     // Container of containers of containers of primitives
     typedef std::vector< DoubleMatrix > Double3DMatrix;
-    typedef std::vector< GeoCoordsVector > GeoCoordsMatrix;
 }
 
 #endif

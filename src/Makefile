@@ -23,7 +23,7 @@ OBJ=$(addprefix $(OBJDIR), $(patsubst %.cpp, %.o, $(notdir $(SRC))))
 VPATH=$(SRCDIR)
 
 # Compilation flags
-CXXFLAGS=-std=c++11
+CXXFLAGS=-O2 -std=c++11
 
 $(TARGET) : $(OBJ)
 	@echo Linking...
