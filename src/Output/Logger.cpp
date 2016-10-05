@@ -1,5 +1,4 @@
 #include "Logger.h"
-#include "DateTime.h"
 
 Types::LoggerPointer Logger::mThis = NULL;
 
@@ -18,12 +17,4 @@ Logger::~Logger( ) {
 
 Logger::Logger( ) {
 
-}
-
-void Logger::Click( const std::string& source ) const {
-    LogMessage( source + DateTime::Get( )->ProduceSplitTimeString( ) );
-}
-
-void Logger::OutputRunTime( ) const {
-    LogMessage( DateTime::Get( )->ProduceTotalTimeString( ) );
 }

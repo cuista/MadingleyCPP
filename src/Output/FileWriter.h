@@ -12,7 +12,7 @@ public:
     
 private:
     void InitialiseOutputDirectory( );
-    void WriteMetadataFiles( );
+    void WriteInputFiles( );
     bool WriteNetCDFFiles( ) const;
     bool WriteBasicOutputs( ) const;
     bool WriteGridOutputs( ) const;

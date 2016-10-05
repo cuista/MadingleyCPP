@@ -17,9 +17,10 @@
 #include <fstream>
 #include <Environment.h>
 
-#include "DateTime.h"
+#include "Time.h"
 #include "Maths.h"
 #include "Parameters.h"
+#include "DataRecorder.h"
 /// @todo check private versus public variables
 /** \file MadingleyModel.h
  * \brief The main model header file
@@ -71,7 +72,6 @@ public:
     //Because the parameters are initialised late (!!!!!!!PARAMETERS::GET() levaes parameters uninitialised!!!!!!!ARG!!!!!)
     //this has to be a pointer
     Dispersal* disperser;
-    ofstream outputFile;
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
@@ -93,10 +93,6 @@ public:
                 GlobalDiagnosticVariables["NumberOfStocksInModel"],
                 EcosystemModelGrid );
         disperser=new Dispersal();
-
-        // Set up model outputs
-        SetUpOutputs( );
-        //end of initialisations
     }
     //----------------------------------------------------------------------------------------------
 
@@ -104,14 +100,14 @@ public:
     void RunMadingley( ) {
         // Write out model run details to the console
         cout << "Running model" << endl;
-        cout << "Number of time steps is: " << Parameters::Get( )->GetLengthOfSimulationInTimeSteps( ) << endl;
+        cout << "Number of time steps is: " << Parameters::Get( )->GetLengthOfSimulationInMonths( ) << endl;
 
 
         Dispersals = 0;
         /// Run the model
-        for( unsigned timeStep = 0; timeStep < Parameters::Get( )->GetLengthOfSimulationInTimeSteps( ); timeStep += 1 ) {
+        for( unsigned timeStep = 0; timeStep < Parameters::Get( )->GetLengthOfSimulationInMonths( ); timeStep += 1 ) {
 
-            DateTime::Get( )->SetTimeStep( timeStep );
+            Time::Get( )->SetMonthlyTimeStep( timeStep );
 
             cout << "Running time step " << timeStep + 1 << "..." << endl;
             // Start the timer
@@ -307,15 +303,6 @@ public:
     }
     //----------------------------------------------------------------------------------------------
 
-    /** \brief   Sets up the model outputs
-    @param initialisation An instance of the model initialisation class
-     */
-    void SetUpOutputs( ) {
-        outputFile.open( "LATEST_OUTPUT" );
-        outputFile << "step dispersals extinctions productions combinations totalcohorts totalstocks totalAbundance organicPool respiratoryPool totalStockBiomass totalCohortBiomass totalLivingBiomass totalBiomass incelltime dispersaltime" << endl;
-    }
-    //----------------------------------------------------------------------------------------------
-
     void Output( unsigned step ) {
 
         double organicPool = 0, respiratoryPool = 0, totalAbundance = 0;
@@ -337,7 +324,24 @@ public:
         double totalLivingBiomass = totalCohortBiomass + totalStockBiomass;
         double totalBiomass = totalCohortBiomass + totalStockBiomass + respiratoryPool + organicPool;
         
-        outputFile << step << " " << Dispersals << " " << GlobalDiagnosticVariables["NumberOfCohortsExtinct"] << " " << GlobalDiagnosticVariables["NumberOfCohortsProduced"] << " " << GlobalDiagnosticVariables["NumberOfCohortsCombined"] << " " << GlobalDiagnosticVariables["NumberOfCohortsInModel"] << " " << GlobalDiagnosticVariables["NumberOfStocksInModel"] << " " << totalAbundance << " " << organicPool << " " << respiratoryPool << " " << totalStockBiomass << " " << totalCohortBiomass << " " << totalLivingBiomass << " " << totalBiomass << " " << EcologyTimer.GetElapsedTimeSecs( ) << " " << DispersalTimer.GetElapsedTimeSecs( ) << endl;
+        DataRecorder::Get( )->SetDataOn( "InCellTime", EcologyTimer.GetElapsedTimeSecs( ) );
+        DataRecorder::Get( )->SetDataOn( "DispersalTime", DispersalTimer.GetElapsedTimeSecs( ) );
+
+        DataRecorder::Get( )->SetDataOn( "TotalBiomass", totalBiomass );
+        DataRecorder::Get( )->SetDataOn( "TotalLivingBiomass", totalLivingBiomass );
+        DataRecorder::Get( )->SetDataOn( "TotalStockBiomass", totalStockBiomass );
+        DataRecorder::Get( )->SetDataOn( "TotalCohortBiomass", totalCohortBiomass );
+        DataRecorder::Get( )->SetDataOn( "OrganicMatterPool", organicPool );
+        DataRecorder::Get( )->SetDataOn( "RespiratoryCO2Pool", respiratoryPool );
+
+        DataRecorder::Get( )->SetDataOn( "NumberOfStocks", GlobalDiagnosticVariables["NumberOfStocksInModel"] );
+        DataRecorder::Get( )->SetDataOn( "NumberOfCohorts", GlobalDiagnosticVariables["NumberOfCohortsInModel"] );
+        
+        DataRecorder::Get( )->SetDataOn( "CohortsProduced", GlobalDiagnosticVariables["NumberOfCohortsProduced"] );
+        DataRecorder::Get( )->SetDataOn( "CohortsExtinct", GlobalDiagnosticVariables["NumberOfCohortsExtinct"] );
+        DataRecorder::Get( )->SetDataOn( "CohortsCombined", GlobalDiagnosticVariables["NumberOfCohortsCombined"] );
+        DataRecorder::Get( )->SetDataOn( "CohortsDispersed", Dispersals );
+        DataRecorder::Get( )->SetDataOn( "CohortAbundance", totalAbundance );
     }
 
 };

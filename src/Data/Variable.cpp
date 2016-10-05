@@ -1,4 +1,5 @@
 #include "Variable.h"
+
 #include "Constants.h"
 #include "Logger.h"
 #include "Convertor.h"
@@ -59,6 +60,12 @@ float Variable::GetMaximumDataDifference( ) const {
 
 bool Variable::IsDefault( ) const {
     return mIsDefault;
+}
+
+void Variable::SetData( float* data, const unsigned& size ) {
+    mSize = size;
+    delete[ ] mData;
+    mData = data;
 }
 
 void Variable::SetDataAtIndex( const int& index, const float& data ) {

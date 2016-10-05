@@ -1,19 +1,21 @@
 #include "DataCoords.h"
 
 DataCoords::DataCoords( const float& longitude, const float& latitude, const float& depth ) {
-    mLongitude = longitude;
-    mLatitude = latitude;
-    mDepth = depth;
+    Initialise( longitude, latitude, depth );
 }
 
 DataCoords::DataCoords( const float& longitude, const float& latitude ) {
-    mLongitude = longitude;
-    mLatitude = latitude;
-    mDepth = 0;
+    Initialise( longitude, latitude, 0 );
 }
 
 DataCoords::~DataCoords( ) {
 
+}
+
+void DataCoords::Initialise( const float& longitude, const float& latitude, const float& depth ) {
+    mLongitude = longitude;
+    mLatitude = latitude;
+    mDepth = depth;
 }
 
 float DataCoords::GetLongitude( ) const {

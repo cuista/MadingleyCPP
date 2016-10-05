@@ -16,6 +16,8 @@ public:
     void SetDepth( const float& );
 
 private:
+    void Initialise( const float&, const float&, const float& );
+    
     float mLongitude;
     float mLatitude;
     float mDepth;

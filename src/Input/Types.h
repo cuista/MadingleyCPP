@@ -6,6 +6,8 @@
 #include <fstream>      // For std::ofstream
 #include <sys/time.h>   // For struct timeval
 #include <map>          // For map
+#include <sys/stat.h>   // For mkdir
+#include <netcdf>       // For netCDF::NcDim vector
 
 class BasicDatum;
 class Cohort;
@@ -16,7 +18,6 @@ class DataLayer;
 class DataLayerProcessor;
 class DataLayerSet;
 class DataRecorder;
-class DateTime;
 class Environment;
 class FileReader;
 class FileWriter;
@@ -31,9 +32,11 @@ class Maths;
 class Parameters;
 class Processor;
 class Stock;
+class Time;
 class Variable;
 
 namespace Types {
+    // Pointers
     typedef BasicDatum* BasicDatumPointer;
     typedef Convertor* ConvertorPointer;
     typedef DataCoords* DataCoordsPointer;
@@ -42,7 +45,6 @@ namespace Types {
     typedef DataLayerProcessor* DataLayerProcessorPointer;
     typedef DataLayerSet* DataLayerSetPointer;
     typedef DataRecorder* DataRecorderPointer;
-    typedef DateTime* DateTimePointer;
     typedef Environment* EnvironmentPointer;
     typedef FileReader* FileReaderPointer;
     typedef FileWriter* FileWriterPointer;
@@ -55,17 +57,30 @@ namespace Types {
     typedef Maths* MathsPointer;
     typedef Parameters* ParametersPointer;
     typedef Processor* ProcessorPointer;
+    typedef Time* TimePointer;
     typedef Variable* VariablePointer;
+    
+    // Containers of pointers/objects
+    typedef std::map< std::string, BasicDatumPointer > BasicDatumMap;
+    typedef std::map< std::string, DataLayerPointer > DataLayerMap;
+    typedef std::map< std::string, GridDatumPointer > GridDatumMap;
+    typedef std::map< std::string, LayerPointer > LayerMap;
+    
+    typedef std::pair< DataCoordsPointer, DataIndicesPointer > CoordsIndicesPair;
+    
+    typedef std::vector< BasicDatumPointer > BasicDatumVector;
+    typedef std::vector< Cohort > CohortVector;
+    typedef std::vector< GridDatumPointer > GridDatumVector;
+    typedef std::vector< InputDatumPointer > InputDatumVector;
+    typedef std::vector< netCDF::NcDim > NcDimVector;
+    typedef std::vector< Stock > StockVector;
+    typedef std::vector< VariablePointer > VariableVector;
+    
+    // Containers of primitives
+    typedef std::map< std::string, double > DoubleMap;
     
     typedef std::pair< float, float > GeoCoords;
     typedef std::pair< unsigned short, unsigned short > GeoIndices;
-    
-    typedef std::vector< Cohort > CohortVector;
-    typedef std::vector< Stock > StockVector;
-    typedef std::vector< InputDatumPointer > InputDatumVector;
-    typedef std::vector< VariablePointer > VariableVector;
-    
-    typedef std::vector< CohortVector > Cohort2DVector;
     
     typedef std::vector< bool > BooleanVector;
     typedef std::vector< char > CharVector;
@@ -78,25 +93,23 @@ namespace Types {
     typedef std::vector< unsigned > UnsignedVector;
     typedef std::vector< unsigned short > UnsignedShortVector;
     typedef std::vector< std::string > StringVector;
-
+    
+    // Containers of containers of pointers/objects
+    typedef std::map< int, StockVector > StocksMap;
+    
+    typedef std::vector< CoordsIndicesPair > CoordsIndicesVector;
+    typedef std::vector< CohortVector > Cohort2DVector;
     typedef std::vector< DoubleVector > DoubleMatrix;
-    typedef std::vector< UnsignedVector > UnsignedMatrix;
     typedef std::vector< StringVector > StringMatrix;
-
-    typedef std::vector< DoubleMatrix > Double3DMatrix;
+    typedef std::vector< UnsignedVector > UnsignedMatrix;
     
+    // Containers of containers of primitives
     typedef std::vector< GeoCoords > GeoCoordsVector;
-    typedef std::vector< GeoCoordsVector > GeoCoordsMatrix;
-    
-    typedef std::map< std::string, double > DoubleMap;
-    typedef std::map< std::string, BasicDatumPointer > BasicDatumMap;
-    typedef std::map< std::string, DataLayerPointer > DataLayerMap;
-    typedef std::map< std::string, GridDatumPointer > GridDatumMap;
-    typedef std::map< std::string, LayerPointer > LayerMap;
-    
     typedef std::map< std::string, DoubleMap > Double2DMap;
     
-    typedef std::map< int, StockVector > StocksMap;
+    // Container of containers of containers of primitives
+    typedef std::vector< DoubleMatrix > Double3DMatrix;
+    typedef std::vector< GeoCoordsVector > GeoCoordsMatrix;
 }
 
 #endif

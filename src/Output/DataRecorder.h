@@ -9,15 +9,16 @@ public:
     static Types::DataRecorderPointer Get( );
 
     bool Initialise( const Types::StringMatrix& );
+    void SetDataOn( const std::string&, const float& );
     void AddDataTo( const std::string&, const float& );
-    void AddDataTo( const std::string&, const Types::DataCoordsPointer, const float& );
-    void AddDataTo( const std::string&, const Types::DataIndicesPointer, const float& );
+    
+    void SetDataOn( const std::string&, const unsigned&, const float& );
     
     Types::BasicDatumMap GetBasicDatumMap( ) const;
     Types::GridDatumMap GetGridDatumMap( ) const;
     
-    Types::StringVector GetMetadataFilePaths( ) const;
-    void AddMetadataFilePath( const std::string& );
+    Types::StringVector GetInputFilePaths( ) const;
+    void AddInputFilePath( const std::string& );
 
 private:
     DataRecorder( );
@@ -32,7 +33,7 @@ private:
     Types::StringMatrix mBasicOutputMetadata;
     Types::StringMatrix mGridOutputMetadata;
     
-    Types::StringVector mMetadataFilePaths;
+    Types::StringVector mInputFilePaths;
 };
 
 #endif

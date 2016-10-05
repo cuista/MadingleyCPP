@@ -20,9 +20,6 @@ public:
         std::cout << message << std::endl;
     }
 
-    void Click( const std::string& source = "" ) const;
-    void OutputRunTime( ) const;
-
 private:
     Logger( );
     static Types::LoggerPointer mThis;

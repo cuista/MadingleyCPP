@@ -5,6 +5,8 @@
 #include "Logger.h"
 #include "Maths.h"
 #include "Processor.h"
+#include "DataCoords.h"
+#include "DataIndices.h"
 
 Types::ParametersPointer Parameters::mThis = NULL;
 
@@ -16,9 +18,11 @@ Types::ParametersPointer Parameters::Get( ) {
 }
 
 Parameters::~Parameters( ) {
+
+    delete[ ] mMonthlyTimeStepArray;
+    delete[ ] mAnnualTimeStepArray;
     delete[ ] mDataLongitudeArray;
     delete[ ] mDataLatitudeArray;
-    delete[ ] mTimeStepArray;
     delete[ ] mUserLongitudeArray;
     delete[ ] mUserLatitudeArray;
 
@@ -36,18 +40,19 @@ bool Parameters::Initialise( const Types::StringMatrix& rawInputParameterData ) 
 
             std::string parameterName = Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterName ] ) );
 
-            if( parameterName == "timestepunits" ) SetTimeStepUnits( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            if( parameterName == "lengthofsimulationinyears" ) SetLengthOfSimulationInYears( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            if( parameterName == "minimumlongitude" ) SetUserMinimumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            if( parameterName == "maximumlongitude" ) SetUserMaximumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            if( parameterName == "minimumlatitude" ) SetUserMinimumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            if( parameterName == "maximumlatitude" ) SetUserMaximumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            if( parameterName == "gridcellsize" ) SetGridCellSize( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            if( parameterName == "extinctionthreshold" ) SetExtinctionThreshold( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            if( parameterName == "maximumnumberofcohorts" ) SetMaximumNumberOfCohorts( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            if( parameterName == "planktonsizethreshold" ) SetPlanktonSizeThreshold( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            if( parameterName == "drawrandomly" ) SetDrawRandomly( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            if( parameterName == "humannppextraction" ) SetHumanNPPExtraction( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            if( parameterName == "rootdatadirectory" ) SetRootDataDirectory( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            else if( parameterName == "timestepunits" ) SetTimeStepUnits( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            else if( parameterName == "lengthofsimulationinyears" ) SetLengthOfSimulationInMonths( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            else if( parameterName == "minimumlongitude" ) SetUserMinimumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            else if( parameterName == "maximumlongitude" ) SetUserMaximumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            else if( parameterName == "minimumlatitude" ) SetUserMinimumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            else if( parameterName == "maximumlatitude" ) SetUserMaximumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            else if( parameterName == "gridcellsize" ) SetGridCellSize( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            else if( parameterName == "extinctionthreshold" ) SetExtinctionThreshold( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            else if( parameterName == "maximumnumberofcohorts" ) SetMaximumNumberOfCohorts( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            else if( parameterName == "planktonsizethreshold" ) SetPlanktonSizeThreshold( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+            else if( parameterName == "drawrandomly" ) SetDrawRandomly( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            else if( parameterName == "humannppextraction" ) SetHumanNPPExtraction( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
         }
 
         CalculateParameters( );
@@ -61,11 +66,16 @@ bool Parameters::Initialise( const Types::StringMatrix& rawInputParameterData ) 
 void Parameters::CalculateParameters( ) {
 
     // Calculate temporal parameters
-    mLengthOfSimulationInTimeSteps = mLengthOfSimulationInYears * 12;
-    mTimeStepArray = new float[ mLengthOfSimulationInTimeSteps ];
+    mLengthOfSimulationInMonths = mLengthOfSimulationInYears * 12;
 
-    for( unsigned timeStep = 0; timeStep < mLengthOfSimulationInTimeSteps; ++timeStep ) {
-        mTimeStepArray[ timeStep ] = timeStep;
+    mMonthlyTimeStepArray = new unsigned[ mLengthOfSimulationInMonths ];
+    for( unsigned monthIndex = 0; monthIndex < mLengthOfSimulationInMonths; ++monthIndex ) {
+        mMonthlyTimeStepArray[ monthIndex ] = monthIndex;
+    }
+
+    mAnnualTimeStepArray = new unsigned[ mLengthOfSimulationInYears ];
+    for( unsigned yearIndex = 0; yearIndex < mLengthOfSimulationInYears; ++yearIndex ) {
+        mAnnualTimeStepArray[ yearIndex ] = yearIndex;
     }
 
     // Calculate spatial parameters
@@ -99,7 +109,9 @@ void Parameters::CalculateParameters( ) {
         mUserLatitudeArray[ userLatitudeIndex ] = mDataLatitudeArray[ userLatitudeIndex + mDataIndexOfUserMinimumLatitude ];
     }
 
-    mSizeOfGridDatum = mLengthUserLongitudeArray * mLengthUserLatitudeArray * mLengthOfSimulationInTimeSteps;
+    mNumberOfGridCells = mLengthUserLongitudeArray * mLengthUserLatitudeArray;
+    mSizeOfMonthlyGridDatum = mNumberOfGridCells * mLengthOfSimulationInMonths;
+    mSizeOfAnnualGridDatum = mNumberOfGridCells * mLengthOfSimulationInYears;
 
     mDomainCoordsMatrix.resize( mLengthUserLongitudeArray );
     unsigned domainLongitudeIndex = 0;
@@ -109,6 +121,27 @@ void Parameters::CalculateParameters( ) {
         }
         ++domainLongitudeIndex;
     }
+
+    unsigned cellIndex = 0;
+    mCoordsIndicesLookup.resize( mNumberOfGridCells );
+    for( unsigned latitudeIndex = 0; latitudeIndex < mLengthUserLatitudeArray; ++latitudeIndex ) {
+        for( unsigned longitudeIndex = 0; longitudeIndex < mLengthUserLongitudeArray; ++longitudeIndex ) {
+
+            float longitude = mUserLongitudeArray[ longitudeIndex ];
+            float latitude = mUserLatitudeArray[ latitudeIndex ];
+
+            Types::DataCoordsPointer coords = new DataCoords( longitude, latitude );
+            Types::DataIndicesPointer indices = new DataIndices( longitudeIndex, latitudeIndex );
+
+            mCoordsIndicesLookup[ cellIndex ] = std::make_pair( coords, indices );
+
+            cellIndex += 1;
+        }
+    }
+}
+
+std::string Parameters::GetRootDataDirectory( ) const {
+    return mRootDataDirectory;
 }
 
 std::string Parameters::GetTimeStepUnits( ) const {
@@ -159,11 +192,15 @@ std::string Parameters::GetHumanNPPExtraction( ) const {
     return mHumanNPPExtraction;
 }
 
+void Parameters::SetRootDataDirectory( const std::string& rootDataDirectory ) {
+    mRootDataDirectory = rootDataDirectory;
+}
+
 void Parameters::SetTimeStepUnits( const std::string& timeStepUnits ) {
     mTimeStepUnits = timeStepUnits;
 }
 
-void Parameters::SetLengthOfSimulationInYears( const unsigned& lengthOfSimulationInYears ) {
+void Parameters::SetLengthOfSimulationInMonths( const unsigned& lengthOfSimulationInYears ) {
     mLengthOfSimulationInYears = lengthOfSimulationInYears;
 }
 
@@ -210,8 +247,12 @@ void Parameters::SetHumanNPPExtraction( const std::string& humanNPPExtraction ) 
     mHumanNPPExtraction = humanNPPExtraction;
 }
 
-unsigned Parameters::GetLengthOfSimulationInTimeSteps( ) const {
-    return mLengthOfSimulationInTimeSteps;
+unsigned Parameters::GetNumberOfGridCells( ) const {
+    return mNumberOfGridCells;
+}
+
+unsigned Parameters::GetLengthOfSimulationInMonths( ) const {
+    return mLengthOfSimulationInMonths;
 }
 
 unsigned Parameters::GetLengthDataLongitudeArray( ) const {
@@ -246,8 +287,12 @@ unsigned Parameters::GetLengthUserLatitudeArray( ) const {
     return mLengthUserLatitudeArray;
 }
 
-unsigned Parameters::GetSizeOfGridDatum( ) const {
-    return mSizeOfGridDatum;
+unsigned Parameters::GetSizeOfMonthlyGridDatum( ) const {
+    return mSizeOfMonthlyGridDatum;
+}
+
+unsigned Parameters::GetSizeOfAnnualGridDatum( ) const {
+    return mSizeOfAnnualGridDatum;
 }
 
 float Parameters::GetDataLongitudeAtIndex( const unsigned& index ) const {
@@ -266,16 +311,20 @@ float Parameters::GetUserLatitudeAtIndex( const unsigned& index ) const {
     return mUserLatitudeArray[ index ];
 }
 
-float* Parameters::GetDataLongitudeArray( ) const {
-    return mDataLongitudeArray;
+//float* Parameters::GetDataLongitudeArray( ) const {
+//    return mDataLongitudeArray;
+//}
+//
+//float* Parameters::GetDataLatitudeArray( ) const {
+//    return mDataLatitudeArray;
+//}
+
+unsigned* Parameters::GetMonthlyTimeStepArray( ) const {
+    return mMonthlyTimeStepArray;
 }
 
-float* Parameters::GetDataLatitudeArray( ) const {
-    return mDataLatitudeArray;
-}
-
-float* Parameters::GetTimeStepArray( ) const {
-    return mTimeStepArray;
+unsigned* Parameters::GetAnnualTimeStepArray( ) const {
+    return mAnnualTimeStepArray;
 }
 
 float* Parameters::GetUserLongitudeArray( ) const {
@@ -311,4 +360,26 @@ Types::GeoIndices Parameters::GetDomainIndicesFromCoords( const float& longitude
     indices.second = Processor::Get( )->CalculateArrayIndexOfValue( mUserLatitudeArray, mLengthUserLatitudeArray, latitude );
 
     return indices;
+}
+
+int Parameters::GetCellIndexFromDataIndices( const unsigned& longitudeIndex, const unsigned& latitudeIndex ) const {
+
+    int cellIndex = Constants::cMissingValue;
+    for( unsigned index = 0; index < mNumberOfGridCells; ++index ) {
+        Types::DataIndicesPointer indices = mCoordsIndicesLookup[ index ].second;
+
+        if( indices->GetX( ) == longitudeIndex && indices->GetY( ) == latitudeIndex ) {
+            cellIndex = index;
+            break;
+        }
+    }
+    return cellIndex;
+}
+
+Types::DataCoordsPointer Parameters::GetDataCoordsFromCellIndex( const unsigned& cellIndex ) const {
+    return mCoordsIndicesLookup[ cellIndex ].first;
+}
+
+Types::DataIndicesPointer Parameters::GetDataIndicesFromCellIndex( const unsigned& cellIndex ) const {
+    return mCoordsIndicesLookup[ cellIndex ].second;
 }

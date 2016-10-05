@@ -10,11 +10,10 @@ public:
     static Types::DataLayerSetPointer Get( );
     
     Types::DataLayerPointer GetDataLayerWithName( const std::string& );
+    Types::VariablePointer GetDefaultVariableFor( const std::string& );
     void SetDataLayers( const Types::InputDataPointer );
     
-    Types::VariablePointer GetDefaultVariableFor( const std::string& );
-    float GetDataAtGeoCoordFor( const std::string, const Types::DataCoordsPointer );
-    float GetDataAtIndicesFor( const std::string, const Types::DataIndicesPointer );
+    float GetDataAtCellIndexFor( const std::string, const unsigned );
     
 private:
     DataLayerSet( );

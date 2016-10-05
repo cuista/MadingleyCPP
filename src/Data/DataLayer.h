@@ -16,14 +16,7 @@ public:
         delete mLatitudeVariable;
     };
 
-    virtual float GetDataAtGeoCoord( const Types::DataCoordsPointer ) const = 0;
-    virtual float GetDataAtGeoCoordFor( const Types::DataCoordsPointer, const std::string& ) const = 0;
-
-    virtual float GetDataAtIndices( const Types::DataIndicesPointer ) const = 0;
-    virtual float GetDataAtIndicesFor( const Types::DataIndicesPointer, const std::string& ) const = 0;
-    
-    virtual float GetDataAtGridCell( const Types::GridCellPointer ) const = 0;
-    virtual float GetDataAtGridCellFor( const Types::GridCellPointer, const std::string& ) const = 0;
+    virtual float GetDataAtCellIndex( const unsigned ) const = 0;
 
     std::string GetName( );
 

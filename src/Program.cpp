@@ -18,6 +18,7 @@ Initialise and run the model
 #include <MadingleyModel.h>
 
 #include "FileReader.h"
+#include "FileWriter.h"
 #include "Logger.h"
 //----------------------------------------------------------------------------------------------
 
@@ -49,6 +50,14 @@ int main( ) {
 
         // Run the simulation
         MadingleyEcosystemModel.RunMadingley( );
+
+        // Write output files
+        FileWriter fileWriter;
+        if( fileWriter.WriteFiles( ) == true )
+            Logger::Get( )->LogMessage( "Files written successfully..." );
+        else
+            Logger::Get( )->LogMessage( "ERROR> Cannot write output files." );
+
 
         // Stop the timer and write out the time taken to run this simulation
         s.Stop( );

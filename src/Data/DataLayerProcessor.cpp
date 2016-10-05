@@ -9,6 +9,7 @@
 #include "Convertor.h"
 #include "Processor.h"
 #include "Maths.h"
+#include "Parameters.h"
 
 DataLayerProcessor::DataLayerProcessor( ) {
 
@@ -21,10 +22,10 @@ DataLayerProcessor::~DataLayerProcessor( ) {
 Types::DataLayerMap DataLayerProcessor::ConvertReadDataIntoLayers( const Types::InputDataPointer inputData ) const {
 
     Types::DataLayerMap dataLayerMap;
-    
+
     for( unsigned index = 0; index < inputData->GetNumberOfInputDatums( ); ++index ) {
         Types::InputDatumPointer inputDatum = inputData->GetInputDatum( index );
-        
+
         Logger::Get( )->LogMessage( "Processing read data for datum \"" + inputDatum->GetName( ) + "\"..." );
 
         Types::DataLayerPointer dataLayer = MakeDataLayer( inputDatum );
@@ -52,28 +53,13 @@ Types::DataLayerPointer DataLayerProcessor::MakeDataLayer( const Types::InputDat
 
         switch( variableType ) {
             case Constants::eLongitude:
-            {
                 longitudeVariable = variable;
                 longitudeVariable->SetMaximumDataDifference( FindLargestVectorValueDifference( longitudeVariable ) );
-
-                if( DoesTheGeographicVariableNeedAdjustment( longitudeVariable ) == true ) {
-                    // Longitude runs from 0 to 360
-                    for( unsigned longitudeIndex = 0; longitudeIndex < longitudeVariable->GetSize( ); ++longitudeIndex ) {
-                        longitudeVariable->SetDataAtIndex( longitudeIndex, longitudeVariable->GetDataAtIndex( longitudeIndex ) - 180 );
-                    }
-                }
                 break;
-            }
+
             case Constants::eLatitude:
                 latitudeVariable = variable;
                 latitudeVariable->SetMaximumDataDifference( FindLargestVectorValueDifference( latitudeVariable ) );
-
-                if( DoesTheGeographicVariableNeedAdjustment( latitudeVariable ) == true ) {
-                    // Latitude runs from 0 to 180
-                    for( unsigned latitudeIndex = 0; latitudeIndex < latitudeVariable->GetSize( ); ++latitudeIndex ) {
-                        latitudeVariable->SetDataAtIndex( latitudeIndex, latitudeVariable->GetDataAtIndex( latitudeIndex ) - 90 );
-                    }
-                }
                 break;
 
             case Constants::eDepth:
@@ -98,22 +84,123 @@ Types::DataLayerPointer DataLayerProcessor::MakeDataLayer( const Types::InputDat
 
     if( variableVector.size( ) > 0 ) {
         if( longitudeVariable != NULL || latitudeVariable != NULL ) {
+
             if( depthVariable != NULL && timeVariable != NULL ) {
                 // Spatial data with depth and time
+                for( unsigned variableIndex = 0; variableIndex < variableVector.size( ); ++variableIndex ) {
+                    unsigned userIndex = 0;
+                    float* truncatedData = new float[ Parameters::Get( )->GetLengthUserLongitudeArray( ) * Parameters::Get( )->GetLengthUserLatitudeArray( ) * depthVariable->GetSize( ) * timeVariable->GetSize( ) ];
+
+                    for( unsigned timeIndex = 0; timeIndex < timeVariable->GetSize( ); ++timeIndex ) {
+                        for( unsigned depthIndex = 0; depthIndex < depthVariable->GetSize( ); ++depthIndex ) {
+                            for( unsigned latitudeIndex = 0; latitudeIndex < Parameters::Get( )->GetLengthDataLatitudeArray( ); ++latitudeIndex ) {
+                                for( unsigned longitudeIndex = 0; longitudeIndex < Parameters::Get( )->GetLengthDataLongitudeArray( ); ++longitudeIndex ) {
+
+                                    unsigned dataIndex = Processor::Get( )->Indices4DToIndex( longitudeIndex, latitudeIndex, depthIndex, timeIndex, Parameters::Get( )->GetLengthDataLongitudeArray( ), Parameters::Get( )->GetLengthDataLatitudeArray( ), depthVariable->GetSize( ) );
+                                    float data = variableVector[ 0 ]->GetDataAtIndex( dataIndex );
+
+                                    float dataLatitude = Parameters::Get( )->GetDataLatitudeAtIndex( latitudeIndex );
+                                    float dataLongitude = Parameters::Get( )->GetDataLongitudeAtIndex( longitudeIndex );
+
+                                    if( dataLongitude >= Parameters::Get( )->GetUserLongitudeAtIndex( 0 ) && dataLongitude <= Parameters::Get( )->GetUserLongitudeAtIndex( Parameters::Get( )->GetLengthUserLongitudeArray( ) - 1 ) && dataLatitude >= Parameters::Get( )->GetUserLatitudeAtIndex( 0 ) && dataLatitude <= Parameters::Get( )->GetUserLatitudeAtIndex( Parameters::Get( )->GetLengthUserLatitudeArray( ) - 1 ) ) {
+                                        truncatedData[ userIndex ] = data;
+                                        userIndex += 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    variableVector[ variableIndex ]->SetData( truncatedData, userIndex + 1 );
+                }
                 concreteDataLayer = new DataLayer3DwithTime( datum->GetName( ), variableVector, longitudeVariable, latitudeVariable, depthVariable, timeVariable );
 
             } else if( depthVariable != NULL ) {
                 // Spatial data with depth
+                for( unsigned variableIndex = 0; variableIndex < variableVector.size( ); ++variableIndex ) {
+                    unsigned userIndex = 0;
+                    float* truncatedData = new float[ Parameters::Get( )->GetLengthUserLongitudeArray( ) * Parameters::Get( )->GetLengthUserLatitudeArray( ) * depthVariable->GetSize( ) ];
+
+                    for( unsigned depthIndex = 0; depthIndex < depthVariable->GetSize( ); ++depthIndex ) {
+                        for( unsigned latitudeIndex = 0; latitudeIndex < Parameters::Get( )->GetLengthDataLatitudeArray( ); ++latitudeIndex ) {
+                            for( unsigned longitudeIndex = 0; longitudeIndex < Parameters::Get( )->GetLengthDataLongitudeArray( ); ++longitudeIndex ) {
+
+                                unsigned dataIndex = Processor::Get( )->Indices3DToIndex( longitudeIndex, latitudeIndex, depthIndex, Parameters::Get( )->GetLengthDataLongitudeArray( ), Parameters::Get( )->GetLengthDataLatitudeArray( ) );
+                                float data = variableVector[ 0 ]->GetDataAtIndex( dataIndex );
+
+                                float dataLatitude = Parameters::Get( )->GetDataLatitudeAtIndex( latitudeIndex );
+                                float dataLongitude = Parameters::Get( )->GetDataLongitudeAtIndex( longitudeIndex );
+
+                                if( dataLongitude >= Parameters::Get( )->GetUserLongitudeAtIndex( 0 ) && dataLongitude <= Parameters::Get( )->GetUserLongitudeAtIndex( Parameters::Get( )->GetLengthUserLongitudeArray( ) - 1 ) && dataLatitude >= Parameters::Get( )->GetUserLatitudeAtIndex( 0 ) && dataLatitude <= Parameters::Get( )->GetUserLatitudeAtIndex( Parameters::Get( )->GetLengthUserLatitudeArray( ) - 1 ) ) {
+                                    truncatedData[ userIndex ] = data;
+                                    userIndex += 1;
+                                }
+                            }
+                        }
+                    }
+
+                    variableVector[ variableIndex ]->SetData( truncatedData, userIndex + 1 );
+                }
                 concreteDataLayer = new DataLayer3D( datum->GetName( ), variableVector, longitudeVariable, latitudeVariable, depthVariable );
 
             } else if( timeVariable != NULL ) {
                 // Spatial data with time
+                for( unsigned variableIndex = 0; variableIndex < variableVector.size( ); ++variableIndex ) {
+                    unsigned userIndex = 0;
+                    float* truncatedData = new float[ Parameters::Get( )->GetLengthUserLongitudeArray( ) * Parameters::Get( )->GetLengthUserLatitudeArray( ) * timeVariable->GetSize( ) ];
+
+                    for( unsigned timeIndex = 0; timeIndex < timeVariable->GetSize( ); ++timeIndex ) {
+                        for( unsigned latitudeIndex = 0; latitudeIndex < Parameters::Get( )->GetLengthDataLatitudeArray( ); ++latitudeIndex ) {
+                            for( unsigned longitudeIndex = 0; longitudeIndex < Parameters::Get( )->GetLengthDataLongitudeArray( ); ++longitudeIndex ) {
+
+                                unsigned dataIndex = Processor::Get( )->Indices3DToIndex( longitudeIndex, latitudeIndex, timeIndex, Parameters::Get( )->GetLengthDataLongitudeArray( ), Parameters::Get( )->GetLengthDataLatitudeArray( ) );
+                                float data = variableVector[ 0 ]->GetDataAtIndex( dataIndex );
+
+                                float dataLatitude = Parameters::Get( )->GetDataLatitudeAtIndex( latitudeIndex );
+                                float dataLongitude = Parameters::Get( )->GetDataLongitudeAtIndex( longitudeIndex );
+
+                                if( dataLongitude >= Parameters::Get( )->GetUserLongitudeAtIndex( 0 ) && dataLongitude <= Parameters::Get( )->GetUserLongitudeAtIndex( Parameters::Get( )->GetLengthUserLongitudeArray( ) - 1 ) && dataLatitude >= Parameters::Get( )->GetUserLatitudeAtIndex( 0 ) && dataLatitude <= Parameters::Get( )->GetUserLatitudeAtIndex( Parameters::Get( )->GetLengthUserLatitudeArray( ) - 1 ) ) {
+                                    truncatedData[ userIndex ] = data;
+                                    userIndex += 1;
+                                }
+                            }
+                        }
+                    }
+
+                    variableVector[ variableIndex ]->SetData( truncatedData, userIndex + 1 );
+                }
                 concreteDataLayer = new DataLayer2DwithTime( datum->GetName( ), variableVector, longitudeVariable, latitudeVariable, timeVariable );
 
             } else {
                 // Spatial data
+                for( unsigned variableIndex = 0; variableIndex < variableVector.size( ); ++variableIndex ) {
+                    unsigned userIndex = 0;
+                    float* truncatedData = new float[ Parameters::Get( )->GetLengthUserLongitudeArray( ) * Parameters::Get( )->GetLengthUserLatitudeArray( ) ];
+
+                    for( unsigned latitudeIndex = 0; latitudeIndex < Parameters::Get( )->GetLengthDataLatitudeArray( ); ++latitudeIndex ) {
+                        for( unsigned longitudeIndex = 0; longitudeIndex < Parameters::Get( )->GetLengthDataLongitudeArray( ); ++longitudeIndex ) {
+
+                            unsigned dataIndex = Processor::Get( )->Indices2DToIndex( longitudeIndex, latitudeIndex, Parameters::Get( )->GetLengthDataLongitudeArray( ) );
+                            float data = variableVector[ 0 ]->GetDataAtIndex( dataIndex );
+
+                            float dataLatitude = Parameters::Get( )->GetDataLatitudeAtIndex( latitudeIndex );
+                            float dataLongitude = Parameters::Get( )->GetDataLongitudeAtIndex( longitudeIndex );
+
+                            if( dataLongitude >= Parameters::Get( )->GetUserLongitudeAtIndex( 0 ) && dataLongitude <= Parameters::Get( )->GetUserLongitudeAtIndex( Parameters::Get( )->GetLengthUserLongitudeArray( ) - 1 ) && dataLatitude >= Parameters::Get( )->GetUserLatitudeAtIndex( 0 ) && dataLatitude <= Parameters::Get( )->GetUserLatitudeAtIndex( Parameters::Get( )->GetLengthUserLatitudeArray( ) - 1 ) ) {
+                                truncatedData[ userIndex ] = data;
+                                userIndex += 1;
+                            }
+                        }
+                    }
+
+                    variableVector[ variableIndex ]->SetData( truncatedData, userIndex + 1 );
+                }
                 concreteDataLayer = new DataLayer2D( datum->GetName( ), variableVector, longitudeVariable, latitudeVariable );
             }
+
+            longitudeVariable->SetData( Parameters::Get( )->GetUserLongitudeArray( ), Parameters::Get( )->GetLengthUserLongitudeArray( ) );
+            latitudeVariable->SetData( Parameters::Get( )->GetUserLatitudeArray( ), Parameters::Get( )->GetLengthUserLatitudeArray( ) );
+
         } else {
             if( longitudeVariable == NULL && latitudeVariable == NULL ) {
                 Logger::Get( )->LogMessage( "ERROR> Attempted creation of datum \"" + datum->GetName( ) + "\" failed with no longitude and latitude set." );

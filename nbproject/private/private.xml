@@ -2,7 +2,7 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
         <activeConfTypeElem>1</activeConfTypeElem>
-        <activeConfIndexElem>1</activeConfIndexElem>
+        <activeConfIndexElem>0</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
         <file>
@@ -15,18 +15,6 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Program.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Output/DataRecorder.h</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Data/DataLayer2DwithTime.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Input/Parameters.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/CohortMerge.h</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Input/FileReader.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MadingleyModelInitialisation.h</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/Environment.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Input/Parameters.h</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MadingleyModel.h</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Data/DataLayerProcessor.cpp</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

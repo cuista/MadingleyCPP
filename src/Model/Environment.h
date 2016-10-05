@@ -18,27 +18,28 @@ public:
     virtual ~Layer( ) {
         ;
     }
-    virtual Types::DoubleVector& operator[]( int i ) = 0;
+    virtual double& operator[]( int i ) = 0;
     virtual void setTime( int tm ) = 0;
 };
 ////////////////////////////////////////////////////////////////////////////////
 
 class layer0: public Layer {
-    Types::DoubleMatrix data;
+    Types::DoubleVector data;
 public:
 
-    layer0( int sx, int sy ) {
+    layer0( int sx ) {
         data.resize( sx );
-        for( unsigned m = 0; m < sx; m++ )data[m].resize( sy );
+        //for( unsigned m = 0; m < sx; m++ )data[m].resize( sy );
     }
     //--------------------------------------------------------------------------
 
     ~layer0( ) {
-        for( unsigned m = 0; m < data.size( ); m++ )data[m].clear( );
+        //for( unsigned m = 0; m < data.size( ); m++ )data[m].clear( );
+        data.clear( );
     }
     //--------------------------------------------------------------------------
 
-    Types::DoubleVector& operator[]( int i ) {
+    double& operator[]( int i ) {
         return data[i];
     }
     //--------------------------------------------------------------------------
@@ -51,29 +52,29 @@ public:
 
 class layerT: public Layer {
     int t;
-    Types::Double3DMatrix data;
+    Types::DoubleMatrix data;
 public:
 
-    layerT( int q, int sx, int sy ): t( 0 ) {
+    layerT( int q, int sx ): t( 0 ) {
         data.resize( q );
         for( unsigned u = 0; u < q; u++ ) {
             data[u].resize( sx );
-            for( unsigned i = 0; i < sx; i++ ) {
-                data[u][i].resize( sy );
-            }
+            //for( unsigned i = 0; i < sx; i++ ) {
+            //    data[u][i].resize( sy );
+            //}
         }
     }
     //--------------------------------------------------------------------------
 
     ~layerT( ) {
         for( unsigned m = 0; m < data.size( ); m++ ) {
-            for( unsigned n = 0; n < data[m].size( ); n++ )data[m][n].clear( );
+            //for( unsigned n = 0; n < data[m].size( ); n++ )data[m][n].clear( );
             data[m].clear( );
         }
     }
     //--------------------------------------------------------------------------
 
-    Types::DoubleVector& operator[]( int i ) {
+    double& operator[]( int i ) {
         return data[t][i];
     }
     //--------------------------------------------------------------------------
@@ -107,12 +108,11 @@ class Environment {
     void setHANPP( );
 public:
     static Environment* Get( );
-    static double Get( std::string s, GridCell& gcl, int tm );
+    //static double Get( std::string s, GridCell& gcl, int tm );
     static double& Get( std::string s, GridCell& gcl );
-    static double& Get( std::string s, int, int );
+    static double& Get( std::string s, int );
     static void update( int );
 };
 
 #endif	/* ENVIRONMENT_H */
-
 

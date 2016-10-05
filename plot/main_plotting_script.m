@@ -1,38 +1,36 @@
-clear;
+tic
+%clear
 
-fileName = 'LATEST_OUTPUT';
-basePath = '/home/philju/Dropbox/Development/MadingleyCPP/output/v35_3/';
+%% User Defined Parameters
+optionCurrentDataSet            = '2016-10-05_12-20-01';
+optionOutputDirectory           = '/home/philju/Dropbox/Development/MadingleyCPP/output/';
 
-xAxisText = 'Time step';
-frequencyText = 'Frequency';
-concentrationText = 'Kg/km^2';
-fileFormat = 'png';
-optionPlotImageWidth = 12; % cm
-optionPlotImageHeight = 10; % cm
+optionOutputParametersFile      = 'OutputControlParameters.csv';
+optionAnnualBasicFile           = 'AnnualBasicOutputs.nc';
+optionAnnualGridFile            = 'AnnualGridOutputs.nc';
+optionMonthlyBasicFile          = 'MonthlyBasicOutputs.nc';
+optionMonthlyGridFile           = 'MonthlyGridOutputs.nc';
 
-filePath = [ basePath fileName ];
+optionPrintPlotsToFile          = 1; % yes = 1, no = anything else
+optionOutputFileFormat          = 'png'; % EPS or PNG
+optionPlotImageWidth            = 12; % cm
+optionPlotImageHeight           = 10; % cm
 
-if exist( filePath, 'file' ) == 2
-    
-    %uiimport( filePath );
-    
-    A = importdata( filePath );
-    
-    for datumIndex = 1:size( A.data, 2 )
-        if datumIndex == 1
-            timeSteps = A.data( :, 1 );
-            maxTimeSteps = length( timeSteps );
-        else
-            dataSet = A.data( :, datumIndex );
-            dataSetName = A.textdata{ datumIndex };
-            handle = figure;
-            plot( timeSteps, dataSet );
-            title( dataSetName );
-            xlabel( xAxisText );
-            xlim( [ 1 maxTimeSteps ] );
-            printPlotToFile( handle, [ optionPlotImageWidth optionPlotImageHeight ], [ basePath fileName '_' dataSetName ], fileFormat );
-        end
-    end
-else
-    disp( 'You''ve fucked up somewhere...' );
+optionMissingValue              = -9999;
+
+%% Input Formatting
+if strcmp( optionOutputDirectory( end ), '/' ) == 0
+    optionOutputDirectory = [ optionOutputDirectory '/' ];
 end
+
+if strcmp( optionCurrentDataSet( end ), '/' ) == 0
+    optionCurrentDataSet = [ optionCurrentDataSet '/' ];
+end
+
+%% Plot Script Execution
+if exist( [ optionOutputDirectory optionCurrentDataSet ], 'dir' ) == 7
+    plot_data
+else
+    disp( 'ERROR> Input directories do not exist.' );
+end
+toc

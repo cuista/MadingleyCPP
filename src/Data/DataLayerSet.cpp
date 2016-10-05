@@ -31,9 +31,8 @@ DataLayerSet::DataLayerSet( ) {
 }
 
 void DataLayerSet::SetDataLayers( const Types::InputDataPointer data ) {
-    Types::DataLayerProcessorPointer dataLayerProcessor = new DataLayerProcessor( );
-    mDataLayerMap = dataLayerProcessor->ConvertReadDataIntoLayers( data );
-    delete dataLayerProcessor;
+    DataLayerProcessor dataLayerProcessor;
+    mDataLayerMap = dataLayerProcessor.ConvertReadDataIntoLayers( data );
 }
 
 Types::VariablePointer DataLayerSet::GetDefaultVariableFor( const std::string& name ) {
@@ -64,28 +63,15 @@ Types::DataLayerPointer DataLayerSet::GetDataLayerWithName( const std::string& n
     return dataLayer;
 }
 
-float DataLayerSet::GetDataAtGeoCoordFor( const std::string name, const Types::DataCoordsPointer coord ) {
-
+float DataLayerSet::GetDataAtCellIndexFor( const std::string name, const unsigned cellIndex ) {
+    
     float value = Constants::cMissingValue;
-
+    
     Types::DataLayerPointer dataLayer = GetDataLayerWithName( name );
-
+    
     if( dataLayer != NULL ) {
-        value = dataLayer->GetDataAtGeoCoord( coord );
+        value = dataLayer->GetDataAtCellIndex( cellIndex );
     }
-
-    return value;
-}
-
-float DataLayerSet::GetDataAtIndicesFor( const std::string name, Types::DataIndicesPointer indices ) {
-
-    float value = Constants::cMissingValue;
-
-    Types::DataLayerPointer dataLayer = GetDataLayerWithName( name );
-
-    if( dataLayer != NULL ) {
-        value = dataLayer->GetDataAtIndices( indices );
-    }
-
+    
     return value;
 }

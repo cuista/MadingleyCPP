@@ -69,7 +69,7 @@ public:
             double& TS,
             ModelGrid& Grid ) {
         //Write to console
-        cout << "Initializing model...\n" << endl;
+        cout << "Initialising model...\n" << endl;
         //read and store environmental layers
         Environment::Get( );
         cout << "data read" << endl;

@@ -22,6 +22,9 @@ public:
         // set values for this grid cell
         // Also standardise missing values
 
+        // FIX - Pass index as a parameter and drop other unnecessary ones
+        mIndex = Parameters::Get()->GetCellIndexFromDataIndices( longitudeIndex, latitudeIndex );
+        
         // Set the grid cell values of latitude, longitude and missing value as specified
         mLatitude = latitude;
         mLongitude = longitude;
@@ -91,6 +94,11 @@ public:
     bool IsMarine( ) {
         return ( Environment::Get( "Realm", *this ) == 2.0 );
     }
+    
+    unsigned GetIndex( ) const {
+        return mIndex;
+    }
+    
     float GetLatitude( ) const {
         return mLatitude;
     }
@@ -132,6 +140,7 @@ public:
     }
 
 private:
+    unsigned mIndex;
     float mLatitude;
     float mLongitude;
     unsigned mLatitudeIndex;

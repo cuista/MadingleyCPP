@@ -1,12 +1,20 @@
 #include "BasicDatum.h"
+
 #include "Constants.h"
 #include "Parameters.h"
-#include "DateTime.h"
+#include "Time.h"
 
-BasicDatum::BasicDatum( const std::string& name, const std::string& units ) {
+BasicDatum::BasicDatum( const std::string& name, const std::string& timeUnit, const std::string& dataUnit ) {
     mName = name;
-    mUnits = units;
-    mData = new float[ Parameters::Get( )->GetLengthOfSimulationInTimeSteps( ) ];
+    mTimeUnit = timeUnit;
+    mDataUnit = dataUnit;
+
+    unsigned size = Parameters::Get( )->GetLengthOfSimulationInMonths( );
+    
+    if( mTimeUnit == Constants::cAnnualTimeUnitName )
+        size = Parameters::Get( )->GetLengthOfSimulationInYears( );
+
+    mData = new float[ size ]( );
 }
 
 BasicDatum::~BasicDatum( ) {
@@ -17,14 +25,22 @@ std::string BasicDatum::GetName( ) const {
     return mName;
 }
 
-std::string BasicDatum::GetUnits( ) const {
-    return mUnits;
+std::string BasicDatum::GetTimeUnit( ) const {
+    return mTimeUnit;
+}
+
+std::string BasicDatum::GetDataUnit( ) const {
+    return mDataUnit;
 }
 
 float* BasicDatum::GetData( ) const {
     return mData;
 }
 
+void BasicDatum::SetData( const float& data ) {
+    mData[ Time::Get( )->GetTimeStep( mTimeUnit ) ] = data;
+}
+
 void BasicDatum::AddData( const float& data ) {
-    mData[ DateTime::Get( )->GetTimeStep( ) ] = data;
+    mData[ Time::Get( )->GetTimeStep( mTimeUnit ) ] += data;
 }

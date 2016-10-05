@@ -1,5 +1,5 @@
 #ifndef PARAMETERS
-#define	PARAMETERS
+#define PARAMETERS
 
 #include "Types.h"
 
@@ -11,6 +11,7 @@ public:
     bool Initialise( const Types::StringMatrix& );
 
     // User defined parameters
+    std::string GetRootDataDirectory( ) const;
     std::string GetTimeStepUnits( ) const;
     unsigned GetLengthOfSimulationInYears( ) const;
     int GetUserMinimumLatitude( ) const;
@@ -24,8 +25,9 @@ public:
     bool GetDrawRandomly( ) const;
     std::string GetHumanNPPExtraction( ) const;
 
+    void SetRootDataDirectory( const std::string& );
     void SetTimeStepUnits( const std::string& );
-    void SetLengthOfSimulationInYears( const unsigned& );
+    void SetLengthOfSimulationInMonths( const unsigned& );
     void SetUserMinimumLongitude( const int& );
     void SetUserMaximumLongitude( const int& );
     void SetUserMinimumLatitude( const int& );
@@ -38,7 +40,8 @@ public:
     void SetHumanNPPExtraction( const std::string& );
 
     // Calculated parameters
-    unsigned GetLengthOfSimulationInTimeSteps( ) const;
+    unsigned GetNumberOfGridCells( ) const;
+    unsigned GetLengthOfSimulationInMonths( ) const;
     unsigned GetLengthDataLongitudeArray( ) const;
     unsigned GetLengthDataLatitudeArray( ) const;
     unsigned GetDataIndexOfUserMinimumLongitude( ) const;
@@ -47,15 +50,19 @@ public:
     unsigned GetDataIndexOfUserMaximumLatitude( ) const;
     unsigned GetLengthUserLongitudeArray( ) const;
     unsigned GetLengthUserLatitudeArray( ) const;
-    unsigned GetSizeOfGridDatum( ) const;
+
+    unsigned GetSizeOfAnnualGridDatum( ) const;
+    unsigned GetSizeOfMonthlyGridDatum( ) const;
+
     float GetDataLongitudeAtIndex( const unsigned& ) const;
     float GetDataLatitudeAtIndex( const unsigned& ) const;
     float GetUserLongitudeAtIndex( const unsigned& ) const;
     float GetUserLatitudeAtIndex( const unsigned& ) const;
 
-    float* GetDataLongitudeArray( ) const;
-    float* GetDataLatitudeArray( ) const;
-    float* GetTimeStepArray( ) const;
+    unsigned* GetMonthlyTimeStepArray( ) const;
+    unsigned* GetAnnualTimeStepArray( ) const;
+    //float* GetDataLongitudeArray( ) const;
+    //float* GetDataLatitudeArray( ) const;
     float* GetUserLongitudeArray( ) const;
     float* GetUserLatitudeArray( ) const;
 
@@ -63,6 +70,10 @@ public:
     Types::GeoCoords GetCoordsFromDomainIndices( const unsigned short&, const unsigned short& ) const;
     Types::GeoIndices GetDomainIndicesFromCoords( const Types::GeoCoords ) const;
     Types::GeoIndices GetDomainIndicesFromCoords( const float&, const float& ) const;
+    
+    int GetCellIndexFromDataIndices( const unsigned&, const unsigned& ) const;
+    Types::DataCoordsPointer GetDataCoordsFromCellIndex( const unsigned& ) const;
+    Types::DataIndicesPointer GetDataIndicesFromCellIndex( const unsigned& ) const;
 
 private:
     Parameters( );
@@ -71,6 +82,7 @@ private:
     static Types::ParametersPointer mThis;
 
     // User defined parameters
+    std::string mRootDataDirectory;
     std::string mTimeStepUnits;
     unsigned mLengthOfSimulationInYears;
     int mUserMinimumLongitude;
@@ -85,7 +97,8 @@ private:
     std::string mHumanNPPExtraction;
 
     // Calculated parameters
-    unsigned mLengthOfSimulationInTimeSteps;
+    unsigned mLengthOfSimulationInMonths;
+    unsigned mNumberOfGridCells;
     unsigned mLengthDataLongitudeArray;
     unsigned mLengthDataLatitudeArray;
     unsigned mLengthUserLongitudeArray;
@@ -94,14 +107,17 @@ private:
     unsigned mDataIndexOfUserMaximumLongitude;
     unsigned mDataIndexOfUserMinimumLatitude;
     unsigned mDataIndexOfUserMaximumLatitude;
-    unsigned mSizeOfGridDatum;
+    unsigned mSizeOfMonthlyGridDatum;
+    unsigned mSizeOfAnnualGridDatum;
+    unsigned* mMonthlyTimeStepArray;
+    unsigned* mAnnualTimeStepArray;
     float* mDataLongitudeArray;
     float* mDataLatitudeArray;
-    float* mTimeStepArray;
     float* mUserLongitudeArray;
     float* mUserLatitudeArray;
 
     Types::GeoCoordsMatrix mDomainCoordsMatrix;
+    Types::CoordsIndicesVector mCoordsIndicesLookup;
 };
 
 #endif

@@ -20,6 +20,7 @@ public:
     
     bool IsDefault( ) const;
     
+    void SetData( float*, const unsigned& );
     void SetDataAtIndex( const int&, const float& );
     void SetMaximumDataDifference( const float& );
     
