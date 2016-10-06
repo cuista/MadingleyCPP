@@ -15,7 +15,6 @@
 #include "DataLayerSet.h"
 #include "DataIndices.h"
 #include "Time.h"
-#include "DataRecorder.h"
 
 Types::EnvironmentPointer Environment::mThis = NULL;
 Types::LayerMap Environment::mLayers;
@@ -125,7 +124,7 @@ void Environment::setTemperature( ) {
         mLayers["Temperature"]->setTime( tm );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
-            double d = 0;
+            double d = Constants::cMissingValue;
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "MarineTemp", cellIndex );
             } else if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
@@ -137,8 +136,6 @@ void Environment::setTemperature( ) {
                 cout << "Warning Environment::setTemperature- missing values in temperature field!!" << endl;
             }
             ( *mLayers["Temperature"] )[cellIndex] = d;
-
-            DataRecorder::Get( )->SetDataOn( "Temp", cellIndex, d );
         }
     }
 }
@@ -149,13 +146,12 @@ void Environment::setUVel( ) {
         Time::Get( )->SetMonthlyTimeStep( tm );
         mLayers["uVel"]->setTime( tm );
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
-            double d = 0;
+            double d = Constants::cMissingValue;
 
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "MarineEastVel", cellIndex );
             }
             ( *mLayers["uVel"] )[cellIndex] = d;
-            DataRecorder::Get( )->SetDataOn( "uVel", cellIndex, d );
         }
     }
 }
@@ -167,14 +163,12 @@ void Environment::setVVel( ) {
         mLayers["vVel"]->setTime( tm );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
-            double d = 0;
+            double d = Constants::cMissingValue;
 
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "MarineNorthVel", cellIndex );
             }
             ( *mLayers["vVel"] )[cellIndex] = d;
-
-            DataRecorder::Get( )->SetDataOn( "vVel", cellIndex, d );
         }
     }
 }
@@ -184,20 +178,14 @@ void Environment::setDiurnalTemperatureRange( ) {
     for( int tm = 0; tm < 12; tm++ ) {
         Time::Get( )->SetMonthlyTimeStep( tm );
         mLayers["DiurnalTemperatureRange"]->setTime( tm );
-
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
-            double d = 0;
-            //if( DataLayerSet::Get( )->GetDataAtIndicesFor( "Realm", indices ) == 1 ) {
-            //    d = Constants::cMissingValue; //MB currently missing
-            //} else 
-
+            
+            double d = Constants::cMissingValue;
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialDTR", cellIndex );
             }
 
             ( *mLayers["DiurnalTemperatureRange"] )[cellIndex] = d;
-
-            DataRecorder::Get( )->SetDataOn( "DTR", cellIndex, d );
         }
     }
 }
@@ -212,7 +200,7 @@ void Environment::setPrecipitation( ) {
         mLayers["Precipitation"]->setTime( tm );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
-            double d = 0;
+            double d = 0; // There are missing values here. No marine precipitation data.
 
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialPre", cellIndex );
@@ -224,8 +212,6 @@ void Environment::setPrecipitation( ) {
             }
             ( *mLayers["Precipitation"] )[cellIndex] = d;
             ( *mLayers["TotalPrecip"] )[cellIndex] += d;
-
-            DataRecorder::Get( )->SetDataOn( "Precipitation", cellIndex, d );
         }
     }
 }
@@ -237,7 +223,7 @@ void Environment::setNPP( ) {
         mLayers["NPP"]->setTime( tm );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
-            double d = 0;
+            double d = Constants::cMissingValue;
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "MarineNPP", cellIndex );
             } else if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
@@ -248,9 +234,7 @@ void Environment::setNPP( ) {
                 d = 0;
                 cout << "Warning Environment::setNPP- missing values in NPP field!!" << endl;
             }
-            ( *mLayers["NPP"] )[cellIndex] = d;
-
-            DataRecorder::Get( )->SetDataOn( "NPP", cellIndex, d );
+            ( *mLayers["NPP"] )[cellIndex] = d; 
         }
     }
 }
@@ -265,9 +249,6 @@ void Environment::setRealm( ) {
             d = 1.0;
         }
         ( *mLayers["Realm"] )[cellIndex] = d;
-
-        Time::Get( )->SetMonthlyTimeStep( 0 );
-        DataRecorder::Get( )->SetDataOn( "Realm", cellIndex, d );
     }
 }
 //------------------------------------------------------------------------------
@@ -291,7 +272,7 @@ void Environment::setAVGSDTemp( ) {
         double avg = 0;
         for( int tm = 0; tm < 12; tm++ ) {
 
-            double d = 0;
+            double d = Constants::cMissingValue ;
 
             Time::Get( )->SetMonthlyTimeStep( tm );
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
@@ -300,7 +281,7 @@ void Environment::setAVGSDTemp( ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialTemp", cellIndex );
             }
 
-            if( d == Constants::cMissingValue )d = 0;
+            if( d == Constants::cMissingValue ) d = 0;
             avg += d;
         }
         avg = avg / 12;
@@ -308,9 +289,9 @@ void Environment::setAVGSDTemp( ) {
         vector<double>exptdev( 12 );
         for( int tm = 0; tm < 12; tm++ ) {
 
-            double d = 0;
-
+            double d = Constants::cMissingValue;
             Time::Get( )->SetMonthlyTimeStep( tm );
+            
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "MarineTemp", cellIndex );
             } else if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
@@ -325,15 +306,10 @@ void Environment::setAVGSDTemp( ) {
         for( int tm = 0; tm < 12; tm++ ) {
             mLayers["ExpTDevWeight"]->setTime( tm );
             ( *mLayers["ExpTDevWeight"] )[cellIndex] = exptdev[tm] / sumExp;
-            Time::Get( )->SetMonthlyTimeStep( tm );
-            DataRecorder::Get( )->SetDataOn( "ExpTDevWeight", cellIndex, ( *mLayers["ExpTDevWeight"] )[cellIndex] );
         }
 
         ( *mLayers["AnnualTemperature"] )[cellIndex] = avg;
         ( *mLayers["SDTemperature"] )[cellIndex] = sqrt( sota / 12 );
-        Time::Get( )->SetMonthlyTimeStep( 0 );
-        DataRecorder::Get( )->SetDataOn( "AnnualTemperature", cellIndex, ( *mLayers["AnnualTemperature"] )[cellIndex] );
-        DataRecorder::Get( )->SetDataOn( "SDTemperature", cellIndex, ( *mLayers["SDTemperature"] )[cellIndex] );
     }
 }
 //----------------------------------------------------------------------------------------------
@@ -356,8 +332,6 @@ void Environment::setNPPSeasonality( ) {
             for( int i = 0; i < 12; i++ ) {
                 mLayers["Seasonality"]->setTime( i );
                 ( *mLayers["Seasonality"] )[cellIndex] = 1.0 / 12.0;
-                Time::Get( )->SetMonthlyTimeStep( i );
-                DataRecorder::Get( )->SetDataOn( "Seasonality", cellIndex, ( *mLayers["Seasonality"] )[cellIndex] );
             }
 
         } else {
@@ -372,8 +346,6 @@ void Environment::setNPPSeasonality( ) {
                 } else {
                     ( *mLayers["Seasonality"] )[cellIndex] = 0.0;
                 }
-                Time::Get( )->SetMonthlyTimeStep( i );
-                DataRecorder::Get( )->SetDataOn( "Seasonality", cellIndex, ( *mLayers["Seasonality"] )[cellIndex] );
             }
         }
 
@@ -398,17 +370,13 @@ void Environment::setFrostandFire( ) {
                 Temperature[i] = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialTemp", cellIndex );
             }
         }
-        Time::Get( )->SetMonthlyTimeStep( 0 );
         ( *mLayers["Fraction Year Frost"] )[cellIndex] = CVC.GetNDF( FrostDays, Temperature, Constants::cMissingValue );
-        DataRecorder::Get( )->SetDataOn( "FractionYearFrost", cellIndex, ( *mLayers["Fraction Year Frost"] )[cellIndex] );
 
         vector<double> MonthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
         for( int i = 0; i < 12; i++ ) {
             mLayers["Fraction Month Frost"]->setTime( i );
             ( *mLayers["Fraction Month Frost"] )[cellIndex] = min( FrostDays[i] / MonthDays[i], ( double )1.0 );
-            Time::Get( )->SetMonthlyTimeStep( i );
-            DataRecorder::Get( )->SetDataOn( "FractionMonthFrost", cellIndex, ( *mLayers["Fraction Month Frost"] )[cellIndex] );
         }
         double AWC = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialAWC", cellIndex );
 
@@ -417,16 +385,9 @@ void Environment::setFrostandFire( ) {
         for( int i = 0; i < 12; i++ ) {
             mLayers["AET"]->setTime( i );
             ( *mLayers["AET"] )[cellIndex] = get<0>( TempTuple )[i];
-
-            Time::Get( )->SetMonthlyTimeStep( i );
-            DataRecorder::Get( )->SetDataOn( "AET", cellIndex, ( *mLayers["AET"] )[cellIndex] );
             ( *mLayers["TotalAET"] )[cellIndex] += get<0>( TempTuple )[i];
         }
         ( *mLayers["Fraction Year Fire"] )[cellIndex] = ( get<2> ( TempTuple ) / 360 );
-
-        Time::Get( )->SetMonthlyTimeStep( 0 );
-        DataRecorder::Get( )->SetDataOn( "FractionYearFire", cellIndex, ( *mLayers["Fraction Year Fire"] )[cellIndex] );
-        DataRecorder::Get( )->SetDataOn( "TotalAET", cellIndex, ( *mLayers["TotalAET"] )[cellIndex] );
     }
 }
 //----------------------------------------------------------------------------------------------
@@ -441,7 +402,6 @@ void Environment::setBreeding( ) {
             maxSeason = max( maxSeason, ( *mLayers["Seasonality"] )[cellIndex] );
         }
         for( int i = 0; i < 12; i++ ) {
-            Time::Get( )->SetMonthlyTimeStep( i );
             mLayers["Seasonality"]->setTime( i );
             mLayers["Breeding Season"]->setTime( i );
 
@@ -450,8 +410,6 @@ void Environment::setBreeding( ) {
             } else {
                 ( *mLayers["Breeding Season"] )[cellIndex] = 0.0;
             }
-
-            DataRecorder::Get( )->SetDataOn( "BreedingSeason", cellIndex, ( *mLayers["Breeding Season"] )[cellIndex] );
         }
     }
 }

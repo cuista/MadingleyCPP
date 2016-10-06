@@ -1,8 +1,14 @@
 PLANNED FUTURE CHANGES
 Primary
 - Output grid-based data for all available datums. Are there any other calculations that need to take place?
+- Mike to check in his changes.
 
 Secondary
+- Centralise file reading.
+- Drop the Environment interface and centralise all data layers.
 - Move hard-coded constants to Constants.h
 - Change DrawRandomly parameter to RandomSeed and use this to seed a centralised random object, accessible via a singleton design pattern.
 - Move library directories into the Madingley tree for increased portability.
+- Drop std namespaces.
+- Drop cout and switch to use of Logger class.
+- Terminal output written to file as model runs.

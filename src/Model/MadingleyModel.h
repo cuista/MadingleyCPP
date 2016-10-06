@@ -67,11 +67,8 @@ public:
     CohortMerge CohortMerger;
     /** \brief An instance of the mersenne twister random number generator class */
     std::mt19937_64 RandomNumberGenerator;
-    //
     MadingleyModelInitialisation params;
-    //Because the parameters are initialised late (!!!!!!!PARAMETERS::GET() levaes parameters uninitialised!!!!!!!ARG!!!!!)
-    //this has to be a pointer
-    Dispersal* disperser;
+    Dispersal* disperser; //FIX - Does this need to be a pointer?
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
@@ -92,7 +89,7 @@ public:
                 GlobalDiagnosticVariables["NumberOfCohortsInModel"],
                 GlobalDiagnosticVariables["NumberOfStocksInModel"],
                 EcosystemModelGrid );
-        disperser=new Dispersal();
+        disperser = new Dispersal( );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -150,7 +147,7 @@ public:
 
             RunWithinCellStockEcology( gcl );
 
-            RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
+                    RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
 
         } );
         // Update the variable tracking cohort unique IDs
@@ -173,8 +170,8 @@ public:
         // Get the list of functional group indices for autotroph stocks
         vector<int> AutotrophStockFunctionalGroups = params.StockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
         // Loop over autotroph functional groups
-        for( unsigned FunctionalGroup: AutotrophStockFunctionalGroups ) {
-            for( auto& ActingStock: gcl.mGridCellStocks[FunctionalGroup] ) {
+        for( unsigned FunctionalGroup : AutotrophStockFunctionalGroups ) {
+            for( auto& ActingStock : gcl.mGridCellStocks[FunctionalGroup] ) {
 
                 // Run stock ecology
                 MadingleyEcologyStock.RunWithinCellEcology( gcl, ActingStock, CurrentTimeStep, CurrentMonth, params );
@@ -222,7 +219,7 @@ public:
 
         } );
 
-        for( auto& c: Cohort::mNewCohorts ) {
+        for( auto& c : Cohort::mNewCohorts ) {
             gcl.InsertCohort( c );
             if( c.mDestination != &gcl )cout << "whut? wrong cell?" << endl;
         }
@@ -250,14 +247,14 @@ public:
         // Loop over cohorts and remove any whose abundance is below the extinction threshold
         vector<Cohort>CohortsToRemove;
         gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
-            if( c.mCohortAbundance - Parameters::Get( )->GetExtinctionThreshold( )<=0 || c.mIndividualBodyMass <= 0 ) {
+            if( c.mCohortAbundance - Parameters::Get( )->GetExtinctionThreshold( ) <= 0 || c.mIndividualBodyMass <= 0 ) {
                 CohortsToRemove.push_back( c );
                 partial.Extinctions += 1;
             }
         } );
 
         // Code to add the biomass to the biomass pool and dispose of the cohort
-        for( auto& c: CohortsToRemove ) {
+        for( auto& c : CohortsToRemove ) {
 
             // Add biomass of the extinct cohort to the organic matter pool
             double deadMatter = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance;
@@ -277,7 +274,7 @@ public:
     void RunCrossGridCellEcology( unsigned& dispersals ) {
         // Loop through each grid cell, and run dispersal for each.
         // In the original model a new dispersal object is made every timestep - this resets the random number generators
-        disperser->resetRandoms();
+        disperser->resetRandoms( );
         EcosystemModelGrid.ApplyFunctionToAllCells( [&]( GridCell & c ) {
             disperser->RunCrossGridCellEcologicalProcess( c, EcosystemModelGrid, params, CurrentMonth );
         } );
@@ -302,16 +299,27 @@ public:
     void Output( unsigned step ) {
 
         double organicPool = 0, respiratoryPool = 0, totalAbundance = 0;
-        double totalStockBiomass = 0, totalCohortBiomass = 0;long totalCohorts=0;
+        double totalStockBiomass = 0, totalCohortBiomass = 0;
+        long totalCohorts = 0;
         EcosystemModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
-            organicPool += Environment::Get( "Organic Pool", gcl ) / 1000.;
-            respiratoryPool += Environment::Get( "Respiratory CO2 Pool", gcl ) / 1000.;
+
+            double organicMatter = Environment::Get( "Organic Pool", gcl ) / 1000.;
+            double respiration = Environment::Get( "Respiratory CO2 Pool", gcl ) / 1000.;
+            
+                    organicPool += organicMatter;
+                    respiratoryPool += respiration;
+
+
+                    DataRecorder::Get( )->SetDataOn( "BiomassDensity", gcl.GetIndex( ), organicPool );
+                    DataRecorder::Get( )->SetDataOn( "AbundanceDensity", gcl.GetIndex( ), respiratoryPool );
+
+
                     gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
-                        totalCohorts+=1;
+                        totalCohorts += 1;
                         totalAbundance += c.mCohortAbundance;
 
-                        double CohortBiomass = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance / 1000.;
-                        totalCohortBiomass += CohortBiomass;
+                                double CohortBiomass = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance / 1000.;
+                                totalCohortBiomass += CohortBiomass;
                     } );
             gcl.ApplyFunctionToAllStocks( [&]( Stock & s ) {
                 totalStockBiomass += s.TotalBiomass / 1000.; //convert from g to kg
@@ -319,7 +327,7 @@ public:
         } );
         double totalLivingBiomass = totalCohortBiomass + totalStockBiomass;
         double totalBiomass = totalCohortBiomass + totalStockBiomass + respiratoryPool + organicPool;
-        
+
         DataRecorder::Get( )->SetDataOn( "InCellTime", EcologyTimer.GetElapsedTimeSecs( ) );
         DataRecorder::Get( )->SetDataOn( "DispersalTime", DispersalTimer.GetElapsedTimeSecs( ) );
 
@@ -332,7 +340,7 @@ public:
 
         DataRecorder::Get( )->SetDataOn( "NumberOfStocks", GlobalDiagnosticVariables["NumberOfStocksInModel"] );
         DataRecorder::Get( )->SetDataOn( "NumberOfCohorts", GlobalDiagnosticVariables["NumberOfCohortsInModel"] );
-        
+
         DataRecorder::Get( )->SetDataOn( "CohortsProduced", GlobalDiagnosticVariables["NumberOfCohortsProduced"] );
         DataRecorder::Get( )->SetDataOn( "CohortsExtinct", GlobalDiagnosticVariables["NumberOfCohortsExtinct"] );
         DataRecorder::Get( )->SetDataOn( "CohortsCombined", GlobalDiagnosticVariables["NumberOfCohortsCombined"] );
