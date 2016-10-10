@@ -32,32 +32,33 @@ DataRecorder::DataRecorder( ) {
 }
 
 bool DataRecorder::Initialise( const Types::StringMatrix& rawOutputParameterData ) {
-
+    bool success = false;
     if( rawOutputParameterData.size( ) > 0 ) {
-        for( unsigned rowIndex = 0; rowIndex < rawOutputParameterData.size( ); ++rowIndex ) {
-            std::string name = rawOutputParameterData[ rowIndex ][ Constants::eDatumName ];
-            std::string type = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eDatumType ] );
-            std::string timeUnit = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eTimeUnit ] );
-            std::string dataUnit = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eDataUnit ] );
+        if( rawOutputParameterData[ 0 ].size( ) == Constants::eDataUnit + 1 ) {
+            for( unsigned rowIndex = 0; rowIndex < rawOutputParameterData.size( ); ++rowIndex ) {
+                std::string name = rawOutputParameterData[ rowIndex ][ Constants::eDatumName ];
+                std::string type = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eDatumType ] );
+                std::string timeUnit = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eTimeUnit ] );
+                std::string dataUnit = Convertor::Get( )->ToLowercase( rawOutputParameterData[ rowIndex ][ Constants::eDataUnit ] );
 
-            Types::StringVector datumMetadata;
+                Types::StringVector datumMetadata;
 
-            datumMetadata.push_back( name );
-            datumMetadata.push_back( type );
-            datumMetadata.push_back( timeUnit );
-            datumMetadata.push_back( dataUnit );
-            
-            if( type == Constants::cBasicDatumTypeName ) {
-                mBasicOutputMetadata.push_back( datumMetadata );
-            } else if( type == Constants::cGridDatumTypeName ) {
-                mGridOutputMetadata.push_back( datumMetadata );
+                datumMetadata.push_back( name );
+                datumMetadata.push_back( type );
+                datumMetadata.push_back( timeUnit );
+                datumMetadata.push_back( dataUnit );
 
+                if( type == Constants::cBasicDatumTypeName ) {
+                    mBasicOutputMetadata.push_back( datumMetadata );
+                } else if( type == Constants::cGridDatumTypeName ) {
+                    mGridOutputMetadata.push_back( datumMetadata );
+
+                }
             }
+            success = true;
         }
-        return true;
-    } else {
-        return false;
     }
+    return success;
 }
 
 void DataRecorder::SetDataOn( const std::string& name, const float& data ) {

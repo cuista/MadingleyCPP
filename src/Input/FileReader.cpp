@@ -135,7 +135,6 @@ bool FileReader::ReadInputDataFiles( ) {
             DataLayerSet::Get( )->SetDataLayers( initialInputData );
             success = true;
         } else {
-
             success = false;
         }
     }

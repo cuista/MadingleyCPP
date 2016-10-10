@@ -13,13 +13,18 @@ FileWriter::~FileWriter( ) {
 }
 
 FileWriter::FileWriter( ) {
+    InitialiseOutputDirectory( );
+    WriteInputFiles( );
 }
 
 bool FileWriter::WriteFiles( ) {
-    InitialiseOutputDirectory( );
-    WriteInputFiles( );
+    bool completedSuccessfully = WriteBasicOutputs( );
 
-    return WriteNetCDFFiles( );
+    if( completedSuccessfully == true ) {
+        completedSuccessfully = WriteGridOutputs( );
+    }
+
+    return completedSuccessfully;
 }
 
 std::string& FileWriter::GetOutputDirectory( ) {
@@ -56,16 +61,6 @@ void FileWriter::WriteInputFiles( ) {
         sourceFileStream.close( );
         destinationFileStream.close( );
     }
-}
-
-bool FileWriter::WriteNetCDFFiles( ) const {
-    bool completedSuccessfully = WriteBasicOutputs( );
-
-    if( completedSuccessfully == true ) {
-        completedSuccessfully = WriteGridOutputs( );
-    }
-
-    return completedSuccessfully;
 }
 
 bool FileWriter::WriteBasicOutputs( ) const {

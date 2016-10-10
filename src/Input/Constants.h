@@ -4,7 +4,7 @@
 #include <string>
 
 namespace Constants {
-
+    
     enum eParametersMetadata {
         eParameterName,
         eParameterValue
@@ -36,11 +36,6 @@ namespace Constants {
         eTime,
         eDepth,
         eOther
-    };
-
-    enum eIndexDomainTypes {
-        eDataDomain,
-        eUserDomain
     };
 
     const std::string cLongitudeVariableNames[ ] = { "lon", "long", "longitude", "x" };

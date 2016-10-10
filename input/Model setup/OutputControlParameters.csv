@@ -18,8 +18,10 @@ CohortAbundance,basic,month,frequency
 BiomassDensity,grid,month,kg/km^2
 AbundanceDensity,grid,month,frequency/km^2
 AutotrophBiomassDensity,grid,month,kg/km^2
-EvergreenBiomassDensity,grid,month,kg/km^2
+HeterotrophBiomassDensity,grid,month,kg/km^2
+PhytoplanktonBiomassDensity,grid,month,kg/km^2
 DeciduousBiomassDensity,grid,month,kg/km^2
+EvergreenBiomassDensity,grid,month,kg/km^2
 HerbivoreBiomassDensity,grid,month,kg/km^2
 HerbivoreAbundanceDensity,grid,month,frequency/km^2
 OmnivoreBiomassDensity,grid,month,kg/km^2
@@ -30,7 +32,7 @@ EctothermBiomassDensity,grid,month,kg/km^2
 EctothermAbundanceDensity,grid,month,frequency/km^2
 EndothermBiomassDensity,grid,month,kg/km^2
 EndothermAbundanceDensity,grid,month,frequency/km^2
-SemelparityBiomassDensity,grid,month,kg/km^2
-SemelparityAbundanceDensity,grid,month,frequency/km^2
 IteroparityBiomassDensity,grid,month,kg/km^2
 IteroparityAbundanceDensity,grid,month,frequency/km^2
+SemelparityBiomassDensity,grid,month,kg/km^2
+SemelparityAbundanceDensity,grid,month,frequency/km^2

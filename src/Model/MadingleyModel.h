@@ -21,6 +21,7 @@
 #include "Maths.h"
 #include "Parameters.h"
 #include "DataRecorder.h"
+#include "Logger.h"
 /// @todo check private versus public variables
 /** \file MadingleyModel.h
  * \brief The main model header file
@@ -69,6 +70,12 @@ public:
     std::mt19937_64 RandomNumberGenerator;
     MadingleyModelInitialisation params;
     Dispersal* disperser; //FIX - Does this need to be a pointer?
+
+    std::vector< std::string > mStockLeafStrategy;
+    std::vector< std::string > mCohortNutritionSource;
+    std::vector< std::string > mCohortThermoregulation;
+    std::vector< std::string > mCohortReproductiveStrategy;
+
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
@@ -90,6 +97,11 @@ public:
                 GlobalDiagnosticVariables["NumberOfStocksInModel"],
                 EcosystemModelGrid );
         disperser = new Dispersal( );
+
+        mStockLeafStrategy = params.StockFunctionalGroupDefinitions.TraitLookupFromIndex[ "leaf strategy" ];
+        mCohortNutritionSource = params.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "nutrition source" ];
+        mCohortThermoregulation = params.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "endo/ectotherm" ];
+        mCohortReproductiveStrategy = params.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "reproductive strategy" ];
     }
     //----------------------------------------------------------------------------------------------
 
@@ -266,7 +278,6 @@ public:
             gcl.RemoveCohort( c );
 
         }
-
     }
     //----------------------------------------------------------------------------------------------
 
@@ -297,36 +308,123 @@ public:
     //----------------------------------------------------------------------------------------------
 
     void Output( unsigned step ) {
+        double totalLivingBiomass = 0;
+        double totalBiomass = 0;
 
-        double organicPool = 0, respiratoryPool = 0, totalAbundance = 0;
-        double totalStockBiomass = 0, totalCohortBiomass = 0;
+        double organicMatterPool = 0;
+        double respiratoryPool = 0;
+
+        double totalStockBiomass = 0;
+
+        double totalCohortBiomass = 0;
         long totalCohorts = 0;
-        EcosystemModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
+        double totalCohortAbundance = 0;
 
-            double organicMatter = Environment::Get( "Organic Pool", gcl ) / 1000.;
-            double respiration = Environment::Get( "Respiratory CO2 Pool", gcl ) / 1000.;
-            
-                    organicPool += organicMatter;
-                    respiratoryPool += respiration;
+        EcosystemModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gridCell ) {
+            double organicMatterThisCell = Environment::Get( "Organic Pool", gridCell ) / 1000.;
+            double respirationThisCell = Environment::Get( "Respiratory CO2 Pool", gridCell ) / 1000.;
 
+                    double cohortBiomassThisCell = 0;
+                    double stockBiomassThisCell = 0;
 
-                    DataRecorder::Get( )->SetDataOn( "BiomassDensity", gcl.GetIndex( ), organicPool );
-                    DataRecorder::Get( )->SetDataOn( "AbundanceDensity", gcl.GetIndex( ), respiratoryPool );
+                    double phytoplanktonBiomassThisCell = 0;
+                    double evergreenBiomassThisCell = 0;
+                    double deciduousBiomassThisCell = 0;
 
+                    double cohortAbundanceThisCell = 0;
+                    double herbivoreBiomassThisCell = 0;
+                    double herbivoreAbundanceThisCell = 0;
+                    double omnivoreBiomassThisCell = 0;
+                    double omnivoreAbundanceThisCell = 0;
+                    double carnivoreBiomassThisCell = 0;
+                    double carnivoreAbundanceThisCell = 0;
 
-                    gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
+                    double ectothermBiomassThisCell = 0;
+                    double ectothermAbundanceThisCell = 0;
+                    double endothermBiomassThisCell = 0;
+                    double endothermAbundanceThisCell = 0;
+
+                    double iteroparousBiomassThisCell = 0;
+                    double iteroparousAbundanceThisCell = 0;
+                    double semelparousBiomassThisCell = 0;
+                    double semelparousAbundanceThisCell = 0;
+
+                    organicMatterPool += organicMatterThisCell;
+                    respiratoryPool += respirationThisCell;
+
+                    gridCell.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
                         totalCohorts += 1;
-                        totalAbundance += c.mCohortAbundance;
+                        totalCohortAbundance += c.mCohortAbundance;
 
-                                double CohortBiomass = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance / 1000.;
-                                totalCohortBiomass += CohortBiomass;
+                                double cohortBiomass = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance / 1000.;
+                                cohortBiomassThisCell += cohortBiomass;
+                                totalCohortBiomass += cohortBiomass;
+                                cohortAbundanceThisCell += c.mCohortAbundance;
+
+                        if( mCohortNutritionSource[ c.mFunctionalGroupIndex ] == "herbivore" ) {
+                            herbivoreBiomassThisCell += c.mIndividualBodyMass;
+                                    herbivoreAbundanceThisCell += c.mCohortAbundance;
+                        } else if( mCohortNutritionSource[ c.mFunctionalGroupIndex ] == "omnivore" ) {
+                            omnivoreBiomassThisCell += c.mIndividualBodyMass;
+                                    omnivoreAbundanceThisCell += c.mCohortAbundance;
+                        } else if( mCohortNutritionSource[ c.mFunctionalGroupIndex ] == "carnivore" ) {
+                            carnivoreBiomassThisCell += c.mIndividualBodyMass;
+                                    carnivoreAbundanceThisCell += c.mCohortAbundance;
+                        }
+
+                        if( mCohortThermoregulation[ c.mFunctionalGroupIndex ] == "endotherm" ) {
+                            ectothermBiomassThisCell += c.mIndividualBodyMass;
+                                    ectothermAbundanceThisCell += c.mCohortAbundance;
+                        } else if( mCohortThermoregulation[ c.mFunctionalGroupIndex ] == "ectotherm" ) {
+                            endothermBiomassThisCell += c.mIndividualBodyMass;
+                                    endothermAbundanceThisCell += c.mCohortAbundance;
+                        }
+
+                        if( mCohortReproductiveStrategy[ c.mFunctionalGroupIndex ] == "iteroparity" ) {
+                            iteroparousBiomassThisCell += c.mIndividualBodyMass;
+                                    iteroparousAbundanceThisCell += c.mCohortAbundance;
+                        } else if( mCohortReproductiveStrategy[ c.mFunctionalGroupIndex ] == "semelparity" ) {
+                            semelparousBiomassThisCell += c.mIndividualBodyMass;
+                                    semelparousAbundanceThisCell += c.mCohortAbundance;
+                        }
                     } );
-            gcl.ApplyFunctionToAllStocks( [&]( Stock & s ) {
-                totalStockBiomass += s.TotalBiomass / 1000.; //convert from g to kg
-            } );
+            gridCell.ApplyFunctionToAllStocks( [&]( Stock & s ) {
+                double thisStockBiomass = s.TotalBiomass / 1000.;
+                        stockBiomassThisCell += thisStockBiomass; //convert from g to kg
+                totalStockBiomass += thisStockBiomass;
+
+                if( mStockLeafStrategy[ s.FunctionalGroupIndex ] == "na" ) phytoplanktonBiomassThisCell += thisStockBiomass;
+                else if( mStockLeafStrategy[ s.FunctionalGroupIndex ] == "deciduous" ) deciduousBiomassThisCell += thisStockBiomass;
+                else if( mStockLeafStrategy[ s.FunctionalGroupIndex ] == "evergreen" ) evergreenBiomassThisCell += thisStockBiomass;
+                } );
+
+            double biomassThisCell = cohortBiomassThisCell + stockBiomassThisCell + respirationThisCell + organicMatterThisCell;
+
+                    DataRecorder::Get( )->SetDataOn( "BiomassDensity", gridCell.GetIndex( ), biomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "AbundanceDensity", gridCell.GetIndex( ), cohortAbundanceThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "AutotrophBiomassDensity", gridCell.GetIndex( ), stockBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "HeterotrophBiomassDensity", gridCell.GetIndex( ), cohortBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "PhytoplanktonBiomassDensity", gridCell.GetIndex( ), phytoplanktonBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "DeciduousBiomassDensity", gridCell.GetIndex( ), deciduousBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "EvergreenBiomassDensity", gridCell.GetIndex( ), evergreenBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "HerbivoreBiomassDensity", gridCell.GetIndex( ), herbivoreBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "HerbivoreAbundanceDensity", gridCell.GetIndex( ), herbivoreAbundanceThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "OmnivoreBiomassDensity", gridCell.GetIndex( ), omnivoreBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "OmnivoreAbundanceDensity", gridCell.GetIndex( ), omnivoreAbundanceThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "CarnivoreBiomassDensity", gridCell.GetIndex( ), carnivoreBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "CarnivoreAbundanceDensity", gridCell.GetIndex( ), carnivoreAbundanceThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "EctothermBiomassDensity", gridCell.GetIndex( ), ectothermBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "EctothermAbundanceDensity", gridCell.GetIndex( ), ectothermAbundanceThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "EndothermBiomassDensity", gridCell.GetIndex( ), endothermBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "EndothermAbundanceDensity", gridCell.GetIndex( ), endothermAbundanceThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "IteroparityBiomassDensity", gridCell.GetIndex( ), iteroparousBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "IteroparityAbundanceDensity", gridCell.GetIndex( ), iteroparousAbundanceThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "SemelparityBiomassDensity", gridCell.GetIndex( ), semelparousBiomassThisCell / gridCell.GetCellArea( ) );
+                    DataRecorder::Get( )->SetDataOn( "SemelparityAbundanceDensity", gridCell.GetIndex( ), semelparousAbundanceThisCell / gridCell.GetCellArea( ) );
+
         } );
-        double totalLivingBiomass = totalCohortBiomass + totalStockBiomass;
-        double totalBiomass = totalCohortBiomass + totalStockBiomass + respiratoryPool + organicPool;
+        totalLivingBiomass = totalCohortBiomass + totalStockBiomass;
+        totalBiomass = totalCohortBiomass + totalStockBiomass + respiratoryPool + organicMatterPool;
 
         DataRecorder::Get( )->SetDataOn( "InCellTime", EcologyTimer.GetElapsedTimeSecs( ) );
         DataRecorder::Get( )->SetDataOn( "DispersalTime", DispersalTimer.GetElapsedTimeSecs( ) );
@@ -335,7 +433,7 @@ public:
         DataRecorder::Get( )->SetDataOn( "TotalLivingBiomass", totalLivingBiomass );
         DataRecorder::Get( )->SetDataOn( "TotalStockBiomass", totalStockBiomass );
         DataRecorder::Get( )->SetDataOn( "TotalCohortBiomass", totalCohortBiomass );
-        DataRecorder::Get( )->SetDataOn( "OrganicMatterPool", organicPool );
+        DataRecorder::Get( )->SetDataOn( "OrganicMatterPool", organicMatterPool );
         DataRecorder::Get( )->SetDataOn( "RespiratoryCO2Pool", respiratoryPool );
 
         DataRecorder::Get( )->SetDataOn( "NumberOfStocks", GlobalDiagnosticVariables["NumberOfStocksInModel"] );
@@ -345,9 +443,8 @@ public:
         DataRecorder::Get( )->SetDataOn( "CohortsExtinct", GlobalDiagnosticVariables["NumberOfCohortsExtinct"] );
         DataRecorder::Get( )->SetDataOn( "CohortsCombined", GlobalDiagnosticVariables["NumberOfCohortsCombined"] );
         DataRecorder::Get( )->SetDataOn( "CohortsDispersed", Dispersals );
-        DataRecorder::Get( )->SetDataOn( "CohortAbundance", totalAbundance );
+        DataRecorder::Get( )->SetDataOn( "CohortAbundance", totalCohortAbundance );
     }
-
 };
 
 #endif

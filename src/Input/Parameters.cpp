@@ -35,32 +35,34 @@ Parameters::Parameters( ) {
 }
 
 bool Parameters::Initialise( const Types::StringMatrix& rawInputParameterData ) {
+    bool success = false;
+
     if( rawInputParameterData.size( ) > 0 ) {
-        for( unsigned rowIndex = 0; rowIndex < rawInputParameterData.size( ); ++rowIndex ) {
+        if( rawInputParameterData[ 0 ].size( ) == Constants::eParameterValue + 1 ) {
+            for( unsigned rowIndex = 0; rowIndex < rawInputParameterData.size( ); ++rowIndex ) {
+                
+                std::string parameterName = Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterName ] ) );
 
-            std::string parameterName = Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterName ] ) );
-
-            if( parameterName == "rootdatadirectory" ) SetRootDataDirectory( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            else if( parameterName == "timestepunits" ) SetTimeStepUnits( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            else if( parameterName == "lengthofsimulationinyears" ) SetLengthOfSimulationInMonths( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            else if( parameterName == "minimumlongitude" ) SetUserMinimumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            else if( parameterName == "maximumlongitude" ) SetUserMaximumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            else if( parameterName == "minimumlatitude" ) SetUserMinimumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            else if( parameterName == "maximumlatitude" ) SetUserMaximumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            else if( parameterName == "gridcellsize" ) SetGridCellSize( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            else if( parameterName == "extinctionthreshold" ) SetExtinctionThreshold( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            else if( parameterName == "maximumnumberofcohorts" ) SetMaximumNumberOfCohorts( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            else if( parameterName == "planktonsizethreshold" ) SetPlanktonSizeThreshold( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
-            else if( parameterName == "drawrandomly" ) SetDrawRandomly( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-            else if( parameterName == "humannppextraction" ) SetHumanNPPExtraction( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+                if( parameterName == "rootdatadirectory" ) SetRootDataDirectory( Convertor::Get( )->RemoveWhiteSpace( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "timestepunits" ) SetTimeStepUnits( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+                else if( parameterName == "lengthofsimulationinyears" ) SetLengthOfSimulationInMonths( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "minimumlongitude" ) SetUserMinimumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "maximumlongitude" ) SetUserMaximumLongitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "minimumlatitude" ) SetUserMinimumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "maximumlatitude" ) SetUserMaximumLatitude( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "gridcellsize" ) SetGridCellSize( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "extinctionthreshold" ) SetExtinctionThreshold( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "maximumnumberofcohorts" ) SetMaximumNumberOfCohorts( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "planktonsizethreshold" ) SetPlanktonSizeThreshold( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "drawrandomly" ) SetDrawRandomly( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+                else if( parameterName == "humannppextraction" ) SetHumanNPPExtraction( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+            }
+            CalculateParameters( );
+            
+            success = true;
         }
-
-        CalculateParameters( );
-
-        return true;
-    } else {
-        return false;
     }
+    return success;
 }
 
 void Parameters::CalculateParameters( ) {

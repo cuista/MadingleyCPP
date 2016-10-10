@@ -47,7 +47,7 @@ public:
     @param outputPath The path to the output folder, in which to copy the functional group definitions file
      */
     FunctionalGroupDefinitions( string fileName ) {
-        cout << "Reading those functional group definitions" << endl;
+        cout << "Reading \"" << fileName << "\" functional group definitions." << endl;
         fileName = Constants::cConfigurationDirectory + fileName;
         ifstream infile( fileName.c_str( ) );
         if( infile.is_open( ) ) {

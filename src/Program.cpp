@@ -34,11 +34,11 @@ int main( ) {
     std::time_t t = system_clock::to_time_t( high_resolution_clock::now( ) );
     cout << "Model Run started at " << std::ctime( &t ) << endl;
 
-    Types::FileReaderPointer fileReader = new FileReader( );
+    FileReader fileReader;
 
-    if( fileReader->ReadFiles( ) == true ) {
+    if( fileReader.ReadFiles( ) == true ) {
         Logger::Get( )->LogMessage( "Files read successfully..." );
-
+        FileWriter fileWriter;
 
         // Initialise the model
         // Declare an instance of the class that runs a Madingley model simulation
@@ -51,20 +51,15 @@ int main( ) {
         // Run the simulation
         MadingleyEcosystemModel.RunMadingley( );
 
-        // Write output files
-        FileWriter fileWriter;
-        if( fileWriter.WriteFiles( ) == true )
+        if( fileWriter.WriteFiles( ) == true ) 
             Logger::Get( )->LogMessage( "Files written to \"" + fileWriter.GetOutputDirectory( ) + "\" successfully..." );
-        else
-            Logger::Get( )->LogMessage( "ERROR> Cannot write output files." );
-
 
         // Stop the timer and write out the time taken to run this simulation
         s.Stop( );
         cout << "Model run finished" << endl;
         cout << "Total elapsed time was " << s.GetElapsedTimeSecs( ) << " seconds " << endl;
     } else {
-        Logger::Get( )->LogMessage( "ERROR> Cannot read input files. System exiting..." );
+        Logger::Get( )->LogMessage( "ERROR> File reading failed. System exiting..." );
     }
     return 0;
 }
