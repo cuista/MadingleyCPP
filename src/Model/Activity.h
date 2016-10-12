@@ -73,21 +73,21 @@ public:
      */
     void AssignProportionTimeActive( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth, MadingleyModelInitialisation& params ) {
         //Only work on heterotroph cohorts
-        if( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Heterotroph/Autotroph", actingCohort.mFunctionalGroupIndex ) == "heterotroph" ) {
+        if( params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Heterotroph/Autotroph", actingCohort.mFunctionalGroupIndex ) == "heterotroph" ) {
             //Check if this is an endotherm or ectotherm
-            bool Endotherm = params.CohortFunctionalGroupDefinitions.GetTraitNames( "Endo/Ectotherm", actingCohort.mFunctionalGroupIndex ) == "endotherm";
+            bool Endotherm = params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Endo/Ectotherm", actingCohort.mFunctionalGroupIndex ) == "endotherm";
             if( Endotherm ) {
                 //Assumes the whole timestep is suitable for endotherms to be active - actual time active is therefore the proportion specified for this functional group.
-                actingCohort.mProportionTimeActive = params.CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "proportion suitable time active", actingCohort.mFunctionalGroupIndex );
+                actingCohort.mProportionTimeActive = params.mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "proportion suitable time active", actingCohort.mFunctionalGroupIndex );
             } else {
                 //If ectotherm then use realm specific function
                 if( !gcl.IsMarine( ) ) {
                     actingCohort.mProportionTimeActive = CalculateProportionTimeSuitableTerrestrial( gcl, currentMonth, Endotherm ) *
-                            params.CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "proportion suitable time active", actingCohort.mFunctionalGroupIndex );
+                            params.mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "proportion suitable time active", actingCohort.mFunctionalGroupIndex );
                 } else {
                     //update from PLOS biology code which just had 1.0 here
                     actingCohort.mProportionTimeActive = CalculateProportionTimeSuitableMarine( gcl, currentMonth, Endotherm )*
-                            params.CohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "proportion suitable time active", actingCohort.mFunctionalGroupIndex );
+                            params.mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "proportion suitable time active", actingCohort.mFunctionalGroupIndex );
                 }
             }
         }

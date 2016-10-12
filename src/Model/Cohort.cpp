@@ -115,7 +115,7 @@ bool Cohort::IsMarine( ) {
 }
 
 bool Cohort::IsPlanktonic( MadingleyModelInitialisation& params ) {
-    return ( IsMarine( ) && ( ( mIndividualBodyMass <= Parameters::Get( )->GetPlanktonSizeThreshold( ) ) || ( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", mFunctionalGroupIndex ) == "planktonic" ) ) );
+    return ( IsMarine( ) && ( ( mIndividualBodyMass <= Parameters::Get( )->GetPlanktonSizeThreshold( ) ) || ( params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", mFunctionalGroupIndex ) == "planktonic" ) ) );
 }
 
 string Cohort::DispersalType( MadingleyModelInitialisation& params ) {

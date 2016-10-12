@@ -34,6 +34,7 @@ int main( ) {
 
     if( fileReader.ReadFiles( ) == true ) {
         Logger::Get( )->LogMessage( "Files read successfully..." );
+        Logger::Get( )->LogMessage( "" );
         FileWriter fileWriter;
 
         // Initialise the model
@@ -41,7 +42,7 @@ int main( ) {
         MadingleyModel madingleyModel;
 
         // Declare and start a timer
-        mStopWatch s;
+        StopWatch s;
         s.Start( );
 
         // Run the simulation

@@ -1,20 +1,21 @@
 #ifndef MADINGLEYMODEL_H
 #define	MADINGLEYMODEL_H
 
-#include <MadingleyModelInitialisation.h>
-#include <FunctionalGroupDefinitions.h>
-#include <Stopwatch.h>
-#include <CohortMerge.h>
-#include <ModelGrid.h>
-#include <GridCell.h>
-#include <Dispersal.h>
-#include <EcologyStock.h>
-#include <EcologyCohort.h>
-#include <Activity.h>
-#include <ThreadLocked.h>
-#include <Environment.h>
+#include "MadingleyModelInitialisation.h"
+#include "FunctionalGroupDefinitions.h"
+#include "Stopwatch.h"
+#include "CohortMerge.h"
+#include "ModelGrid.h"
+#include "GridCell.h"
+#include "Dispersal.h"
+#include "EcologyStock.h"
+#include "EcologyCohort.h"
+#include "Activity.h"
+#include "ThreadLocked.h"
+#include "Environment.h"
 
 #include "Time.h"
+#include "Logger.h"
 #include "Maths.h"
 #include "Parameters.h"
 #include "DataRecorder.h"
@@ -43,11 +44,10 @@ public:
     /** \brief A list of global diagnostics for this model run */
     Types::DoubleMap mGlobalDiagnosticVariables;
     /** \brief An instance of StopWatch to time individual time steps */
-    mStopWatch mTimeStepTimer;
-    mStopWatch mEcologyTimer;
-    mStopWatch mDispersalTimer;
-    mStopWatch mOutputTimer;
-    mStopWatch mMergeTimer;
+    StopWatch mEcologyTimer;
+    StopWatch mDispersalTimer;
+    StopWatch mOutputTimer;
+    StopWatch mMergeTimer;
     /** \brief An array of instances of the output class to deal with grid cell outputs */
     //vector<OutputCell> CellOutputs;
 
@@ -96,18 +96,18 @@ public:
                 mModelGrid );
         mDisperser = new Dispersal( );
 
-        mStockLeafStrategy = mParams.StockFunctionalGroupDefinitions.TraitLookupFromIndex[ "leaf strategy" ];
-        mCohortNutritionSource = mParams.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "nutrition source" ];
-        mCohortThermoregulation = mParams.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "endo/ectotherm" ];
-        mCohortReproductiveStrategy = mParams.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "reproductive strategy" ];
+        mStockLeafStrategy = mParams.mStockFunctionalGroupDefinitions.TraitLookupFromIndex[ "leaf strategy" ];
+        mCohortNutritionSource = mParams.mCohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "nutrition source" ];
+        mCohortThermoregulation = mParams.mCohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "endo/ectotherm" ];
+        mCohortReproductiveStrategy = mParams.mCohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "reproductive strategy" ];
     }
     //----------------------------------------------------------------------------------------------
 
     /** \brief  Run the global ecosystem model     */
     void RunMadingley( ) {
         // Write out model run details to the console
-        cout << "Running model" << endl;
-        cout << "Number of time steps is: " << Parameters::Get( )->GetLengthOfSimulationInMonths( ) << endl;
+        Logger::Get( )->LogMessage( "Running model" );
+        Logger::Get( )->LogMessage( "Number of time steps is: " + Convertor::Get( )->ToString( Parameters::Get( )->GetLengthOfSimulationInMonths( ) ) );
 
         mDispersals = 0;
         /// Run the model
@@ -115,9 +115,8 @@ public:
 
             Time::Get( )->SetMonthlyTimeStep( timeStep );
 
-            cout << "Running time step " << timeStep + 1 << "..." << endl;
-            // Start the timer
-            mTimeStepTimer.Start( );
+            Logger::Get( )->LogMessage( "Running time step " + Convertor::Get( )->ToString( timeStep + 1 ) + "..." );
+
             // Get current time step and month
             mCurrentTimeStep = timeStep;
             mCurrentMonth = mUtilities.GetCurrentMonth( timeStep );
@@ -127,22 +126,21 @@ public:
 
             RunWithinCells( );
             mEcologyTimer.Stop( );
-            cout << "Within grid ecology took: " << mEcologyTimer.GetElapsedTimeSecs( ) << endl;
+            Logger::Get( )->LogMessage( "Within grid ecology took: " + Convertor::Get( )->ToString( mEcologyTimer.GetElapsedTimeSecs( ) ) );
 
             mDispersalTimer.Start( );
 
             RunCrossGridCellEcology( mDispersals );
             mDispersalTimer.Stop( );
-            cout << "Across grid ecology took: " << mDispersalTimer.GetElapsedTimeSecs( ) << endl;
+            Logger::Get( )->LogMessage( "Across grid ecology took: " + Convertor::Get( )->ToString( mDispersalTimer.GetElapsedTimeSecs( ) ) );
 
-            mTimeStepTimer.Stop( );
             mOutputTimer.Start( );
             Output( timeStep );
             mOutputTimer.Stop( );
-            cout << "Global Outputs took: " << mOutputTimer.GetElapsedTimeSecs( ) << endl;
+            Logger::Get( )->LogMessage( "Global Outputs took: " + Convertor::Get( )->ToString( mOutputTimer.GetElapsedTimeSecs( ) ) );
 
             // Write the results of dispersal to the console
-            cout << "Total Cohorts remaining " << mGlobalDiagnosticVariables["NumberOfCohortsInModel"] << endl;
+            Logger::Get( )->LogMessage( "Total Cohorts remaining " + Convertor::Get( )->ToString( mGlobalDiagnosticVariables["NumberOfCohortsInModel"] ) );
         }
     }//----------------------------------------------------------------------------------------------
 
@@ -178,7 +176,7 @@ public:
         // Create a local instance of the stock ecology class
         EcologyStock MadingleyEcologyStock;
         // Get the list of functional group indices for autotroph stocks
-        vector<int> AutotrophStockFunctionalGroups = mParams.StockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
+        vector<int> AutotrophStockFunctionalGroups = mParams.mStockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
         // Loop over autotroph functional groups
         for( unsigned FunctionalGroup : AutotrophStockFunctionalGroups ) {
             for( auto& ActingStock : gcl.mGridCellStocks[FunctionalGroup] ) {
@@ -231,7 +229,7 @@ public:
 
         for( auto& c : Cohort::mNewCohorts ) {
             gcl.InsertCohort( c );
-            if( c.mDestination != &gcl )cout << "whut? wrong cell?" << endl;
+            if( c.mDestination != &gcl ) Logger::Get( )->LogMessage( "whut? wrong cell?" );
         }
         partial.Productions += Cohort::mNewCohorts.size( );
         Cohort::mNewCohorts.clear( );
@@ -268,7 +266,7 @@ public:
 
             // Add biomass of the extinct cohort to the organic matter pool
             double deadMatter = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance;
-            if( deadMatter < 0 ) cout << "Dead " << deadMatter << endl;
+            if( deadMatter < 0 ) Logger::Get( )->LogMessage( "Dead " + Convertor::Get( )->ToString( deadMatter ) );
             Environment::Get( "Organic Pool", c.GetCurrentLocation( ) ) += deadMatter;
             assert( Environment::Get( "Organic Pool", c.GetCurrentLocation( ) ) >= 0 && "Organic pool < 0" );
 
@@ -388,8 +386,8 @@ public:
                     } );
             gridCell.ApplyFunctionToAllStocks( [&]( Stock & s ) {
                 double thisStockBiomass = s.TotalBiomass / 1000.;
-                        stockBiomassThisCell += thisStockBiomass; //convert from g to kg
-                totalStockBiomass += thisStockBiomass;
+                stockBiomassThisCell += thisStockBiomass; //convert from g to kg
+                        totalStockBiomass += thisStockBiomass;
 
                 if( mStockLeafStrategy[ s.FunctionalGroupIndex ] == "na" ) phytoplanktonBiomassThisCell += thisStockBiomass;
                 else if( mStockLeafStrategy[ s.FunctionalGroupIndex ] == "deciduous" ) deciduousBiomassThisCell += thisStockBiomass;

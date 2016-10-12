@@ -4,6 +4,7 @@
 #include <vector>       // For std::vector
 #include <sstream>      // For std::stringstream
 #include <fstream>      // For std::ofstream
+#include <algorithm>    // For std::sort
 #include <sys/time.h>   // For struct timeval
 #include <map>          // For map
 #include <sys/stat.h>   // For mkdir
@@ -82,6 +83,7 @@ namespace Types {
     
     // Containers of primitives
     typedef std::map< std::string, double > DoubleMap;
+    typedef std::map< std::string, std::string > StringMap;
     
     typedef std::vector< bool > BooleanVector;
     typedef std::vector< char > CharVector;

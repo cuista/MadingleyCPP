@@ -138,7 +138,7 @@ public:
                 assert( OffspringCohortAbundance >= 0.0 && "Offspring abundance < 0" );
 
                 // Get the adult and juvenile masses of the offspring cohort
-                OffspringJuvenileAndAdultBodyMasses = GetOffspringCohortProperties( actingCohort, params.CohortFunctionalGroupDefinitions );
+                OffspringJuvenileAndAdultBodyMasses = GetOffspringCohortProperties( actingCohort, params.mCohortFunctionalGroupDefinitions );
 
                 // Update cohort abundance in case juvenile mass has been altered through 'evolution'
                 OffspringCohortAbundance = OffspringCohortAbundance * (actingCohort.mJuvenileMass  / OffspringJuvenileAndAdultBodyMasses[0]);

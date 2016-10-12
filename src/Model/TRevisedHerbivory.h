@@ -96,7 +96,7 @@ public:
         CellArea = gcl.GetCellArea( );
         CellAreaHectares = CellArea * 100;
         // Get the functional group indices of all autotroph stocks
-        FunctionalGroupIndicesToEat = params.StockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
+        FunctionalGroupIndicesToEat = params.mStockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
     }
     //----------------------------------------------------------------------------------------------
 

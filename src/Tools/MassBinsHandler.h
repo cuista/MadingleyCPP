@@ -1,6 +1,9 @@
 #ifndef MASSBINHANDLER_H
 #define MASSBINHANDLER_H
-#include <fstream>
+
+#include "Types.h"
+#include "Constants.h"
+#include "Logger.h"
 //namespace Madingley
 //{
 
@@ -12,9 +15,9 @@ public:
     //Variables
     //----------------------------------------------------------------------------------------------
     /** \brief The number of mass bins to be used for outputs */
-    int NumMassBins = 50;
-    /** \brief A vector containing the masses correpsonding to the mass bins */
-    vector<float> MassBins;
+    int mNumMassBins = 50;
+    /** \brief A vector containing the masses corresponding to the mass bins */
+    Types::FloatVector mMassBins;
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
@@ -24,24 +27,24 @@ public:
     /** \brief Sets up mass bins based on an input file
     @param massBinsFile The filename containing the mass bin information 
      */
-    void SetUpMassBins( string massBinsFile ) {
+    void SetUpMassBins( std::string massBinsFile ) {
 
         massBinsFile = Constants::cConfigurationDirectory + massBinsFile;
 
-        ifstream massFile( massBinsFile.c_str( ) );
-        string title;
+        std::ifstream massFile( massBinsFile.c_str( ) );
+        std::string title;
         if( massFile.is_open( ) ) {
-            getline( massFile, title );
+            std::getline( massFile, title );
             float f;
             while( !massFile.eof( ) ) {
                 massFile>>f;
-                if( !massFile.eof( ) )MassBins.push_back( f );
+                if( !massFile.eof( ) )mMassBins.push_back( f );
             }
             // Sort the array of mass bins
-            sort( MassBins.begin( ), MassBins.end( ) );
+            std::sort( mMassBins.begin( ), mMassBins.end( ) );
             massFile.close( );
         } else {
-            cout << "Problem with Mass Bins file!! " << massBinsFile << endl;
+            Logger::Get( )->LogMessage( "Problem with Mass Bins file!! " + massBinsFile );
             exit( 1 );
         }
     }
@@ -50,9 +53,9 @@ public:
     /** \brief Returns the mass bins copied from file
     @return the mass bins copied from file
      */
-    vector<float> const& GetSpecifiedMassBins( ) const {
-        return MassBins;
-    }
+    //    Types::FloatVector const& GetSpecifiedMassBins( ) const {
+    //        return mMassBins;
+    //    }
     //----------------------------------------------------------------------------------------------
 };
 #endif

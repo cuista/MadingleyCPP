@@ -7,21 +7,21 @@ using namespace std::chrono;
  */
 
 /** \brief Timer to track time elapsed */
-class mStopWatch {
+class StopWatch {
 public:
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
     /** \brief The start time of a given stopwatch run */
-    high_resolution_clock::time_point startTime;
+    high_resolution_clock::time_point mStartTime;
     /** \brief The stop time of a given stopwatch run */
-    high_resolution_clock::time_point stopTime;
+    high_resolution_clock::time_point mStopTime;
     /** \brief Whether the stopwatch is running */
     bool running = false;
     /** \brief Time accumlated between last start and stop */
-    duration< double > interval;
+    duration< double > mInterval;
     /** \brief Time accumlated since this stopwatch was created */
-    duration< double > accumulatedTime;
+    duration< double > mAccumulatedTime;
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ public:
     //----------------------------------------------------------------------------------------------
 
     /** \brief Constructor - watch defaults to stopped */
-    mStopWatch( ) {
+    StopWatch( ) {
         running = false;
     }
     //----------------------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ public:
     /** \brief Start the stopwatch */
     void Start( ) {
         // Set the start time for the stopwatch run
-        startTime = high_resolution_clock::now( );
+        mStartTime = high_resolution_clock::now( );
         // Set the stopwatch as being running
         running = true;
     }
@@ -47,13 +47,13 @@ public:
 
     void Stop( ) {
         // Set the stop time for the stopwatch run
-        stopTime = high_resolution_clock::now( );
+        mStopTime = high_resolution_clock::now( );
         // Set the stopwatch as being not running
         running = false;
         // Calculate the time elapsed during this stopwatch run
-        interval = ( stopTime - startTime );
+        mInterval = ( mStopTime - mStartTime );
         // Update the time accumulated by this stopwatch instance
-        accumulatedTime += interval;
+        mAccumulatedTime += mInterval;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -65,9 +65,9 @@ public:
         // If the stopwatch is running, then calculate time since the stopwatch started, otherwise use the time elapsed during the last stopwatch run
 
         if( running )
-            elapsed = high_resolution_clock::now( ) - startTime;
+            elapsed = high_resolution_clock::now( ) - mStartTime;
         else
-            elapsed = interval;
+            elapsed = mInterval;
 
         return elapsed.count( );
     }
@@ -78,9 +78,9 @@ public:
         //set the units for output = default is second
         duration< double > elapsed;
         if( running )
-            elapsed = high_resolution_clock::now( ) - startTime;
+            elapsed = high_resolution_clock::now( ) - mStartTime;
         else
-            elapsed = stopTime - startTime;
+            elapsed = mStopTime - mStartTime;
 
         return elapsed.count( );
 
@@ -90,7 +90,7 @@ public:
     /** \brief Get the cumulative elapsed time of a stopwatch run in seconds */
     double AccumulatedTime( ) {
         //units for output - default is second
-        return accumulatedTime.count( );
+        return mAccumulatedTime.count( );
 
     }
     //----------------------------------------------------------------------------------------------

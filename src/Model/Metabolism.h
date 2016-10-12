@@ -69,8 +69,8 @@ public:
             ThreadLockedParallelVariables& partial,
             unsigned currentMonth, MadingleyModelInitialisation& params ) {
 
-        if( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Heterotroph/Autotroph", actingCohort.mFunctionalGroupIndex ) == "heterotroph" ) {
-            if( params.CohortFunctionalGroupDefinitions.GetTraitNames( "Endo/Ectotherm", actingCohort.mFunctionalGroupIndex ) == "endotherm" ) {
+        if( params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Heterotroph/Autotroph", actingCohort.mFunctionalGroupIndex ) == "heterotroph" ) {
+            if( params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Endo/Ectotherm", actingCohort.mFunctionalGroupIndex ) == "endotherm" ) {
 
                 Implementations["basic endotherm"]->RunMetabolism( actingCohort, currentTimestep, currentMonth );
             } else {

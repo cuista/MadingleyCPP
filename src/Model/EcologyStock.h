@@ -43,7 +43,7 @@ public:
 
     void RunWithinCellEcology( GridCell& gcl, Stock& actingStock, unsigned currentTimeStep, unsigned currentMonth, MadingleyModelInitialisation& params ) {
 
-        FunctionalGroupDefinitions& madingleyStockDefinitions = params.StockFunctionalGroupDefinitions;
+        FunctionalGroupDefinitions& madingleyStockDefinitions = params.mStockFunctionalGroupDefinitions;
         //changes here to make this code consistent with the merge-and-refactor C# code
         if( gcl.IsMarine( ) ) {
             // Run the autotroph processor

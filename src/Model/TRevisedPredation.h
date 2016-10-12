@@ -145,7 +145,7 @@ public:
         CellArea = gcl.GetCellArea( );
         CellAreaHectares = CellArea * 100;
         //Get the functional group indices of all heterotroph cohorts (i.e. potential prey)
-        FunctionalGroupIndicesToEat = params.CohortFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "heterotroph", false );
+        FunctionalGroupIndicesToEat = params.mCohortFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "heterotroph", false );
         // Initialise the vector to hold the number of cohorts in each functional group at the start of the time step
         NumberCohortsPerFunctionalGroupNoNewCohorts.resize( gcl.mGridCellCohorts.size( ) );
 
@@ -170,13 +170,13 @@ public:
 
         // Loop over functional groups that are potential prey and determine which are carnivores
         for( int FunctionalGroup: FunctionalGroupIndicesToEat )
-            CarnivoreFunctionalGroups[FunctionalGroup] = params.CohortFunctionalGroupDefinitions.GetTraitNames( "Nutrition source", FunctionalGroup ) == "carnivore";
+            CarnivoreFunctionalGroups[FunctionalGroup] = params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Nutrition source", FunctionalGroup ) == "carnivore";
 
         for( int FunctionalGroup: FunctionalGroupIndicesToEat )
-            OmnivoreFunctionalGroups[FunctionalGroup] = params.CohortFunctionalGroupDefinitions.GetTraitNames( "Nutrition source", FunctionalGroup ) == "omnivore";
+            OmnivoreFunctionalGroups[FunctionalGroup] = params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Nutrition source", FunctionalGroup ) == "omnivore";
 
         for( int FunctionalGroup: FunctionalGroupIndicesToEat )
-            PlanktonFunctionalGroups[FunctionalGroup] = params.CohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", FunctionalGroup ) == "planktonic";
+            PlanktonFunctionalGroups[FunctionalGroup] = params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", FunctionalGroup ) == "planktonic";
     }
     //----------------------------------------------------------------------------------------------
 
@@ -207,7 +207,7 @@ public:
         PredatorAssimilationEfficiency = AssimilationEfficiency;
         PredatorNonAssimilation = ( 1 - AssimilationEfficiency );
         
-        DietIsAllSpecial = params.CohortFunctionalGroupDefinitions.GetTraitNames( "Diet", actingCohort.mFunctionalGroupIndex ) == "allspecial";
+        DietIsAllSpecial = params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Diet", actingCohort.mFunctionalGroupIndex ) == "allspecial";
 
         PredatorLogOptimalPreyBodySizeRatio = actingCohort.mLogOptimalPreyBodySizeRatio;
 
