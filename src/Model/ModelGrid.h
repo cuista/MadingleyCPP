@@ -1,12 +1,9 @@
 #ifndef MODELGRID_H
 #define MODELGRID_H
+
 #include <GridCell.h>
-#include <map>
-#include <limits>
-#include <string>
 
 #include "Parameters.h"
-#include "Processor.h"
 #include "Logger.h"
 
 /** \brief A class containing the model grid (composed of individual grid cells) along with grid attributes.
@@ -19,9 +16,9 @@ public:
     //----------------------------------------------------------------------------------------------
 
     // Variable to make sure that not more than one grid is instantiated
-    unsigned NumGrids = 0;
+    unsigned mNumGrids = 0;
     /** \brief Array of grid cells */
-    std::map< long, GridCell > Cells;
+    Types::GridCellMap mCells;
 
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -37,14 +34,14 @@ public:
      */
     void SetUpGrid( ) {
         // Add one to the counter of the number of grids. If there is more than one model grid, exit the program with a debug crash.
-        NumGrids = NumGrids + 1;
-        assert( NumGrids < 2 && "You have initialised more than one grid on which to apply models. At present, this is not supported" );
+        mNumGrids = mNumGrids + 1;
+        assert( mNumGrids < 2 && "You have initialised more than one grid on which to apply models. At present, this is not supported" );
         Logger::Get( )->LogMessage( "Initialising grid cell environment" );
 
         // Instantiate a grid of grid cells
         for( unsigned index = 0; index < Parameters::Get( )->GetNumberOfGridCells( ); ++index ) {
             // Create the grid cell at the specified position
-            Cells[ index ].SetCellCoords( index );
+            mCells[ index ].SetCellCoords( index );
         }
         Logger::Get( )->LogMessage( "" );
     }
@@ -65,7 +62,7 @@ public:
             while( lnc < 0 )lnc += Parameters::Get( )->GetLengthUserLongitudeArray( );
             while( lnc >= Parameters::Get( )->GetLengthUserLongitudeArray( ) )lnc -= Parameters::Get( )->GetLengthUserLongitudeArray( );
             long idx = lnc + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( gcl->GetLatitudeIndex( ) + v );
-            if( Cells.count( idx ) != 0 )Cell = &( Cells[idx] );
+            if( mCells.count( idx ) != 0 )Cell = &( mCells[idx] );
         }
         return Cell;
     }
@@ -74,7 +71,7 @@ public:
 
     template <typename Function>
     void ApplyFunctionToAllCells( Function f ) {
-        for( auto& j : Cells ) {
+        for( auto& j : mCells ) {
             f( j.second );
         }
     }

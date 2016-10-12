@@ -4,7 +4,7 @@
 #include <set>
 
 #include <MadingleyModelInitialisation.h>
-#include <nonStaticSimpleRNG.h>
+#include <NonStaticSimpleRNG.h>
 #include "Parameters.h"
 /** \file CohortMerge.h
  * \brief The CohortMerge header file
@@ -21,7 +21,7 @@ public:
     //Variables
     //----------------------------------------------------------------------------------------------
     /** \brief An instance of simple random number generator class */
-    NonStaticSimpleRNG randomNumber;
+    NonStaticSimpleRNG mRandomNumber;
 
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -32,9 +32,9 @@ public:
     CohortMerge( ) {
         if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
             unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
-            randomNumber.SetSeed( seed );
+            mRandomNumber.SetSeed( seed );
         } else {
-            randomNumber.SetSeed( 4000 );
+            mRandomNumber.SetSeed( 4000 );
         }
     }
     //----------------------------------------------------------------------------------------------
@@ -109,7 +109,7 @@ public:
                     for( int cc = 0; cc < gcl.mGridCellCohorts[ff].size( ) - 1; cc++ ) {
                         // Loop through comparison cohorts
                         for( int dd = cc + 1; dd < gcl.mGridCellCohorts[ff].size( ); dd++ ) {
-                            Pear PairwiseDistance( &gcl.mGridCellCohorts[ff][cc], &gcl.mGridCellCohorts[ff][dd], randomNumber.GetUniform() );
+                            Pear PairwiseDistance( &gcl.mGridCellCohorts[ff][cc], &gcl.mGridCellCohorts[ff][dd], mRandomNumber.GetUniform() );
                             SortedDistances.insert( PairwiseDistance );
                         }
                     }

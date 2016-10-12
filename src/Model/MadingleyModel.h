@@ -1,8 +1,6 @@
 #ifndef MADINGLEYMODEL_H
 #define	MADINGLEYMODEL_H
 
-#include <vector>
-#include <map>
 #include <MadingleyModelInitialisation.h>
 #include <FunctionalGroupDefinitions.h>
 #include <Stopwatch.h>
@@ -14,7 +12,6 @@
 #include <EcologyCohort.h>
 #include <Activity.h>
 #include <ThreadLocked.h>
-#include <fstream>
 #include <Environment.h>
 
 #include "Time.h"
@@ -22,6 +19,7 @@
 #include "Parameters.h"
 #include "DataRecorder.h"
 #include "Logger.h"
+#include "Types.h"
 /// @todo check private versus public variables
 /** \file MadingleyModel.h
  * \brief The main model header file
@@ -35,21 +33,21 @@ public:
     //----------------------------------------------------------------------------------------------       
 
     /** \brief An instance of ModelGrid to hold the grid to be used in this model */
-    ModelGrid EcosystemModelGrid;
+    ModelGrid mModelGrid;
 
     /** \brief The current time step */
-    unsigned CurrentTimeStep;
+    unsigned mCurrentTimeStep;
     /** \brief The current month: 1=Jan; 2=Feb; 3=Mar etc. */
-    unsigned CurrentMonth;
+    unsigned mCurrentMonth;
 
     /** \brief A list of global diagnostics for this model run */
-    map<string, double> GlobalDiagnosticVariables;
+    Types::DoubleMap mGlobalDiagnosticVariables;
     /** \brief An instance of StopWatch to time individual time steps */
-    StopWatch TimeStepTimer;
-    StopWatch EcologyTimer;
-    StopWatch DispersalTimer;
-    StopWatch OutputTimer;
-    StopWatch MergeTimer;
+    mStopWatch mTimeStepTimer;
+    mStopWatch mEcologyTimer;
+    mStopWatch mDispersalTimer;
+    mStopWatch mOutputTimer;
+    mStopWatch mMergeTimer;
     /** \brief An array of instances of the output class to deal with grid cell outputs */
     //vector<OutputCell> CellOutputs;
 
@@ -59,22 +57,22 @@ public:
     //OutputGrid GridOutputs;
 
     /** A variable to increment for the purposes of giving each cohort a unique ID */
-    long long NextCohortID;
+    long long mNextCohortID;
     /** \brief Variable to track the number of cohorts that have dispersed. Doesn't need to be thread-local because all threads have converged prior to running cross-grid-cell processes */
-    unsigned Dispersals;
+    unsigned mDispersals;
     /** \brief Instance of the class to perform general functions */
-    UtilityFunctions Utilities;
+    UtilityFunctions mUtilities;
     /** \brief An instance of the merging class */
-    CohortMerge CohortMerger;
+    CohortMerge mCohortMerger;
     /** \brief An instance of the mersenne twister random number generator class */
-    std::mt19937_64 RandomNumberGenerator;
-    MadingleyModelInitialisation params;
-    Dispersal* disperser; //FIX - Does this need to be a pointer?
+    std::mt19937_64 mRandomNumberGenerator;
+    MadingleyModelInitialisation mParams;
+    Types::DispersalPointer mDisperser; //FIX - Does this need to be a pointer?
 
-    std::vector< std::string > mStockLeafStrategy;
-    std::vector< std::string > mCohortNutritionSource;
-    std::vector< std::string > mCohortThermoregulation;
-    std::vector< std::string > mCohortReproductiveStrategy;
+    Types::StringVector mStockLeafStrategy;
+    Types::StringVector mCohortNutritionSource;
+    Types::StringVector mCohortThermoregulation;
+    Types::StringVector mCohortReproductiveStrategy;
 
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -90,18 +88,18 @@ public:
         // Set up list of global diagnostics
         SetUpGlobalDiagnosticsList( );
         // Initialise the cohort ID to zero
-        NextCohortID = 0;
-        params = MadingleyModelInitialisation(
-                NextCohortID,
-                GlobalDiagnosticVariables["NumberOfCohortsInModel"],
-                GlobalDiagnosticVariables["NumberOfStocksInModel"],
-                EcosystemModelGrid );
-        disperser = new Dispersal( );
+        mNextCohortID = 0;
+        mParams = MadingleyModelInitialisation(
+                mNextCohortID,
+                mGlobalDiagnosticVariables["NumberOfCohortsInModel"],
+                mGlobalDiagnosticVariables["NumberOfStocksInModel"],
+                mModelGrid );
+        mDisperser = new Dispersal( );
 
-        mStockLeafStrategy = params.StockFunctionalGroupDefinitions.TraitLookupFromIndex[ "leaf strategy" ];
-        mCohortNutritionSource = params.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "nutrition source" ];
-        mCohortThermoregulation = params.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "endo/ectotherm" ];
-        mCohortReproductiveStrategy = params.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "reproductive strategy" ];
+        mStockLeafStrategy = mParams.StockFunctionalGroupDefinitions.TraitLookupFromIndex[ "leaf strategy" ];
+        mCohortNutritionSource = mParams.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "nutrition source" ];
+        mCohortThermoregulation = mParams.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "endo/ectotherm" ];
+        mCohortReproductiveStrategy = mParams.CohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "reproductive strategy" ];
     }
     //----------------------------------------------------------------------------------------------
 
@@ -111,7 +109,7 @@ public:
         cout << "Running model" << endl;
         cout << "Number of time steps is: " << Parameters::Get( )->GetLengthOfSimulationInMonths( ) << endl;
 
-        Dispersals = 0;
+        mDispersals = 0;
         /// Run the model
         for( unsigned timeStep = 0; timeStep < Parameters::Get( )->GetLengthOfSimulationInMonths( ); timeStep += 1 ) {
 
@@ -119,41 +117,41 @@ public:
 
             cout << "Running time step " << timeStep + 1 << "..." << endl;
             // Start the timer
-            TimeStepTimer.Start( );
+            mTimeStepTimer.Start( );
             // Get current time step and month
-            CurrentTimeStep = timeStep;
-            CurrentMonth = Utilities.GetCurrentMonth( timeStep );
-            EcologyTimer.Start( );
+            mCurrentTimeStep = timeStep;
+            mCurrentMonth = mUtilities.GetCurrentMonth( timeStep );
+            mEcologyTimer.Start( );
 
-            Environment::update( CurrentMonth );
+            Environment::update( mCurrentMonth );
 
             RunWithinCells( );
-            EcologyTimer.Stop( );
-            cout << "Within grid ecology took: " << EcologyTimer.GetElapsedTimeSecs( ) << endl;
+            mEcologyTimer.Stop( );
+            cout << "Within grid ecology took: " << mEcologyTimer.GetElapsedTimeSecs( ) << endl;
 
-            DispersalTimer.Start( );
+            mDispersalTimer.Start( );
 
-            RunCrossGridCellEcology( Dispersals );
-            DispersalTimer.Stop( );
-            cout << "Across grid ecology took: " << DispersalTimer.GetElapsedTimeSecs( ) << endl;
+            RunCrossGridCellEcology( mDispersals );
+            mDispersalTimer.Stop( );
+            cout << "Across grid ecology took: " << mDispersalTimer.GetElapsedTimeSecs( ) << endl;
 
-            TimeStepTimer.Stop( );
-            OutputTimer.Start( );
+            mTimeStepTimer.Stop( );
+            mOutputTimer.Start( );
             Output( timeStep );
-            OutputTimer.Stop( );
-            cout << "Global Outputs took: " << OutputTimer.GetElapsedTimeSecs( ) << endl;
+            mOutputTimer.Stop( );
+            cout << "Global Outputs took: " << mOutputTimer.GetElapsedTimeSecs( ) << endl;
 
             // Write the results of dispersal to the console
-            cout << "Total Cohorts remaining " << GlobalDiagnosticVariables["NumberOfCohortsInModel"] << endl;
+            cout << "Total Cohorts remaining " << mGlobalDiagnosticVariables["NumberOfCohortsInModel"] << endl;
         }
     }//----------------------------------------------------------------------------------------------
 
     /** \brief  Run processes for cells*/
     void RunWithinCells( ) {
         // Instantiate a class to hold thread locked global diagnostic variables
-        ThreadLockedParallelVariables singleThreadDiagnostics( 0, 0, 0, NextCohortID );
+        ThreadLockedParallelVariables singleThreadDiagnostics( 0, 0, 0, mNextCohortID );
 
-        EcosystemModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
+        mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
 
             gcl.RandomizeCohorts( );
 
@@ -163,12 +161,12 @@ public:
 
         } );
         // Update the variable tracking cohort unique IDs
-        NextCohortID = singleThreadDiagnostics.NextCohortIDThreadLocked;
+        mNextCohortID = singleThreadDiagnostics.NextCohortIDThreadLocked;
         // Take the results from the thread local variables and apply to the global diagnostic variables
-        GlobalDiagnosticVariables["NumberOfCohortsExtinct"] = singleThreadDiagnostics.Extinctions - singleThreadDiagnostics.Combinations;
-        GlobalDiagnosticVariables["NumberOfCohortsProduced"] = singleThreadDiagnostics.Productions;
-        GlobalDiagnosticVariables["NumberOfCohortsInModel"] = GlobalDiagnosticVariables["NumberOfCohortsInModel"] + singleThreadDiagnostics.Productions - singleThreadDiagnostics.Extinctions;
-        GlobalDiagnosticVariables["NumberOfCohortsCombined"] = singleThreadDiagnostics.Combinations;
+        mGlobalDiagnosticVariables["NumberOfCohortsExtinct"] = singleThreadDiagnostics.Extinctions - singleThreadDiagnostics.Combinations;
+        mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = singleThreadDiagnostics.Productions;
+        mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = mGlobalDiagnosticVariables["NumberOfCohortsInModel"] + singleThreadDiagnostics.Productions - singleThreadDiagnostics.Extinctions;
+        mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = singleThreadDiagnostics.Combinations;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -180,13 +178,13 @@ public:
         // Create a local instance of the stock ecology class
         EcologyStock MadingleyEcologyStock;
         // Get the list of functional group indices for autotroph stocks
-        vector<int> AutotrophStockFunctionalGroups = params.StockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
+        vector<int> AutotrophStockFunctionalGroups = mParams.StockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
         // Loop over autotroph functional groups
         for( unsigned FunctionalGroup : AutotrophStockFunctionalGroups ) {
             for( auto& ActingStock : gcl.mGridCellStocks[FunctionalGroup] ) {
 
                 // Run stock ecology
-                MadingleyEcologyStock.RunWithinCellEcology( gcl, ActingStock, CurrentTimeStep, CurrentMonth, params );
+                MadingleyEcologyStock.RunWithinCellEcology( gcl, ActingStock, mCurrentTimeStep, mCurrentMonth, mParams );
             }
         }
 
@@ -205,7 +203,7 @@ public:
         // Initialize ecology for stocks and cohorts - needed fresh every timestep?
 
         EcologyCohort mEcologyCohort;
-        mEcologyCohort.initialiseEating( gcl, params );
+        mEcologyCohort.initialiseEating( gcl, mParams );
         Activity CohortActivity;
 
         // Loop over randomly ordered gridCellCohorts to implement biological functions
@@ -215,12 +213,12 @@ public:
 
             if( gcl.mGridCellCohorts[c.mFunctionalGroupIndex].size( ) != 0 && c.mCohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
 
-                CohortActivity.AssignProportionTimeActive( gcl, c, CurrentTimeStep, CurrentMonth, params );
+                CohortActivity.AssignProportionTimeActive( gcl, c, mCurrentTimeStep, mCurrentMonth, mParams );
 
                 // Run ecology
-                mEcologyCohort.RunWithinCellEcology( gcl, c, CurrentTimeStep, partial, CurrentMonth, params );
+                mEcologyCohort.RunWithinCellEcology( gcl, c, mCurrentTimeStep, partial, mCurrentMonth, mParams );
                 // Update the properties of the acting cohort
-                mEcologyCohort.UpdateEcology( gcl, c, CurrentTimeStep );
+                mEcologyCohort.UpdateEcology( gcl, c, mCurrentTimeStep );
                 Cohort::ResetMassFluxes( );
                 // Check that the mass of individuals in this cohort is still >= 0 after running ecology
                 assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
@@ -243,7 +241,7 @@ public:
         // Merge cohorts, if necessary
         if( gcl.GetNumberOfCohorts( ) > Parameters::Get( )->GetMaximumNumberOfCohorts( ) ) {
 
-            partial.Combinations += CohortMerger.MergeToReachThresholdFast( gcl, params );
+            partial.Combinations += mCohortMerger.MergeToReachThresholdFast( gcl, mParams );
 
             //Run extinction a second time to remove those cohorts that have been set to zero abundance when merging
             RunExtinction( gcl, partial );
@@ -285,13 +283,13 @@ public:
     void RunCrossGridCellEcology( unsigned& dispersals ) {
         // Loop through each grid cell, and run dispersal for each.
         // In the original model a new dispersal object is made every timestep - this resets the random number generators
-        disperser->resetRandoms( );
-        EcosystemModelGrid.ApplyFunctionToAllCells( [&]( GridCell & c ) {
-            disperser->RunCrossGridCellEcologicalProcess( c, EcosystemModelGrid, params, CurrentMonth );
+        mDisperser->resetRandoms( );
+        mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & c ) {
+            mDisperser->RunCrossGridCellEcologicalProcess( c, mModelGrid, mParams, mCurrentMonth );
         } );
 
         // Apply the changes from dispersal
-        disperser->UpdateCrossGridCellEcology( dispersals );
+        mDisperser->UpdateCrossGridCellEcology( dispersals );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -299,11 +297,11 @@ public:
      */
     void SetUpGlobalDiagnosticsList( ) {
         // Add global diagnostic variables
-        GlobalDiagnosticVariables["NumberOfCohortsExtinct"] = 0.0;
-        GlobalDiagnosticVariables["NumberOfCohortsProduced"] = 0.0;
-        GlobalDiagnosticVariables["NumberOfCohortsCombined"] = 0.0;
-        GlobalDiagnosticVariables["NumberOfCohortsInModel"] = 0.0;
-        GlobalDiagnosticVariables["NumberOfStocksInModel"] = 0.0;
+        mGlobalDiagnosticVariables["NumberOfCohortsExtinct"] = 0.0;
+        mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = 0.0;
+        mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = 0.0;
+        mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = 0.0;
+        mGlobalDiagnosticVariables["NumberOfStocksInModel"] = 0.0;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -320,7 +318,7 @@ public:
         long totalCohorts = 0;
         double totalCohortAbundance = 0;
 
-        EcosystemModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gridCell ) {
+        mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gridCell ) {
             double organicMatterThisCell = Environment::Get( "Organic Pool", gridCell ) / 1000.;
             double respirationThisCell = Environment::Get( "Respiratory CO2 Pool", gridCell ) / 1000.;
 
@@ -426,8 +424,8 @@ public:
         totalLivingBiomass = totalCohortBiomass + totalStockBiomass;
         totalBiomass = totalCohortBiomass + totalStockBiomass + respiratoryPool + organicMatterPool;
 
-        DataRecorder::Get( )->SetDataOn( "InCellTime", EcologyTimer.GetElapsedTimeSecs( ) );
-        DataRecorder::Get( )->SetDataOn( "DispersalTime", DispersalTimer.GetElapsedTimeSecs( ) );
+        DataRecorder::Get( )->SetDataOn( "InCellTime", mEcologyTimer.GetElapsedTimeSecs( ) );
+        DataRecorder::Get( )->SetDataOn( "DispersalTime", mDispersalTimer.GetElapsedTimeSecs( ) );
 
         DataRecorder::Get( )->SetDataOn( "TotalBiomass", totalBiomass );
         DataRecorder::Get( )->SetDataOn( "TotalLivingBiomass", totalLivingBiomass );
@@ -436,13 +434,13 @@ public:
         DataRecorder::Get( )->SetDataOn( "OrganicMatterPool", organicMatterPool );
         DataRecorder::Get( )->SetDataOn( "RespiratoryCO2Pool", respiratoryPool );
 
-        DataRecorder::Get( )->SetDataOn( "NumberOfStocks", GlobalDiagnosticVariables["NumberOfStocksInModel"] );
-        DataRecorder::Get( )->SetDataOn( "NumberOfCohorts", GlobalDiagnosticVariables["NumberOfCohortsInModel"] );
+        DataRecorder::Get( )->SetDataOn( "NumberOfStocks", mGlobalDiagnosticVariables["NumberOfStocksInModel"] );
+        DataRecorder::Get( )->SetDataOn( "NumberOfCohorts", mGlobalDiagnosticVariables["NumberOfCohortsInModel"] );
 
-        DataRecorder::Get( )->SetDataOn( "CohortsProduced", GlobalDiagnosticVariables["NumberOfCohortsProduced"] );
-        DataRecorder::Get( )->SetDataOn( "CohortsExtinct", GlobalDiagnosticVariables["NumberOfCohortsExtinct"] );
-        DataRecorder::Get( )->SetDataOn( "CohortsCombined", GlobalDiagnosticVariables["NumberOfCohortsCombined"] );
-        DataRecorder::Get( )->SetDataOn( "CohortsDispersed", Dispersals );
+        DataRecorder::Get( )->SetDataOn( "CohortsProduced", mGlobalDiagnosticVariables["NumberOfCohortsProduced"] );
+        DataRecorder::Get( )->SetDataOn( "CohortsExtinct", mGlobalDiagnosticVariables["NumberOfCohortsExtinct"] );
+        DataRecorder::Get( )->SetDataOn( "CohortsCombined", mGlobalDiagnosticVariables["NumberOfCohortsCombined"] );
+        DataRecorder::Get( )->SetDataOn( "CohortsDispersed", mDispersals );
         DataRecorder::Get( )->SetDataOn( "CohortAbundance", totalCohortAbundance );
     }
 };

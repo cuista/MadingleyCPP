@@ -24,7 +24,7 @@ public:
     //Variables
     //----------------------------------------------------------------------------------------------
     /** \brief  A vector of stopwatch objects for timing the ecological processes*/
-    vector<StopWatch> s2;
+    vector<mStopWatch> s2;
     /** \brief A sorted list of formulations of metabolism */
     map<string, IEcologicalProcessWithinGridCell*> MetabolismFormulations;
     /** \brief A sorted list of formulations of eating */

@@ -14,7 +14,7 @@
 
 #include "Constants.h"
 #include "Parameters.h"
-#include <nonStaticSimpleRNG.h>
+#include <NonStaticSimpleRNG.h>
 
 /**
  \ file *MadingleyModelInitialisation.h
@@ -32,7 +32,7 @@ public:
     //----------------------------------------------------------------------------------------------
     /** The full path for the output files for a set of simulations */
     string OutputPath;
-    StopWatch InitializationTimer;
+    mStopWatch InitializationTimer;
     /** \brief Information from the initialization file  */
     map<string, string> InitialisationFileStrings;
     /** \brief The functional group definitions of cohorts in the model */

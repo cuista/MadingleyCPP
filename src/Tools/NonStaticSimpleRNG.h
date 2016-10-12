@@ -7,6 +7,7 @@
 
 #ifndef NONSTATICSIMPLERNG_H
 #define	NONSTATICSIMPLERNG_H
+
 #include <math.h>
 #include<assert.h>
     /// <summary>

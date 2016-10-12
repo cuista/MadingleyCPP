@@ -18,6 +18,7 @@ class DataLayer;
 class DataLayerProcessor;
 class DataLayerSet;
 class DataRecorder;
+class Dispersal;
 class Environment;
 class FileReader;
 class FileWriter;
@@ -45,6 +46,7 @@ namespace Types {
     typedef DataLayerProcessor* DataLayerProcessorPointer;
     typedef DataLayerSet* DataLayerSetPointer;
     typedef DataRecorder* DataRecorderPointer;
+    typedef Dispersal* DispersalPointer;
     typedef Environment* EnvironmentPointer;
     typedef FileReader* FileReaderPointer;
     typedef FileWriter* FileWriterPointer;
@@ -61,6 +63,8 @@ namespace Types {
     typedef Variable* VariablePointer;
     
     // Containers of pointers/objects
+    typedef std::map< long, GridCell > GridCellMap;
+    
     typedef std::map< std::string, BasicDatumPointer > BasicDatumMap;
     typedef std::map< std::string, DataLayerPointer > DataLayerMap;
     typedef std::map< std::string, GridDatumPointer > GridDatumMap;

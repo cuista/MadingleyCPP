@@ -7,7 +7,7 @@ using namespace std::chrono;
  */
 
 /** \brief Timer to track time elapsed */
-class StopWatch {
+class mStopWatch {
 public:
     //----------------------------------------------------------------------------------------------
     //Variables
@@ -29,7 +29,7 @@ public:
     //----------------------------------------------------------------------------------------------
 
     /** \brief Constructor - watch defaults to stopped */
-    StopWatch( ) {
+    mStopWatch( ) {
         running = false;
     }
     //----------------------------------------------------------------------------------------------

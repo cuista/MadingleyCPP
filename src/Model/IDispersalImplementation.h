@@ -3,7 +3,7 @@
 #include <ModelGrid.h>
 #include <Cohort.h>
 #include <random>
-#include <nonStaticSimpleRNG.h>
+#include <NonStaticSimpleRNG.h>
 
 /** \file IDispersalImplementation.h
  * \brief the IDispersalImplementation header file
