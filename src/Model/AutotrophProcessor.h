@@ -2,9 +2,9 @@
 #define AUTOTROPHPROCESSOR_H
 //#include <ProcessTracker.h>
 //#include <GlobalProcessTracker.h>
-#include <Environment.h>
-#include <GridCell.h>
-
+#include "Environment.h"
+#include "GridCell.h"
+#include "Logger.h"
 #include "Parameters.h"
 #include "Constants.h"
 /** \file AutotrophProcessor.h
@@ -78,7 +78,7 @@ public:
                 actingStock.TotalBiomass = 0.0;
         }// Else if neither on land or in the ocean
         else {
-            cout << "This is not a marine cell!" << endl;
+            Logger::Get( )->LogMessage( "This is not a marine cell!" );
             // Set the autotroph biomass to zero
             actingStock.TotalBiomass = 0.0;
         }

@@ -1,10 +1,9 @@
 #ifndef EATING_H
 #define EATING_H
-#include <IEatingImplementation.h>
-#include <IEcologicalProcessWithinGridCells.h>
-#include <random>
-#include <TRevisedPredation.h>
-#include <TRevisedHerbivory.h>
+#include "IEatingImplementation.h"
+#include "IEcologicalProcessWithinGridCells.h"
+#include "TRevisedPredation.h"
+#include "TRevisedHerbivory.h"
 /** \file Eating.h
  * \brief the Eating header file
  */
@@ -176,7 +175,7 @@ public:
             default:
 
                 // For nutrition source that are not supported, throw an error
-                cout << "The model currently does not contain an eating model for nutrition source:" << NutritionSource << endl;
+                Logger::Get( )->LogMessage( "The model currently does not contain an eating model for nutrition source:" + NutritionSource );
                 exit(1);
                 break;
 

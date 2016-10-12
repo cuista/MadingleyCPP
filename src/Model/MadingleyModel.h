@@ -96,10 +96,10 @@ public:
                 mModelGrid );
         mDisperser = new Dispersal( );
 
-        mStockLeafStrategy = mParams.mStockFunctionalGroupDefinitions.TraitLookupFromIndex[ "leaf strategy" ];
-        mCohortNutritionSource = mParams.mCohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "nutrition source" ];
-        mCohortThermoregulation = mParams.mCohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "endo/ectotherm" ];
-        mCohortReproductiveStrategy = mParams.mCohortFunctionalGroupDefinitions.TraitLookupFromIndex[ "reproductive strategy" ];
+        mStockLeafStrategy = mParams.mStockFunctionalGroupDefinitions.mTraitLookupFromIndex[ "leaf strategy" ];
+        mCohortNutritionSource = mParams.mCohortFunctionalGroupDefinitions.mTraitLookupFromIndex[ "nutrition source" ];
+        mCohortThermoregulation = mParams.mCohortFunctionalGroupDefinitions.mTraitLookupFromIndex[ "endo/ectotherm" ];
+        mCohortReproductiveStrategy = mParams.mCohortFunctionalGroupDefinitions.mTraitLookupFromIndex[ "reproductive strategy" ];
     }
     //----------------------------------------------------------------------------------------------
 

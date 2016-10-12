@@ -5,7 +5,7 @@
 #include <sstream>      // For std::stringstream
 #include <fstream>      // For std::ofstream
 #include <algorithm>    // For std::sort
-#include <sys/time.h>   // For struct timeval
+#include <assert.h>     // For assert
 #include <map>          // For map
 #include <sys/stat.h>   // For mkdir
 #include <netcdf>       // For netCDF::NcDim vector
@@ -108,8 +108,13 @@ namespace Types {
     
     // Containers of containers of primitives
     typedef std::map< std::string, DoubleMap > Double2DMap;
+    typedef std::map< std::string, DoubleVector > DoubleVectorMap;
+    typedef std::map< std::string, IntegerVector > IntegerVectorMap;
+    typedef std::map< std::string, StringVector > StringVectorMap;
     
     // Container of containers of containers of primitives
+    typedef std::map< std::string, IntegerVectorMap > Integer2DVectorMap;
+    
     typedef std::vector< DoubleMatrix > Double3DMatrix;
 }
 

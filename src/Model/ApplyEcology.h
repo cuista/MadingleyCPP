@@ -4,6 +4,7 @@
 #include <assert.h>
 
 #include "Cohort.h"
+#include "Logger.h"
 /** \file ApplyEcology.h
  * \brief the ApplyEcology header file
  */
@@ -84,7 +85,7 @@ public:
 
             BiomassCheck = actingCohort.mIndividualBodyMass + NetBiomass;
             if( BiomassCheck < 0 ) {
-                cout << "Biomass going negative, acting cohort: " << actingCohort.mFunctionalGroupIndex << ", " << actingCohort.mID;
+                Logger::Get( )->LogMessage( "Biomass going negative, acting cohort: " + Convertor::Get( )->ToString( actingCohort.mFunctionalGroupIndex ) + ", " + Convertor::Get( )->ToString( actingCohort.mID ) );
                 exit( 1 );
             }
         }
@@ -142,7 +143,7 @@ public:
         // Loop over all keys in the organic pool deltas sorted list
         for( auto &D: Cohort::mMassFluxes["organicpool"] ) {
             // Check that the delta value is not negative
-            if( D.second < 0 )cout << "organic pool " << D.first << " " << D.second << endl;
+            if( D.second < 0 ) Logger::Get( )->LogMessage( "organic pool " + Convertor::Get( )->ToString( D.first ) + " " + Convertor::Get( )->ToString( D.second ) );
 
             //assert(D.second >= 0.0 && "A delta value for the organic pool is negative " );
             // Update the organic pool biomass

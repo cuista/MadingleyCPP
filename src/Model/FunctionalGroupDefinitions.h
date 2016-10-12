@@ -1,13 +1,9 @@
 #ifndef FUNCTIONALGROUPDEFINITIONS_H
 #define FUNCTIONALGROUPDEFINITIONS_H
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <algorithm>
-#include <assert.h>
+
 #include "Constants.h"
-using namespace std;
+#include "Logger.h"
+#include "Types.h"
 /** \file FunctionalGroupDefinitions.h
  * \brief the FunctionalGroupDefinitions header file
  */
@@ -22,13 +18,13 @@ public:
     //----------------------------------------------------------------------------------------------
     /** \brief A lookup device: sorted dictionary keyed by Functional Trait and valued by a sorted dictionary itself keyed by Unique Functional Trait Values and valued by an integer array of functional group indices corresponding to each functional trait value
      */
-    map<string, map<string, vector<int>>> IndexLookupFromTrait;
+    Types::Integer2DVectorMap mIndexLookupFromTrait;
     /** \brief A sorted list of all of the properties of functional groups and their values */
-    map<string, vector<double> > FunctionalGroupProperties;
+    Types::DoubleVectorMap mFunctionalGroupProperties;
     /** \brief Dictionary to allow traits of functional groups to be looked up based on the functional group index*/
-    map<string, vector<string> > TraitLookupFromIndex;
+    Types::StringVectorMap mTraitLookupFromIndex;
     /** \brief A list of the indices of all functional groups in the model*/
-    vector<int> AllFunctionalGroupsIndex;
+    Types::IntegerVector mAllFunctinoalGroupsIndex;
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
@@ -46,26 +42,26 @@ public:
     @param fileName The name of the functional group definition file to be read in
     @param outputPath The path to the output folder, in which to copy the functional group definitions file
      */
-    FunctionalGroupDefinitions( string fileName ) {
-        cout << "Reading \"" << fileName << "\" functional group definitions." << endl;
+    FunctionalGroupDefinitions( std::string fileName ) {
+        Logger::Get( )->LogMessage( "Reading \"" + fileName + "\" functional group definitions." );
         fileName = Constants::cConfigurationDirectory + fileName;
-        ifstream infile( fileName.c_str( ) );
+        std::ifstream infile( fileName.c_str( ) );
         if( infile.is_open( ) ) {
 
-            string l;
-            vector<string>header, category;
+            std::string l;
+            Types::StringVector header, category;
             getline( infile, l );
             //trim off newline character
             l.pop_back( );
-            istringstream s( l );
+            std::istringstream s( l );
             //split out the comma-separated and underscore separated header
             while( s.good( ) ) {
-                string tmp;
+                std::string tmp;
                 getline( s, tmp, ',' );
-                transform( tmp.begin( ), tmp.end( ), tmp.begin( ), ::tolower );
+                std::transform( tmp.begin( ), tmp.end( ), tmp.begin( ), ::tolower );
                 //split out the header category (definition.property or note)
-                istringstream splt( tmp );
-                string dp, op;
+                std::istringstream splt( tmp );
+                std::string dp, op;
                 getline( splt, dp, '_' );
                 category.push_back( dp );
                 getline( splt, op, '_' );
@@ -76,31 +72,31 @@ public:
 
             while( infile.good( ) ) {
 
-                string l, data;
+                std::string l, data;
                 getline( infile, l );
                 if( infile.good( ) ) {
                     l.pop_back( );
-                    AllFunctionalGroupsIndex.push_back( count );
+                    mAllFunctinoalGroupsIndex.push_back( count );
 
                     if( l.length( ) > 1 ) {
-                        istringstream s( l );
+                        std::istringstream s( l );
                         //step through the columns for this functional group
                         for( unsigned i = 0; i < header.size( ); i++ ) {
                             getline( s, data, ',' );
-                            transform( data.begin( ), data.end( ), data.begin( ), ::tolower );
+                            std::transform( data.begin( ), data.end( ), data.begin( ), ::tolower );
 
                             if( category[i] == "definition" ) {
                                 //for each trait, store the value for a given functional group
                                 //indexed by functional group number
-                                TraitLookupFromIndex[header[i]].push_back( data );
+                                mTraitLookupFromIndex[ header[ i ] ].push_back( data );
                                 //for a given trait, store the functional group number
                                 //which has a given value for that trait
-                                IndexLookupFromTrait[header[i]][data].push_back( count );
+                                mIndexLookupFromTrait[ header[ i ] ][ data ].push_back( count );
                             }
                             //Otherwise get the value for the given property
                             //for this functional group
                             if( category[i] == "property" ) {
-                                FunctionalGroupProperties[header[i]].push_back( atof( data.c_str( ) ) );
+                                mFunctionalGroupProperties[ header[ i ] ].push_back( atof( data.c_str( ) ) );
                             }
                         }
                     }
@@ -110,7 +106,7 @@ public:
 
 
         } else {
-            cout << "Something wrong with functional group definitions file " << fileName << endl;
+            Logger::Get( )->LogMessage( "Something wrong with functional group definitions file " + fileName );
         }
         infile.close( );
 
@@ -122,32 +118,32 @@ public:
     @param functionalGroup Functional group index
     @return The value of the biological parameter for the specified functional group */
 
-    double GetBiologicalPropertyOneFunctionalGroup( string propertyName, int functionalGroup ) {
-        transform( propertyName.begin( ), propertyName.end( ), propertyName.begin( ), ::tolower );
-        return FunctionalGroupProperties[propertyName][functionalGroup];
+    double GetBiologicalPropertyOneFunctionalGroup( std::string propertyName, int functionalGroup ) {
+        std::transform( propertyName.begin( ), propertyName.end( ), propertyName.begin( ), ::tolower );
+        return mFunctionalGroupProperties[ propertyName ][ functionalGroup ];
     }
     //----------------------------------------------------------------------------------------------
 
     /** \brief Get values of a functional group property for all functional groups
     @param propertyName The name of the property to get values for
     @return The values of a functional group property for all functional groups */
-    vector<double> GetBiologicalPropertyAllFunctionalGroups( string propertyName ) {
-        transform( propertyName.begin( ), propertyName.end( ), propertyName.begin( ), ::tolower );
-        return FunctionalGroupProperties[propertyName];
+    Types::DoubleVector GetBiologicalPropertyAllFunctionalGroups( std::string propertyName ) {
+        std::transform( propertyName.begin( ), propertyName.end( ), propertyName.begin( ), ::tolower );
+        return mFunctionalGroupProperties[ propertyName ];
     }
     //----------------------------------------------------------------------------------------------
 
     /** \brief  Retrieves the values for all traits defined in the model
     @return String array of traits defined for the model
      */
-    vector<string> GetTraits( ) {
-        vector<string> Traits;
+    Types::StringVector GetTraits( ) {
+        Types::StringVector traits;
 
-        for( auto var: TraitLookupFromIndex ) {
-            Traits.push_back( var.first );
+        for( auto var : mTraitLookupFromIndex ) {
+            traits.push_back( var.first );
         }
 
-        return Traits;
+        return traits;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -155,17 +151,17 @@ public:
     @param Trait The trait for which trait values are to be found
     @returns String array of trait values for the specifiec trait
      */
-    vector<string> GetUniqueTraitValues( string Trait ) {
-        vector<string> TraitValues;
-        transform( Trait.begin( ), Trait.end( ), Trait.begin( ), ::tolower );
+    Types::StringVector GetUniqueTraitValues( std::string trait ) {
+        Types::StringVector traitValues;
+        std::transform( trait.begin( ), trait.end( ), trait.begin( ), ::tolower );
 
-        map<string, vector<int> > temp = IndexLookupFromTrait[Trait];
+        Types::IntegerVectorMap temp = mIndexLookupFromTrait[ trait ];
 
-        for( auto var: temp ) {
-            TraitValues.push_back( var.first );
+        for( auto var : temp ) {
+            traitValues.push_back( var.first );
         }
 
-        return TraitValues;
+        return traitValues;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -175,10 +171,10 @@ public:
     @param functionalGroupIndex The functional group index to return the trait value for
     @return The value of the specified trait for the specified functional group*/
 
-    string GetTraitNames( string searchTrait, int functionalGroupIndex ) {
-        transform( searchTrait.begin( ), searchTrait.end( ), searchTrait.begin( ), ::tolower );
+    std::string GetTraitNames( std::string searchTrait, int functionalGroupIndex ) {
+        std::transform( searchTrait.begin( ), searchTrait.end( ), searchTrait.begin( ), ::tolower );
 
-        return TraitLookupFromIndex[searchTrait][functionalGroupIndex];
+        return mTraitLookupFromIndex[ searchTrait ][ functionalGroupIndex ];
     }
     //----------------------------------------------------------------------------------------------
 
@@ -187,14 +183,14 @@ public:
     @param functionalGroupIndex The functional group index to return trait values for
     @returns A vector of values of the specified traits for a specified functional group*/
 
-    vector<string> GetTraitNames( vector<string> searchTraits, int functionalGroupIndex ) {
-        vector<string> TraitNames( searchTraits.size( ) );
+    Types::StringVector GetTraitNames( Types::StringVector searchTraits, int functionalGroupIndex ) {
+        Types::StringVector traitNames( searchTraits.size( ) );
         //
-        for( auto sT: searchTraits ) {
-            transform( sT.begin( ), sT.end( ), sT.begin( ), ::tolower );
-            TraitNames.push_back( TraitLookupFromIndex[sT][functionalGroupIndex] );
+        for( auto sT : searchTraits ) {
+            std::transform( sT.begin( ), sT.end( ), sT.begin( ), ::tolower );
+            traitNames.push_back( mTraitLookupFromIndex[ sT ][ functionalGroupIndex ] );
         }
-        return TraitNames;
+        return traitNames;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -204,21 +200,21 @@ public:
     @param intersection Whether the intersection of the indices for the traits should be returned, otherwise return the union of the indices
     @return A vector of functional group indices with the specified values of the specified traits
      */
-    vector<int> GetFunctionalGroupIndex( vector<string> searchTraits, vector<string> searchTraitValues, bool intersection ) {
+    Types::IntegerVector GetFunctionalGroupIndex( Types::StringVector searchTraits, Types::StringVector searchTraitValues, bool intersection ) {
         // Check that the numbers of traits and of trait values specified are equal
-        vector<int> Result;
+        Types::IntegerVector result;
         assert( ( searchTraits.size( ) == searchTraitValues.size( ) ) && "Unequal search string arrays" );
-        for( auto sT: searchTraits ) {
-            if( IndexLookupFromTrait.count( sT ) != 0 ) {
-                for( auto V: searchTraitValues )
-                    if( IndexLookupFromTrait[sT].count( V ) != 0 ) {
-                        copy( IndexLookupFromTrait[sT][V].begin( ), IndexLookupFromTrait[sT][V].end( ), Result.end( ) );
+        for( auto sT : searchTraits ) {
+            if( mIndexLookupFromTrait.count( sT ) != 0 ) {
+                for( auto V : searchTraitValues )
+                    if( mIndexLookupFromTrait[ sT ].count( V ) != 0 ) {
+                        std::copy( mIndexLookupFromTrait[ sT ][ V ].begin( ), mIndexLookupFromTrait[ sT ][ V ].end( ), result.end( ) );
                     }
             }
         }
-        sort( Result.begin( ), Result.end( ) );
-        if( intersection )unique( Result.begin( ), Result.end( ) );
-        return Result;
+        std::sort( result.begin( ), result.end( ) );
+        if( intersection ) std::unique( result.begin( ), result.end( ) );
+        return result;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -230,42 +226,42 @@ public:
     //        /// True means give intersection. False means give the union of indices
     @return Int array containing functional group indices corresponding to the given search conditions
      */
-    vector<int> GetFunctionalGroupIndex( string searchTraits, string searchTraitValues, bool intersection ) {
+    Types::IntegerVector GetFunctionalGroupIndex( std::string searchTraits, std::string searchTraitValues, bool intersection ) {
 
         //List to hold the index vectors for each trait trait value pair
-        vector<int> IndexList;
-        transform( searchTraits.begin( ), searchTraits.end( ), searchTraits.begin( ), ::tolower );
-        transform( searchTraitValues.begin( ), searchTraitValues.end( ), searchTraitValues.begin( ), ::tolower );
+        Types::IntegerVector indexList;
+        std::transform( searchTraits.begin( ), searchTraits.end( ), searchTraits.begin( ), ::tolower );
+        std::transform( searchTraitValues.begin( ), searchTraitValues.end( ), searchTraitValues.begin( ), ::tolower );
         //Sorted dictionary to hold the trait value index list sorted dictionary from the lookup table
-        map<string, vector<int>> TraitIndexList;
+        //Types::IntegerVectorMap traitIndexList;
 
         //Check if the trait name is in the lookup table and if so pull out the <trait value, index vector> sorted dictionary for it
-        if( IndexLookupFromTrait.count( searchTraits ) != 0 ) {
+        if( mIndexLookupFromTrait.count( searchTraits ) != 0 ) {
             //Check if the trait value string is found in the lookup table and if found pull out the index vector for it
             //and add it to the List of these for processing - intersection of union
-            if( IndexLookupFromTrait[searchTraits].count( searchTraitValues ) != 0 ) {
-                return IndexLookupFromTrait[searchTraits][searchTraitValues];
+            if( mIndexLookupFromTrait[ searchTraits ].count( searchTraitValues ) != 0 ) {
+                return mIndexLookupFromTrait[ searchTraits ][ searchTraitValues ];
             }//If trait value string not found then show error message
             else {
-                cout << searchTraitValues << endl;
-                cout << "Trait Value to search for not found in lookup tables" << endl;
+                Logger::Get( )->LogMessage( searchTraitValues );
+                Logger::Get( )->LogMessage( "Trait Value to search for not found in lookup tables" );
                 exit( 1 );
             }
         }//If trait name string not found then show error message
         else {
-            cout << "Trait to search for not found in lookup tables" << endl;
+            Logger::Get( )->LogMessage( "Trait to search for not found in lookup tables" );
             exit( 1 );
         }
-        sort( IndexList.begin( ), IndexList.end( ) );
-        if( intersection )unique( IndexList.begin( ), IndexList.end( ) );
-        return IndexList;
+        std::sort( indexList.begin( ), indexList.end( ) );
+        if( intersection )std::unique( indexList.begin( ), indexList.end( ) );
+        return indexList;
     }
     //----------------------------------------------------------------------------------------------
 
     /** \brief Returns number of functional groups 
        @returns>Number of functional groups*/
     int GetNumberOfFunctionalGroups( ) {
-        return (AllFunctionalGroupsIndex.size( ) );
+        return mAllFunctinoalGroupsIndex.size( );
     }
 };
 #endif

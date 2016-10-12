@@ -213,8 +213,8 @@ public:
 
         //Variable for altering the juvenile to adult mass ratio for marine cells when handling certain functional groups eg baleen whales
         double scaling = 0.0;
-        gcl.SetCohortSize( mCohortFunctionalGroupDefinitions.AllFunctionalGroupsIndex.size( ) );
-        for( int FunctionalGroup : mCohortFunctionalGroupDefinitions.AllFunctionalGroupsIndex ) {
+        gcl.SetCohortSize( mCohortFunctionalGroupDefinitions.mAllFunctinoalGroupsIndex.size( ) );
+        for( int FunctionalGroup : mCohortFunctionalGroupDefinitions.mAllFunctinoalGroupsIndex ) {
             int N = mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Initial number of GridCellCohorts", FunctionalGroup );
             if( ( mCohortFunctionalGroupDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "terrestrial" && !gcl.IsMarine( ) ) ||
                     ( mCohortFunctionalGroupDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "marine" && gcl.IsMarine( ) ) ) {
@@ -225,7 +225,7 @@ public:
         if( numCohortsThisCell > 0 );
         {
             //Loop over all functional groups in the model
-            for( int functionalGroup : mCohortFunctionalGroupDefinitions.AllFunctionalGroupsIndex ) {
+            for( int functionalGroup : mCohortFunctionalGroupDefinitions.mAllFunctinoalGroupsIndex ) {
                 // If it is a functional group that corresponds to the current realm, then seed cohorts
                 if( ( mCohortFunctionalGroupDefinitions.GetTraitNames( "Realm", functionalGroup ) == "terrestrial" && !gcl.IsMarine( ) ) ||
                         ( mCohortFunctionalGroupDefinitions.GetTraitNames( "Realm", functionalGroup ) == "marine" && gcl.IsMarine( ) ) ) {
@@ -356,7 +356,7 @@ public:
         long totalStocks = 0;
 
         // Loop over all stock functional groups in the model
-        for( int functionalGroupIndex : mStockFunctionalGroupDefinitions.AllFunctionalGroupsIndex ) {
+        for( int functionalGroupIndex : mStockFunctionalGroupDefinitions.mAllFunctinoalGroupsIndex ) {
             // Initialise the new stock with the relevant properties
             bool success;
             Stock NewStock( mStockFunctionalGroupDefinitions, functionalGroupIndex, gcl, success );
