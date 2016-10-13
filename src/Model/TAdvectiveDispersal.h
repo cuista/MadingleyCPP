@@ -1,41 +1,39 @@
 #ifndef TADVECTIVEDISPERSAL_H
 #define TADVECTIVEDISPERSAL_H
-#include <IDispersalImplementation.h>
-#include <UtilityFunctions.h>
-#include <random>
-#include <chrono>
-#include <assert.h>
-#include <math.h>
-#include <Environment.h>
 
+#include <assert.h>
+#include "IDispersalImplementation.h"
+#include "UtilityFunctions.h"
+#include "Environment.h"
 #include "Parameters.h"
+#include "Types.h"
 /** \file TAdvectiveDispersal.h
  * \brief the TAdvectiveDispersal header file
  */
 
 /** \brief A formulation of the process of dispersal */
-class AdvectiveDispersal: public IDispersalImplementation {
+class AdvectiveDispersal : public IDispersalImplementation {
 public:
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
 
     /** \brief The horizontal diffusivity parameter (m^2/s) */
-    const double HorizontalDiffusivity = 100;
+    const double mHorizontalDiffusivity = 100;
     /** \brief The length of the time-step for advective dispersal, in hours*/
-    const unsigned AdvectiveModelTimeStepLengthHours = 18;
+    const unsigned mAdvectiveModelTimeStepLengthHours = 18;
     /** \brief Horizontal diffusivity in km^2/advective-dispersal-time-step*/
-    const double HorizontalDiffusivityKmSqPerADTimeStep = HorizontalDiffusivity / ( 1000 * 1000 ) * 60 * 60 * AdvectiveModelTimeStepLengthHours;
+    const double mHorizontalDiffusivityKmSqPerADTimeStep = mHorizontalDiffusivity / ( 1000 * 1000 ) * 60 * 60 * mAdvectiveModelTimeStepLengthHours;
     /** \brief Time unit scalar to apply to advective dispersal*/
-    double AdvectionTimeStepsPerModelTimeStep;
+    double mAdvectionTimeStepsPerModelTimeStep;
     /** \brief The time units associated with this implementation of dispersal*/
-    const string TimeUnitImplementation = "month";
+    const std::string mTimeUnitImplementation = "month";
     /** \brief Factor to convert velocity from m/s to km/month*/
-    double VelocityUnitConversion;
+    double mVelocityUnitConversion;
     /** \brief Scalar to convert from the time step units used by this formulation of dispersal to global model time step units */
-    double DeltaT;
+    double mDeltaT;
     /** \brief Include Utility class */
-    UtilityFunctions Utilities;
+    UtilityFunctions mUtilities;
 
     //----------------------------------------------------------------------------------------------
     //Methods
@@ -46,22 +44,20 @@ public:
     /** \brief Constructor for dispersal: assigns all parameter values */
     AdvectiveDispersal( ) {
         // Calculate the scalar to convert from the time step units used by this implementation of dispersal to the global model time step units
-        DeltaT = Utilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), TimeUnitImplementation );
+        mDeltaT = mUtilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), mTimeUnitImplementation );
 
         // Initialise the advective dispersal temporal scaling to adjust between time steps appropriately
-        AdvectionTimeStepsPerModelTimeStep = Utilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), "day" ) * 24 / AdvectiveModelTimeStepLengthHours;
+        mAdvectionTimeStepsPerModelTimeStep = mUtilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), "day" ) * 24 / mAdvectiveModelTimeStepLengthHours;
 
         // Convert velocity from m/s to km/month. Note that if the _TimeUnitImplementation changes, this will also have to change.
-        VelocityUnitConversion = 60 * 60 * 24 * Utilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), "day" ) * DeltaT / 1000;
+        mVelocityUnitConversion = 60 * 60 * 24 * mUtilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), "day" ) * mDeltaT / 1000;
 
         // Set the seed for the random number generator
+        unsigned seed = 14141;
         if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
-            unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
-            RandomNumberGenerator.seed( seed );
-        } else {
-            RandomNumberGenerator.seed( 14141 );
+            seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
         }
-        randomNumber.SetSeed(14141);
+        mRandomNumber1.SetSeed( seed );
 
     }
     //----------------------------------------------------------------------------------------------
@@ -77,7 +73,7 @@ public:
     void RunDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
 
         // Loop through a number of times proportional to the rescaled dispersal
-        for( int mm = 0; mm < AdvectionTimeStepsPerModelTimeStep; mm++ ) {
+        for( int mm = 0; mm < mAdvectionTimeStepsPerModelTimeStep; mm++ ) {
             // Get the probability of dispersal and return a candidate cell
             CalculateDispersalProbability( gridForDispersal, cohortToDisperse, currentMonth );
         }
@@ -90,7 +86,7 @@ public:
     inline const double RescaleDispersalSpeed( const double& dispersalSpeed ) const {
         //            // Units are metres per second; need to convert to kilometres per global time step (currently one month) - use VelocityUnitConversion for this.
         //            // Also rescale based on the time step of the advective dispersal model - currently 18h
-        return dispersalSpeed * VelocityUnitConversion / AdvectionTimeStepsPerModelTimeStep;
+        return dispersalSpeed * mVelocityUnitConversion / mAdvectionTimeStepsPerModelTimeStep;
     }
     //----------------------------------------------------------------------------------------------
 
@@ -112,19 +108,19 @@ public:
         double vDistanceTravelled;
 
         // U and V components of the diffusive velocity
-        vector<double> DiffusiveUandVComponents( 2 );
+        Types::DoubleVector diffusiveUandVComponents( 2 );
 
         // Length in km of a cell boundary latitudinally
-        double LatCellLength;
+        double latCellLength;
 
         // Length in km of a cell boundary longitudinally
-        double LonCellLength;
+        double lonCellLength;
 
         // Cell area, in kilometres squared
-        double CellArea;
+        // double cellArea;
 
         // A variable to track whether a named data layer exists
-        bool varExists;
+        // bool varExists;
 
         // Get the u speed and the v speed from the cell data
         uAdvectiveSpeed = Environment::Get( "uVel", *( c.mDestination ) );
@@ -133,21 +129,23 @@ public:
         vAdvectiveSpeed = Environment::Get( "vVel", *( c.mDestination ) );
         assert( vAdvectiveSpeed > -9999 );
         // Calculate the diffusive movement speed, with a direction chosen at random
-        DiffusiveUandVComponents = CalculateDiffusion( );
+        diffusiveUandVComponents = CalculateDiffusion( );
         // Calculate the distance travelled in this dispersal (not global) time step. both advective and diffusive speeds need to have been converted to km / advective model time step
-        uDistanceTravelled = RescaleDispersalSpeed( uAdvectiveSpeed ) + DiffusiveUandVComponents[0];
-        vDistanceTravelled = RescaleDispersalSpeed( vAdvectiveSpeed ) + DiffusiveUandVComponents[1];
+        uDistanceTravelled = RescaleDispersalSpeed( uAdvectiveSpeed ) + diffusiveUandVComponents[0];
+        vDistanceTravelled = RescaleDispersalSpeed( vAdvectiveSpeed ) + diffusiveUandVComponents[1];
 
         // Check that the u distance travelled and v distance travelled are not greater than the cell length
 
-        LatCellLength = c.GetDestination( ).GetCellHeight( );
-        LonCellLength = c.GetDestination( ).GetCellWidth( );
-        if( abs( uDistanceTravelled ) > LonCellLength ) cout << "BIG U " << uAdvectiveSpeed << endl;
-        assert( abs( uDistanceTravelled ) <= LonCellLength && "u velocity greater than cell width" );
-        assert( abs( vDistanceTravelled ) <= LatCellLength && "v velocity greater than cell width" );
-        GridCell* nc =newCell( madingleyGrid, uDistanceTravelled, vDistanceTravelled, LonCellLength, LatCellLength, c.mDestination );
+        latCellLength = c.GetDestination( ).GetCellHeight( );
+        lonCellLength = c.GetDestination( ).GetCellWidth( );
+        if( abs( uDistanceTravelled ) > lonCellLength ) cout << "BIG U " << uAdvectiveSpeed << endl;
+        assert( abs( uDistanceTravelled ) <= lonCellLength && "u velocity greater than cell width" );
+        assert( abs( vDistanceTravelled ) <= latCellLength && "v velocity greater than cell width" );
+        GridCell* nc = newCell( madingleyGrid, uDistanceTravelled, vDistanceTravelled, lonCellLength, latCellLength, c.mDestination );
 
-        if (nc!=0){c.TryLivingAt(nc);}
+        if( nc != 0 ) {
+            c.TryLivingAt( nc );
+        }
 
     }
     //----------------------------------------------------------------------------------------------
@@ -157,17 +155,17 @@ public:
 
     @return A two element array, where the first element is the diffusion component in the u direction, and the second component is the
     diffusion component in the v direction*/
-    vector<double> CalculateDiffusion( ) {
+    Types::DoubleVector CalculateDiffusion( ) {
         // Create the array with which to send the output
-        vector<double> UandVOutputs( 2 );
+        Types::DoubleVector outputsUandV( 2 );
 
         // Note that this formulation drops the delta t because we set the horizontal diffusivity to be at the same temporal
         // scale as the time step
 
-        UandVOutputs[0] = randomNumber.GetNormal() * sqrt( ( 2.0 * HorizontalDiffusivityKmSqPerADTimeStep ) );
-        UandVOutputs[1] = randomNumber.GetNormal() * sqrt( ( 2.0 * HorizontalDiffusivityKmSqPerADTimeStep ) );
+        outputsUandV[ 0 ] = mRandomNumber1.GetNormal( ) * sqrt( ( 2.0 * mHorizontalDiffusivityKmSqPerADTimeStep ) );
+        outputsUandV[ 1 ] = mRandomNumber1.GetNormal( ) * sqrt( ( 2.0 * mHorizontalDiffusivityKmSqPerADTimeStep ) );
 
-        return UandVOutputs;
+        return outputsUandV;
     }
     //----------------------------------------------------------------------------------------------
 };

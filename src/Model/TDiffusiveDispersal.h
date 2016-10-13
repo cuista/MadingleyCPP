@@ -1,31 +1,28 @@
 #ifndef TDIFFUSIVEDISPERSAL_H
 #define TDIFFUSIVEDISPERSAL_H
-#include <IDispersalImplementation.h>
-#include <UtilityFunctions.h>
-#include <random>
-#include <chrono>
-#include <assert.h>
-#include <math.h>
+
+#include "IDispersalImplementation.h"
+#include "UtilityFunctions.h"
 /** \file TDiffusiveDispersal.h
  * \brief the TDiffusiveDispersal header file
  */
 
 /** \brief A formulation of the process of dispersal */
-class DiffusiveDispersal: public IDispersalImplementation {
+class DiffusiveDispersal : public IDispersalImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
     /** \brief The time units associated with this implementation of dispersal */
-    const string TimeUnitImplementation = "month";
+    const std::string mTimeUnitImplementation = "month";
     /** \brief Scalar relating dispersal speed to individual body mass */
-    const double DispersalSpeedBodyMassScalar = 0.0278;
+    const double mDispersalSpeedBodyMassScalar = 0.0278;
     /** \brief Body-mass exponent of the relationship between disperal speed and individual body mass */
-    const double DispersalSpeedBodyMassExponent = 0.48;
+    const double mDispersalSpeedBodyMassExponent = 0.48;
     /** \brief Scalar to convert from the time step units used by this formulation of dispersal to global model time step units */
-    double DeltaT;
+    double mDeltaT;
 
     /** \brief Include Utility class */
-    UtilityFunctions Utilities;
+    UtilityFunctions mUtilities;
 
 
 public:
@@ -40,15 +37,14 @@ public:
     DiffusiveDispersal( ) {
 
         // Calculate the scalar to convert from the time step units used by this implementation of dispersal to the global model time step units
-        DeltaT = Utilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), TimeUnitImplementation );
+        mDeltaT = mUtilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), mTimeUnitImplementation );
 
         // Set the seed for the random number generator
-        if( Parameters::Get( )->GetDrawRandomly( ) ) {
-            unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
-            RandomNumberGenerator.seed( seed );
-        } else {
-            RandomNumberGenerator.seed( 14141 );
+        unsigned seed = 14141;
+        if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
+            seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
         }
+        mRandomNumber1.SetSeed( seed );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -61,9 +57,9 @@ public:
     @param currentMonth The current model month */
     void RunDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
         // Calculate dispersal speed for the cohort         
-        double DispersalSpeed = CalculateDispersalSpeed( cohortToDisperse.mIndividualBodyMass );
+        double dispersalSpeed = CalculateDispersalSpeed( cohortToDisperse.mIndividualBodyMass );
 
-        CalculateDispersalProbability( gridForDispersal, cohortToDisperse, DispersalSpeed );
+        CalculateDispersalProbability( gridForDispersal, cohortToDisperse, dispersalSpeed );
 
     }
     //----------------------------------------------------------------------------------------------
@@ -72,7 +68,7 @@ public:
     @param bodyMass The current body mass of individuals in the cohort 
     @return The average dispersal speed, in km per month*/
     double CalculateDispersalSpeed( double bodyMass ) {
-        return DispersalSpeedBodyMassScalar * pow( bodyMass, DispersalSpeedBodyMassExponent );
+        return mDispersalSpeedBodyMassScalar * pow( bodyMass, mDispersalSpeedBodyMassExponent );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -81,22 +77,22 @@ public:
     @param C a cohort
     @param dispersalSpeed The average speed at which individuals in this cohort move around their environment, in km per month 
      */
-    void CalculateDispersalProbability( ModelGrid& madingleyGrid, Cohort& c, double dispersalSpeed ) {
+    void CalculateDispersalProbability( ModelGrid& madingleyGrid, Cohort& cohort, double dispersalSpeed ) {
         // Check that the u speed and v speed are not greater than the cell length. If they are, then rescale them; this limits the max velocity
         // so that cohorts cannot be advected more than one grid cell per time step
-        double LatCellLength = c.mCurrentLocation->GetCellHeight( );
-        double LonCellLength = c.mCurrentLocation->GetCellWidth( );
+        double latCellLength = cohort.mCurrentLocation->GetCellHeight( );
+        double lonCellLength = cohort.mCurrentLocation->GetCellWidth( );
 
         // Pick a direction at random
-        double RandomDirection = randomNumber.GetUniform()* 2 * acos( -1. );
+        double randomDirection = mRandomNumber1.GetUniform( )* 2 * acos( -1. );
 
 
         // Calculate the u and v components given the dispersal speed
-        double uSpeed = dispersalSpeed * cos( RandomDirection );
-        double vSpeed = dispersalSpeed * sin( RandomDirection );
-        GridCell* nc =newCell( madingleyGrid, uSpeed, vSpeed, LonCellLength, LatCellLength, c.mDestination );
+        double uSpeed = dispersalSpeed * cos( randomDirection );
+        double vSpeed = dispersalSpeed * sin( randomDirection );
+        GridCell* nc = newCell( madingleyGrid, uSpeed, vSpeed, lonCellLength, latCellLength, cohort.mDestination );
 
-        if (nc!=0)c.TryLivingAt(nc);
+        if( nc != 0 )cohort.TryLivingAt( nc );
     }
     //----------------------------------------------------------------------------------------------
 };

@@ -281,7 +281,7 @@ public:
     void RunCrossGridCellEcology( unsigned& dispersals ) {
         // Loop through each grid cell, and run dispersal for each.
         // In the original model a new dispersal object is made every timestep - this resets the random number generators
-        mDisperser->resetRandoms( );
+        mDisperser->ResetRandoms( );
         mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & c ) {
             mDisperser->RunCrossGridCellEcologicalProcess( c, mModelGrid, mParams, mCurrentMonth );
         } );

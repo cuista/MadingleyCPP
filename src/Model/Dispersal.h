@@ -1,15 +1,13 @@
 #ifndef DISPERSAL_H
 #define DISPERSAL_H
-#include <string>
-#include <GridCell.h>
-#include <IDispersalImplementation.h>
-#include <limits>
-#include <TAdvectiveDispersal.h>
-#include <TResponsiveDispersal.h>
-#include <TDiffusiveDispersal.h>
 
+#include "GridCell.h"
+#include "IDispersalImplementation.h"
+#include "TAdvectiveDispersal.h"
+#include "TResponsiveDispersal.h"
+#include "TDiffusiveDispersal.h"
 #include "Parameters.h"
-using namespace std;
+#include "Types.h"
 /** \file Dispersal.h
  * \brief the Dispersal header file
  */
@@ -19,9 +17,9 @@ class Dispersal {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
-    vector<Cohort>dispersers;
+    Types::CohortVector mDispersers;
     /** \brief The available implementations of the dispersal process */
-    map<string, IDispersalImplementation*>choose;
+    Types::IDispersalMap mChoose;
 
 public:
 
@@ -31,23 +29,24 @@ public:
 
     Dispersal( ) {
         // Assign dispersal implementations
-        choose["advective"] = new AdvectiveDispersal( );
-        choose["diffusive"] = new DiffusiveDispersal( );
-        choose["responsive"] = new ResponsiveDispersal( );
+        mChoose["advective"] = new AdvectiveDispersal( );
+        mChoose["diffusive"] = new DiffusiveDispersal( );
+        mChoose["responsive"] = new ResponsiveDispersal( );
     }
     //----------------------------------------------------------------------------------------------
 
     /** \brief tidy up pointers */
     ~Dispersal( ) {
-        delete choose["advective"];
-        delete choose["diffusive"];
-        delete choose["responsive"];
+        delete mChoose["advective"];
+        delete mChoose["diffusive"];
+        delete mChoose["responsive"];
     }
-    void resetRandoms(){
+
+    void ResetRandoms( ) {
         // the original model resets the random number sequence every timestep by creating a new dispersal object
-        choose["advective"]->ResetRandom();
-        choose["diffusive"]->ResetRandom();
-        choose["responsive"]->ResetRandom();
+        mChoose["advective"]->ResetRandom( );
+        mChoose["diffusive"]->ResetRandom( );
+        mChoose["responsive"]->ResetRandom( );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -61,11 +60,11 @@ public:
     void RunCrossGridCellEcologicalProcess( GridCell& gcl, ModelGrid& gridForDispersal, MadingleyModelInitialisation& params, unsigned currentMonth ) {
 
         gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
-            if( choose.count( c.DispersalType( params ) ) != 0 ) {
-                choose[c.DispersalType( params )]->RunDispersal( gridForDispersal, c, currentMonth );
+            if( mChoose.count( c.DispersalType( params ) ) != 0 ) {
+                mChoose[c.DispersalType( params )]->RunDispersal( gridForDispersal, c, currentMonth );
 
             }
-            if( c.IsMoving( ) )dispersers.push_back( c );
+            if( c.IsMoving( ) )mDispersers.push_back( c );
 
         } );
 
@@ -73,12 +72,12 @@ public:
     //----------------------------------------------------------------------------------------------
 
     void UpdateCrossGridCellEcology( unsigned& dispersalCounter ) {
-        dispersalCounter = dispersers.size( );
+        dispersalCounter = mDispersers.size( );
 
-        for( auto& c: dispersers ) {
+        for( auto& c : mDispersers ) {
             c.Move( );
         }
-        dispersers.clear( );
+        mDispersers.clear( );
     }
 };
 

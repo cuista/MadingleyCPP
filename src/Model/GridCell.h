@@ -1,13 +1,14 @@
 #ifndef GRIDCELL
 #define GRIDCELL
 
-#include <UtilityFunctions.h>
-#include <Stock.h>
-#include <Cohort.h>
-
+#include "UtilityFunctions.h"
+#include "Stock.h"
+#include "Cohort.h"
 #include "Environment.h"
 #include "Parameters.h"
 #include "DataIndices.h"
+#include "Logger.h"
+#include "Convertor.h"
 
 class GridCell {
 public:
@@ -49,7 +50,7 @@ public:
         auto h = find_if( z.begin( ), z.end( ), [ c ]( Cohort & k ) {
             return c.mID == k.mID;
         } );
-        if( c.mID != ( *h ).mID )cout << "Strange things happening in grid delete? " << c.mID << " " << ( *h ).mID << endl;
+        if( c.mID != ( *h ).mID ) Logger::Get( )->LogMessage( "Strange things happening in grid delete? " + Convertor::Get( )->ToString( c.mID ) + " " + Convertor::Get( )->ToString( ( *h ).mID ) );
         z.erase( h );
     }
 

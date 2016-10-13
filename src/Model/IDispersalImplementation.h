@@ -1,9 +1,9 @@
 #ifndef IDISPERSALIMPLEMENTATION_H
 #define IDISPERSALIMPLEMENTATION_H
-#include <ModelGrid.h>
-#include <Cohort.h>
-#include <random>
-#include <NonStaticSimpleRNG.h>
+
+#include "ModelGrid.h"
+#include "Cohort.h"
+#include "NonStaticSimpleRNG.h"
 
 /** \file IDispersalImplementation.h
  * \brief the IDispersalImplementation header file
@@ -16,24 +16,36 @@ public:
     //Variables
     //----------------------------------------------------------------------------------------------
     /** \brief Include Utility class */
-    UtilityFunctions Utilities;
+    UtilityFunctions mUtilities;
     /** \brief An instance of the simple random number generator class */
-    std::mt19937_64 RandomNumberGenerator;
-    NonStaticSimpleRNG randomNumber,randomNum2;
+    NonStaticSimpleRNG mRandomNumber1, mRandomNumber2;
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
 
     //----------------------------------------------------------------------------------------------
-    IDispersalImplementation(){;}
+
+    IDispersalImplementation( ) {
+        ;
+    }
+
     /** \brief Run the dispersal implementation */
     virtual void RunDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
         cout << "Called virtual dispersal runner: probably not what you want" << endl;
     }
-    void ResetRandom(){randomNumber.reset();randomNumber.SetSeed(14141);randomNum2.reset();}
+
+    void ResetRandom( ) {
+        unsigned seed = 14141;
+        if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
+            seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
+        }
+        mRandomNumber1.reset( );
+        mRandomNumber1.SetSeed( seed );
+        mRandomNumber2.reset( );
+    }
     //----------------------------------------------------------------------------------------------
 
-    GridCell* newCell( ModelGrid& madingleyGrid, double& uSpeed, double& vSpeed, double & LonCellLength, double & LatCellLength, const GridCell* gcl) {
+    GridCell* newCell( ModelGrid& madingleyGrid, double& uSpeed, double& vSpeed, double & LonCellLength, double & LatCellLength, const GridCell* gcl ) {
         // Calculate the area of the grid cell that is now outside in the diagonal direction
         double AreaOutsideBoth = abs( uSpeed * vSpeed );
 
@@ -58,8 +70,8 @@ public:
         // to determine the direction in which the cohort moves probabilistically
         //std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
         //double RandomValue = randomNumber( RandomNumberGenerator );
-        double RandomValue=randomNum2.GetUniform();
-        
+        double RandomValue = mRandomNumber2.GetUniform( );
+
         if( DispersalProbability >= RandomValue ) {
             int signu = ( uSpeed > 0 ) - ( uSpeed < 0 );
             int signv = ( vSpeed > 0 ) - ( vSpeed < 0 );

@@ -1,38 +1,34 @@
 #ifndef TRESPONSIVEDISPERSAL_H
 #define TRESPONSIVEDISPERSAL_H
-#include <IDispersalImplementation.h>
-#include <UtilityFunctions.h>
-#include <random>
-#include <chrono>
-#include <assert.h>
-#include <math.h>
-#include <vector>
+
+#include "IDispersalImplementation.h"
+#include "UtilityFunctions.h"
 /** \file TResponsiveDispersal.h
  * \brief the TResponsiveDispersal header file
  */
 
 /** \brief A formulation of the process of responsive dispersal */
-class ResponsiveDispersal: public IDispersalImplementation {
+class ResponsiveDispersal : public IDispersalImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
     /** \brief The time units associated with this implementation of dispersal */
-    const string TimeUnitImplementation = "month";
+    const std::string mTimeUnitImplementation = "month";
 
     /** \brief Density threshold below which adult individuals may move to look for other adults of the same cohort
 
     \remarks The density scales with cohort weight via: Min Density = DensityThresholdScaling / MatureMass (g) */
-    const double DensityThresholdScaling = 50000;
+    const double mDensityThresholdScaling = 50000;
     /** \brief Scalar relating dispersal speed to individual body mass */
-    const double DispersalSpeedBodyMassScalar = 0.0278;
+    const double mDispersalSpeedBodyMassScalar = 0.0278;
     /** \brief Body-mass exponent of the relationship between disperal speed and individual body mass */
-    const double DispersalSpeedBodyMassExponent = 0.48;
+    const double mDispersalSpeedBodyMassExponent = 0.48;
 
     /** \brief The proportion of body mass loss at which the cohort will try to disperse every time during a time step */
-    const double StarvationDispersalBodyMassThreshold = 0.8;
+    const double mStarvationDispersalBodyMassThreshold = 0.8;
 
     /** \brief Scalar to convert from the time step units used by this formulation of dispersal to global model time step units */
-    double DeltaT;
+    double mDeltaT;
 
 public:
     //----------------------------------------------------------------------------------------------
@@ -45,15 +41,14 @@ public:
     ResponsiveDispersal( ) {
 
         // Calculate the scalar to convert from the time step units used by this implementation of dispersal to the global model time step units
-        DeltaT = Utilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), TimeUnitImplementation );
+        mDeltaT = mUtilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), mTimeUnitImplementation );
 
         // Set the seed for the random number generator
-        if( Parameters::Get( )->GetDrawRandomly( ) ) {
-            unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
-            RandomNumberGenerator.seed( seed );
-        } else {
-            RandomNumberGenerator.seed( 14141 );
+        unsigned seed = 14141;
+        if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
+            seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
         }
+        mRandomNumber1.SetSeed( seed );
     }
 
     //----------------------------------------------------------------------------------------------
@@ -69,12 +64,12 @@ public:
     void RunDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
         // Starvation driven dispersal takes precedence over density driven dispersal (i.e. a cohort can't do both). Also, the delta 
         // arrays only allow each cohort to perform one type of dispersal each time step
-        bool CohortDispersed = false;
+        bool cohortDispersed = false;
 
         // Check for starvation-driven dispersal
-        CohortDispersed = CheckStarvationDispersal( gridForDispersal, cohortToDisperse );
+        cohortDispersed = CheckStarvationDispersal( gridForDispersal, cohortToDisperse );
 
-        if( !CohortDispersed ) {
+        if( !cohortDispersed ) {
             // Check for density driven dispersal
             CheckDensityDrivenDispersal( gridForDispersal, cohortToDisperse );
         }
@@ -84,64 +79,61 @@ public:
 
     bool CheckStarvationDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse ) {
         // A boolean to check whether a cohort has dispersed
-        bool CohortHasDispersed = false;
+        bool cohortHasDispersed = false;
 
         // Check for starvation driven dispersal
         // What is the present body mass of the cohort?
         // Note that at present we are just tracking starvation for adults
-        double IndividualBodyMass = cohortToDisperse.mIndividualBodyMass;
-        double AdultMass = cohortToDisperse.mAdultMass;
+        double individualBodyMass = cohortToDisperse.mIndividualBodyMass;
+        double adultMass = cohortToDisperse.mAdultMass;
 
         // Assume a linear relationship between probability of dispersal and body mass loss, up to _StarvationDispersalBodyMassThreshold
         // at which point the cohort will try to disperse every time step
-        if( IndividualBodyMass < AdultMass ) {
-            double ProportionalPresentMass = IndividualBodyMass / AdultMass;
+        if( individualBodyMass < adultMass ) {
+            double proportionalPresentMass = individualBodyMass / adultMass;
 
             // If the body mass loss is greater than the starvation dispersal body mass threshold, then the cohort tries to disperse
-            if( ProportionalPresentMass < StarvationDispersalBodyMassThreshold ) {
+            if( proportionalPresentMass < mStarvationDispersalBodyMassThreshold ) {
                 // Cohort tries to disperse
 
-                CalculateDispersalProbability( gridForDispersal, cohortToDisperse, CalculateDispersalSpeed( AdultMass ) );
+                CalculateDispersalProbability( gridForDispersal, cohortToDisperse, CalculateDispersalSpeed( adultMass ) );
 
                 // Note that regardless of whether or not it succeeds, if a cohort tries to disperse, it is counted as having dispersed for the purposes of not then allowing it to disperse
                 // based on its density.
-                CohortHasDispersed = true;
+                cohortHasDispersed = true;
                 // Otherwise, the cohort has a chance of trying to disperse proportional to its mass lass
             } else {
 
                 // Cohort tries to disperse with a particular probability
                 // Draw a random number
                 //std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
-                double RandomValue = randomNumber.GetUniform();
-                if( ( ( 1.0 - ProportionalPresentMass ) / ( 1.0 - StarvationDispersalBodyMassThreshold ) ) > RandomValue ) {
+                double randomValue = mRandomNumber1.GetUniform( );
+                if( ( ( 1.0 - proportionalPresentMass ) / ( 1.0 - mStarvationDispersalBodyMassThreshold ) ) > randomValue ) {
 
-                    CalculateDispersalProbability( gridForDispersal, cohortToDisperse, CalculateDispersalSpeed( AdultMass ) );
-
-                    CohortHasDispersed = true;
+                    CalculateDispersalProbability( gridForDispersal, cohortToDisperse, CalculateDispersalSpeed( adultMass ) );
+                    cohortHasDispersed = true;
                 }
             }
-
         }
-        return CohortHasDispersed;
+        return cohortHasDispersed;
     }
     //----------------------------------------------------------------------------------------------
 
     void CheckDensityDrivenDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse ) {
         // Check the population density
-        double NumberOfIndividuals = cohortToDisperse.mCohortAbundance;
+        double numberOfIndividuals = cohortToDisperse.mCohortAbundance;
 
         // Get the cell area, in kilometres squared
-        double CellArea = cohortToDisperse.mCurrentLocation->GetCellArea( );
+        double cellArea = cohortToDisperse.mCurrentLocation->GetCellArea( );
 
         // If below the density threshold
-        if( ( NumberOfIndividuals / CellArea ) < DensityThresholdScaling / cohortToDisperse.mAdultMass ) {
+        if( ( numberOfIndividuals / cellArea ) < mDensityThresholdScaling / cohortToDisperse.mAdultMass ) {
             // Check to see if it disperses (based on the same movement scaling as used in diffusive movement)
             // Calculate dispersal speed for that cohort
-            double DispersalSpeed = CalculateDispersalSpeed( cohortToDisperse.mAdultMass );
+            double dispersalSpeed = CalculateDispersalSpeed( cohortToDisperse.mAdultMass );
 
             // Cohort tries to disperse
-            CalculateDispersalProbability( gridForDispersal, cohortToDisperse, DispersalSpeed );
-
+            CalculateDispersalProbability( gridForDispersal, cohortToDisperse, dispersalSpeed );
         }
     }
     //----------------------------------------------------------------------------------------------
@@ -150,7 +142,7 @@ public:
     @param bodyMass The current body mass of an individual in the cohort 
     @return The (average) dispersal speed in kilometres per month*/
     double CalculateDispersalSpeed( double bodyMass ) {
-        return DispersalSpeedBodyMassScalar * pow( bodyMass, DispersalSpeedBodyMassExponent );
+        return mDispersalSpeedBodyMassScalar * pow( bodyMass, mDispersalSpeedBodyMassExponent );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -160,29 +152,27 @@ public:
     @param dispersalSpeed The average dispersal speed of individuals in the acting cohort 
      */
     void CalculateDispersalProbability( ModelGrid& madingleyGrid, Cohort& c, double dispersalSpeed ) {
-        double LatCellLength = c.mCurrentLocation->GetCellHeight( );
-        double LonCellLength = c.mCurrentLocation->GetCellWidth( );
+        double latCellLength = c.mCurrentLocation->GetCellHeight( );
+        double lonCellLength = c.mCurrentLocation->GetCellWidth( );
 
         // Pick a direction at random
         //std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
-        double RandomDirection = randomNumber.GetUniform()* 2 * acos( -1. );
+        double randomDirection = mRandomNumber1.GetUniform( )* 2 * acos( -1. );
 
         // Calculate the u and v components given the dispersal speed
-        double uSpeed = dispersalSpeed * cos( RandomDirection );
-        double vSpeed = dispersalSpeed * sin( RandomDirection );
+        double uSpeed = dispersalSpeed * cos( randomDirection );
+        double vSpeed = dispersalSpeed * sin( randomDirection );
 
         // Check that the whole cell hasn't moved out (i.e. that dispersal speed is not greater than cell length). 
         // This could happen if dispersal speed was high enough; indicates a need to adjust the time step, or to slow dispersal
-        if( uSpeed > LonCellLength )cout << "Dispersal Big U " << uSpeed << endl;
-        if( vSpeed > LatCellLength )cout << "Dispersal Big V " << vSpeed << endl;
+        if( uSpeed > lonCellLength )cout << "Dispersal Big U " << uSpeed << endl;
+        if( vSpeed > latCellLength )cout << "Dispersal Big V " << vSpeed << endl;
 
-        assert( ( ( uSpeed < LonCellLength ) && ( vSpeed < LatCellLength ) ) && "Dispersal probability should always be <= 1" );
+        assert( ( ( uSpeed < lonCellLength ) && ( vSpeed < latCellLength ) ) && "Dispersal probability should always be <= 1" );
 
-        GridCell* nc =newCell( madingleyGrid, uSpeed, vSpeed, LonCellLength, LatCellLength, c.mDestination );
+        GridCell* nc = newCell( madingleyGrid, uSpeed, vSpeed, lonCellLength, latCellLength, c.mDestination );
 
-        if (nc!=0)c.TryLivingAt(nc);
-
+        if( nc != 0 )c.TryLivingAt( nc );
     }
-
 };
 #endif
