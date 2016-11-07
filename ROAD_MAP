@@ -1,7 +1,13 @@
 PLANNED FUTURE CHANGES
+
 Primary
-- Output grid-based data for all available datums. Are there any other calculations that need to take place?
-- Mike to check in his changes.
+- Integrate state reading/writing code
+- Finish and integrate tagging/tracker code
+- Time-varying input fields
+- HANPP
+- User-guide/tutorial
+- Compile on Windows/OS X
+- Formal testing strategy
 
 Secondary
 - Centralise file reading.
@@ -9,6 +15,10 @@ Secondary
 - Move hard-coded constants to Constants.h
 - Change DrawRandomly parameter to RandomSeed and use this to seed a centralised random object, accessible via a singleton design pattern.
 - Move library directories into the Madingley tree for increased portability.
+- Pull out hard-coded parameters into input file(s)
+- High-latitude runs - what to do at the poles?
+
+Tertiary
 - Drop std namespaces.
 - Drop cout and switch to use of Logger class.
 - Terminal output written to file as model runs.

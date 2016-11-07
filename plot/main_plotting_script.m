@@ -2,7 +2,7 @@ tic
 %clear
 
 %% User Defined Parameters
-optionCurrentDataSet            = '2016-10-13_12-36-38';
+optionCurrentDataSet            = '2016-11-07_11-21-47';
 optionOutputDirectory           = '/home/philju/Dropbox/Development/MadingleyCPP/output/';
 
 optionOutputParametersFile      = 'OutputControlParameters.csv';
@@ -17,7 +17,7 @@ optionPlotImageWidth            = 12; % cm
 optionPlotImageHeight           = 10; % cm
 
 optionMissingValue              = -9999;
-optionMonthIndex                = 1200; % Time index for plotting grid datums
+optionMonthIndex                = 1; % Time index for plotting grid datums
 
 %% Input Formatting
 if strcmp( optionOutputDirectory( end ), '/' ) == 0
