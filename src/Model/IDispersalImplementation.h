@@ -45,8 +45,13 @@ public:
     }
     //----------------------------------------------------------------------------------------------
 
-    GridCell* newCell( ModelGrid& madingleyGrid, double& uSpeed, double& vSpeed, double & LonCellLength, double & LatCellLength, const GridCell* gcl ) {
+    void newCell( ModelGrid& madingleyGrid, double& uSpeed, double& vSpeed, double & LonCellLength, double & LatCellLength, Cohort& c ) {
         // Calculate the area of the grid cell that is now outside in the diagonal direction
+        // Get the cell area, in kilometres squared
+        double CellArea = c.mDestination->GetCellArea( );
+        LonCellLength = c.mDestination->GetCellWidth();
+        LatCellLength = c.mDestination->GetCellHeight();
+        GridCell& g=madingleyGrid.getACell(c.mDest);
         double AreaOutsideBoth = abs( uSpeed * vSpeed );
 
         // Calculate the area of the grid cell that is now outside in the u direction (not including the diagonal)
@@ -55,8 +60,6 @@ public:
         // Calculate the proportion of the grid cell that is outside in the v direction (not including the diagonal
         double AreaOutsideV = abs( vSpeed * LonCellLength ) - AreaOutsideBoth;
 
-        // Get the cell area, in kilometres squared
-        double CellArea = gcl->GetCellArea( );
 
         // Convert areas to a probability
         double DispersalProbability = ( AreaOutsideU + AreaOutsideV + AreaOutsideBoth ) / CellArea;
@@ -85,11 +88,14 @@ public:
                 }
             }
             // try to get a cell.
-            GridCell* FreshCell = madingleyGrid.getNewCell( gcl, signv, signu );
-            if( FreshCell != 0 ) DestinationCell = FreshCell;
+            GridCell* FreshCell = madingleyGrid.getNewCell( c.mDestination, signv, signu );
+            if( FreshCell != 0 ) {
+                DestinationCell = FreshCell;
+                location L=madingleyGrid.getNewCell( c.mDest, signv, signu ); 
+                c.TryLivingAt(FreshCell,L);
+            }
         }
 
-        return DestinationCell;
     }
     //----------------------------------------------------------------------------------------------
 };

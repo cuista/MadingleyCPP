@@ -8,7 +8,14 @@
  */
 
 /** \brief Class to hold properties of a single cohort */
-
+class location{
+public:
+    unsigned lonIndex,latIndex;
+    location(){lonIndex=0;latIndex=0;}
+    location(const location& L_in){lonIndex=L_in.lonIndex; latIndex=L_in.latIndex;}
+    bool operator==(const location& L_in){return (lonIndex==L_in.lonIndex) && (latIndex==L_in.latIndex);}
+    void setIndices(unsigned latI,unsigned lonI){latIndex=latI;lonIndex=lonI;}
+};
 class Cohort {
 public:
     /** \brief Time step when the cohort was generated */
@@ -38,8 +45,9 @@ public:
     /** \brief The optimal prey body size for individuals in this cohort */
     double mLogOptimalPreyBodySizeRatio;
     long long mID;
-    GridCell* mCurrentLocation;
+    GridCell* mCell;
     GridCell* mDestination;
+    location mPlace,mDest;
     static Types::Double2DMap mMassFluxes;
     static Types::CohortVector mNewCohorts;
     static unsigned mNextID;
@@ -66,9 +74,9 @@ public:
     @param nextCohortID The unique ID to assign to the next cohort created    */
     Cohort( Cohort&, double, double, double, double, unsigned, long long& );
     
-    GridCell& GetCurrentLocation( );
+    GridCell& GetCurrentCell( );
     GridCell& GetDestination();
-    void SetCurrentLocation( Types::GridCellPointer );
+    void SetCurrentCell( Types::GridCellPointer );
     
     bool IsMoving( );
     bool IsMature( );
@@ -76,7 +84,7 @@ public:
     bool IsPlanktonic( MadingleyModelInitialisation& );
     std::string DispersalType( MadingleyModelInitialisation& );
     double Realm( );
-    void TryLivingAt( Types::GridCellPointer );
+    void TryLivingAt( Types::GridCellPointer,location& );
     void Move( );
     static void ResetMassFluxes( );
 };

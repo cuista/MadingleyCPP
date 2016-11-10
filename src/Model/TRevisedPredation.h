@@ -165,7 +165,9 @@ public:
             NumberCohortsPerFunctionalGroupNoNewCohorts[i] = NumCohortsThisFG;
             // Initialise the jagged arrays
             AbundancesEaten[i].resize( NumberCohortsPerFunctionalGroupNoNewCohorts[i] );
+            for (auto& a : AbundancesEaten[i])a=0;
             PotentialAbundanceEaten[i].resize( NumberCohortsPerFunctionalGroupNoNewCohorts[i] );
+            for (auto& p : PotentialAbundanceEaten[i])p=0;
         }
 
         // Loop over functional groups that are potential prey and determine which are carnivores
@@ -188,7 +190,7 @@ public:
 
         BinnedPreyDensities.resize( gcl.mGridCellCohorts.size( ) );
         for( auto& b: BinnedPreyDensities )b.resize( NumberOfBins );
-
+        for( auto& b: BinnedPreyDensities )for (auto& bin:b)bin=0;
         // Set the total eaten by the acting cohort to zero
         TotalBiomassEatenByCohort = 0.0;
 
@@ -214,7 +216,6 @@ public:
         // If a filter feeder, then optimal body size is a value not a ratio: convert it to a ratio to ensure that all calculations work correctly
         if( DietIsAllSpecial ) {
             // Optimal body size is actually a value, not a ratio, so convert it to a ratio based on the present body size
-            //MB take log of exp ??? really??
             PredatorLogOptimalPreyBodySizeRatio =
                     log( exp( actingCohort.mLogOptimalPreyBodySizeRatio ) / actingCohort.mIndividualBodyMass ); //actingCohort.LogOptimalPreyBodySizeRatio-log(actingCohort.IndividualBodyMass);
         }
@@ -237,6 +238,7 @@ public:
                 //No Cannibalism
                 if( gcl.mGridCellCohorts[FunctionalGroup][i].mID == actingCohort.mID ) {
                     PotentialAbundanceEaten[FunctionalGroup][i] = 0.0;
+                    TimeUnitsToHandlePotentialFoodItems -= PotentialAbundanceEaten[FunctionalGroup][i] * CalculateHandlingTimeTerrestrial(BodyMassPredator);
                 } else {
                     if( DietIsAllSpecial ) {
 
@@ -286,8 +288,7 @@ public:
                                     OmnivoreFunctionalGroups[actingCohort.mFunctionalGroupIndex], PredatorLogOptimalPreyBodySizeRatio );
 
                             // Add the time required to handle the potential abundance eaten from this cohort to the cumulative total for all cohorts
-                            TimeUnitsToHandlePotentialFoodItems += PotentialAbundanceEaten[FunctionalGroup][i] *
-                                    CalculateHandlingTimeMarine( BodyMassPrey );
+                            TimeUnitsToHandlePotentialFoodItems += PotentialAbundanceEaten[FunctionalGroup][i] * CalculateHandlingTimeMarine( BodyMassPrey );
                         } else {
                             // Assign a potential abundance eaten of zero
                             PotentialAbundanceEaten[FunctionalGroup][i] = 0.0;
@@ -398,6 +399,7 @@ public:
             for( int i = 0; i < NumberCohortsPerFunctionalGroupNoNewCohorts[FunctionalGroup]; i++ ) {
                 if( gcl.mGridCellCohorts[FunctionalGroup][i].mID == actingCohort.mID ) {
                     PotentialAbundanceEaten[FunctionalGroup][i] = 0.0;
+                    TimeUnitsToHandlePotentialFoodItems -= PotentialAbundanceEaten[FunctionalGroup][i] * CalculateHandlingTimeTerrestrial(BodyMassPredator);
                 } else {
                     // Get the body mass of individuals in this cohort
                     BodyMassPrey = gcl.mGridCellCohorts[FunctionalGroup][i].mIndividualBodyMass;

@@ -37,7 +37,7 @@ Stock::Stock( FunctionalGroupDefinitions& StockDefinitions, const unsigned Funct
             success = true;
         }
     }
-    location = &gcl;
+    mCell = &gcl;
 }
 
 

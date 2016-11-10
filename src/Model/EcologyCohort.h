@@ -51,11 +51,12 @@ public:
         Metabolism *MetabolismFormulation = new Metabolism( Parameters::Get( )->GetTimeStepUnits( ) );
         MetabolismFormulations["Basic metabolism"] = MetabolismFormulation;
         // Declare and attach mortality formulations
-        Mortality *MortalityFormulation = new Mortality( Parameters::Get( )->GetTimeStepUnits( ) );
-        MortalityFormulations["Basic mortality"] = MortalityFormulation;
-        // Declare and attach mortality formulations
         Reproduction *ReproductionFormulation = new Reproduction( Parameters::Get( )->GetTimeStepUnits( ), Parameters::Get( )->GetDrawRandomly( ) );
         ReproductionFormulations["Basic reproduction"] = ReproductionFormulation;
+        // Declare and attach mortality formulations
+        Mortality *MortalityFormulation = new Mortality( Parameters::Get( )->GetTimeStepUnits( ) );
+        MortalityFormulations["Basic mortality"] = MortalityFormulation;
+
     }
 
     void initialiseEating( GridCell& gcl, MadingleyModelInitialisation& params ) {

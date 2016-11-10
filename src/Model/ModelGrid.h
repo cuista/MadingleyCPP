@@ -65,6 +65,26 @@ public:
             if( mCells.count( idx ) != 0 )Cell = &( mCells[idx] );
         }
         return Cell;
+     }
+    //----------------------------------------------------------------------------------------------
+    location getNewCell(const location& L, const int& v, const int& u ) {
+        
+        location value=L;
+        if( L.latIndex + v >= 0 && L.lonIndex + v < Parameters::Get( )->GetLengthUserLatitudeArray( ) ) {
+            int lnc = L.lonIndex + u;
+            while( lnc < 0 )lnc += Parameters::Get( )->GetLengthUserLongitudeArray( );
+            while( lnc >= Parameters::Get( )->GetLengthUserLongitudeArray( ) )lnc -= Parameters::Get( )->GetLengthUserLongitudeArray( );
+            long idx = lnc + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( L.latIndex + v );
+            if( mCells.count( idx) != 0  ){
+                value.setIndices(mCells[idx].GetLatitudeIndex(),mCells[idx].GetLongitudeIndex() );
+            }
+        }
+        return value;
+    }
+    //----------------------------------------------------------------------------------------------
+    GridCell& getACell(const location& L) {
+        long idx = L.lonIndex + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( L.latIndex);
+        return mCells[idx];
     }
     //----------------------------------------------------------------------------------------------
     //Apply any function that operates on a cell to all cells in the collection

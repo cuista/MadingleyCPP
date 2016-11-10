@@ -48,6 +48,7 @@ public:
     /** track cohort ID number*/
     long long mNextCohortID;
 
+    NonStaticSimpleRNG randomNumber;
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------
@@ -197,8 +198,8 @@ public:
         long totalCohorts = 0;
         // Set the seed for the random number generator from the system time
         unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
-        if( Parameters::Get( )->GetDrawRandomly( ) == true ) mRandomNumberGenerator.seed( seed );
-        else mRandomNumberGenerator.seed( 1000 );
+        if( Parameters::Get( )->GetDrawRandomly( ) == true ) randomNumber.SetSeed( seed );
+        else randomNumber.SetSeed( 1000 );
 
 
         unsigned numCohortsThisCell = 0;
@@ -241,32 +242,27 @@ public:
                     numberOfCohortsInThisFunctionalGroup = mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "initial number of gridcellcohorts", functionalGroup );
 
                     for( unsigned jj = 0; jj < numberOfCohortsInThisFunctionalGroup; jj++ ) {
-
+                        randomNumber.SetSeed((uint)(jj + 1), (uint)((jj + 1) * 3));
 
                         // Draw adult mass from a log-normal distribution with mean -6.9 and standard deviation 10.0,
                         // within the bounds of the minimum and maximum body masses for the functional group
-                        std::uniform_real_distribution<double> unifrandomNumber( 0.0, 1.0 );
-                        cohortAdultMass = pow( 10, ( unifrandomNumber( mRandomNumberGenerator ) * ( log10( massMaximum ) - log10( 50 * massMinimum ) ) + log10( 50 * massMinimum ) ) );
+
+                        cohortAdultMass = pow( 10, ( randomNumber.GetUniform( ) * ( log10( massMaximum ) - log10( 50 * massMinimum ) ) + log10( 50 * massMinimum ) ) );
                         //Changes from original code
-                        std::normal_distribution<double> randomNumber( 0.1, 0.02 );
-                        optimalPreyBodySizeRatio = max( 0.01, randomNumber( mRandomNumberGenerator ) );
+                        optimalPreyBodySizeRatio = max( 0.01, randomNumber.GetNormal(0.1,0.02 ));
 
                         if( !gcl.IsMarine( ) ) {
                             do {
                                 expectedLnAdultMassRatio = 2.24 + 0.13 * log( cohortAdultMass );
-                                std::lognormal_distribution<double> randomNumber( expectedLnAdultMassRatio, 0.5 );
 
-                                cohortAdultMassRatio = 1.0 + randomNumber( mRandomNumberGenerator );
-
+                                cohortAdultMassRatio = 1.0 + randomNumber.GetLogNormal(expectedLnAdultMassRatio, 0.5);
                                 cohortJuvenileMass = cohortAdultMass * 1.0 / cohortAdultMassRatio;
                             } while( cohortAdultMass <= cohortJuvenileMass || cohortJuvenileMass < massMinimum );
-                        } else {
+                        } else{
                             do {
                                 expectedLnAdultMassRatio = 2.24 + 0.13 * log( cohortAdultMass );
-                                std::lognormal_distribution<double> randomNumber( expectedLnAdultMassRatio, 0.5 );
 
-                                cohortAdultMassRatio = 1.0 + 10 * randomNumber( mRandomNumberGenerator );
-
+                                cohortAdultMassRatio = 1.0 + 10*randomNumber.GetLogNormal(expectedLnAdultMassRatio, 0.5);;
                                 cohortJuvenileMass = cohortAdultMass * 1.0 / cohortAdultMassRatio;
                             } while( cohortAdultMass <= cohortJuvenileMass || cohortJuvenileMass < massMinimum );
                         }

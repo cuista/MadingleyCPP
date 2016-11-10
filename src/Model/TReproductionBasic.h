@@ -115,9 +115,9 @@ public:
         if( actingCohort.mIndividualBodyMass > 1.e-200 ) {
             // Get the current ratio of total individual mass (including reproductive potential) to adult body mass
             CurrentMassRatio = ( BodyMassIncludingChangeThisTimeStep + ReproductiveMassIncludingChangeThisTimeStep ) / actingCohort.mAdultMass;
-
+            
             // Must have enough mass to hit reproduction threshold criterion, and either (1) be in breeding season, or (2) be a marine cell (no breeding season in marine cells)
-            if( ( CurrentMassRatio > MassRatioThreshold ) && ( ( Environment::Get( "Breeding Season", actingCohort.GetCurrentLocation( ) ) == 1.0 ) || ( gcl.IsMarine( ) ) ) ) {
+            if( ( CurrentMassRatio > MassRatioThreshold ) && ( ( Environment::Get( "Breeding Season", actingCohort.GetCurrentCell( ) ) == 1.0 ) || ( gcl.IsMarine( ) ) ) ) {
                 // Iteroparous and semelparous organisms have different strategies
                 if( iteroparous ) {
                     // Iteroparous organisms do not allocate any of their current non-reproductive biomass to reproduction
@@ -129,7 +129,7 @@ public:
                 } else {
                     // Semelparous organisms allocate a proportion of their current non-reproductive biomass (including the effects of other ecological processes) to reproduction
                     AdultMassLost = SemelparityAdultMassAllocation * BodyMassIncludingChangeThisTimeStep;
-
+                    
                     // Calculate the number of offspring that could be produced given the reproductive potential mass of individuals
                     OffspringCohortAbundance = ( (actingCohort.mCohortAbundance) *  ( AdultMassLost + ReproductiveMassIncludingChangeThisTimeStep )) /
                             actingCohort.mJuvenileMass;
@@ -142,7 +142,7 @@ public:
 
                 // Update cohort abundance in case juvenile mass has been altered through 'evolution'
                 OffspringCohortAbundance = OffspringCohortAbundance * (actingCohort.mJuvenileMass  / OffspringJuvenileAndAdultBodyMasses[0]);
-
+               
                 // Create the offspring cohort
 
                 Cohort OffspringCohort( actingCohort, OffspringJuvenileAndAdultBodyMasses[0], OffspringJuvenileAndAdultBodyMasses[1], OffspringJuvenileAndAdultBodyMasses[0], OffspringCohortAbundance, currentTimestep, partial.NextCohortIDThreadLocked );
@@ -220,8 +220,8 @@ public:
         double RandomValue = randomNumber( RandomNumberGenerator );
 
         if( RandomValue > MassEvolutionProbabilityThreshold ) {
-
-            // Determine the new juvenile body mass //MB correctly formulated?
+       
+        // Determine the new juvenile body mass //MB correctly formulated?
             std::normal_distribution<double> randomNumberJ( actingCohort.mJuvenileMass, MassEvolutionStandardDeviation * actingCohort.mJuvenileMass );
             double RandomValueJ = randomNumberJ( RandomNumberGenerator );
             CohortJuvenileAdultMasses[0] = max( RandomValueJ,

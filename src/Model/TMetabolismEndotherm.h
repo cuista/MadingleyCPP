@@ -64,7 +64,7 @@ public:
     void RunMetabolism( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {
         // Calculate metabolic loss for an individual and add the value to the delta biomass for metabolism
         Cohort::mMassFluxes["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate( actingCohort.mIndividualBodyMass,
-                Environment::Get( "Temperature", actingCohort.GetCurrentLocation( ) ) + TemperatureUnitsConvert ) * DeltaT;
+                Environment::Get( "Temperature", actingCohort.GetCurrentCell( ) ) + TemperatureUnitsConvert ) * DeltaT;
 
         // If metabolic loss is greater than individual body mass after herbivory and predation, then set equal to individual body mass
         Cohort::mMassFluxes["biomass"]["metabolism"] = max( Cohort::mMassFluxes["biomass"]["metabolism"], -( actingCohort.mIndividualBodyMass + Cohort::mMassFluxes["biomass"]["predation"] + Cohort::mMassFluxes["biomass"]["herbivory"] ) );

@@ -15,7 +15,7 @@ public:
 
     Types::Cohort2DVector mGridCellCohorts;
     Types::StocksMap mGridCellStocks;
-
+    UtilityFunctions Utilities;
     GridCell( ) {
 
     }
@@ -33,7 +33,9 @@ public:
 
         // Add the grid cell area (in km2) to the cell environment with an initial value of 0
         // Calculate the area of this grid cell
-        // Add it to the cell environment
+        // Add it to the cell environment- latitude value is cell lower left corner
+        //Is this really consistent with below? The C# code also has a half cell shift, but in the height and width
+        //whereas the utilities code says it wants lower left corner for both areas and lengths
         mCellArea = mUtilities.CalculateGridCellArea( Parameters::Get( )->GetUserLatitudeAtIndex( indices->GetY( )  ), Parameters::Get( )->GetGridCellSize( ) );
         // Calculate the lengths of widths of grid cells in each latitudinal strip
         // Assume that we are at the midpoint of each cell when calculating lengths
@@ -55,9 +57,9 @@ public:
     }
 
     void MoveCohort( Cohort& c ) {
-        c.GetCurrentLocation( ).RemoveCohort( c );
-        c.SetCurrentLocation( c.mDestination );
-        c.GetCurrentLocation( ).InsertCohort( c );
+        c.GetCurrentCell( ).RemoveCohort( c );
+        c.SetCurrentCell( c.mDestination );
+        c.GetCurrentCell( ).InsertCohort( c );
     }
 
     void RandomizeCohorts( ) {
@@ -75,7 +77,28 @@ public:
             }
         }
     }
+//---------------------------------------------------------------------------------
+    template <typename F>
+    void ApplyFunctionToAllCohortsWithStaticRandomness( F f,int CurrentTimeStep ) {
+        std::vector<unsigned > RandomCohortOrder;
+        std::vector<std::pair<int,int> > indexedList;
+        unsigned TotalCohorts=0;
+        for( int functionalTypeIndex = 0; functionalTypeIndex < mGridCellCohorts.size( ); functionalTypeIndex++ ) {
+            // Work through the list of cohorts and create a list of pairs so as to be able to lookup cohorts easily
+            for(int cohortNum=0; cohortNum< mGridCellCohorts[ functionalTypeIndex ].size();cohortNum++ ) {
+                indexedList.push_back(std::make_pair(functionalTypeIndex,cohortNum));
+                TotalCohorts++;
+            }
+        }
+        //despite the name of this utility, it actually returns a random list, but with a given fixed seed
+        RandomCohortOrder=Utilities.NonRandomlyOrderedCohorts(TotalCohorts, CurrentTimeStep);
 
+        for (int i=0;i<RandomCohortOrder.size();i++){
+            Cohort& c=mGridCellCohorts[indexedList[RandomCohortOrder[i]].first][indexedList[RandomCohortOrder[i]].second];
+            f(c);
+        }
+    }
+    //---------------------------------------------------------------------------------
     template <typename F>
     void ApplyFunctionToAllStocks( F f ) {
         for( int index = 0; index < mGridCellStocks.size( ); index++ ) {

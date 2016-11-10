@@ -23,8 +23,11 @@ Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBod
     mMaximumAchievedBodyMass = juvenileBodyMass;
     mMerged = false;
     mProportionTimeActive = proportionTimeActive;
-    mCurrentLocation = &gcl;
-    mDestination = mCurrentLocation;
+    mCell = &gcl;
+    mDestination = mCell;
+    mPlace.setIndices(gcl.GetLatitudeIndex(),gcl.GetLongitudeIndex());
+    mDest=mPlace;
+    
     mIndividualReproductivePotentialMass= (double)0.;
 
     mID = mNextID; //MB added to track this object.
@@ -46,8 +49,10 @@ Cohort::Cohort( Cohort& actingCohort, double juvenileBodyMass, double adultBodyM
     mMaximumAchievedBodyMass = juvenileBodyMass;
     mMerged = false;
     mProportionTimeActive = actingCohort.mProportionTimeActive;
-    mCurrentLocation = actingCohort.mCurrentLocation;
-    mDestination = mCurrentLocation;
+    mCell = actingCohort.mCell;
+    mPlace= actingCohort.mPlace;
+    mDestination = mCell;
+    mDest=actingCohort.mDest;
     mIndividualReproductivePotentialMass= (double)0.;
     mID = mNextID; //MB added to track this object.
     mNextID++;
@@ -84,34 +89,33 @@ void Cohort::ResetMassFluxes( ) {
 } 
 
 double Cohort::Realm( ) {
-    return mCurrentLocation->Realm( );
+    return mCell->Realm( );
 }
 
-void Cohort::TryLivingAt( Types::GridCellPointer destination ) {
-    if( destination != 0 && destination->Realm( ) == Realm( ) ) mDestination = destination;
+void Cohort::TryLivingAt( Types::GridCellPointer destination, location& L ) {
+    if( destination != 0 && destination->Realm( ) == Realm( ) ) {mDestination = destination;mDest=L;}
 }
 GridCell& Cohort::GetDestination(){
     return *mDestination;
 }
-GridCell& Cohort::GetCurrentLocation( ) {
-    return *mCurrentLocation;
+GridCell& Cohort::GetCurrentCell( ) {
+    return *mCell;
 }
-
-void Cohort::SetCurrentLocation( Types::GridCellPointer location ) {
-    mCurrentLocation = location;
+void Cohort::SetCurrentCell( Types::GridCellPointer gclp ) {
+    mCell = gclp;
 }
 
 bool Cohort::IsMoving( ) {
-    return mCurrentLocation != mDestination;
+    return mCell != mDestination;
 }
 
 void Cohort::Move( ) {
-    mCurrentLocation->MoveCohort( *this );
-    mDestination=mCurrentLocation;
+    mCell->MoveCohort( *this );
+    mDestination=mCell;
 }
 
 bool Cohort::IsMarine( ) {
-    return mCurrentLocation->IsMarine( );
+    return mCell->IsMarine( );
 }
 
 bool Cohort::IsPlanktonic( MadingleyModelInitialisation& params ) {

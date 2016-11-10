@@ -93,7 +93,7 @@ public:
                     if( AvailableWaterCapacity == 0 )DailyAET[kk] = 0;
                     else
                         DailyAET[kk] = PET * ( SoilWaterPast / AvailableWaterCapacity ); // this is the potential evapotranspiration rates scaled by how dry the soil is. The further the soil water is from field capacity the less the evapotranspiration rate is.
-                    DailySWC[kk] = min( max( ( SoilWaterPast + PPT - DailyAET[kk] ), 0. ), AvailableWaterCapacity ); //Soil water content is then updated
+                    DailySWC[kk] = min( max( ( SoilWaterPast + PPT - DailyAET[kk] ),(double) 0. ), AvailableWaterCapacity ); //Soil water content is then updated
                     SoilWaterPast = DailySWC[kk]; // update the previous soil water content
                 } // end of day loop
                 if( ii == ( RunYears - 1 ) ) // if we are in the last year of simulation then we also want to record the monthly values

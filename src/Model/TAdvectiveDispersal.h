@@ -135,17 +135,13 @@ public:
         vDistanceTravelled = RescaleDispersalSpeed( vAdvectiveSpeed ) + diffusiveUandVComponents[1];
 
         // Check that the u distance travelled and v distance travelled are not greater than the cell length
-
-        latCellLength = c.GetDestination( ).GetCellHeight( );
-        lonCellLength = c.GetDestination( ).GetCellWidth( );
+        latCellLength = (*(c.mDestination)).GetCellHeight( );
+        lonCellLength = (*(c.mDestination)).GetCellWidth( );
+   
         if( abs( uDistanceTravelled ) > lonCellLength ) cout << "BIG U " << uAdvectiveSpeed << endl;
         assert( abs( uDistanceTravelled ) <= lonCellLength && "u velocity greater than cell width" );
         assert( abs( vDistanceTravelled ) <= latCellLength && "v velocity greater than cell width" );
-        GridCell* nc = newCell( madingleyGrid, uDistanceTravelled, vDistanceTravelled, lonCellLength, latCellLength, c.mDestination );
-
-        if( nc != 0 ) {
-            c.TryLivingAt( nc );
-        }
+        newCell( madingleyGrid, uDistanceTravelled, vDistanceTravelled, lonCellLength, latCellLength, c );
 
     }
     //----------------------------------------------------------------------------------------------

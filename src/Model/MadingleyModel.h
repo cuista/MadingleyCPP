@@ -151,8 +151,6 @@ public:
 
         mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
 
-            gcl.RandomizeCohorts( );
-
             RunWithinCellStockEcology( gcl );
 
                     RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
@@ -206,7 +204,7 @@ public:
 
         // Loop over randomly ordered gridCellCohorts to implement biological functions
 
-        gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
+        gcl.ApplyFunctionToAllCohortsWithStaticRandomness( [&]( Cohort & c ) {
             // Perform all biological functions except dispersal (which is cross grid cell)
 
             if( gcl.mGridCellCohorts[c.mFunctionalGroupIndex].size( ) != 0 && c.mCohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
@@ -225,7 +223,7 @@ public:
             // Check that the mass of individuals in this cohort is still >= 0 after running ecology
             if( gcl.mGridCellCohorts[c.mFunctionalGroupIndex].size( ) > 0 )assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
 
-        } );
+        }, mCurrentTimeStep );
 
         for( auto& c : Cohort::mNewCohorts ) {
             gcl.InsertCohort( c );
@@ -267,8 +265,8 @@ public:
             // Add biomass of the extinct cohort to the organic matter pool
             double deadMatter = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance;
             if( deadMatter < 0 ) Logger::Get( )->LogMessage( "Dead " + Convertor::Get( )->ToString( deadMatter ) );
-            Environment::Get( "Organic Pool", c.GetCurrentLocation( ) ) += deadMatter;
-            assert( Environment::Get( "Organic Pool", c.GetCurrentLocation( ) ) >= 0 && "Organic pool < 0" );
+            Environment::Get( "Organic Pool", c.GetCurrentCell( ) ) += deadMatter;
+            assert( Environment::Get( "Organic Pool", c.GetCurrentCell( ) ) >= 0 && "Organic pool < 0" );
 
             // Remove the extinct cohort from the list of cohorts
             gcl.RemoveCohort( c );

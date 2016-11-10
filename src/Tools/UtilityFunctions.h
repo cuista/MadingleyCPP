@@ -11,6 +11,7 @@
 
 #include "Convertor.h"
 #include "Parameters.h"
+#include <NonStaticSimpleRNG.h>
 /** \brief Generic functions */
 
 using namespace std;
@@ -60,13 +61,24 @@ public:
     @return A vector of non-randomly ordered integers corresponding to the cohorts in the grid cell -will be systematic in some way...
      */
     vector<unsigned> NonRandomlyOrderedCohorts( unsigned cohortNumber, unsigned currentTimeStep ) {
-
         //A vector to hold indices of cohorts in order
-        vector<unsigned> RandomOrderCohorts( cohortNumber );
-        for( unsigned i = 0; i < cohortNumber; i++ ) RandomOrderCohorts[i] = i;
-        //Shuffle ordered list for random number generation, using the current time step as a deterministic seed to 
-        // ensure a repeatable order of cohorts
-        shuffle( RandomOrderCohorts.begin( ), RandomOrderCohorts.end( ), std::default_random_engine( currentTimeStep ) );
+        vector<unsigned> RandomOrderCohorts( cohortNumber ),OrderedCohorts( cohortNumber );
+        for( unsigned i = 0; i < cohortNumber; i++ ) {RandomOrderCohorts[i] = i;OrderedCohorts[i]=i;}
+        NonStaticSimpleRNG randomizer;
+        randomizer.SetSeed(currentTimeStep);
+                    // Loop over cohorts
+            for (int ii = 0; ii < OrderedCohorts.size(); ii++)
+            {
+                // Generate a pseudo-random integer to swap this cohort index with
+                int SwapIndex = (int)(randomizer.GetUniform()* (OrderedCohorts.size()-1)+0.5);// random.Next(ii, OrderedCohorts.Length);
+                // If the cohort index to swap is not the same as the active cohort index, then swap the values
+                if (SwapIndex != ii)
+                {
+                    uint Temp = RandomOrderCohorts[ii];
+                    RandomOrderCohorts[ii] = RandomOrderCohorts[SwapIndex];
+                    RandomOrderCohorts[SwapIndex] = Temp;
+                }
+            }
         return RandomOrderCohorts;
     }
     //----------------------------------------------------------------------------------------------
@@ -399,7 +411,7 @@ public:
     //----------------------------------------------------------------------------------------------
 
     /** \brief Calculate the length of a degree of latitude at a particular latitude /
-    @param latitude The latitude of the bottom-left corner of the grid cell
+    @param latitude The latitude of the bottom-left corner of the grid cell MB ?? This is not consistent with cellarea in the original code
     @return The length of a degree of latitude in kilometres*/
     double CalculateLengthOfDegreeLatitude( float latitude ) {
         const double PI = acos( -1. );
@@ -434,7 +446,7 @@ public:
 
     /** \brief Calculate the length of a degree of longitude at a particular latitude
     @param latitude The latitude of the bottom-left corner of the grid cell
-    @return The length of a degree of longitude in kilometres
+    @return The length of a degree of longitude in kilometres MB ?? This is not consistent with cellarea in the original code
      */
     double CalculateLengthOfDegreeLongitude( float latitude ) {
         const double PI = acos( -1. );
