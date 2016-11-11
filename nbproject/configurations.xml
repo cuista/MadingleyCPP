@@ -130,7 +130,6 @@
         <itemPath>src/Tools/Maths.cpp</itemPath>
         <itemPath>src/Tools/Processor.cpp</itemPath>
       </logicalFolder>
-      <itemPath>src/Program.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -233,6 +232,16 @@
       </item>
       <item path="src/Data/DataLayerSet.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Data/Layer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Data/Layer2D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Data/Layer2D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Data/Layer3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Data/Layer3D.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Data/Variable.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Data/Variable.h" ex="false" tool="3" flavor2="0">
@@ -257,6 +266,8 @@
       </item>
       <item path="src/Input/Types.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/Activity.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Activity.h" ex="false" tool="3" flavor2="0">
@@ -277,11 +288,19 @@
       </item>
       <item path="src/Model/CohortMerge.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/Dispersal.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/Dispersal.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Eating.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/EcologyCohort.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/EcologyCohort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyStock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/EcologyStock.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -406,8 +425,6 @@
       <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Program.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.h"
             ex="false"
@@ -520,6 +537,16 @@
       </item>
       <item path="src/Data/DataLayerSet.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Data/Layer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Data/Layer2D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Data/Layer2D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Data/Layer3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Data/Layer3D.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Data/Variable.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Data/Variable.h" ex="false" tool="3" flavor2="0">
@@ -544,6 +571,8 @@
       </item>
       <item path="src/Input/Types.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/Activity.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Activity.h" ex="false" tool="3" flavor2="0">
@@ -564,11 +593,19 @@
       </item>
       <item path="src/Model/CohortMerge.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/Dispersal.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/Dispersal.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Eating.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/EcologyCohort.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/EcologyCohort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyStock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/EcologyStock.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -693,8 +730,6 @@
       <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Program.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.h"
             ex="false"

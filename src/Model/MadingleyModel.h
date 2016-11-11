@@ -199,7 +199,7 @@ public:
         // Initialize ecology for stocks and cohorts - needed fresh every timestep?
 
         EcologyCohort mEcologyCohort;
-        mEcologyCohort.initialiseEating( gcl, mParams );
+        mEcologyCohort.InitialiseEating( gcl, mParams );
         Activity CohortActivity;
 
         // Loop over randomly ordered gridCellCohorts to implement biological functions

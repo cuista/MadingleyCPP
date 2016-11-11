@@ -50,8 +50,8 @@ int CohortMerge::MergeToReachThresholdFast( GridCell& gcl, MadingleyModelInitial
 
         auto I = SortedDistances.begin( );
         while( MergeCounter < NumberToRemove && I != SortedDistances.end( ) ) {
-            Cohort& CohortToMergeFrom = *( I->a );
-            Cohort& CohortToMergeTo = *( I->b );
+            Cohort& CohortToMergeFrom = *( I->mCohortA );
+            Cohort& CohortToMergeTo = *( I->mCohortB );
 
             if( CohortToMergeFrom.mCohortAbundance > 0 && CohortToMergeTo.mCohortAbundance > 0 ) {
                 // Add the abundance of the second cohort to that of the first

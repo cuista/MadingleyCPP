@@ -3,18 +3,18 @@
 
 #include "CohortMerge.h"
 
-class Pear {
+class Pear { // FIX - Rename this class?
 public:
     Pear( );
-    Pear( Cohort* _a, Cohort* _b, double r );
+    Pear( Cohort*, Cohort*, double );
 
-    Cohort* a;
-    Cohort* b;
-    double dist;
+    Cohort* mCohortA;
+    Cohort* mCohortB;
+    double mDistance;
 
     struct pearComparator {
         bool operator()( const Pear& u, const Pear& v ) {
-            return (u.dist < v.dist );
+            return (u.mDistance < v.mDistance );
         }
     };
 };

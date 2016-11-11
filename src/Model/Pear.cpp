@@ -1,18 +1,20 @@
 #include "Pear.h"
 
 Pear::Pear( ) {
-
+    mCohortA = NULL;
+    mCohortB = NULL;
+    mDistance = 0;
 }
 
-Pear::Pear( Cohort* _a, Cohort* _b, double r ) {
+Pear::Pear( Cohort* cohortA, Cohort* cohortB, double r ) {
     if( r > 0.5 ) {
-        a = _a;
-        b = _b;
+        mCohortA = cohortA;
+        mCohortB = cohortB;
     } else {
-        a = _b;
-        b = _a;
+        mCohortA = cohortB;
+        mCohortB = cohortA;
     }
-    dist = CohortMerge::CalculateDistance( *a, *b );
+    mDistance = CohortMerge::CalculateDistance( *mCohortA, *mCohortB );
 }
 
 

@@ -2,13 +2,7 @@
 //Changes from original PLOS Biology version:-
 //MB 6/8/2015 - 15/11/2015 - converted C# to C++
 
-/** \file Program.cc \brief This is the main entry point for the madingley code */
-/**
-\brief Main program
-
-Initialise and run the model
-
- */
+/** \brief This is the main entry point for the Madingley code */
 #include <fenv.h>
 
 #include <MadingleyModel.h>
@@ -16,10 +10,6 @@ Initialise and run the model
 #include "FileReader.h"
 #include "FileWriter.h"
 #include "Logger.h"
-//----------------------------------------------------------------------------------------------
-
-/** \brief Starts a model run or set of model runs */
-///@todo Complete set up of output directory
 
 int main( ) {
     //this line enables the gdb debugger to catch Nan or floating point problems
@@ -60,4 +50,3 @@ int main( ) {
     }
     return 0;
 }
-//----------------------------------------------------------------------------------------------
