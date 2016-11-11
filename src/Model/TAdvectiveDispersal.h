@@ -123,10 +123,10 @@ public:
         // bool varExists;
 
         // Get the u speed and the v speed from the cell data
-        uAdvectiveSpeed = Environment::Get( "uVel", *( c.mDestination ) );
+        uAdvectiveSpeed = Environment::Get( "uVel", *( c.mDestinationCell ) );
         assert( uAdvectiveSpeed > -9999 );
 
-        vAdvectiveSpeed = Environment::Get( "vVel", *( c.mDestination ) );
+        vAdvectiveSpeed = Environment::Get( "vVel", *( c.mDestinationCell ) );
         assert( vAdvectiveSpeed > -9999 );
         // Calculate the diffusive movement speed, with a direction chosen at random
         diffusiveUandVComponents = CalculateDiffusion( );
@@ -135,8 +135,8 @@ public:
         vDistanceTravelled = RescaleDispersalSpeed( vAdvectiveSpeed ) + diffusiveUandVComponents[1];
 
         // Check that the u distance travelled and v distance travelled are not greater than the cell length
-        latCellLength = (*(c.mDestination)).GetCellHeight( );
-        lonCellLength = (*(c.mDestination)).GetCellWidth( );
+        latCellLength = (*(c.mDestinationCell)).GetCellHeight( );
+        lonCellLength = (*(c.mDestinationCell)).GetCellWidth( );
    
         if( abs( uDistanceTravelled ) > lonCellLength ) cout << "BIG U " << uAdvectiveSpeed << endl;
         assert( abs( uDistanceTravelled ) <= lonCellLength && "u velocity greater than cell width" );

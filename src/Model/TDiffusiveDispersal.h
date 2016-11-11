@@ -80,8 +80,8 @@ public:
     void CalculateDispersalProbability( ModelGrid& madingleyGrid, Cohort& cohort, double dispersalSpeed ) {
         // Check that the u speed and v speed are not greater than the cell length. If they are, then rescale them; this limits the max velocity
         // so that cohorts cannot be advected more than one grid cell per time step
-        double latCellLength = cohort.mCell->GetCellHeight( );
-        double lonCellLength = cohort.mCell->GetCellWidth( );
+        double latCellLength = cohort.mCurrentCell->GetCellHeight( );
+        double lonCellLength = cohort.mCurrentCell->GetCellWidth( );
 
         // Pick a direction at random
         double randomDirection = mRandomNumber1.GetUniform( )* 2 * acos( -1. );

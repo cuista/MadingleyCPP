@@ -227,7 +227,7 @@ public:
 
         for( auto& c : Cohort::mNewCohorts ) {
             gcl.InsertCohort( c );
-            if( c.mDestination != &gcl ) Logger::Get( )->LogMessage( "whut? wrong cell?" );
+            if( c.mDestinationCell != &gcl ) Logger::Get( )->LogMessage( "whut? wrong cell?" );
         }
         partial.Productions += Cohort::mNewCohorts.size( );
         Cohort::mNewCohorts.clear( );

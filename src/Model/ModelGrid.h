@@ -67,23 +67,23 @@ public:
         return Cell;
      }
     //----------------------------------------------------------------------------------------------
-    location getNewCell(const location& L, const int& v, const int& u ) {
+    Location getNewCell(const Location& L, const int& v, const int& u ) {
         
-        location value=L;
-        if( L.latIndex + v >= 0 && L.lonIndex + v < Parameters::Get( )->GetLengthUserLatitudeArray( ) ) {
-            int lnc = L.lonIndex + u;
+        Location value=L;
+        if( L.mLatitudeIndex + v >= 0 && L.mLongitudeIndex + v < Parameters::Get( )->GetLengthUserLatitudeArray( ) ) {
+            int lnc = L.mLongitudeIndex + u;
             while( lnc < 0 )lnc += Parameters::Get( )->GetLengthUserLongitudeArray( );
             while( lnc >= Parameters::Get( )->GetLengthUserLongitudeArray( ) )lnc -= Parameters::Get( )->GetLengthUserLongitudeArray( );
-            long idx = lnc + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( L.latIndex + v );
+            long idx = lnc + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( L.mLatitudeIndex + v );
             if( mCells.count( idx) != 0  ){
-                value.setIndices(mCells[idx].GetLatitudeIndex(),mCells[idx].GetLongitudeIndex() );
+                value.SetIndices(mCells[idx].GetLatitudeIndex(),mCells[idx].GetLongitudeIndex() );
             }
         }
         return value;
     }
     //----------------------------------------------------------------------------------------------
-    GridCell& getACell(const location& L) {
-        long idx = L.lonIndex + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( L.latIndex);
+    GridCell& getACell(const Location& L) {
+        long idx = L.mLongitudeIndex + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( L.mLatitudeIndex);
         return mCells[idx];
     }
     //----------------------------------------------------------------------------------------------

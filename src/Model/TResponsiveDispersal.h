@@ -124,7 +124,7 @@ public:
         double numberOfIndividuals = cohortToDisperse.mCohortAbundance;
 
         // Get the cell area, in kilometres squared
-        double cellArea = cohortToDisperse.mCell->GetCellArea( );
+        double cellArea = cohortToDisperse.mCurrentCell->GetCellArea( );
 
         // If below the density threshold
         if( ( numberOfIndividuals / cellArea ) < mDensityThresholdScaling / cohortToDisperse.mAdultMass ) {
@@ -152,8 +152,8 @@ public:
     @param dispersalSpeed The average dispersal speed of individuals in the acting cohort 
      */
     void CalculateDispersalProbability( ModelGrid& madingleyGrid, Cohort& c, double dispersalSpeed ) {
-        double latCellLength = c.mCell->GetCellHeight( );
-        double lonCellLength = c.mCell->GetCellWidth( );
+        double latCellLength = c.mCurrentCell->GetCellHeight( );
+        double lonCellLength = c.mCurrentCell->GetCellWidth( );
 
         // Pick a direction at random
         //std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );

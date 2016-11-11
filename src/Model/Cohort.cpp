@@ -11,7 +11,6 @@ Types::CohortVector Cohort::mNewCohorts;
 Types::Double2DMap Cohort::mMassFluxes;
 
 Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, double optimalPreyBodySizeRatio, unsigned short birthTimeStep, double proportionTimeActive, long long &nextCohortID ) {
-
     mFunctionalGroupIndex = functionalGroupIndex;
     mJuvenileMass = juvenileBodyMass;
     mAdultMass = adultBodyMass;
@@ -23,21 +22,20 @@ Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBod
     mMaximumAchievedBodyMass = juvenileBodyMass;
     mMerged = false;
     mProportionTimeActive = proportionTimeActive;
-    mCell = &gcl;
-    mDestination = mCell;
-    mPlace.setIndices(gcl.GetLatitudeIndex(),gcl.GetLongitudeIndex());
-    mDest=mPlace;
-    
-    mIndividualReproductivePotentialMass= (double)0.;
+    mCurrentCell = &gcl;
+    mDestinationCell = mCurrentCell;
+    mCurrentLocation.SetIndices( gcl.GetLatitudeIndex( ), gcl.GetLongitudeIndex( ) );
+    mDestinationLocation = mCurrentLocation;
+
+    mIndividualReproductivePotentialMass = 0;
 
     mID = mNextID; //MB added to track this object.
 
     mNextID++;
-    nextCohortID++;
+    nextCohortID++; // FIX - Is this increment required?
 }
 
 Cohort::Cohort( Cohort& actingCohort, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, unsigned birthTimeStep, long long& nextCohortID ) {
-
     mFunctionalGroupIndex = actingCohort.mFunctionalGroupIndex;
     mJuvenileMass = juvenileBodyMass;
     mAdultMass = adultBodyMass;
@@ -49,19 +47,19 @@ Cohort::Cohort( Cohort& actingCohort, double juvenileBodyMass, double adultBodyM
     mMaximumAchievedBodyMass = juvenileBodyMass;
     mMerged = false;
     mProportionTimeActive = actingCohort.mProportionTimeActive;
-    mCell = actingCohort.mCell;
-    mPlace= actingCohort.mPlace;
-    mDestination = mCell;
-    mDest=actingCohort.mDest;
-    mIndividualReproductivePotentialMass= (double)0.;
+    mCurrentCell = actingCohort.mCurrentCell;
+    mDestinationCell = mCurrentCell;
+    mCurrentLocation = actingCohort.mCurrentLocation;
+    mDestinationLocation = actingCohort.mDestinationLocation;
+    mIndividualReproductivePotentialMass = 0;
     mID = mNextID; //MB added to track this object.
     mNextID++;
-    nextCohortID++;
+    nextCohortID++; // FIX - Is this increment required?
 
 }
 
 bool Cohort::IsMature( ) {
-    return (mMaturityTimeStep < std::numeric_limits<unsigned>::max( ) );
+    return ( mMaturityTimeStep < std::numeric_limits<unsigned>::max( ) );
 }
 
 void Cohort::ResetMassFluxes( ) {
@@ -86,36 +84,42 @@ void Cohort::ResetMassFluxes( ) {
 
     // Initialize respiratory CO2 pool delta vector with appropriate processes
     mMassFluxes["respiratoryCO2pool"]["metabolism"] = 0.0;
-} 
+}
 
 double Cohort::Realm( ) {
-    return mCell->Realm( );
+    return mCurrentCell->Realm( );
 }
 
-void Cohort::TryLivingAt( Types::GridCellPointer destination, location& L ) {
-    if( destination != 0 && destination->Realm( ) == Realm( ) ) {mDestination = destination;mDest=L;}
+void Cohort::TryLivingAt( Types::GridCellPointer destination, Location& L ) {
+    if( destination != 0 && destination->Realm( ) == Realm( ) ) {
+        mDestinationCell = destination;
+        mDestinationLocation = L;
+    }
 }
-GridCell& Cohort::GetDestination(){
-    return *mDestination;
+
+GridCell& Cohort::GetDestination( ) {
+    return *mDestinationCell;
 }
+
 GridCell& Cohort::GetCurrentCell( ) {
-    return *mCell;
+    return *mCurrentCell;
 }
+
 void Cohort::SetCurrentCell( Types::GridCellPointer gclp ) {
-    mCell = gclp;
+    mCurrentCell = gclp;
 }
 
 bool Cohort::IsMoving( ) {
-    return mCell != mDestination;
+    return mCurrentCell != mDestinationCell;
 }
 
 void Cohort::Move( ) {
-    mCell->MoveCohort( *this );
-    mDestination=mCell;
+    mCurrentCell->MoveCohort( *this );
+    mDestinationCell = mCurrentCell;
 }
 
 bool Cohort::IsMarine( ) {
-    return mCell->IsMarine( );
+    return mCurrentCell->IsMarine( );
 }
 
 bool Cohort::IsPlanktonic( MadingleyModelInitialisation& params ) {

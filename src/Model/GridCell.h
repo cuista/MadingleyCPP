@@ -58,7 +58,7 @@ public:
 
     void MoveCohort( Cohort& c ) {
         c.GetCurrentCell( ).RemoveCohort( c );
-        c.SetCurrentCell( c.mDestination );
+        c.SetCurrentCell( c.mDestinationCell );
         c.GetCurrentCell( ).InsertCohort( c );
     }
 

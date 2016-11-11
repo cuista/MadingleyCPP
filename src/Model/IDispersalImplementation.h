@@ -48,10 +48,10 @@ public:
     void newCell( ModelGrid& madingleyGrid, double& uSpeed, double& vSpeed, double & LonCellLength, double & LatCellLength, Cohort& c ) {
         // Calculate the area of the grid cell that is now outside in the diagonal direction
         // Get the cell area, in kilometres squared
-        double CellArea = c.mDestination->GetCellArea( );
-        LonCellLength = c.mDestination->GetCellWidth();
-        LatCellLength = c.mDestination->GetCellHeight();
-        GridCell& g=madingleyGrid.getACell(c.mDest);
+        double CellArea = c.mDestinationCell->GetCellArea( );
+        LonCellLength = c.mDestinationCell->GetCellWidth();
+        LatCellLength = c.mDestinationCell->GetCellHeight();
+        GridCell& g=madingleyGrid.getACell(c.mDestinationLocation);
         double AreaOutsideBoth = abs( uSpeed * vSpeed );
 
         // Calculate the area of the grid cell that is now outside in the u direction (not including the diagonal)
@@ -88,10 +88,10 @@ public:
                 }
             }
             // try to get a cell.
-            GridCell* FreshCell = madingleyGrid.getNewCell( c.mDestination, signv, signu );
+            GridCell* FreshCell = madingleyGrid.getNewCell( c.mDestinationCell, signv, signu );
             if( FreshCell != 0 ) {
                 DestinationCell = FreshCell;
-                location L=madingleyGrid.getNewCell( c.mDest, signv, signu ); 
+                Location L=madingleyGrid.getNewCell( c.mDestinationLocation, signv, signu ); 
                 c.TryLivingAt(FreshCell,L);
             }
         }
