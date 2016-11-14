@@ -14,6 +14,9 @@
         <itemPath>src/Data/DataLayer3DwithTime.h</itemPath>
         <itemPath>src/Data/DataLayerProcessor.h</itemPath>
         <itemPath>src/Data/DataLayerSet.h</itemPath>
+        <itemPath>src/Data/Layer.h</itemPath>
+        <itemPath>src/Data/Layer2D.h</itemPath>
+        <itemPath>src/Data/Layer3D.h</itemPath>
         <itemPath>src/Data/Variable.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="Input" projectFiles="true">
@@ -44,11 +47,13 @@
         <itemPath>src/Model/IMetabolismImplementation.h</itemPath>
         <itemPath>src/Model/IMortalityImplementation.h</itemPath>
         <itemPath>src/Model/IReproductionImplementation.h</itemPath>
+        <itemPath>src/Model/Location.h</itemPath>
         <itemPath>src/Model/MadingleyModel.h</itemPath>
         <itemPath>src/Model/MadingleyModelInitialisation.h</itemPath>
         <itemPath>src/Model/Metabolism.h</itemPath>
         <itemPath>src/Model/ModelGrid.h</itemPath>
         <itemPath>src/Model/Mortality.h</itemPath>
+        <itemPath>src/Model/Pear.h</itemPath>
         <itemPath>src/Model/Reproduction.h</itemPath>
         <itemPath>src/Model/RevisedTerrestrialPlantModel.h</itemPath>
         <itemPath>src/Model/Stock.h</itemPath>
@@ -103,6 +108,8 @@
         <itemPath>src/Data/DataLayer3DwithTime.cpp</itemPath>
         <itemPath>src/Data/DataLayerProcessor.cpp</itemPath>
         <itemPath>src/Data/DataLayerSet.cpp</itemPath>
+        <itemPath>src/Data/Layer2D.cpp</itemPath>
+        <itemPath>src/Data/Layer3D.cpp</itemPath>
         <itemPath>src/Data/Variable.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="Input" projectFiles="true">
@@ -112,8 +119,20 @@
         <itemPath>src/Input/Parameters.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="Model" projectFiles="true">
+        <itemPath>src/Model/Activity.cpp</itemPath>
+        <itemPath>src/Model/ApplyEcology.cpp</itemPath>
+        <itemPath>src/Model/AutotrophProcessor.cpp</itemPath>
         <itemPath>src/Model/Cohort.cpp</itemPath>
+        <itemPath>src/Model/CohortMerge.cpp</itemPath>
+        <itemPath>src/Model/Dispersal.cpp</itemPath>
+        <itemPath>src/Model/Eating.cpp</itemPath>
+        <itemPath>src/Model/EcologyCohort.cpp</itemPath>
+        <itemPath>src/Model/EcologyStock.cpp</itemPath>
         <itemPath>src/Model/Environment.cpp</itemPath>
+        <itemPath>src/Model/FunctionalGroupDefinitions.cpp</itemPath>
+        <itemPath>src/Model/GridCell.cpp</itemPath>
+        <itemPath>src/Model/Location.cpp</itemPath>
+        <itemPath>src/Model/Pear.cpp</itemPath>
         <itemPath>src/Model/Stock.cpp</itemPath>
         <itemPath>src/Model/Time.cpp</itemPath>
       </logicalFolder>
@@ -130,6 +149,7 @@
         <itemPath>src/Tools/Maths.cpp</itemPath>
         <itemPath>src/Tools/Processor.cpp</itemPath>
       </logicalFolder>
+      <itemPath>src/Main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -369,6 +389,8 @@
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Pear.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Pear.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -679,6 +701,8 @@
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Pear.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Pear.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
       </item>
