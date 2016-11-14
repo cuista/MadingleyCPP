@@ -9,6 +9,6 @@ Layer2D::~Layer2D( ) {
 }
 
 void Layer2D::SetTime( unsigned index ) {
-    ;
+    
 }
 

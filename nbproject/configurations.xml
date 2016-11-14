@@ -308,10 +308,17 @@
       </item>
       <item path="src/Model/Environment.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/FunctionalGroupDefinitions.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="src/Model/FunctionalGroupDefinitions.h"
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="src/Model/GridCell.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/GridCell.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -362,8 +369,6 @@
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Pear.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Model/Pear.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -613,10 +618,17 @@
       </item>
       <item path="src/Model/Environment.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/FunctionalGroupDefinitions.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="src/Model/FunctionalGroupDefinitions.h"
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="src/Model/GridCell.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/GridCell.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -667,8 +679,6 @@
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Pear.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Model/Pear.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
       </item>

@@ -54,36 +54,37 @@ public:
     @return Pointer to cell that lies at displacement u,v from the current cell
     @remark Currently assumes wrapping in longitude, and a hard upper and lower boundary in latitude
      */
-    GridCell* getNewCell( const GridCell* gcl, const int& v, const int& u ) {
+    GridCell* getNewCell( GridCell* gridCell, const int& v, const int& u ) {
 
-        GridCell* Cell = 0;
-        if( gcl->GetLatitudeIndex( ) + v >= 0 && gcl->GetLatitudeIndex( ) + v < Parameters::Get( )->GetLengthUserLatitudeArray( ) ) {
-            int lnc = gcl->GetLongitudeIndex( ) + u;
+        GridCell* newCell = NULL;
+        if( gridCell->GetLatitudeIndex( ) + v >= 0 && gridCell->GetLatitudeIndex( ) + v < Parameters::Get( )->GetLengthUserLatitudeArray( ) ) {
+            int lnc = gridCell->GetLongitudeIndex( ) + u;
             while( lnc < 0 )lnc += Parameters::Get( )->GetLengthUserLongitudeArray( );
             while( lnc >= Parameters::Get( )->GetLengthUserLongitudeArray( ) )lnc -= Parameters::Get( )->GetLengthUserLongitudeArray( );
-            long idx = lnc + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( gcl->GetLatitudeIndex( ) + v );
-            if( mCells.count( idx ) != 0 )Cell = &( mCells[idx] );
+            long idx = lnc + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( gridCell->GetLatitudeIndex( ) + v );
+            if( mCells.count( idx ) != 0 ) newCell = &( mCells[idx] );
         }
-        return Cell;
-     }
+        return newCell;
+    }
     //----------------------------------------------------------------------------------------------
-    Location getNewCell(const Location& L, const int& v, const int& u ) {
-        
-        Location value=L;
+
+    Location getNewCell( const Location& L, const int& v, const int& u ) {
+        Location value = L;
         if( L.mLatitudeIndex + v >= 0 && L.mLongitudeIndex + v < Parameters::Get( )->GetLengthUserLatitudeArray( ) ) {
             int lnc = L.mLongitudeIndex + u;
             while( lnc < 0 )lnc += Parameters::Get( )->GetLengthUserLongitudeArray( );
             while( lnc >= Parameters::Get( )->GetLengthUserLongitudeArray( ) )lnc -= Parameters::Get( )->GetLengthUserLongitudeArray( );
             long idx = lnc + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( L.mLatitudeIndex + v );
-            if( mCells.count( idx) != 0  ){
-                value.SetIndices(mCells[idx].GetLatitudeIndex(),mCells[idx].GetLongitudeIndex() );
+            if( mCells.count( idx ) != 0 ) {
+                value.SetIndices( mCells[idx].GetLatitudeIndex( ), mCells[idx].GetLongitudeIndex( ) );
             }
         }
         return value;
     }
     //----------------------------------------------------------------------------------------------
-    GridCell& getACell(const Location& L) {
-        long idx = L.mLongitudeIndex + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( L.mLatitudeIndex);
+
+    GridCell& getACell( const Location& L ) {
+        long idx = L.mLongitudeIndex + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( L.mLatitudeIndex );
         return mCells[idx];
     }
     //----------------------------------------------------------------------------------------------

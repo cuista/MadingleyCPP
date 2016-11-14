@@ -122,7 +122,7 @@ public:
             mCurrentMonth = mUtilities.GetCurrentMonth( timeStep );
             mEcologyTimer.Start( );
 
-            Environment::update( mCurrentMonth );
+            Environment::Update( mCurrentMonth );
 
             RunWithinCells( );
             mEcologyTimer.Stop( );
@@ -177,7 +177,7 @@ public:
         vector<int> AutotrophStockFunctionalGroups = mParams.mStockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
         // Loop over autotroph functional groups
         for( unsigned FunctionalGroup : AutotrophStockFunctionalGroups ) {
-            for( auto& ActingStock : gcl.mGridCellStocks[FunctionalGroup] ) {
+            for( auto& ActingStock : gcl.mStocks[FunctionalGroup] ) {
 
                 // Run stock ecology
                 MadingleyEcologyStock.RunWithinCellEcology( gcl, ActingStock, mCurrentTimeStep, mCurrentMonth, mParams );
@@ -207,7 +207,7 @@ public:
         gcl.ApplyFunctionToAllCohortsWithStaticRandomness( [&]( Cohort & c ) {
             // Perform all biological functions except dispersal (which is cross grid cell)
 
-            if( gcl.mGridCellCohorts[c.mFunctionalGroupIndex].size( ) != 0 && c.mCohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
+            if( gcl.mCohorts[c.mFunctionalGroupIndex].size( ) != 0 && c.mCohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
 
                 CohortActivity.AssignProportionTimeActive( gcl, c, mCurrentTimeStep, mCurrentMonth, mParams );
 
@@ -221,7 +221,7 @@ public:
             }
 
             // Check that the mass of individuals in this cohort is still >= 0 after running ecology
-            if( gcl.mGridCellCohorts[c.mFunctionalGroupIndex].size( ) > 0 )assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
+            if( gcl.mCohorts[c.mFunctionalGroupIndex].size( ) > 0 )assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
 
         }, mCurrentTimeStep );
 

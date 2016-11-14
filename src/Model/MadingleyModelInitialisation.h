@@ -331,7 +331,7 @@ public:
                                 optimalPreyBodySizeRatio, 0, proportionTimeActive, mNextCohortID );
 
                         // Add the new cohort to the list of grid cell cohorts
-                        gcl.mGridCellCohorts[functionalGroup].push_back( NewCohort );
+                        gcl.mCohorts[functionalGroup].push_back( NewCohort );
 
                         // Increment the variable tracking the total number of cohorts in the model
                         totalCohorts++;
@@ -358,7 +358,7 @@ public:
             Stock NewStock( mStockFunctionalGroupDefinitions, functionalGroupIndex, gcl, success );
             // Add the new stock to the list of grid cell stocks
             if( success ) {
-                gcl.mGridCellStocks[functionalGroupIndex].push_back( NewStock );
+                gcl.mStocks[functionalGroupIndex].push_back( NewStock );
 
                 totalStocks++;
             }

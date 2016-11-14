@@ -62,6 +62,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/EcologyCohort.o \
 	${OBJECTDIR}/src/Model/EcologyStock.o \
 	${OBJECTDIR}/src/Model/Environment.o \
+	${OBJECTDIR}/src/Model/FunctionalGroupDefinitions.o \
+	${OBJECTDIR}/src/Model/GridCell.o \
 	${OBJECTDIR}/src/Model/Location.o \
 	${OBJECTDIR}/src/Model/Pear.o \
 	${OBJECTDIR}/src/Model/Stock.o \
@@ -245,6 +247,16 @@ ${OBJECTDIR}/src/Model/Environment.o: src/Model/Environment.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Environment.o src/Model/Environment.cpp
+
+${OBJECTDIR}/src/Model/FunctionalGroupDefinitions.o: src/Model/FunctionalGroupDefinitions.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/FunctionalGroupDefinitions.o src/Model/FunctionalGroupDefinitions.cpp
+
+${OBJECTDIR}/src/Model/GridCell.o: src/Model/GridCell.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/GridCell.o src/Model/GridCell.cpp
 
 ${OBJECTDIR}/src/Model/Location.o: src/Model/Location.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model

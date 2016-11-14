@@ -16,10 +16,10 @@ CohortMerge::CohortMerge( ) {
 @param Cohort2 The cohort to compare to 
 @returns The relative distance in trait space
  */
-double CohortMerge::CalculateDistance( Cohort& cohort1, Cohort& cohort2 ) {
-    double AdultMassDistance = ( cohort1.mAdultMass - cohort2.mAdultMass ) / cohort1.mAdultMass;
-    double JuvenileMassDistance = ( cohort1.mJuvenileMass - cohort2.mJuvenileMass ) / cohort1.mJuvenileMass;
-    double CurrentMassDistance = ( cohort1.mIndividualBodyMass - cohort2.mIndividualBodyMass ) / cohort1.mIndividualBodyMass;
+double CohortMerge::CalculateDistance( Cohort& cohortA, Cohort& cohortB ) {
+    double AdultMassDistance = ( cohortA.mAdultMass - cohortB.mAdultMass ) / cohortA.mAdultMass;
+    double JuvenileMassDistance = ( cohortA.mJuvenileMass - cohortB.mJuvenileMass ) / cohortA.mJuvenileMass;
+    double CurrentMassDistance = ( cohortA.mIndividualBodyMass - cohortB.mIndividualBodyMass ) / cohortA.mIndividualBodyMass;
 
     return (( AdultMassDistance * AdultMassDistance ) + ( JuvenileMassDistance * JuvenileMassDistance ) + ( CurrentMassDistance * CurrentMassDistance ) );
 }
@@ -27,7 +27,7 @@ double CohortMerge::CalculateDistance( Cohort& cohort1, Cohort& cohort2 ) {
 int CohortMerge::MergeToReachThresholdFast( GridCell& gcl, MadingleyModelInitialisation& params ) {
     // Set of lists of shortest distances in each functional group
     // set is automatically sorted - multiset allows for elements with the same distance
-    multiset< Pear, Pear::pearComparator > SortedDistances;
+    multiset< Pear, Pear::PearComparator > SortedDistances;
     // How many cohorts to remove to hit the threshold
     unsigned MergeCounter = 0;
 
@@ -35,13 +35,13 @@ int CohortMerge::MergeToReachThresholdFast( GridCell& gcl, MadingleyModelInitial
 
     if( NumberToRemove > 0 ) {
         //Loop through functional groups
-        for( unsigned ff = 0; ff < gcl.mGridCellCohorts.size( ); ff++ ) {
-            if( gcl.mGridCellCohorts[ff].size( ) > 1 ) {
+        for( unsigned ff = 0; ff < gcl.mCohorts.size( ); ff++ ) {
+            if( gcl.mCohorts[ff].size( ) > 1 ) {
                 // Loop through cohorts within functional groups
-                for( int cc = 0; cc < gcl.mGridCellCohorts[ff].size( ) - 1; cc++ ) {
+                for( int cc = 0; cc < gcl.mCohorts[ff].size( ) - 1; cc++ ) {
                     // Loop through comparison cohorts
-                    for( int dd = cc + 1; dd < gcl.mGridCellCohorts[ff].size( ); dd++ ) {
-                        Pear PairwiseDistance( &gcl.mGridCellCohorts[ff][cc], &gcl.mGridCellCohorts[ff][dd], mRandomNumber.GetUniform( ) );
+                    for( int dd = cc + 1; dd < gcl.mCohorts[ff].size( ); dd++ ) {
+                        Pear PairwiseDistance( &gcl.mCohorts[ff][cc], &gcl.mCohorts[ff][dd], mRandomNumber.GetUniform( ) );
                         SortedDistances.insert( PairwiseDistance );
                     }
                 }
