@@ -1,14 +1,14 @@
 #ifndef TDIFFUSIVEDISPERSAL_H
 #define TDIFFUSIVEDISPERSAL_H
 
-#include "IDispersalImplementation.h"
+#include "DispersalImplementation.h"
 #include "UtilityFunctions.h"
 /** \file TDiffusiveDispersal.h
  * \brief the TDiffusiveDispersal header file
  */
 
 /** \brief A formulation of the process of dispersal */
-class DiffusiveDispersal : public IDispersalImplementation {
+class DiffusiveDispersal : public DispersalImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------

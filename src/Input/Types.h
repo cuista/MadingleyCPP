@@ -25,7 +25,7 @@ class FileReader;
 class FileWriter;
 class GridCell;
 class GridDatum;
-class IDispersalImplementation;
+class DispersalImplementation;
 class InputData;
 class InputDatum;
 class Layer;
@@ -54,7 +54,7 @@ namespace Types {
     typedef FileWriter* FileWriterPointer;
     typedef GridDatum* GridDatumPointer;
     typedef GridCell* GridCellPointer;
-    typedef IDispersalImplementation* IDispersalImplementationPointer;
+    typedef DispersalImplementation* IDispersalImplementationPointer;
     typedef InputData* InputDataPointer;
     typedef InputDatum* InputDatumPointer;
     typedef Layer* LayerPointer;

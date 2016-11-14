@@ -2,7 +2,7 @@
 #define TADVECTIVEDISPERSAL_H
 
 #include <assert.h>
-#include "IDispersalImplementation.h"
+#include "DispersalImplementation.h"
 #include "UtilityFunctions.h"
 #include "Environment.h"
 #include "Parameters.h"
@@ -12,7 +12,7 @@
  */
 
 /** \brief A formulation of the process of dispersal */
-class AdvectiveDispersal : public IDispersalImplementation {
+class AdvectiveDispersal : public DispersalImplementation {
 public:
     //----------------------------------------------------------------------------------------------
     //Variables

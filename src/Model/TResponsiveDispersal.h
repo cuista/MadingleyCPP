@@ -1,14 +1,14 @@
 #ifndef TRESPONSIVEDISPERSAL_H
 #define TRESPONSIVEDISPERSAL_H
 
-#include "IDispersalImplementation.h"
+#include "DispersalImplementation.h"
 #include "UtilityFunctions.h"
 /** \file TResponsiveDispersal.h
  * \brief the TResponsiveDispersal header file
  */
 
 /** \brief A formulation of the process of responsive dispersal */
-class ResponsiveDispersal : public IDispersalImplementation {
+class ResponsiveDispersal : public DispersalImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------

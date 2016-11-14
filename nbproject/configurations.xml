@@ -34,6 +34,7 @@
         <itemPath>src/Model/Cohort.h</itemPath>
         <itemPath>src/Model/CohortMerge.h</itemPath>
         <itemPath>src/Model/Dispersal.h</itemPath>
+        <itemPath>src/Model/DispersalImplementation.h</itemPath>
         <itemPath>src/Model/Eating.h</itemPath>
         <itemPath>src/Model/EcologyCohort.h</itemPath>
         <itemPath>src/Model/EcologyStock.h</itemPath>
@@ -41,7 +42,6 @@
         <itemPath>src/Model/FunctionalGroupDefinitions.h</itemPath>
         <itemPath>src/Model/GridCell.h</itemPath>
         <itemPath>src/Model/HANPP.h</itemPath>
-        <itemPath>src/Model/IDispersalImplementation.h</itemPath>
         <itemPath>src/Model/IEatingImplementation.h</itemPath>
         <itemPath>src/Model/IEcologicalProcessWithinGridCells.h</itemPath>
         <itemPath>src/Model/IMetabolismImplementation.h</itemPath>
@@ -125,6 +125,7 @@
         <itemPath>src/Model/Cohort.cpp</itemPath>
         <itemPath>src/Model/CohortMerge.cpp</itemPath>
         <itemPath>src/Model/Dispersal.cpp</itemPath>
+        <itemPath>src/Model/DispersalImplementation.cpp</itemPath>
         <itemPath>src/Model/Eating.cpp</itemPath>
         <itemPath>src/Model/EcologyCohort.cpp</itemPath>
         <itemPath>src/Model/EcologyStock.cpp</itemPath>
@@ -312,6 +313,16 @@
       </item>
       <item path="src/Model/Dispersal.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/DispersalImplementation.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/Model/DispersalImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/Model/Eating.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
@@ -343,11 +354,6 @@
       <item path="src/Model/GridCell.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/HANPP.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/IDispersalImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
       </item>
       <item path="src/Model/IEatingImplementation.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -624,6 +630,16 @@
       </item>
       <item path="src/Model/Dispersal.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/DispersalImplementation.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/Model/DispersalImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/Model/Eating.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
@@ -655,11 +671,6 @@
       <item path="src/Model/GridCell.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/HANPP.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/IDispersalImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
       </item>
       <item path="src/Model/IEatingImplementation.h" ex="false" tool="3" flavor2="0">
       </item>

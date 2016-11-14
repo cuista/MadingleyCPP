@@ -58,6 +58,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/Cohort.o \
 	${OBJECTDIR}/src/Model/CohortMerge.o \
 	${OBJECTDIR}/src/Model/Dispersal.o \
+	${OBJECTDIR}/src/Model/DispersalImplementation.o \
 	${OBJECTDIR}/src/Model/Eating.o \
 	${OBJECTDIR}/src/Model/EcologyCohort.o \
 	${OBJECTDIR}/src/Model/EcologyStock.o \
@@ -227,6 +228,11 @@ ${OBJECTDIR}/src/Model/Dispersal.o: src/Model/Dispersal.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Dispersal.o src/Model/Dispersal.cpp
+
+${OBJECTDIR}/src/Model/DispersalImplementation.o: src/Model/DispersalImplementation.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/DispersalImplementation.o src/Model/DispersalImplementation.cpp
 
 ${OBJECTDIR}/src/Model/Eating.o: src/Model/Eating.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model

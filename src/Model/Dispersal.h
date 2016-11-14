@@ -2,7 +2,7 @@
 #define DISPERSAL
 
 #include "GridCell.h"
-#include "IDispersalImplementation.h"
+#include "DispersalImplementation.h"
 #include "TAdvectiveDispersal.h"
 #include "TResponsiveDispersal.h"
 #include "TDiffusiveDispersal.h"
