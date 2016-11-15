@@ -8,7 +8,7 @@
  */
 
 /** \brief A revised version of the herbivory process, written November 2011 */
-class RevisedHerbivory: public IEatingImplementation {
+class RevisedHerbivory: public EatingImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ public:
         CellArea = gcl.GetCellArea( );
         CellAreaHectares = CellArea * 100;
         // Get the functional group indices of all autotroph stocks
-        FunctionalGroupIndicesToEat = params.mStockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
+        mFunctionalGroupIndicesToEat = params.mStockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
     }
     //----------------------------------------------------------------------------------------------
 
@@ -106,13 +106,13 @@ public:
     @param params The definitions for stuff in the model */
     void GetEatingPotentialTerrestrial( GridCell& gcl, Cohort& actingCohort, MadingleyModelInitialisation& params ) {
         // Set the total biomass eaten by the acting cohort to zero
-        TotalBiomassEatenByCohort = 0.0;
+        mTotalBiomassEatenByCohort = 0.0;
 
         // Get the individual body mass of the acting cohort
         BodyMassHerbivore = actingCohort.mIndividualBodyMass;
 
         // Set the total number of units to handle all potential biomass eaten to zero
-        TimeUnitsToHandlePotentialFoodItems = 0.0;
+        mTimeUnitsToHandlePotentialFoodItems = 0.0;
 
         // Initialise the jagged arrays to hold the potential and actual biomass eaten in each of the grid cell autotroph stocks
         BiomassesEaten.resize( gcl.mStocks.size( ) );
@@ -125,7 +125,7 @@ public:
         }
 
         // Loop over functional groups that can be eaten
-        for( int FunctionalGroup: FunctionalGroupIndicesToEat ) {
+        for( int FunctionalGroup: mFunctionalGroupIndicesToEat ) {
             // Loop over stocks within the functional group
             for( int i = 0; i < gcl.mStocks[FunctionalGroup].size( ); i++ ) {
                 // Get the mass from this stock that is available for eating (assumes only 10% is edible)
@@ -135,8 +135,7 @@ public:
                 PotentialBiomassesEaten[FunctionalGroup][i] = CalculatePotentialBiomassEatenTerrestrial( EdibleMass, BodyMassHerbivore );
 
                 // Add the time required to handle the potential biomass eaten from this stock to the cumulative total for all stocks
-                TimeUnitsToHandlePotentialFoodItems += PotentialBiomassesEaten[FunctionalGroup][i] *
-                        CalculateHandlingTimeTerrestrial( BodyMassHerbivore );
+                mTimeUnitsToHandlePotentialFoodItems += PotentialBiomassesEaten[FunctionalGroup][i] * CalculateHandlingTimeTerrestrial( BodyMassHerbivore );
 
             }
         }
@@ -150,13 +149,13 @@ public:
     @params All your base are belong to us */
     void GetEatingPotentialMarine( GridCell& gcl, Cohort& actingCohort, MadingleyModelInitialisation& params ) {
         // Set the total biomass eaten by the acting cohort to zero
-        TotalBiomassEatenByCohort = 0.0;
+        mTotalBiomassEatenByCohort = 0.0;
 
         // Get the individual body mass of the acting cohort
         BodyMassHerbivore = actingCohort.mIndividualBodyMass;
 
         // Set the total number of units to handle all potential biomass eaten to zero
-        TimeUnitsToHandlePotentialFoodItems = 0.0;
+        mTimeUnitsToHandlePotentialFoodItems = 0.0;
 
         // Initialise the jagged arrays to hold the potential and actual biomass eaten in each of the grid cell autotroph stocks
         BiomassesEaten.resize( gcl.mStocks.size( ) );
@@ -169,7 +168,7 @@ public:
         }
 
         // Loop over functional groups that can be eaten
-        for( int FunctionalGroup: FunctionalGroupIndicesToEat ) {
+        for( int FunctionalGroup: mFunctionalGroupIndicesToEat ) {
             // Loop over stocks within the functional group
             for( int i = 0; i < gcl.mStocks[FunctionalGroup].size( ); i++ ) {
                 // Get the mass from this stock that is available for eating (assumes all marine autotrophic organisms are edible)
@@ -179,12 +178,9 @@ public:
                 PotentialBiomassesEaten[FunctionalGroup][i] = CalculatePotentialBiomassEatenMarine( EdibleMass, BodyMassHerbivore );
 
                 // Add the time required to handle the potential biomass eaten from this stock to the cumulative total for all stocks
-                TimeUnitsToHandlePotentialFoodItems += PotentialBiomassesEaten[FunctionalGroup][i] *
-                        CalculateHandlingTimeMarine( BodyMassHerbivore );
-
+                mTimeUnitsToHandlePotentialFoodItems += PotentialBiomassesEaten[FunctionalGroup][i] * CalculateHandlingTimeMarine( BodyMassHerbivore );
             }
         }
-
     }
     //----------------------------------------------------------------------------------------------
 
@@ -201,15 +197,14 @@ public:
         if( !gcl.IsMarine( ) ) EdibleScaling = 0.1;
 
         // Loop over autotroph functional groups that can be eaten
-        for( int FunctionalGroup: FunctionalGroupIndicesToEat ) {
+        for( int FunctionalGroup: mFunctionalGroupIndicesToEat ) {
             // Loop over stocks within the functional groups
             for( int i = 0; i < gcl.mStocks[FunctionalGroup].size( ); i++ ) {
                 // Get the mass from this stock that is available for eating (assumes only 10% is edible in the terrestrial realm)
                 EdibleMass = gcl.mStocks[FunctionalGroup][i].TotalBiomass * EdibleScaling;
 
                 // Calculate the biomass actually eaten from this stock by the acting cohort
-                BiomassesEaten[FunctionalGroup][i] = CalculateBiomassesEaten( PotentialBiomassesEaten[FunctionalGroup][i],
-                        TimeUnitsToHandlePotentialFoodItems, actingCohort.mCohortAbundance, EdibleMass );
+                BiomassesEaten[FunctionalGroup][i] = CalculateBiomassesEaten( PotentialBiomassesEaten[FunctionalGroup][i], mTimeUnitsToHandlePotentialFoodItems, actingCohort.mCohortAbundance, EdibleMass );
 
                 // Remove the biomass eaten from the autotroph stock
                 gcl.mStocks[FunctionalGroup][i].TotalBiomass -= BiomassesEaten[FunctionalGroup][i];
@@ -222,10 +217,10 @@ public:
                 }
                 // Add the biomass eaten and assimilated by an individual to the delta biomass for the acting cohort
                 //MB should we be able to get here if abundance is zero?
-                if( actingCohort.mCohortAbundance > 0 )Cohort::mMassFluxes["biomass"]["herbivory"] += BiomassesEaten[FunctionalGroup][i] * AssimilationEfficiency / actingCohort.mCohortAbundance;
+                if( actingCohort.mCohortAbundance > 0 )Cohort::mMassFluxes["biomass"]["herbivory"] += BiomassesEaten[FunctionalGroup][i] * mAssimilationEfficiency / actingCohort.mCohortAbundance;
 
                 // Move the biomass eaten but not assimilated by an individual into the organic matter pool
-                Cohort::mMassFluxes["organicpool"]["herbivory"] += BiomassesEaten[FunctionalGroup][i] * ( 1 - AssimilationEfficiency );
+                Cohort::mMassFluxes["organicpool"]["herbivory"] += BiomassesEaten[FunctionalGroup][i] * ( 1 - mAssimilationEfficiency );
 
             }
 
@@ -233,7 +228,7 @@ public:
             assert( Cohort::mMassFluxes["biomass"]["herbivory"] >= 0 && "Delta biomass from herbviory is negative" );
 
             // Calculate the total biomass eaten by the acting (herbivore) cohort
-            TotalBiomassEatenByCohort = Cohort::mMassFluxes["biomass"]["herbivory"] * actingCohort.mCohortAbundance;
+            mTotalBiomassEatenByCohort = Cohort::mMassFluxes[ "biomass" ][ "herbivory" ] * actingCohort.mCohortAbundance;
 
 
 
@@ -317,7 +312,7 @@ public:
         }
 
         // Return the total  biomass of the autotroph stock eaten
-        return autotrophBiomass * ( 1 - exp( -InstantFractionEaten * DeltaT * ProportionTimeEating ) );
+        return autotrophBiomass * ( 1 - exp( -InstantFractionEaten * DeltaT * mProportionTimeEating ) );
     }
     //----------------------------------------------------------------------------------------------
 };

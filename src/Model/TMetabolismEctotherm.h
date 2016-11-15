@@ -12,7 +12,7 @@
  Currently mass assigned to reproductive potential is not metabolised
  Assumes that ectothermic organisms have a body temperature equal to the ambient temperature,
  therefore metabolising at that ambient temperature*/
-class MetabolismEctotherm: public IMetabolismImplementation {
+class MetabolismEctotherm: public MetabolismImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------

@@ -5,7 +5,7 @@
  */
 
 /** \brief A formulation of the process of background mortality, i.e. mortality from disease, accidents and other random events*/
-class BackgroundMortality: public IMortalityImplementation {
+class BackgroundMortality: public MortalityImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------

@@ -36,25 +36,25 @@
         <itemPath>src/Model/Dispersal.h</itemPath>
         <itemPath>src/Model/DispersalImplementation.h</itemPath>
         <itemPath>src/Model/Eating.h</itemPath>
+        <itemPath>src/Model/EatingImplementation.h</itemPath>
+        <itemPath>src/Model/EcologicalProcessWithinGridCell.h</itemPath>
         <itemPath>src/Model/EcologyCohort.h</itemPath>
         <itemPath>src/Model/EcologyStock.h</itemPath>
         <itemPath>src/Model/Environment.h</itemPath>
         <itemPath>src/Model/FunctionalGroupDefinitions.h</itemPath>
         <itemPath>src/Model/GridCell.h</itemPath>
         <itemPath>src/Model/HANPP.h</itemPath>
-        <itemPath>src/Model/IEatingImplementation.h</itemPath>
-        <itemPath>src/Model/IEcologicalProcessWithinGridCells.h</itemPath>
-        <itemPath>src/Model/IMetabolismImplementation.h</itemPath>
-        <itemPath>src/Model/IMortalityImplementation.h</itemPath>
-        <itemPath>src/Model/IReproductionImplementation.h</itemPath>
         <itemPath>src/Model/Location.h</itemPath>
         <itemPath>src/Model/MadingleyModel.h</itemPath>
         <itemPath>src/Model/MadingleyModelInitialisation.h</itemPath>
         <itemPath>src/Model/Metabolism.h</itemPath>
+        <itemPath>src/Model/MetabolismImplementation.h</itemPath>
         <itemPath>src/Model/ModelGrid.h</itemPath>
         <itemPath>src/Model/Mortality.h</itemPath>
+        <itemPath>src/Model/MortalityImplementation.h</itemPath>
         <itemPath>src/Model/Pear.h</itemPath>
         <itemPath>src/Model/Reproduction.h</itemPath>
+        <itemPath>src/Model/ReproductionImplementation.h</itemPath>
         <itemPath>src/Model/RevisedTerrestrialPlantModel.h</itemPath>
         <itemPath>src/Model/Stock.h</itemPath>
         <itemPath>src/Model/TAdvectiveDispersal.h</itemPath>
@@ -327,6 +327,13 @@
       </item>
       <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/EatingImplementation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologicalProcessWithinGridCell.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/Model/EcologyCohort.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/EcologyCohort.h" ex="false" tool="3" flavor2="0">
@@ -355,28 +362,6 @@
       </item>
       <item path="src/Model/HANPP.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/IEatingImplementation.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/IEcologicalProcessWithinGridCells.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IMetabolismImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IMortalityImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IReproductionImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="src/Model/Location.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Location.h" ex="false" tool="3" flavor2="0">
@@ -390,15 +375,30 @@
       </item>
       <item path="src/Model/Metabolism.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/MetabolismImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/Model/ModelGrid.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="src/Model/Pear.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Pear.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/ReproductionImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="src/Model/RevisedTerrestrialPlantModel.h"
             ex="false"
@@ -644,6 +644,13 @@
       </item>
       <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/EatingImplementation.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologicalProcessWithinGridCell.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/Model/EcologyCohort.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/EcologyCohort.h" ex="false" tool="3" flavor2="0">
@@ -672,28 +679,6 @@
       </item>
       <item path="src/Model/HANPP.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/IEatingImplementation.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/IEcologicalProcessWithinGridCells.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IMetabolismImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IMortalityImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IReproductionImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
       <item path="src/Model/Location.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Location.h" ex="false" tool="3" flavor2="0">
@@ -707,15 +692,30 @@
       </item>
       <item path="src/Model/Metabolism.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/MetabolismImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
       <item path="src/Model/ModelGrid.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="src/Model/Pear.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Pear.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/ReproductionImplementation.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
       </item>
       <item path="src/Model/RevisedTerrestrialPlantModel.h"
             ex="false"

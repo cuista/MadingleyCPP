@@ -11,7 +11,7 @@
 /** \brief A formulation of the metabolism process 
 \remarks Functional form and parameters taken from fitted relationship in Brown's (2004) Metabolic Theory of Ecology.
          Currently mass assigned to reproductive potential is not metabolised */
-class MetabolismHeterotroph: public IMetabolismImplementation {
+class MetabolismHeterotroph: public MetabolismImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------

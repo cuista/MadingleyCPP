@@ -1,7 +1,7 @@
 #ifndef REPRODUCTION_H
 #define REPRODUCTION_H
-#include <IReproductionImplementation.h>
-#include <IEcologicalProcessWithinGridCells.h>
+#include <ReproductionImplementation.h>
+#include <EcologicalProcessWithinGridCell.h>
 #include <TReproductionBasic.h>
 
 /** \file Reproduction.h
@@ -9,13 +9,13 @@
  */
 
 /** \brief Performs reproduction */
-class Reproduction: public IEcologicalProcessWithinGridCell {
+class Reproduction: public EcologicalProcessWithinGridCell {
 public:
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
     /** \brief The available implementations of the reproduction process */
-    map<string, IReproductionImplementation*> Implementations;
+    map<string, ReproductionImplementation*> Implementations;
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------

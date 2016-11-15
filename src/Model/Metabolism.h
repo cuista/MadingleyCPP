@@ -1,7 +1,7 @@
 #ifndef METABOLISM_H
 #define METABOLISM_H
-#include <IEcologicalProcessWithinGridCells.h>
-#include <IMetabolismImplementation.h>
+#include <EcologicalProcessWithinGridCell.h>
+#include <MetabolismImplementation.h>
 #include <TMetabolismHeterotroph.h>
 #include <TMetabolismEndotherm.h>
 #include <TMetabolismEctotherm.h>
@@ -15,13 +15,13 @@
 //{
 
 /** \brief  Performs metabolism */
-class Metabolism: public IEcologicalProcessWithinGridCell {
+class Metabolism: public EcologicalProcessWithinGridCell {
 public:
     /** \brief The available implementations of the metabolism process*/
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
-    map<string, IMetabolismImplementation*> Implementations;
+    map<string, MetabolismImplementation*> Implementations;
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------

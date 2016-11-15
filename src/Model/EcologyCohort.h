@@ -1,8 +1,8 @@
 #ifndef ECOLOGYCOHORT
 #define ECOLOGYCOHORT
 
-#include "IEcologicalProcessWithinGridCells.h"
-#include "IEatingImplementation.h"
+#include "EcologicalProcessWithinGridCell.h"
+#include "EatingImplementation.h"
 #include "Eating.h"
 #include "Reproduction.h"
 #include "Mortality.h"
@@ -38,13 +38,13 @@ public:
     /** \brief  A vector of stopwatch objects for timing the ecological processes*/
     std::vector< StopWatch > mStopWatches;
     /** \brief A sorted list of formulations of metabolism */
-    std::map< std::string, IEcologicalProcessWithinGridCell* > mMetabolismFormulations;
+    std::map< std::string, EcologicalProcessWithinGridCell* > mMetabolismFormulations;
     /** \brief A sorted list of formulations of eating */
-    std::map< std::string, IEcologicalProcessWithinGridCell* > mEatingFormulations;
+    std::map< std::string, EcologicalProcessWithinGridCell* > mEatingFormulations;
     /** \brief A sorted list of formulations of mortality */
-    std::map< std::string, IEcologicalProcessWithinGridCell* > mMortalityFormulations;
+    std::map< std::string, EcologicalProcessWithinGridCell* > mMortalityFormulations;
     /** \brief A sorted list of formulations of reproduction */
-    std::map< std::string, IEcologicalProcessWithinGridCell* > mReproductionFormulations;
+    std::map< std::string, EcologicalProcessWithinGridCell* > mReproductionFormulations;
     /** \brief An instance of apply ecology */
     ApplyEcology mApplyEcologicalProcessResults;
 };

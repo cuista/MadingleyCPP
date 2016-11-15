@@ -12,7 +12,7 @@
 \remarks Functional form and parameters taken from fitted relationship in Brown's (2004) Metabolic Theory of Ecology.
 Currently mass assigned to reproductive potential is not metabolised
 Assumes that endothermic organisms metabolise at 37degC, and that they can adapt physiologicaly to do this without extra costs*/
-class MetabolismEndotherm: public IMetabolismImplementation {
+class MetabolismEndotherm: public MetabolismImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------

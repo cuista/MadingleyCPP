@@ -1,13 +1,13 @@
 #ifndef EATING
 #define EATING
 
-#include "IEatingImplementation.h"
-#include "IEcologicalProcessWithinGridCells.h"
+#include "EatingImplementation.h"
+#include "EcologicalProcessWithinGridCell.h"
 #include "TRevisedPredation.h"
 #include "TRevisedHerbivory.h"
 
 /** \brief Performs eating */
-class Eating : public IEcologicalProcessWithinGridCell {
+class Eating : public EcologicalProcessWithinGridCell {
 public:
 
     /** \brief Constructor for Eating: fills the list of available implementations of eating */
@@ -33,7 +33,7 @@ public:
     void RunEcologicalProcess( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, unsigned, MadingleyModelInitialisation& );
 
     /** \brief The available implementations of the eating process */
-    map<string, IEatingImplementation*> mImplementations;
+    map<string, EatingImplementation*> mImplementations;
     /** \brief Tracks the total time to handle all potential food for omnivores */
     double mTotalTimeToEatForOmnivores;
 };

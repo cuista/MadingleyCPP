@@ -1,6 +1,6 @@
 #ifndef MORTALITY_H
 #define MORTALITY_H
-#include <IMortalityImplementation.h>
+#include <MortalityImplementation.h>
 #include <TBackgroundMortality.h>
 #include <TSenescenceMortality.h>
 #include <TStarvationMortality.h>
@@ -12,13 +12,13 @@
  */
 
 /** \brief  Performs mortality */
-class Mortality: public IEcologicalProcessWithinGridCell {
+class Mortality: public EcologicalProcessWithinGridCell {
 public:
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
     /** \brief The available implementations of the mortality process */
-    map<string, IMortalityImplementation*> Implementations;
+    map<string, MortalityImplementation*> Implementations;
     //----------------------------------------------------------------------------------------------
     //Methods
     //----------------------------------------------------------------------------------------------

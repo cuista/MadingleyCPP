@@ -10,7 +10,7 @@
  */
 
 /** \brief A formulation of the process of reproduction */
-class ReproductionBasic: public IReproductionImplementation {
+class ReproductionBasic: public ReproductionImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------  

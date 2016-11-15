@@ -5,7 +5,7 @@
  */
 
 /** \brief A formulation of the process of senescence mortality*/
-class SenescenceMortality: public IMortalityImplementation {
+class SenescenceMortality: public MortalityImplementation {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
