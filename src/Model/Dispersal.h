@@ -24,7 +24,7 @@ public:
     @param madingleyCohortDefinitions The functional group definitions for cohorts in the model 
     @param madingleyStockDefinitions The functional group definitions for stocks in the model 
     @param currentMonth The current model month */
-    void RunCrossGridCellEcologicalProcess( GridCell&, ModelGrid&, MadingleyModelInitialisation&, unsigned );
+    void RunCrossGridCellEcologicalProcess( GridCell&, Grid&, MadingleyInitialisation&, unsigned );
 
     void UpdateCrossGridCellEcology( unsigned& dispersalCounter );
 

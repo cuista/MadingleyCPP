@@ -42,7 +42,7 @@ public:
     @param params The definitions for functional groups in the model, among other things 
     @param implementationKey The name of the reproduction implementation to initialize 
      */
-    void InitializeEcologicalProcess( GridCell& gcl, MadingleyModelInitialisation& params, string implementationKey ) {
+    void InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, string implementationKey ) {
     }
     //----------------------------------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ public:
             Cohort& actingCohort,
             unsigned currentTimestep,
             ThreadLockedParallelVariables& partial,
-            unsigned currentMonth, MadingleyModelInitialisation& params ) {
+            unsigned currentMonth, MadingleyInitialisation& params ) {
 
         // Holds the reproductive strategy of a cohort
         bool _Iteroparous = (params.mCohortFunctionalGroupDefinitions.GetTraitNames( "reproductive strategy", actingCohort.mFunctionalGroupIndex ) == "iteroparity");

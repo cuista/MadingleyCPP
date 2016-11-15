@@ -28,7 +28,7 @@ void Dispersal::ResetRandoms( ) {
 @param madingleyCohortDefinitions The functional group definitions for cohorts in the model 
 @param madingleyStockDefinitions The functional group definitions for stocks in the model 
 @param currentMonth The current model month */
-void Dispersal::RunCrossGridCellEcologicalProcess( GridCell& gcl, ModelGrid& gridForDispersal, MadingleyModelInitialisation& params, unsigned currentMonth ) {
+void Dispersal::RunCrossGridCellEcologicalProcess( GridCell& gcl, Grid& gridForDispersal, MadingleyInitialisation& params, unsigned currentMonth ) {
     gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
         if( mChoose.count( c.DispersalType( params ) ) != 0 ) {
             mChoose[c.DispersalType( params )]->RunDispersal( gridForDispersal, c, currentMonth );

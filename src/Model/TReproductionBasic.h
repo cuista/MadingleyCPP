@@ -67,7 +67,7 @@ public:
     @param currentMonth The current model month */
     void RunReproductionEvents( GridCell& gcl, Cohort& actingCohort,
             unsigned currentTimestep, ThreadLockedParallelVariables& partial,
-            bool iteroparous, unsigned currentMonth, MadingleyModelInitialisation& params ) {
+            bool iteroparous, unsigned currentMonth, MadingleyInitialisation& params ) {
         // Adult non-reproductive biomass lost by semelparous organisms
         double AdultMassLost;
 
@@ -166,7 +166,7 @@ public:
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
     @param params The model parameters */
-    void RunReproductiveMassAssignment( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, MadingleyModelInitialisation& params ) {
+    void RunReproductiveMassAssignment( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, MadingleyInitialisation& params ) {
         // Biomass per individual in each cohort to be assigned to reproductive potential
         double BiomassToAssignToReproductivePotential;
 

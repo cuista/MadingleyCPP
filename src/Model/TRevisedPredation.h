@@ -140,7 +140,7 @@ public:
     @param params The definitions of things in the model 
     @remark This only works if: a) predation is initialised in every grid cell; and b) if parallelisation is done by latitudinal strips
     It is critical to run this every time step */
-    void InitializeEatingPerTimeStep( GridCell& gcl, MadingleyModelInitialisation& params ) {
+    void InitializeEatingPerTimeStep( GridCell& gcl, MadingleyInitialisation& params ) {
         // Store the specified cell area in this instance of this herbivory implementation
         CellArea = gcl.GetCellArea( );
         CellAreaHectares = CellArea * 100;
@@ -186,7 +186,7 @@ public:
     @param gcl The current grid cell 
     @param actingCohort The acting cohort 
     @param The definitions for all the model parameters */
-    void GetEatingPotentialMarine( GridCell& gcl, Cohort& actingCohort, MadingleyModelInitialisation& params ) {
+    void GetEatingPotentialMarine( GridCell& gcl, Cohort& actingCohort, MadingleyInitialisation& params ) {
 
         BinnedPreyDensities.resize( gcl.mCohorts.size( ) );
         for( auto& b : BinnedPreyDensities )b.resize( NumberOfBins );
@@ -350,7 +350,7 @@ public:
     @param gcl The current grid cell 
     @param actingCohort The acting cohort 
     @param params The definitions for items in the model  */
-    void GetEatingPotentialTerrestrial( GridCell& gcl, Cohort& actingCohort, MadingleyModelInitialisation& params ) {
+    void GetEatingPotentialTerrestrial( GridCell& gcl, Cohort& actingCohort, MadingleyInitialisation& params ) {
 
         BinnedPreyDensities.resize( gcl.mCohorts.size( ) );
         for( auto& b : BinnedPreyDensities )b.resize( NumberOfBins );
@@ -437,7 +437,7 @@ public:
     @param actingCohort The acting cohort 
     @param currentTimestep The current model time step */
     void RunEating( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep,
-            MadingleyModelInitialisation& params ) {
+            MadingleyInitialisation& params ) {
 
         Tempdouble = 0.0;
 

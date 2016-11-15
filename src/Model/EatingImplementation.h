@@ -2,7 +2,7 @@
 #define EATINGIMPLEMENTATION
 
 #include "FunctionalGroupDefinitions.h"
-#include "MadingleyModelInitialisation.h"
+#include "MadingleyInitialisation.h"
 #include <map>
 
 /** \brief //    /// Interface for implementations of the ecological process of eating */
@@ -23,7 +23,7 @@ public:
     /** \brief Initialises eating implementation each time step
     @param gcl The current grid cell 
     @param madingleyStockDefinitions The definitions for stocks in the model  */
-    virtual void InitializeEatingPerTimeStep( GridCell&, MadingleyModelInitialisation& ) {
+    virtual void InitializeEatingPerTimeStep( GridCell&, MadingleyInitialisation& ) {
         ;
     }
 
@@ -31,7 +31,7 @@ public:
     @param gcl The current grid cell 
     @param params The current model settings
      */
-    virtual void GetEatingPotentialMarine( GridCell&, Cohort&, MadingleyModelInitialisation& ) {
+    virtual void GetEatingPotentialMarine( GridCell&, Cohort&, MadingleyInitialisation& ) {
         ;
     }
 
@@ -39,7 +39,7 @@ public:
     @param gcl The current grid cell 
     @param actingCohort The position of the acting cohort in the jagged array of cohorts 
     @param params The current model thingies  */
-    virtual void GetEatingPotentialTerrestrial( GridCell&, Cohort&, MadingleyModelInitialisation& ) {
+    virtual void GetEatingPotentialTerrestrial( GridCell&, Cohort&, MadingleyInitialisation& ) {
         ;
     }
 
@@ -47,7 +47,7 @@ public:
     @param gcl The current grid cell 
     @param currentTimestep The current model time step 
     @param params the actual model settings  */
-    virtual void RunEating( GridCell&, Cohort&, unsigned, MadingleyModelInitialisation& ) {
+    virtual void RunEating( GridCell&, Cohort&, unsigned, MadingleyInitialisation& ) {
         std::cout << "Top level IEatingImplementation RunEating process called: should be virtual so this is probably not what you want!" << std::endl;
     }
 

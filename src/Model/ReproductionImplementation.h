@@ -1,7 +1,7 @@
 #ifndef REPRODUCTIONIMPLEMENTATION
 #define REPRODUCTIONIMPLEMENTATION
 
-#include "MadingleyModelInitialisation.h"
+#include "MadingleyInitialisation.h"
 #include <map>
 
 /** \brief Interface for implementations of the ecological process of reproduction */
@@ -15,7 +15,7 @@ public:
     @param partial Thread-locked variables 
     @param iteroparous Whether the acting cohort is iteroparous, as opposed to semelparous 
     @param currentMonth The current model month */
-    virtual void RunReproductionEvents( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, bool, unsigned, MadingleyModelInitialisation& ) {
+    virtual void RunReproductionEvents( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, bool, unsigned, MadingleyInitialisation& ) {
         std::cout << "ReproductionImplementation RunReproductionEvents should be virtual: you probably don't want to be here" << std::endl;
     }
 
@@ -24,7 +24,7 @@ public:
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
     @param trackProcesses An instance of ProcessTracker to hold diagnostics for reproduction */
-    virtual void RunReproductiveMassAssignment( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, MadingleyModelInitialisation& params ) {
+    virtual void RunReproductiveMassAssignment( GridCell&, Cohort&, unsigned, MadingleyInitialisation& ) {
         std::cout << "IReproductionImplementation RunReproductiveMassAssignment should be virtual: you probably don't want to be here" << std::endl;
     }
 };

@@ -24,7 +24,7 @@ double CohortMerge::CalculateDistance( Cohort& cohortA, Cohort& cohortB ) {
     return (( AdultMassDistance * AdultMassDistance ) + ( JuvenileMassDistance * JuvenileMassDistance ) + ( CurrentMassDistance * CurrentMassDistance ) );
 }
 
-int CohortMerge::MergeToReachThresholdFast( GridCell& gcl, MadingleyModelInitialisation& params ) {
+int CohortMerge::MergeToReachThresholdFast( GridCell& gcl, MadingleyInitialisation& params ) {
     // Set of lists of shortest distances in each functional group
     // set is automatically sorted - multiset allows for elements with the same distance
     multiset< Pear, Pear::PearComparator > SortedDistances;

@@ -5,7 +5,7 @@
 /** \brief This is the main entry point for the Madingley code */
 #include <fenv.h>
 
-#include <MadingleyModel.h>
+#include <Madingley.h>
 
 #include "FileReader.h"
 #include "FileWriter.h"
@@ -29,14 +29,14 @@ int main( ) {
 
         // Initialise the model
         // Declare an instance of the class that runs a Madingley model simulation
-        MadingleyModel madingleyModel;
+        Madingley madingleyModel;
 
         // Declare and start a timer
         StopWatch s;
         s.Start( );
 
         // Run the simulation
-        madingleyModel.RunMadingley( );
+        madingleyModel.Run( );
 
         if( fileWriter.WriteFiles( ) == true )
             Logger::Get( )->LogMessage( "Files written to \"" + fileWriter.GetOutputDirectory( ) + "\" successfully..." );

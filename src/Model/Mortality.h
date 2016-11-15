@@ -57,7 +57,7 @@ public:
     @param gcl The current grid cell 
     @param params Needed for groups in the model 
     @param implementationKey The name of the implementation of mortality to initialize */
-    void InitializeEcologicalProcess( GridCell& gcl, MadingleyModelInitialisation& params, string implementationKey ) {
+    void InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, string implementationKey ) {
 
     }
     //----------------------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ public:
             Cohort& actingCohort,
             unsigned currentTimestep,
             ThreadLockedParallelVariables& partial,
-            unsigned currentMonth, MadingleyModelInitialisation& params ) {
+            unsigned currentMonth, MadingleyInitialisation& params ) {
 
         // Variables to hold the mortality rates
         double MortalityRateBackground;

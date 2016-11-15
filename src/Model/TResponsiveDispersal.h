@@ -61,7 +61,7 @@ public:
     @param actingCohortNumber The position of the acting cohort within the functional group in the array of grid cell cohorts 
     @param currentMonth The current model month 
      */
-    void RunDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
+    void RunDispersal( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
         // Starvation driven dispersal takes precedence over density driven dispersal (i.e. a cohort can't do both). Also, the delta 
         // arrays only allow each cohort to perform one type of dispersal each time step
         bool cohortDispersed = false;
@@ -77,7 +77,7 @@ public:
 
     //----------------------------------------------------------------------------------------------
 
-    bool CheckStarvationDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse ) {
+    bool CheckStarvationDispersal( Grid& gridForDispersal, Cohort& cohortToDisperse ) {
         // A boolean to check whether a cohort has dispersed
         bool cohortHasDispersed = false;
 
@@ -119,7 +119,7 @@ public:
     }
     //----------------------------------------------------------------------------------------------
 
-    void CheckDensityDrivenDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse ) {
+    void CheckDensityDrivenDispersal( Grid& gridForDispersal, Cohort& cohortToDisperse ) {
         // Check the population density
         double numberOfIndividuals = cohortToDisperse.mCohortAbundance;
 
@@ -151,7 +151,7 @@ public:
     @param c the dispersing cohort
     @param dispersalSpeed The average dispersal speed of individuals in the acting cohort 
      */
-    void CalculateDispersalProbability( ModelGrid& madingleyGrid, Cohort& c, double dispersalSpeed ) {
+    void CalculateDispersalProbability( Grid& madingleyGrid, Cohort& c, double dispersalSpeed ) {
         double latCellLength = c.mCurrentCell->GetCellHeight( );
         double lonCellLength = c.mCurrentCell->GetCellWidth( );
 

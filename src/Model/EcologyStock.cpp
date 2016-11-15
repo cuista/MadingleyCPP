@@ -1,6 +1,6 @@
 #include "EcologyStock.h"
 
-void EcologyStock::RunWithinCellEcology( GridCell& gcl, Stock& actingStock, unsigned currentTimeStep, unsigned currentMonth, MadingleyModelInitialisation& params ) {
+void EcologyStock::RunWithinCellEcology( GridCell& gcl, Stock& actingStock, unsigned currentTimeStep, unsigned currentMonth, MadingleyInitialisation& params ) {
 
     FunctionalGroupDefinitions& madingleyStockDefinitions = params.mStockFunctionalGroupDefinitions;
     //changes here to make this code consistent with the merge-and-refactor C# code

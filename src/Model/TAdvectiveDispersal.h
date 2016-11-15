@@ -70,7 +70,7 @@ public:
     @param actingCohortNumber The position of the acting cohort within the functional group in the array of grid cell cohorts 
     @param currentMonth The current model month 
      */
-    void RunDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
+    void RunDispersal( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
 
         // Loop through a number of times proportional to the rescaled dispersal
         for( int mm = 0; mm < mAdvectionTimeStepsPerModelTimeStep; mm++ ) {
@@ -94,7 +94,7 @@ public:
     @param madingleyGrid The model grid 
     @param c a cohort
     @return a grid cell*/
-    void CalculateDispersalProbability( ModelGrid& madingleyGrid, Cohort& c, const unsigned& currentMonth ) {
+    void CalculateDispersalProbability( Grid& madingleyGrid, Cohort& c, const unsigned& currentMonth ) {
         // Advective speed in u (longitudinal) direction
         double uAdvectiveSpeed;
 

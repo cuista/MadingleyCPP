@@ -5,7 +5,7 @@
 #include "RevisedTerrestrialPlantModel.h"
 #include "HANPP.h"
 
-#include "MadingleyModelInitialisation.h"
+#include "MadingleyInitialisation.h"
 #include "Parameters.h"
 
 /** \brief A class to specify, initialise and run ecological processes pertaining to stocks */
@@ -18,7 +18,7 @@ public:
     @param currentTimeStep The current model time step 
     @param currentMonth The current model month 
     @param params Parameters */
-    void RunWithinCellEcology( GridCell&, Stock&, unsigned, unsigned, MadingleyModelInitialisation& );
+    void RunWithinCellEcology( GridCell&, Stock&, unsigned, unsigned, MadingleyInitialisation& );
 
     /** \brief An instance of the Autotroph Processor for this model */
     AutotrophProcessor mMarineNPPtoAutotrophStock;

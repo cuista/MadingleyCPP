@@ -30,7 +30,7 @@ class InputData;
 class InputDatum;
 class Layer;
 class Logger;
-class MadingleyModelInitialisation;
+class MadingleyInitialisation;
 class Maths;
 class Parameters;
 class Processor;

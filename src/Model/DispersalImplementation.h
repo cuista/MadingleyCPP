@@ -1,7 +1,7 @@
 #ifndef DISPERSALIMPLEMENTATION
 #define DISPERSALIMPLEMENTATION
 
-#include "ModelGrid.h"
+#include "Grid.h"
 #include "Cohort.h"
 #include "NonStaticSimpleRNG.h"
 
@@ -11,11 +11,11 @@ public:
     DispersalImplementation( );
 
     /** \brief Run the dispersal implementation */
-    virtual void RunDispersal( ModelGrid&, Cohort&, const unsigned& );
+    virtual void RunDispersal( Grid&, Cohort&, const unsigned& );
 
     void ResetRandom( );
 
-    void newCell( ModelGrid&, double&, double&, double&, double&, Cohort& );
+    void newCell( Grid&, double&, double&, double&, double&, Cohort& );
 
     /** \brief Include Utility class */
     UtilityFunctions mUtilities;

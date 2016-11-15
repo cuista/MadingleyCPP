@@ -18,7 +18,7 @@ public:
     @param params the model parameters 
     @param currentTimestep Current timestep index 
      */
-    void AssignProportionTimeActive( GridCell&, Cohort&, unsigned, unsigned, MadingleyModelInitialisation& );
+    void AssignProportionTimeActive( GridCell&, Cohort&, unsigned, unsigned, MadingleyInitialisation& );
 
     /** \brief Calculate the proportion of each timestep for which this cohort is active
     For ectotherms: is a function of the critical max and min temperatures for this ectotherm cohort and also the ambient temperature and diurnal variation in this cell

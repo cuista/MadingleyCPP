@@ -1,6 +1,6 @@
 #include "Activity.h"
 #include "Environment.h"
-#include "MadingleyModelInitialisation.h"
+#include "MadingleyInitialisation.h"
 #include "Maths.h"
 
 Activity::Activity( ) {
@@ -24,7 +24,7 @@ void Activity::InitialiseActivityParameters( ) {
 
 }
 
-void Activity::AssignProportionTimeActive( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth, MadingleyModelInitialisation& params ) {
+void Activity::AssignProportionTimeActive( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth, MadingleyInitialisation& params ) {
     //Only work on heterotroph cohorts
     if( params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Heterotroph/Autotroph", actingCohort.mFunctionalGroupIndex ) == "heterotroph" ) {
         //Check if this is an endotherm or ectotherm

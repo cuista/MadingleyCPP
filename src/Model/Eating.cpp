@@ -15,12 +15,12 @@ Eating::~Eating( ) {
     delete mImplementations["revised predation"];
 }
 
-void Eating::InitializeEcologicalProcess( GridCell& gcl, MadingleyModelInitialisation& params, string implementationKey ) {
+void Eating::InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, string implementationKey ) {
     // Initialize the implementation of the eating process
     mImplementations[implementationKey]->InitializeEatingPerTimeStep( gcl, params );
 }
 
-void Eating::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadLockedParallelVariables& partial, unsigned currentMonth, MadingleyModelInitialisation& params ) {
+void Eating::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadLockedParallelVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
 
     // Get the nutrition source (herbivory, carnivory or omnivory) of the acting cohort
     string NutritionSource = params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Nutrition source", actingCohort.mFunctionalGroupIndex );

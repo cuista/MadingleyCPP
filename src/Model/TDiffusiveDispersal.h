@@ -55,7 +55,7 @@ public:
     @param actingCohortFunctionalGroup The functional group index of the acting cohort 
     @param actingCohortNumber The position of the cohort within the functional group in the array of grid cell cohorts 
     @param currentMonth The current model month */
-    void RunDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
+    void RunDispersal( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
         // Calculate dispersal speed for the cohort         
         double dispersalSpeed = CalculateDispersalSpeed( cohortToDisperse.mIndividualBodyMass );
 
@@ -77,7 +77,7 @@ public:
     @param C a cohort
     @param dispersalSpeed The average speed at which individuals in this cohort move around their environment, in km per month 
      */
-    void CalculateDispersalProbability( ModelGrid& madingleyGrid, Cohort& cohort, double dispersalSpeed ) {
+    void CalculateDispersalProbability( Grid& madingleyGrid, Cohort& cohort, double dispersalSpeed ) {
         // Check that the u speed and v speed are not greater than the cell length. If they are, then rescale them; this limits the max velocity
         // so that cohorts cannot be advected more than one grid cell per time step
         double latCellLength = cohort.mCurrentCell->GetCellHeight( );

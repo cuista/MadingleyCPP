@@ -42,14 +42,14 @@
         <itemPath>src/Model/EcologyStock.h</itemPath>
         <itemPath>src/Model/Environment.h</itemPath>
         <itemPath>src/Model/FunctionalGroupDefinitions.h</itemPath>
+        <itemPath>src/Model/Grid.h</itemPath>
         <itemPath>src/Model/GridCell.h</itemPath>
         <itemPath>src/Model/HANPP.h</itemPath>
         <itemPath>src/Model/Location.h</itemPath>
-        <itemPath>src/Model/MadingleyModel.h</itemPath>
-        <itemPath>src/Model/MadingleyModelInitialisation.h</itemPath>
+        <itemPath>src/Model/Madingley.h</itemPath>
+        <itemPath>src/Model/MadingleyInitialisation.h</itemPath>
         <itemPath>src/Model/Metabolism.h</itemPath>
         <itemPath>src/Model/MetabolismImplementation.h</itemPath>
-        <itemPath>src/Model/ModelGrid.h</itemPath>
         <itemPath>src/Model/Mortality.h</itemPath>
         <itemPath>src/Model/MortalityImplementation.h</itemPath>
         <itemPath>src/Model/Pear.h</itemPath>
@@ -131,8 +131,12 @@
         <itemPath>src/Model/EcologyStock.cpp</itemPath>
         <itemPath>src/Model/Environment.cpp</itemPath>
         <itemPath>src/Model/FunctionalGroupDefinitions.cpp</itemPath>
+        <itemPath>src/Model/Grid.cpp</itemPath>
         <itemPath>src/Model/GridCell.cpp</itemPath>
         <itemPath>src/Model/Location.cpp</itemPath>
+        <itemPath>src/Model/Madingley.cpp</itemPath>
+        <itemPath>src/Model/MadingleyInitialisation.cpp</itemPath>
+        <itemPath>src/Model/Metabolism.cpp</itemPath>
         <itemPath>src/Model/Pear.cpp</itemPath>
         <itemPath>src/Model/Stock.cpp</itemPath>
         <itemPath>src/Model/Time.cpp</itemPath>
@@ -356,6 +360,10 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="src/Model/Grid.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Grid.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/GridCell.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/GridCell.h" ex="false" tool="3" flavor2="0">
@@ -366,12 +374,21 @@
       </item>
       <item path="src/Model/Location.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/MadingleyModel.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/Madingley.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/Model/MadingleyModelInitialisation.h"
+      <item path="src/Model/Madingley.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MadingleyInitialisation.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/Model/MadingleyInitialisation.h"
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="src/Model/Metabolism.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Metabolism.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -379,8 +396,6 @@
             ex="false"
             tool="3"
             flavor2="0">
-      </item>
-      <item path="src/Model/ModelGrid.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -673,6 +688,10 @@
             tool="3"
             flavor2="0">
       </item>
+      <item path="src/Model/Grid.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Grid.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/GridCell.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/GridCell.h" ex="false" tool="3" flavor2="0">
@@ -683,12 +702,21 @@
       </item>
       <item path="src/Model/Location.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/MadingleyModel.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/Madingley.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/Model/MadingleyModelInitialisation.h"
+      <item path="src/Model/Madingley.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MadingleyInitialisation.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/Model/MadingleyInitialisation.h"
             ex="false"
             tool="3"
             flavor2="0">
+      </item>
+      <item path="src/Model/Metabolism.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Metabolism.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -696,8 +724,6 @@
             ex="false"
             tool="3"
             flavor2="0">
-      </item>
-      <item path="src/Model/ModelGrid.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
       </item>

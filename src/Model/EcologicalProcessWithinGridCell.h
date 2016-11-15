@@ -1,7 +1,7 @@
 #ifndef ECOLOGICALPROCESSWITHINGRIDCELL
 #define ECOLOGICALPROCESSWITHINGRIDCELL
 
-#include "MadingleyModelInitialisation.h"
+#include "MadingleyInitialisation.h"
 #include "ThreadLocked.h" 
 
 /** \brief Interface for ecological process code */
@@ -15,7 +15,7 @@ public:
     @param partial Thread-locked variables 
     @param currentMonth The current model month 
     @param params The instance of the MadingleyModelInitialisation class for this simulation */
-    virtual void RunEcologicalProcess( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, unsigned, MadingleyModelInitialisation& ) {
+    virtual void RunEcologicalProcess( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, unsigned, MadingleyInitialisation& ) {
         std::cout << "Top level EcologicalWithinGridCell RunEcologicalProcess process called: should be virtual so this is probably not what you want!" << std::endl;
     }
 
@@ -23,7 +23,7 @@ public:
     @param gridCell The current grid cell
     @params params parameters for the model 
     @param implementationKey The name of the specific implementation of this process to initialize */
-    virtual void InitializeEcologicalProcess( GridCell& gcl, MadingleyModelInitialisation& params, string implementationKey ) {
+    virtual void InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, string implementationKey ) {
         ;
     }
 

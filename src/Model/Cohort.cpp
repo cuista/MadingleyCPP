@@ -1,7 +1,7 @@
 #include <Cohort.h>
 #include <limits.h>
 #include <GridCell.h>
-#include <MadingleyModelInitialisation.h>
+#include <MadingleyInitialisation.h>
 #include <Dispersal.h>
 
 #include "Parameters.h"
@@ -122,11 +122,11 @@ bool Cohort::IsMarine( ) {
     return mCurrentCell->IsMarine( );
 }
 
-bool Cohort::IsPlanktonic( MadingleyModelInitialisation& params ) {
+bool Cohort::IsPlanktonic( MadingleyInitialisation& params ) {
     return ( IsMarine( ) && ( ( mIndividualBodyMass <= Parameters::Get( )->GetPlanktonSizeThreshold( ) ) || ( params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", mFunctionalGroupIndex ) == "planktonic" ) ) );
 }
 
-string Cohort::DispersalType( MadingleyModelInitialisation& params ) {
+string Cohort::DispersalType( MadingleyInitialisation& params ) {
     string dispersalName;
     if( IsPlanktonic( params ) ) {
         // Advective dispersal

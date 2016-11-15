@@ -22,7 +22,7 @@ public:
     @param implementationKey The name of the implementation of eating to initialize 
     \remarks Eating needs to be initialized every time step */
     
-    void InitializeEcologicalProcess( GridCell&, MadingleyModelInitialisation&, string );
+    void InitializeEcologicalProcess( GridCell&, MadingleyInitialisation&, string );
     /** \brief Run eating 
     @param gcl The current grid cell 
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
@@ -30,7 +30,7 @@ public:
     @param partial Thread-locked variables 
     @param currentMonth The current model month
     @params params The Params */
-    void RunEcologicalProcess( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, unsigned, MadingleyModelInitialisation& );
+    void RunEcologicalProcess( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, unsigned, MadingleyInitialisation& );
 
     /** \brief The available implementations of the eating process */
     map<string, EatingImplementation*> mImplementations;

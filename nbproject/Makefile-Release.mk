@@ -64,8 +64,12 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/EcologyStock.o \
 	${OBJECTDIR}/src/Model/Environment.o \
 	${OBJECTDIR}/src/Model/FunctionalGroupDefinitions.o \
+	${OBJECTDIR}/src/Model/Grid.o \
 	${OBJECTDIR}/src/Model/GridCell.o \
 	${OBJECTDIR}/src/Model/Location.o \
+	${OBJECTDIR}/src/Model/Madingley.o \
+	${OBJECTDIR}/src/Model/MadingleyInitialisation.o \
+	${OBJECTDIR}/src/Model/Metabolism.o \
 	${OBJECTDIR}/src/Model/Pear.o \
 	${OBJECTDIR}/src/Model/Stock.o \
 	${OBJECTDIR}/src/Model/Time.o \
@@ -259,6 +263,11 @@ ${OBJECTDIR}/src/Model/FunctionalGroupDefinitions.o: src/Model/FunctionalGroupDe
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/FunctionalGroupDefinitions.o src/Model/FunctionalGroupDefinitions.cpp
 
+${OBJECTDIR}/src/Model/Grid.o: src/Model/Grid.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Grid.o src/Model/Grid.cpp
+
 ${OBJECTDIR}/src/Model/GridCell.o: src/Model/GridCell.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
@@ -268,6 +277,21 @@ ${OBJECTDIR}/src/Model/Location.o: src/Model/Location.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Location.o src/Model/Location.cpp
+
+${OBJECTDIR}/src/Model/Madingley.o: src/Model/Madingley.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Madingley.o src/Model/Madingley.cpp
+
+${OBJECTDIR}/src/Model/MadingleyInitialisation.o: src/Model/MadingleyInitialisation.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MadingleyInitialisation.o src/Model/MadingleyInitialisation.cpp
+
+${OBJECTDIR}/src/Model/Metabolism.o: src/Model/Metabolism.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Metabolism.o src/Model/Metabolism.cpp
 
 ${OBJECTDIR}/src/Model/Pear.o: src/Model/Pear.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model

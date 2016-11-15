@@ -15,7 +15,7 @@ EcologyCohort::EcologyCohort( ) {
     mMortalityFormulations["Basic mortality"] = MortalityFormulation;
 }
 
-void EcologyCohort::InitialiseEating( GridCell& gcl, MadingleyModelInitialisation& params ) {
+void EcologyCohort::InitialiseEating( GridCell& gcl, MadingleyInitialisation& params ) {
     // Initialise eating formulations - has to be redone every step?
     mEatingFormulations["Basic eating"]->InitializeEcologicalProcess( gcl, params, "revised predation" );
     mEatingFormulations["Basic eating"]->InitializeEcologicalProcess( gcl, params, "revised herbivory" );
@@ -28,7 +28,7 @@ EcologyCohort::~EcologyCohort( ) {
     delete mReproductionFormulations["Basic reproduction"];
 }
 
-void EcologyCohort::RunWithinCellEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadLockedParallelVariables& partial, unsigned currentMonth, MadingleyModelInitialisation& params ) {
+void EcologyCohort::RunWithinCellEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadLockedParallelVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
     // RUN EATING
     if( actingCohort.mIndividualBodyMass > 0 ) {
         mEatingFormulations["Basic eating"]->RunEcologicalProcess( gcl, actingCohort, currentTimestep, partial, currentMonth, params );

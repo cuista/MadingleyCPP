@@ -5,7 +5,7 @@ DispersalImplementation::DispersalImplementation( ) {
 }
 
 /** \brief Run the dispersal implementation */
-void DispersalImplementation::RunDispersal( ModelGrid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
+void DispersalImplementation::RunDispersal( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
     cout << "Called virtual dispersal runner: probably not what you want" << endl;
 }
 
@@ -19,13 +19,13 @@ void DispersalImplementation::ResetRandom( ) {
     mRandomNumber2.reset( );
 }
 
-void DispersalImplementation::newCell( ModelGrid& madingleyGrid, double& uSpeed, double& vSpeed, double & LonCellLength, double & LatCellLength, Cohort& c ) {
+void DispersalImplementation::newCell( Grid& madingleyGrid, double& uSpeed, double& vSpeed, double & LonCellLength, double & LatCellLength, Cohort& c ) {
     // Calculate the area of the grid cell that is now outside in the diagonal direction
     // Get the cell area, in kilometres squared
     double CellArea = c.mDestinationCell->GetCellArea( );
     LonCellLength = c.mDestinationCell->GetCellWidth( );
     LatCellLength = c.mDestinationCell->GetCellHeight( );
-    GridCell& g = madingleyGrid.getACell( c.mDestinationLocation );
+    GridCell& g = madingleyGrid.GetACell( c.mDestinationLocation );
     double AreaOutsideBoth = abs( uSpeed * vSpeed );
 
     // Calculate the area of the grid cell that is now outside in the u direction (not including the diagonal)
@@ -61,10 +61,10 @@ void DispersalImplementation::newCell( ModelGrid& madingleyGrid, double& uSpeed,
             }
         }
         // try to get a cell.
-        GridCell* FreshCell = madingleyGrid.getNewCell( c.mDestinationCell, signv, signu );
+        GridCell* FreshCell = madingleyGrid.GetNewCell( c.mDestinationCell, signv, signu );
         if( FreshCell != 0 ) {
             DestinationCell = FreshCell;
-            Location L = madingleyGrid.getNewCell( c.mDestinationLocation, signv, signu );
+            Location L = madingleyGrid.GetNewLocation( c.mDestinationLocation, signv, signu );
             c.TryLivingAt( FreshCell, L );
         }
     }
