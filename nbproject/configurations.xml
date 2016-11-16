@@ -51,6 +51,9 @@
         <itemPath>src/Model/Madingley.h</itemPath>
         <itemPath>src/Model/MadingleyInitialisation.h</itemPath>
         <itemPath>src/Model/Metabolism.h</itemPath>
+        <itemPath>src/Model/MetabolismEctotherm.h</itemPath>
+        <itemPath>src/Model/MetabolismEndotherm.h</itemPath>
+        <itemPath>src/Model/MetabolismHeterotroph.h</itemPath>
         <itemPath>src/Model/MetabolismImplementation.h</itemPath>
         <itemPath>src/Model/Mortality.h</itemPath>
         <itemPath>src/Model/MortalityBackground.h</itemPath>
@@ -59,9 +62,6 @@
         <itemPath>src/Model/Reproduction.h</itemPath>
         <itemPath>src/Model/ReproductionImplementation.h</itemPath>
         <itemPath>src/Model/Stock.h</itemPath>
-        <itemPath>src/Model/TMetabolismEctotherm.h</itemPath>
-        <itemPath>src/Model/TMetabolismEndotherm.h</itemPath>
-        <itemPath>src/Model/TMetabolismHeterotroph.h</itemPath>
         <itemPath>src/Model/TReproductionBasic.h</itemPath>
         <itemPath>src/Model/TResponsiveDispersal.h</itemPath>
         <itemPath>src/Model/TRevisedHerbivory.h</itemPath>
@@ -139,6 +139,9 @@
         <itemPath>src/Model/Madingley.cpp</itemPath>
         <itemPath>src/Model/MadingleyInitialisation.cpp</itemPath>
         <itemPath>src/Model/Metabolism.cpp</itemPath>
+        <itemPath>src/Model/MetabolismEctotherm.cpp</itemPath>
+        <itemPath>src/Model/MetabolismEndotherm.cpp</itemPath>
+        <itemPath>src/Model/MetabolismHeterotroph.cpp</itemPath>
         <itemPath>src/Model/Mortality.cpp</itemPath>
         <itemPath>src/Model/MortalityBackground.cpp</itemPath>
         <itemPath>src/Model/Pear.cpp</itemPath>
@@ -406,6 +409,21 @@
       </item>
       <item path="src/Model/Metabolism.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/MetabolismEctotherm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEctotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEndotherm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEndotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismHeterotroph.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismHeterotroph.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/MetabolismImplementation.h"
             ex="false"
             tool="3"
@@ -440,12 +458,6 @@
       <item path="src/Model/Stock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Stock.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TMetabolismEctotherm.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TMetabolismEndotherm.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TMetabolismHeterotroph.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/TReproductionBasic.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -743,6 +755,21 @@
       </item>
       <item path="src/Model/Metabolism.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/MetabolismEctotherm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEctotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEndotherm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEndotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismHeterotroph.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismHeterotroph.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/MetabolismImplementation.h"
             ex="false"
             tool="3"
@@ -777,12 +804,6 @@
       <item path="src/Model/Stock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Stock.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TMetabolismEctotherm.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TMetabolismEndotherm.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TMetabolismHeterotroph.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/TReproductionBasic.h" ex="false" tool="3" flavor2="0">
       </item>

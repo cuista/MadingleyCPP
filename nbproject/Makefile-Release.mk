@@ -72,6 +72,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/Madingley.o \
 	${OBJECTDIR}/src/Model/MadingleyInitialisation.o \
 	${OBJECTDIR}/src/Model/Metabolism.o \
+	${OBJECTDIR}/src/Model/MetabolismEctotherm.o \
+	${OBJECTDIR}/src/Model/MetabolismEndotherm.o \
+	${OBJECTDIR}/src/Model/MetabolismHeterotroph.o \
 	${OBJECTDIR}/src/Model/Mortality.o \
 	${OBJECTDIR}/src/Model/MortalityBackground.o \
 	${OBJECTDIR}/src/Model/Pear.o \
@@ -308,6 +311,21 @@ ${OBJECTDIR}/src/Model/Metabolism.o: src/Model/Metabolism.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Metabolism.o src/Model/Metabolism.cpp
+
+${OBJECTDIR}/src/Model/MetabolismEctotherm.o: src/Model/MetabolismEctotherm.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MetabolismEctotherm.o src/Model/MetabolismEctotherm.cpp
+
+${OBJECTDIR}/src/Model/MetabolismEndotherm.o: src/Model/MetabolismEndotherm.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MetabolismEndotherm.o src/Model/MetabolismEndotherm.cpp
+
+${OBJECTDIR}/src/Model/MetabolismHeterotroph.o: src/Model/MetabolismHeterotroph.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MetabolismHeterotroph.o src/Model/MetabolismHeterotroph.cpp
 
 ${OBJECTDIR}/src/Model/Mortality.o: src/Model/Mortality.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model

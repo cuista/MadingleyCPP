@@ -3,9 +3,9 @@
 
 #include "EcologicalProcessWithinGridCell.h"
 #include "MetabolismImplementation.h"
-#include "TMetabolismHeterotroph.h"
-#include "TMetabolismEndotherm.h"
-#include "TMetabolismEctotherm.h"
+#include "MetabolismHeterotroph.h"
+#include "MetabolismEndotherm.h"
+#include "MetabolismEctotherm.h"
 #include "ThreadLocked.h"
 
 /** \brief  Performs metabolism */
@@ -32,6 +32,7 @@ private:
     @param currentMonth The current model month
     @param params some parameters  */
     void RunEcologicalProcess( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, unsigned, MadingleyInitialisation& );
+    
     std::map< std::string, MetabolismImplementation* > Implementations;
 };
 #endif

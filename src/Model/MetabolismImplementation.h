@@ -1,6 +1,8 @@
 #ifndef METABOLISMIMPLEMENTATION
 #define METABOLISMIMPLEMENTATION
 
+#include "Cohort.h"
+
 /** \brief Interface for implementations of the ecological process of metabolism */
 class MetabolismImplementation {
 public:
@@ -10,7 +12,7 @@ public:
     @param currentTimestep The current model time step 
     @param currentMonth The current month in the model */
     virtual void RunMetabolism( Cohort&, unsigned, unsigned ) {
-        std::cout << "If this got called you ended up in a virtual function! MetabolismImplementation RunMetabolism";
+        std::cout << "If this got called you ended up in a virtual function! MetabolismImplementation RunMetabolism" << std::endl;
     }
 };
 #endif
