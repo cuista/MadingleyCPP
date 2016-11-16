@@ -19,7 +19,7 @@ DispersalAdvective::DispersalAdvective( ) {
 
 }
 
-void DispersalAdvective::RunDispersal( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
+void DispersalAdvective::Run( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
     // Loop through a number of times proportional to the rescaled dispersal
     for( int mm = 0; mm < mAdvectionTimeStepsPerModelTimeStep; mm++ ) {
         // Get the probability of dispersal and return a candidate cell
@@ -74,7 +74,7 @@ void DispersalAdvective::CalculateDispersalProbability( Grid& madingleyGrid, Coh
     if( abs( uDistanceTravelled ) > lonCellLength ) cout << "BIG U " << uAdvectiveSpeed << endl;
     assert( abs( uDistanceTravelled ) <= lonCellLength && "u velocity greater than cell width" );
     assert( abs( vDistanceTravelled ) <= latCellLength && "v velocity greater than cell width" );
-    newCell( madingleyGrid, uDistanceTravelled, vDistanceTravelled, lonCellLength, latCellLength, c );
+    NewCell( madingleyGrid, uDistanceTravelled, vDistanceTravelled, lonCellLength, latCellLength, c );
 
 }
 

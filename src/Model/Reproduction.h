@@ -1,34 +1,33 @@
 #ifndef REPRODUCTION
 #define REPRODUCTION
 
-#include "EcologicalProcessWithinGridCell.h"
-#include "TReproductionBasic.h"
+#include "MadingleyInitialisation.h"
+#include "ThreadVariables.h"
 
-/** \brief Performs reproduction */
-class Reproduction : public EcologicalProcessWithinGridCell {
+#include <map>
+
+/** \brief Interface for implementations of the ecological process of reproduction */
+class Reproduction {
 public:
-    /** \brief The available implementations of the reproduction process */
-    std::map< std::string, ReproductionImplementation* > mImplementations;
 
-    /**  \brief Constructor for Reproduction: fills the list of available implementations of reproduction */
-    Reproduction( std::string, bool );
+    /** \brief Generate new cohorts from reproductive potential mass
+    @param gridCell The current grid cell 
+    @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
+    @param currentTimestep The current model time step 
+    @param partial Thread-locked variables 
+    @param iteroparous Whether the acting cohort is iteroparous, as opposed to semelparous 
+    @param currentMonth The current model month */
+    virtual void Run( GridCell&, Cohort&, unsigned, ThreadVariables&, bool, unsigned, MadingleyInitialisation& ) {
+        std::cout << "ReproductionImplementation RunReproductionEvents should be virtual: you probably don't want to be here" << std::endl;
+    }
 
-    /** Destructor ensure we tidy everything up */
-    ~Reproduction( );
-
-    /** \brief Initialize an implementation of reproduction. This is only in here to satisfy the requirements of IEcologicalProcessWithinGridCells
-    @param gcl The current grid cell 
-    @param params The definitions for functional groups in the model, among other things 
-    @param implementationKey The name of the reproduction implementation to initialize */
-    void InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, std::string implementationKey ) ;
-
-    /** \brief Run reproduction
-    @param gcl The current grid cell 
-    @param actingCohort The acting cohort 
-    @param currentTimeStep The current model time step 
-    @param partial Thread-locked variables for the parallelised version 
-    @param currentMonth The current model month 
-    @params Parameters defined here */
-    void RunEcologicalProcess( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, unsigned, MadingleyInitialisation& );
+    /** \brief Assigns surplus body mass to reproductive potential mass
+    @param gridCell The current grid cell 
+    @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
+    @param currentTimestep The current model time step 
+    @param trackProcesses An instance of ProcessTracker to hold diagnostics for reproduction */
+    virtual void MassAssignment( GridCell&, Cohort&, unsigned, MadingleyInitialisation& ) {
+        std::cout << "IReproductionImplementation RunReproductiveMassAssignment should be virtual: you probably don't want to be here" << std::endl;
+    }
 };
 #endif

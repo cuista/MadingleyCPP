@@ -1,49 +1,71 @@
 #include "Dispersal.h"
 
 Dispersal::Dispersal( ) {
-    // Assign dispersal implementations
-    mChoose[ "advective" ] = new DispersalAdvective( );
-    mChoose[ "diffusive" ] = new DispersalDiffusive( );
-    mChoose[ "responsive"] = new ResponsiveDispersal( );
+    ;
 }
 
-/** \brief tidy up pointers */
-Dispersal::~Dispersal( ) {
-    delete mChoose[ "advective" ];
-    delete mChoose[ "diffusive" ];
-    delete mChoose[ "responsive" ];
+/** \brief Run the dispersal implementation */
+void Dispersal::Run( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
+    cout << "Called virtual dispersal runner: probably not what you want" << endl;
 }
 
-void Dispersal::ResetRandoms( ) {
-    // the original model resets the random number sequence every timestep by creating a new dispersal object
-    mChoose[ "advective" ]->ResetRandom( );
-    mChoose[ "diffusive" ]->ResetRandom( );
-    mChoose[ "responsive" ]->ResetRandom( );
-}
-
-/** \brief Run dispersal 
-@param cellIndex The cell index for the active cell in the model grid 
-@param gridForDispersal The model grid to run the process for 
-@param dispersalOnly Whether we are running dispersal only 
-@param madingleyCohortDefinitions The functional group definitions for cohorts in the model 
-@param madingleyStockDefinitions The functional group definitions for stocks in the model 
-@param currentMonth The current model month */
-void Dispersal::RunCrossGridCellEcologicalProcess( GridCell& gcl, Grid& gridForDispersal, MadingleyInitialisation& params, unsigned currentMonth ) {
-    gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
-        if( mChoose.count( c.DispersalType( params ) ) != 0 ) {
-            mChoose[c.DispersalType( params )]->RunDispersal( gridForDispersal, c, currentMonth );
-
-        }
-        if( c.IsMoving( ) )mDispersers.push_back( c );
-
-    } );
-
-}
-
-void Dispersal::UpdateCrossGridCellEcology( unsigned& dispersalCounter ) {
-    dispersalCounter = mDispersers.size( );
-    for( auto& c: mDispersers ) {
-        c.Move( );
+void Dispersal::ResetRandom( ) {
+    unsigned seed = 14141;
+    if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
+        seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
     }
-    mDispersers.clear( );
+    mRandomNumber1.reset( );
+    mRandomNumber1.SetSeed( seed );
+    mRandomNumber2.reset( );
+}
+
+void Dispersal::NewCell( Grid& madingleyGrid, double& uSpeed, double& vSpeed, double & LonCellLength, double & LatCellLength, Cohort& c ) {
+    // Calculate the area of the grid cell that is now outside in the diagonal direction
+    // Get the cell area, in kilometres squared
+    double CellArea = c.mDestinationCell->GetCellArea( );
+    LonCellLength = c.mDestinationCell->GetCellWidth( );
+    LatCellLength = c.mDestinationCell->GetCellHeight( );
+    GridCell& g = madingleyGrid.GetACell( c.mDestinationLocation );
+    double AreaOutsideBoth = abs( uSpeed * vSpeed );
+
+    // Calculate the area of the grid cell that is now outside in the u direction (not including the diagonal)
+    double AreaOutsideU = abs( uSpeed * LatCellLength ) - AreaOutsideBoth;
+
+    // Calculate the proportion of the grid cell that is outside in the v direction (not including the diagonal
+    double AreaOutsideV = abs( vSpeed * LonCellLength ) - AreaOutsideBoth;
+
+    // Convert areas to a probability
+    double DispersalProbability = ( AreaOutsideU + AreaOutsideV + AreaOutsideBoth ) / CellArea;
+    // Check that we don't have any issues
+    if( DispersalProbability > 1 )cout << "Bad Dispersal Probability " << DispersalProbability << endl;
+    //assert(DispersalProbability <= 1 && "Dispersal probability should always be <= 1");
+    GridCell* DestinationCell = 0;
+    // Check to see in which axis the cohort disperses
+
+    // Note that the values in the dispersal array are the proportional area moved outside the grid cell in each direction; we simply compare the random draw to this
+    // to determine the direction in which the cohort moves probabilistically
+    //std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
+    //double RandomValue = randomNumber( RandomNumberGenerator );
+    double RandomValue = mRandomNumber2.GetUniform( );
+
+    if( DispersalProbability >= RandomValue ) {
+        int signu = ( uSpeed > 0 ) - ( uSpeed < 0 );
+        int signv = ( vSpeed > 0 ) - ( vSpeed < 0 );
+        // Longitudinally
+        if( RandomValue <= AreaOutsideU / CellArea ) {
+            signv = 0;
+        } else {
+            //Latitudinally
+            if( RandomValue <= ( AreaOutsideU / CellArea + AreaOutsideV / CellArea ) ) {
+                signu = 0;
+            }
+        }
+        // try to get a cell.
+        GridCell* FreshCell = madingleyGrid.GetNewCell( c.mDestinationCell, signv, signu );
+        if( FreshCell != 0 ) {
+            DestinationCell = FreshCell;
+            Location L = madingleyGrid.GetNewLocation( c.mDestinationLocation, signv, signu );
+            c.TryLivingAt( FreshCell, L );
+        }
+    }
 }

@@ -22,7 +22,7 @@ MetabolismEctotherm::MetabolismEctotherm( std::string globalModelTimeStepUnit ) 
     mProportionTimeActiveCalculatedThisTimestep = false;
 }
 
-void MetabolismEctotherm::RunMetabolism( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {
+void MetabolismEctotherm::Run( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {
     // Calculate metabolic loss for an individual and add the value to the delta biomass for metabolism
     Cohort::mMassFluxes["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate( actingCohort.mIndividualBodyMass, Environment::Get( "Temperature", actingCohort.GetCurrentCell( ) ) + mTemperatureUnitsConvert, actingCohort.mProportionTimeActive ) * mDeltaT;
 

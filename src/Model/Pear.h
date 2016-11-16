@@ -1,7 +1,7 @@
 #ifndef PEAR
 #define	PEAR
 
-#include "CohortMerge.h"
+#include "CohortMerger.h"
 
 class Pear { // FIX - Rename this class?
 public:

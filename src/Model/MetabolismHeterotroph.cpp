@@ -16,7 +16,7 @@ MetabolismHeterotroph::MetabolismHeterotroph( std::string globalModelTimeStepUni
     mTemperatureUnitsConvert = 273.0;
 }
 
-void MetabolismHeterotroph::RunMetabolism( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {
+void MetabolismHeterotroph::Run( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {
     // Calculate metabolic loss for an individual and add the value to the delta biomass for metabolism
     Cohort::mMassFluxes[ "biomass" ][ "metabolism" ] = -CalculateIndividualMetabolicRate( actingCohort.mIndividualBodyMass, Environment::Get( "Temperature", actingCohort.GetCurrentCell( ) ) + mTemperatureUnitsConvert ) * mDeltaT;
 

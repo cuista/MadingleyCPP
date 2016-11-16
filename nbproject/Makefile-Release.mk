@@ -55,12 +55,13 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/Activity.o \
 	${OBJECTDIR}/src/Model/AutotrophProcessor.o \
 	${OBJECTDIR}/src/Model/Cohort.o \
-	${OBJECTDIR}/src/Model/CohortMerge.o \
+	${OBJECTDIR}/src/Model/CohortMerger.o \
 	${OBJECTDIR}/src/Model/Dispersal.o \
 	${OBJECTDIR}/src/Model/DispersalAdvective.o \
 	${OBJECTDIR}/src/Model/DispersalDiffusive.o \
-	${OBJECTDIR}/src/Model/DispersalImplementation.o \
-	${OBJECTDIR}/src/Model/Eating.o \
+	${OBJECTDIR}/src/Model/DispersalResponsive.o \
+	${OBJECTDIR}/src/Model/DispersalSet.o \
+	${OBJECTDIR}/src/Model/EatingSet.o \
 	${OBJECTDIR}/src/Model/EcologyApply.o \
 	${OBJECTDIR}/src/Model/EcologyCohort.o \
 	${OBJECTDIR}/src/Model/EcologyStock.o \
@@ -71,14 +72,15 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/Location.o \
 	${OBJECTDIR}/src/Model/Madingley.o \
 	${OBJECTDIR}/src/Model/MadingleyInitialisation.o \
-	${OBJECTDIR}/src/Model/Metabolism.o \
 	${OBJECTDIR}/src/Model/MetabolismEctotherm.o \
 	${OBJECTDIR}/src/Model/MetabolismEndotherm.o \
 	${OBJECTDIR}/src/Model/MetabolismHeterotroph.o \
+	${OBJECTDIR}/src/Model/MetabolismSet.o \
 	${OBJECTDIR}/src/Model/Mortality.o \
 	${OBJECTDIR}/src/Model/MortalityBackground.o \
 	${OBJECTDIR}/src/Model/Pear.o \
-	${OBJECTDIR}/src/Model/Reproduction.o \
+	${OBJECTDIR}/src/Model/ReproductionBasic.o \
+	${OBJECTDIR}/src/Model/ReproductionSet.o \
 	${OBJECTDIR}/src/Model/Stock.o \
 	${OBJECTDIR}/src/Model/TerrestrialCarbon.o \
 	${OBJECTDIR}/src/Model/Time.o \
@@ -227,10 +229,10 @@ ${OBJECTDIR}/src/Model/Cohort.o: src/Model/Cohort.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Cohort.o src/Model/Cohort.cpp
 
-${OBJECTDIR}/src/Model/CohortMerge.o: src/Model/CohortMerge.cpp 
+${OBJECTDIR}/src/Model/CohortMerger.o: src/Model/CohortMerger.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/CohortMerge.o src/Model/CohortMerge.cpp
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/CohortMerger.o src/Model/CohortMerger.cpp
 
 ${OBJECTDIR}/src/Model/Dispersal.o: src/Model/Dispersal.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
@@ -247,15 +249,20 @@ ${OBJECTDIR}/src/Model/DispersalDiffusive.o: src/Model/DispersalDiffusive.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/DispersalDiffusive.o src/Model/DispersalDiffusive.cpp
 
-${OBJECTDIR}/src/Model/DispersalImplementation.o: src/Model/DispersalImplementation.cpp 
+${OBJECTDIR}/src/Model/DispersalResponsive.o: src/Model/DispersalResponsive.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/DispersalImplementation.o src/Model/DispersalImplementation.cpp
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/DispersalResponsive.o src/Model/DispersalResponsive.cpp
 
-${OBJECTDIR}/src/Model/Eating.o: src/Model/Eating.cpp 
+${OBJECTDIR}/src/Model/DispersalSet.o: src/Model/DispersalSet.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Eating.o src/Model/Eating.cpp
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/DispersalSet.o src/Model/DispersalSet.cpp
+
+${OBJECTDIR}/src/Model/EatingSet.o: src/Model/EatingSet.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/EatingSet.o src/Model/EatingSet.cpp
 
 ${OBJECTDIR}/src/Model/EcologyApply.o: src/Model/EcologyApply.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
@@ -307,11 +314,6 @@ ${OBJECTDIR}/src/Model/MadingleyInitialisation.o: src/Model/MadingleyInitialisat
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MadingleyInitialisation.o src/Model/MadingleyInitialisation.cpp
 
-${OBJECTDIR}/src/Model/Metabolism.o: src/Model/Metabolism.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Model
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Metabolism.o src/Model/Metabolism.cpp
-
 ${OBJECTDIR}/src/Model/MetabolismEctotherm.o: src/Model/MetabolismEctotherm.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
@@ -326,6 +328,11 @@ ${OBJECTDIR}/src/Model/MetabolismHeterotroph.o: src/Model/MetabolismHeterotroph.
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MetabolismHeterotroph.o src/Model/MetabolismHeterotroph.cpp
+
+${OBJECTDIR}/src/Model/MetabolismSet.o: src/Model/MetabolismSet.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MetabolismSet.o src/Model/MetabolismSet.cpp
 
 ${OBJECTDIR}/src/Model/Mortality.o: src/Model/Mortality.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
@@ -342,10 +349,15 @@ ${OBJECTDIR}/src/Model/Pear.o: src/Model/Pear.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Pear.o src/Model/Pear.cpp
 
-${OBJECTDIR}/src/Model/Reproduction.o: src/Model/Reproduction.cpp 
+${OBJECTDIR}/src/Model/ReproductionBasic.o: src/Model/ReproductionBasic.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Reproduction.o src/Model/Reproduction.cpp
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/ReproductionBasic.o src/Model/ReproductionBasic.cpp
+
+${OBJECTDIR}/src/Model/ReproductionSet.o: src/Model/ReproductionSet.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/ReproductionSet.o src/Model/ReproductionSet.cpp
 
 ${OBJECTDIR}/src/Model/Stock.o: src/Model/Stock.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model

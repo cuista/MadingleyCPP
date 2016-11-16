@@ -8,7 +8,7 @@
  */
 
 /** \brief A revised version of the herbivory process, written November 2011 */
-class RevisedHerbivory: public EatingImplementation {
+class RevisedHerbivory: public Eating {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------

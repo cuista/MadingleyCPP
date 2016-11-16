@@ -1,40 +1,65 @@
 #ifndef EATING
 #define EATING
 
-#include "EatingImplementation.h"
-#include "EcologicalProcessWithinGridCell.h"
-#include "TRevisedPredation.h"
-#include "TRevisedHerbivory.h"
+#include "FunctionalGroupDefinitions.h"
+#include "MadingleyInitialisation.h"
+#include <map>
 
-/** \brief Performs eating */
-class Eating : public EcologicalProcessWithinGridCell {
+/** \brief //    /// Interface for implementations of the ecological process of eating */
+class Eating {
 public:
+    Eating( ) {
+        ;
+    }
 
-    /** \brief Constructor for Eating: fills the list of available implementations of eating */
-    Eating( string );
-    
-    /** \brief Destructor to remove pointer storage */
-    ~Eating( );
+    Eating( string globalModelTimeStepUnit ) {
+        std::cout << "Virtual IEatingImplementation constructor called:This is probably a mistake" << std::endl;
+    }
 
-    /** \briefInitializes an implementation of eating 
-    @param gcl The current grid cell
-    @param params The model parameter set 
-    @param implementationKey The name of the implementation of eating to initialize 
-    \remarks Eating needs to be initialized every time step */
-    
-    void InitializeEcologicalProcess( GridCell&, MadingleyInitialisation&, string );
-    /** \brief Run eating 
+    virtual ~Eating( ) {
+        ;
+    }
+
+    /** \brief Initialises eating implementation each time step
     @param gcl The current grid cell 
-    @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
-    @param currentTimestep The current model time step 
-    @param partial Thread-locked variables 
-    @param currentMonth The current model month
-    @params params The Params */
-    void RunEcologicalProcess( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, unsigned, MadingleyInitialisation& );
+    @param madingleyStockDefinitions The definitions for stocks in the model  */
+    virtual void InitializeEatingPerTimeStep( GridCell&, MadingleyInitialisation& ) {
+        ;
+    }
 
-    /** \brief The available implementations of the eating process */
-    map<string, EatingImplementation*> mImplementations;
-    /** \brief Tracks the total time to handle all potential food for omnivores */
-    double mTotalTimeToEatForOmnivores;
+    /** \brief Calculate the potential biomass that could be gained through eating for marine cells
+    @param gcl The current grid cell 
+    @param params The current model settings
+     */
+    virtual void GetEatingPotentialMarine( GridCell&, Cohort&, MadingleyInitialisation& ) {
+        ;
+    }
+
+    /** \brief Calculate the potential biomass that could be gained through eating for terrestrial cells
+    @param gcl The current grid cell 
+    @param actingCohort The position of the acting cohort in the jagged array of cohorts 
+    @param params The current model thingies  */
+    virtual void GetEatingPotentialTerrestrial( GridCell&, Cohort&, MadingleyInitialisation& ) {
+        ;
+    }
+
+    /** \brief Calculate the actual biomass eaten from each cohort or sotck, apply changes from eating to the cohorts or stocks eaten, and update deltas for the acting cohort
+    @param gcl The current grid cell 
+    @param currentTimestep The current model time step 
+    @param params the actual model settings  */
+    virtual void RunEating( GridCell&, Cohort&, unsigned, MadingleyInitialisation& ) {
+        std::cout << "Top level IEatingImplementation RunEating process called: should be virtual so this is probably not what you want!" << std::endl;
+    }
+
+    /** \brief List of functional group indices to act on*/
+    std::vector< int > mFunctionalGroupIndicesToEat;
+    /** \brief Assimilation efficiency of food mass into acting cohort mass*/
+    double mAssimilationEfficiency;
+    /** \brief Proportion of time spent eating*/
+    double mProportionTimeEating;
+    /** \brief Time to handle all prey cohorts or plant mass encountered*/
+    double mTimeUnitsToHandlePotentialFoodItems;
+    /** \brief The total biomass eaten by the acting cohort */
+    double mTotalBiomassEatenByCohort;
 };
 #endif

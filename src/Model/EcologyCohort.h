@@ -2,11 +2,11 @@
 #define ECOLOGYCOHORT
 
 #include "EcologicalProcessWithinGridCell.h"
-#include "EatingImplementation.h"
 #include "Eating.h"
-#include "Reproduction.h"
-#include "Mortality.h"
-#include "Metabolism.h"
+#include "EatingSet.h"
+#include "ReproductionSet.h"
+#include "MortalitySet.h"
+#include "MetabolismSet.h"
 #include "EcologyApply.h"
 
 /** \brief A class to specify, initalise and run ecological processes pertaining to cohorts */
@@ -27,7 +27,7 @@ public:
     @param partial Thread-locked local variables 
     @param currentMonth The current model month
     @param params Things that may be needed */
-    void RunWithinCellEcology( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, unsigned, MadingleyInitialisation& );
+    void RunWithinCellEcology( GridCell&, Cohort&, unsigned, ThreadVariables&, unsigned, MadingleyInitialisation& );
 
     /** \brief Update the properties of the acting cohort and of the environmental biomass pools after running the ecological processes for a cohort
     @param gridCell The current grid cell 

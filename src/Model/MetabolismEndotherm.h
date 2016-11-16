@@ -1,14 +1,14 @@
 #ifndef METABOLISMENDOTHERM
 #define METABOLISMENDOTHERM
 
-#include "MetabolismImplementation.h"
+#include "Metabolism.h"
 #include "UtilityFunctions.h"
 
 /** \brief A formulation of the metabolism process for Endothermic organisms 
 \remarks Functional form and parameters taken from fitted relationship in Brown's (2004) Metabolic Theory of Ecology.
 Currently mass assigned to reproductive potential is not metabolised
 Assumes that endothermic organisms metabolise at 37degC, and that they can adapt physiologicaly to do this without extra costs */
-class MetabolismEndotherm : public MetabolismImplementation {
+class MetabolismEndotherm : public Metabolism {
 public:
 
     /** \brief Constructor for metabolism: assigns all parameter values
@@ -22,7 +22,7 @@ public:
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
     @param currentMonth The current model month */
-    void RunMetabolism( Cohort&, unsigned, unsigned );
+    void Run( Cohort&, unsigned, unsigned );
 
 private:
     /** \brief Calculate metabolic loss in grams for an individual 

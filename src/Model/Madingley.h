@@ -4,14 +4,14 @@
 #include "MadingleyInitialisation.h"
 #include "FunctionalGroupDefinitions.h"
 #include "Stopwatch.h"
-#include "CohortMerge.h"
+#include "CohortMerger.h"
 #include "Grid.h"
 #include "GridCell.h"
-#include "Dispersal.h"
+#include "DispersalSet.h"
 #include "EcologyStock.h"
 #include "EcologyCohort.h"
 #include "Activity.h"
-#include "ThreadLocked.h"
+#include "ThreadVariables.h"
 #include "Environment.h"
 #include "Time.h"
 #include "Logger.h"
@@ -40,9 +40,9 @@ private:
     /** \brief   Run ecological processes for cohorts in a specified grid cell
     @param gcl Reference to the current grid cell
     @param partial Track some global variables pertaining to cohort numbers etc. */
-    void RunWithinCellCohortEcology( GridCell&, ThreadLockedParallelVariables& );
+    void RunWithinCellCohortEcology( GridCell&, ThreadVariables& );
     /** \brief Carries out extinction on cohorts that have an abundance below a defined extinction threshold */
-    void RunExtinction( GridCell&, ThreadLockedParallelVariables& );
+    void RunExtinction( GridCell&, ThreadVariables& );
     /** \brief Run ecological processes that operate across grid cells */
     void RunCrossGridCellEcology( unsigned& );
     void SetUpGlobalDiagnosticsList( );
@@ -52,8 +52,8 @@ private:
     Grid mModelGrid;
     MadingleyInitialisation mParams;
     /** \brief An instance of the merging class */
-    CohortMerge mCohortMerger;
-    Types::DispersalPointer mDisperser; //FIX - Does this need to be a pointer?
+    CohortMerger mCohortMerger;
+    Types::DispersalSetPointer mDispersalSet; //FIX - Does this need to be a pointer?
     /** \brief A list of global diagnostics for this model run */
     Types::DoubleMap mGlobalDiagnosticVariables;
     /** \brief An instance of StopWatch to time individual time steps */

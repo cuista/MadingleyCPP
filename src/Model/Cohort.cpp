@@ -2,7 +2,7 @@
 #include <limits.h>
 #include <GridCell.h>
 #include <MadingleyInitialisation.h>
-#include <Dispersal.h>
+#include <DispersalSet.h>
 
 #include "Parameters.h"
 

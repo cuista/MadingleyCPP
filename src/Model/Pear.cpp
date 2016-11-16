@@ -14,7 +14,7 @@ Pear::Pear( Cohort* cohortA, Cohort* cohortB, double r ) {
         mCohortA = cohortB;
         mCohortB = cohortA;
     }
-    mDistance = CohortMerge::CalculateDistance( *mCohortA, *mCohortB );
+    mDistance = CohortMerger::CalculateDistance( *mCohortA, *mCohortB );
 }
 
 

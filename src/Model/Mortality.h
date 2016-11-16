@@ -1,43 +1,19 @@
 #ifndef MORTALITY
 #define MORTALITY
 
-#include "MortalityImplementation.h"
-#include "EcologicalProcessWithinGridCell.h"
-#include "MortalityBackground.h"
-#include "TSenescenceMortality.h"
-#include "TStarvationMortality.h"
 #include "Cohort.h"
 
-#include <limits>
-
-/** \brief  Performs mortality */
-class Mortality : public EcologicalProcessWithinGridCell {
+/** \brief Interface for implementations of the ecological process of mortality */
+class Mortality {
 public:
-    /** \brief Constructor for Mortality: fills the list with available implementations of mortality
-    @param globalModelTimeStepUnit The time step for the global model */
-    Mortality( std::string globalModelTimeStepUnit );
-
-    /** \brief Destructor cleans up pointers */
-    ~Mortality( );
-
-    /** \brief Initialize an implementation of mortality. This is only in here to satisfy the requirements of IEcologicalProcessAcrossGridCells
-    @param gcl The current grid cell 
-    @param params Needed for groups in the model 
-    @param implementationKey The name of the implementation of mortality to initialize */
-    void InitializeEcologicalProcess( GridCell&, MadingleyInitialisation&, std::string );
-
-    /** \brief Run mortality
-    @param gcl The current grid cell 
+    /** \brief Calculate the proportion of individuals in a cohort that die through a particular type of mortality in a model time step
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
+    @param bodyMassIncludingChangeThisTimeStep The body mass that individuals in this cohort will have at the end of this time step 
     @param currentTimestep The current model time step 
-    @param partial Thread-locked variables 
-    @param currentMonth The current model month
-    @param params params */
-    void RunEcologicalProcess( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, unsigned, MadingleyInitialisation& );
-
-private:
-    /** \brief The available implementations of the mortality process */
-    std::map< std::string, MortalityImplementation* > mImplementations;
-
+    @return The number of individuals lost to a cohort through mortality */
+    virtual double CalculateMortalityRate( Cohort&, double, unsigned ) {
+        std::cout << "If this got called you ended up in a virtual function! MortalityImplementation CalculateMortalityRate" << std::endl;
+    }
 };
+//}
 #endif

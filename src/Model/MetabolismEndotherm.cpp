@@ -18,7 +18,7 @@ MetabolismEndotherm::MetabolismEndotherm( string globalModelTimeStepUnit ) {
     mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
 }
 
-void MetabolismEndotherm::RunMetabolism( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {
+void MetabolismEndotherm::Run( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {
     // Calculate metabolic loss for an individual and add the value to the delta biomass for metabolism
     Cohort::mMassFluxes[ "biomass" ][ "metabolism" ] = -CalculateIndividualMetabolicRate( actingCohort.mIndividualBodyMass, Environment::Get( "Temperature", actingCohort.GetCurrentCell( ) ) + mTemperatureUnitsConvert ) * mDeltaT;
 

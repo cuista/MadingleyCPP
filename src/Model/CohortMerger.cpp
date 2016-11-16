@@ -1,7 +1,7 @@
-#include "CohortMerge.h"
+#include "CohortMerger.h"
 #include "Pear.h"
 
-CohortMerge::CohortMerge( ) {
+CohortMerger::CohortMerger( ) {
     if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
         unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
         mRandomNumber.SetSeed( seed );
@@ -16,7 +16,7 @@ CohortMerge::CohortMerge( ) {
 @param Cohort2 The cohort to compare to 
 @returns The relative distance in trait space
  */
-double CohortMerge::CalculateDistance( Cohort& cohortA, Cohort& cohortB ) {
+double CohortMerger::CalculateDistance( Cohort& cohortA, Cohort& cohortB ) {
     double AdultMassDistance = ( cohortA.mAdultMass - cohortB.mAdultMass ) / cohortA.mAdultMass;
     double JuvenileMassDistance = ( cohortA.mJuvenileMass - cohortB.mJuvenileMass ) / cohortA.mJuvenileMass;
     double CurrentMassDistance = ( cohortA.mIndividualBodyMass - cohortB.mIndividualBodyMass ) / cohortA.mIndividualBodyMass;
@@ -24,7 +24,7 @@ double CohortMerge::CalculateDistance( Cohort& cohortA, Cohort& cohortB ) {
     return (( AdultMassDistance * AdultMassDistance ) + ( JuvenileMassDistance * JuvenileMassDistance ) + ( CurrentMassDistance * CurrentMassDistance ) );
 }
 
-int CohortMerge::MergeToReachThresholdFast( GridCell& gcl, MadingleyInitialisation& params ) {
+int CohortMerger::MergeToReachThresholdFast( GridCell& gcl, MadingleyInitialisation& params ) {
     // Set of lists of shortest distances in each functional group
     // set is automatically sorted - multiset allows for elements with the same distance
     multiset< Pear, Pear::PearComparator > SortedDistances;

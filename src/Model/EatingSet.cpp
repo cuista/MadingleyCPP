@@ -1,6 +1,6 @@
-#include "Eating.h"
+#include "EatingSet.h"
 
-Eating::Eating( string globalModelTimeStepUnit ) {
+EatingSet::EatingSet( std::string globalModelTimeStepUnit ) {
     // Add the revised herbivory implementation to the list of implementations
     RevisedHerbivory *RevisedHerbivoryImplementation = new RevisedHerbivory( globalModelTimeStepUnit );
     mImplementations["revised herbivory"] = RevisedHerbivoryImplementation;
@@ -10,27 +10,27 @@ Eating::Eating( string globalModelTimeStepUnit ) {
     mTotalTimeToEatForOmnivores = 0;
 }
 
-Eating::~Eating( ) {
+EatingSet::~EatingSet( ) {
     delete mImplementations["revised herbivory"];
     delete mImplementations["revised predation"];
 }
 
-void Eating::InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, string implementationKey ) {
+void EatingSet::InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, string implementationKey ) {
     // Initialize the implementation of the eating process
     mImplementations[implementationKey]->InitializeEatingPerTimeStep( gcl, params );
 }
 
-void Eating::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadLockedParallelVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
+void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
 
     // Get the nutrition source (herbivory, carnivory or omnivory) of the acting cohort
-    string NutritionSource = params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Nutrition source", actingCohort.mFunctionalGroupIndex );
-    map<string, int> vores;
+    std::string nutritionSource = params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Nutrition source", actingCohort.mFunctionalGroupIndex );
+    std::map< std::string, int > vores;
     vores["herbivore"] = 0;
     vores["carnivore"] = 1;
     vores["omnivore" ] = 2;
 
     // Switch to the appropriate eating process(es) given the cohort's nutrition source
-    switch( vores[ NutritionSource ] ) {
+    switch( vores[ nutritionSource ] ) {
         case 0://"herbivore":
 
             // Get the assimilation efficiency for herbivory for this cohort from the functional group definitions
@@ -108,7 +108,7 @@ void Eating::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsigned
 
         default:
             // For nutrition source that are not supported, throw an error
-            Logger::Get( )->LogMessage( "The model currently does not contain an eating model for nutrition source:" + NutritionSource );
+            Logger::Get( )->LogMessage( "The model currently does not contain an eating model for nutrition source:" + nutritionSource );
             exit( 1 );
             break;
 

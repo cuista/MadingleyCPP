@@ -9,9 +9,9 @@
 #include <set>
 
 /** \brief Merges cohorts with similar properties */
-class CohortMerge {
+class CohortMerger {
 public:
-    CohortMerge( );
+    CohortMerger( );
 
     /** \brief Calculate the distance between two cohorts in multi-dimensional trait space (body mass, adult mass, juvenile mass)
     @param Cohort1 The first cohort to calculate distance to 

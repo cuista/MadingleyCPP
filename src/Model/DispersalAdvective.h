@@ -1,7 +1,7 @@
 #ifndef DISPERSALADVECTIVE
 #define DISPERSALADVECTIVE
 
-#include "DispersalImplementation.h"
+#include "Dispersal.h"
 #include "UtilityFunctions.h"
 #include "Environment.h"
 #include "Parameters.h"
@@ -10,7 +10,7 @@
 #include <assert.h>
 
 /** \brief A formulation of the process of dispersal */
-class DispersalAdvective : public DispersalImplementation {
+class DispersalAdvective : public Dispersal {
 public:
     /** \brief Constructor for dispersal: assigns all parameter values */
     DispersalAdvective( );
@@ -22,7 +22,7 @@ public:
     @param actingCohortFunctionalGroup The functional group index of the acting cohort 
     @param actingCohortNumber The position of the acting cohort within the functional group in the array of grid cell cohorts 
     @param currentMonth The current model month */
-    void RunDispersal( Grid&, Cohort&, const unsigned& );
+    void Run( Grid&, Cohort&, const unsigned& );
     
 private:
     /** \brief    Convert dispersal speed from m per second to km per dispersal time step (currently 18h)
@@ -42,7 +42,7 @@ private:
     Types::DoubleVector CalculateDiffusion( );
     
     /** \brief Include Utility class */
-    UtilityFunctions mUtilities;
+    //UtilityFunctions mUtilities;
     /** \brief The time units associated with this implementation of dispersal*/
     const std::string mTimeUnitImplementation = "month";
     /** \brief The horizontal diffusivity parameter (m^2/s) */

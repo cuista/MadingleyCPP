@@ -6,7 +6,7 @@ Madingley::Madingley( ) {
     // Initialise the cohort ID to zero
     mNextCohortID = 0;
     mParams = MadingleyInitialisation( mNextCohortID, mGlobalDiagnosticVariables["NumberOfCohortsInModel"], mGlobalDiagnosticVariables["NumberOfStocksInModel"], mModelGrid );
-    mDisperser = new Dispersal( );
+    mDispersalSet = new DispersalSet( );
 
     mStockLeafStrategy = mParams.mStockFunctionalGroupDefinitions.mTraitLookupFromIndex[ "leaf strategy" ];
     mCohortNutritionSource = mParams.mCohortFunctionalGroupDefinitions.mTraitLookupFromIndex[ "nutrition source" ];
@@ -56,7 +56,7 @@ void Madingley::Run( ) {
 
 void Madingley::RunWithinCells( ) {
     // Instantiate a class to hold thread locked global diagnostic variables
-    ThreadLockedParallelVariables singleThreadDiagnostics( 0, 0, 0, mNextCohortID );
+    ThreadVariables singleThreadDiagnostics( 0, 0, 0, mNextCohortID );
 
     mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
 
@@ -66,12 +66,12 @@ void Madingley::RunWithinCells( ) {
 
     } );
     // Update the variable tracking cohort unique IDs
-    mNextCohortID = singleThreadDiagnostics.NextCohortIDThreadLocked;
+    mNextCohortID = singleThreadDiagnostics.mNextCohortID;
     // Take the results from the thread local variables and apply to the global diagnostic variables
-    mGlobalDiagnosticVariables["NumberOfCohortsExtinct"] = singleThreadDiagnostics.Extinctions - singleThreadDiagnostics.Combinations;
-    mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = singleThreadDiagnostics.Productions;
-    mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = mGlobalDiagnosticVariables["NumberOfCohortsInModel"] + singleThreadDiagnostics.Productions - singleThreadDiagnostics.Extinctions;
-    mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = singleThreadDiagnostics.Combinations;
+    mGlobalDiagnosticVariables["NumberOfCohortsExtinct"] = singleThreadDiagnostics.mExtinctions - singleThreadDiagnostics.mCombinations;
+    mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = singleThreadDiagnostics.mProductions;
+    mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = mGlobalDiagnosticVariables["NumberOfCohortsInModel"] + singleThreadDiagnostics.mProductions - singleThreadDiagnostics.mExtinctions;
+    mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = singleThreadDiagnostics.mCombinations;
 }
 
 void Madingley::RunWithinCellStockEcology( GridCell& gcl ) {
@@ -91,7 +91,7 @@ void Madingley::RunWithinCellStockEcology( GridCell& gcl ) {
 
 }
 
-void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadLockedParallelVariables& partial ) {
+void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadVariables& partial ) {
     // Local instances of classes
     // Initialize ecology for stocks and cohorts - needed fresh every timestep?
     EcologyCohort mEcologyCohort;
@@ -99,7 +99,6 @@ void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadLockedParallelV
     Activity CohortActivity;
 
     // Loop over randomly ordered gridCellCohorts to implement biological functions
-
     gcl.ApplyFunctionToAllCohortsWithStaticRandomness( [&]( Cohort & c ) {
         // Perform all biological functions except dispersal (which is cross grid cell)
 
@@ -117,7 +116,7 @@ void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadLockedParallelV
         }
 
         // Check that the mass of individuals in this cohort is still >= 0 after running ecology
-        if( gcl.mCohorts[c.mFunctionalGroupIndex].size( ) > 0 )assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
+        if( gcl.mCohorts[c.mFunctionalGroupIndex].size( ) > 0 ) assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
 
     }, mCurrentTimeStep );
 
@@ -125,30 +124,28 @@ void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadLockedParallelV
         gcl.InsertCohort( c );
         if( c.mDestinationCell != &gcl ) Logger::Get( )->LogMessage( "whut? wrong cell?" );
     }
-    partial.Productions += Cohort::mNewCohorts.size( );
+    partial.mProductions += Cohort::mNewCohorts.size( );
     Cohort::mNewCohorts.clear( );
 
     RunExtinction( gcl, partial );
 
     // Merge cohorts, if necessary
     if( gcl.GetNumberOfCohorts( ) > Parameters::Get( )->GetMaximumNumberOfCohorts( ) ) {
-
-        partial.Combinations += mCohortMerger.MergeToReachThresholdFast( gcl, mParams );
+        partial.mCombinations += mCohortMerger.MergeToReachThresholdFast( gcl, mParams );
 
         //Run extinction a second time to remove those cohorts that have been set to zero abundance when merging
         RunExtinction( gcl, partial );
-
     }
 }
 
-void Madingley::RunExtinction( GridCell& gcl, ThreadLockedParallelVariables& partial ) {
+void Madingley::RunExtinction( GridCell& gcl, ThreadVariables& partial ) {
 
     // Loop over cohorts and remove any whose abundance is below the extinction threshold
     vector<Cohort>CohortsToRemove;
     gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
         if( c.mCohortAbundance - Parameters::Get( )->GetExtinctionThreshold( ) <= 0 || c.mIndividualBodyMass <= 0 ) {
             CohortsToRemove.push_back( c );
-            partial.Extinctions += 1;
+            partial.mExtinctions += 1;
         }
     } );
 
@@ -163,20 +160,19 @@ void Madingley::RunExtinction( GridCell& gcl, ThreadLockedParallelVariables& par
 
         // Remove the extinct cohort from the list of cohorts
         gcl.RemoveCohort( c );
-
     }
 }
 
 void Madingley::RunCrossGridCellEcology( unsigned& dispersals ) {
     // Loop through each grid cell, and run dispersal for each.
     // In the original model a new dispersal object is made every timestep - this resets the random number generators
-    mDisperser->ResetRandoms( );
+    mDispersalSet->ResetRandoms( );
     mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & c ) {
-        mDisperser->RunCrossGridCellEcologicalProcess( c, mModelGrid, mParams, mCurrentMonth );
+        mDispersalSet->RunCrossGridCellEcologicalProcess( c, mModelGrid, mParams, mCurrentMonth );
     } );
 
     // Apply the changes from dispersal
-    mDisperser->UpdateCrossGridCellEcology( dispersals );
+    mDispersalSet->UpdateCrossGridCellEcology( dispersals );
 }
 
 void Madingley::SetUpGlobalDiagnosticsList( ) {

@@ -1,7 +1,7 @@
 #ifndef METABOLISMECTOTHERM
 #define METABOLISMECTOTHERM
 
-#include "MetabolismImplementation.h"
+#include "Metabolism.h"
 #include "UtilityFunctions.h"
 
 /** \brief A formulation of the metabolism process for Ectothermic organisms 
@@ -10,7 +10,7 @@
  Assumes that ectothermic organisms have a body temperature equal to the ambient temperature,
  therefore metabolising at that ambient temperature */
 
-class MetabolismEctotherm : public MetabolismImplementation {
+class MetabolismEctotherm : public Metabolism {
 public:
     /** \brief   Constructor for metabolism: assigns all parameter values
      * @remark Metabolism exponent and normalisation constant calculated based on Nagy et al (1999) field metabolic rates.
@@ -23,7 +23,7 @@ public:
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
     @param currentMonth The current model month */
-    void RunMetabolism( Cohort&, unsigned, unsigned );
+    void Run( Cohort&, unsigned, unsigned );
 
 private:
    /** \brief Calculate metabolic loss in grams for an individual

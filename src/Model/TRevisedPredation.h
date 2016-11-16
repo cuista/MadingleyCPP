@@ -5,7 +5,7 @@
  */
 
 /** \brief A revised version of the predation process, written November 2011 */
-class RevisedPredation : public EatingImplementation {
+class RevisedPredation : public Eating {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------

@@ -2,10 +2,10 @@
 #define MORTALITYBACKGROUND
 
 #include "UtilityFunctions.h"
-#include "MortalityImplementation.h"
+#include "Mortality.h"
 
 /** \brief A formulation of the process of background mortality, i.e. mortality from disease, accidents and other random events*/
-class MortalityBackground : public MortalityImplementation {
+class MortalityBackground : public Mortality {
 
 public:
     /** \brief Constructor for background mortality: assigns all parameter values*/

@@ -1,13 +1,14 @@
 #ifndef METABOLISMHETEROTROPH
 #define METABOLISMHETEROTROPH
 
-#include "MetabolismImplementation.h"
+#include "Metabolism.h"
 #include "UtilityFunctions.h"
 
 /** \brief A formulation of the metabolism process 
 \remarks Functional form and parameters taken from fitted relationship in Brown's (2004) Metabolic Theory of Ecology.
  Currently mass assigned to reproductive potential is not metabolised */
-class MetabolismHeterotroph : public MetabolismImplementation {
+class MetabolismHeterotroph : public Metabolism {
+    
     /** \brief Constructor for metabolism: assigns all parameter values
      \remarks Most parameters currently drawn from Brown's (2004) Metabolic Theory of Ecology
     The scalar to convert kJ to grams mass currently a very rough estimate based on the calorific values
@@ -18,7 +19,7 @@ class MetabolismHeterotroph : public MetabolismImplementation {
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step
     @param currentMonth the current month as an integer */
-    void RunMetabolism( Cohort&, unsigned, unsigned );
+    void Run( Cohort&, unsigned, unsigned );
 
 private:
     /** \brief Calculate metabolic loss in grams for an individual

@@ -1,36 +1,27 @@
 #ifndef DISPERSAL
 #define DISPERSAL
 
-#include "GridCell.h"
-#include "DispersalImplementation.h"
-#include "DispersalAdvective.h"
-#include "TResponsiveDispersal.h"
-#include "DispersalDiffusive.h"
-#include "Parameters.h"
-#include "Types.h"
+#include "Grid.h"
+#include "Cohort.h"
+#include "NonStaticSimpleRNG.h"
 
-/** \brief Performs dispersal */
+/** \brief Base Class for implementations of the ecological process of dispersal */
 class Dispersal {
 public:
     Dispersal( );
-    ~Dispersal( );
 
-    void ResetRandoms( );
+    /** \brief Run the dispersal implementation */
+    virtual void Run( Grid&, Cohort&, const unsigned& );
 
-    /** \brief Run dispersal 
-    @param cellIndex The cell index for the active cell in the model grid 
-    @param gridForDispersal The model grid to run the process for 
-    @param dispersalOnly Whether we are running dispersal only 
-    @param madingleyCohortDefinitions The functional group definitions for cohorts in the model 
-    @param madingleyStockDefinitions The functional group definitions for stocks in the model 
-    @param currentMonth The current model month */
-    void RunCrossGridCellEcologicalProcess( GridCell&, Grid&, MadingleyInitialisation&, unsigned );
+    void ResetRandom( );
 
-    void UpdateCrossGridCellEcology( unsigned& dispersalCounter );
+    void NewCell( Grid&, double&, double&, double&, double&, Cohort& );
 
-    Types::CohortVector mDispersers;
-    /** \brief The available implementations of the dispersal process */
-    Types::IDispersalMap mChoose;
+    /** \brief Include Utility class */
+    UtilityFunctions mUtilities;
+    /** \brief An instance of the simple random number generator class */
+    NonStaticSimpleRNG mRandomNumber1;
+    NonStaticSimpleRNG mRandomNumber2;
 };
 
 #endif

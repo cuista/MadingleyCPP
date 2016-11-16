@@ -13,7 +13,7 @@ DispersalDiffusive::DispersalDiffusive( ) {
     mRandomNumber1.SetSeed( seed );
 }
 
-void DispersalDiffusive::RunDispersal( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
+void DispersalDiffusive::Run( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
     // Calculate dispersal speed for the cohort         
     double dispersalSpeed = CalculateDispersalSpeed( cohortToDisperse.mIndividualBodyMass );
 
@@ -25,7 +25,7 @@ double DispersalDiffusive::CalculateDispersalSpeed( double bodyMass ) {
     return mDispersalSpeedBodyMassScalar * pow( bodyMass, mDispersalSpeedBodyMassExponent );
 }
 
-void DispersalDiffusive::DispersalDiffusive::CalculateDispersalProbability( Grid& madingleyGrid, Cohort& cohort, double dispersalSpeed ) {
+void DispersalDiffusive::CalculateDispersalProbability( Grid& madingleyGrid, Cohort& cohort, double dispersalSpeed ) {
     // Check that the u speed and v speed are not greater than the cell length. If they are, then rescale them; this limits the max velocity
     // so that cohorts cannot be advected more than one grid cell per time step
     double latCellLength = cohort.mCurrentCell->GetCellHeight( );
@@ -38,6 +38,6 @@ void DispersalDiffusive::DispersalDiffusive::CalculateDispersalProbability( Grid
     // Calculate the u and v components given the dispersal speed
     double uSpeed = dispersalSpeed * cos( randomDirection );
     double vSpeed = dispersalSpeed * sin( randomDirection );
-    newCell( madingleyGrid, uSpeed, vSpeed, lonCellLength, latCellLength, cohort );
+    NewCell( madingleyGrid, uSpeed, vSpeed, lonCellLength, latCellLength, cohort );
 }
 

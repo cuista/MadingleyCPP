@@ -1,11 +1,11 @@
 #ifndef DISPERSALDIFFUSIVE
 #define DISPERSALDIFFUSIVE
 
-#include "DispersalImplementation.h"
+#include "Dispersal.h"
 #include "UtilityFunctions.h"
 
 /** \brief A formulation of the process of dispersal */
-class DispersalDiffusive : public DispersalImplementation {
+class DispersalDiffusive : public Dispersal {
 public:
     /** \brief Constructor for dispersal: assigns all parameter values */
     DispersalDiffusive( );
@@ -17,7 +17,7 @@ public:
     @param actingCohortFunctionalGroup The functional group index of the acting cohort 
     @param actingCohortNumber The position of the cohort within the functional group in the array of grid cell cohorts 
     @param currentMonth The current model month */
-    void RunDispersal( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth );
+    void Run( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth );
 
 private:
     
@@ -33,7 +33,7 @@ private:
     void CalculateDispersalProbability( Grid&, Cohort&, double );
     
     /** \brief Include Utility class */
-    UtilityFunctions mUtilities;
+    //UtilityFunctions mUtilities;
     /** \brief The time units associated with this implementation of dispersal */
     const std::string mTimeUnitImplementation = "month";
     /** \brief Scalar relating dispersal speed to individual body mass */

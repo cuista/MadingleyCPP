@@ -2,16 +2,16 @@
 
 EcologyCohort::EcologyCohort( ) {
     // Declare and attach eating formulations
-    Eating *EatingFormulation = new Eating( Parameters::Get( )->GetTimeStepUnits( ) );
+    EatingSet *EatingFormulation = new EatingSet( Parameters::Get( )->GetTimeStepUnits( ) );
     mEatingFormulations["Basic eating"] = EatingFormulation;
     // Declare and attach metabolism formulations
-    Metabolism *MetabolismFormulation = new Metabolism( Parameters::Get( )->GetTimeStepUnits( ) );
+    MetabolismSet *MetabolismFormulation = new MetabolismSet( Parameters::Get( )->GetTimeStepUnits( ) );
     mMetabolismFormulations["Basic metabolism"] = MetabolismFormulation;
     // Declare and attach mortality formulations
-    Reproduction *ReproductionFormulation = new Reproduction( Parameters::Get( )->GetTimeStepUnits( ), Parameters::Get( )->GetDrawRandomly( ) );
+    ReproductionSet *ReproductionFormulation = new ReproductionSet( Parameters::Get( )->GetTimeStepUnits( ), Parameters::Get( )->GetDrawRandomly( ) );
     mReproductionFormulations["Basic reproduction"] = ReproductionFormulation;
     // Declare and attach mortality formulations
-    Mortality *MortalityFormulation = new Mortality( Parameters::Get( )->GetTimeStepUnits( ) );
+    MortalitySet *MortalityFormulation = new MortalitySet( Parameters::Get( )->GetTimeStepUnits( ) );
     mMortalityFormulations["Basic mortality"] = MortalityFormulation;
 }
 
@@ -28,7 +28,7 @@ EcologyCohort::~EcologyCohort( ) {
     delete mReproductionFormulations["Basic reproduction"];
 }
 
-void EcologyCohort::RunWithinCellEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadLockedParallelVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
+void EcologyCohort::RunWithinCellEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
     // RUN EATING
     if( actingCohort.mIndividualBodyMass > 0 ) {
         mEatingFormulations["Basic eating"]->RunEcologicalProcess( gcl, actingCohort, currentTimestep, partial, currentMonth, params );

@@ -1,38 +1,18 @@
 #ifndef METABOLISM
 #define METABOLISM
 
-#include "EcologicalProcessWithinGridCell.h"
-#include "MetabolismImplementation.h"
-#include "MetabolismHeterotroph.h"
-#include "MetabolismEndotherm.h"
-#include "MetabolismEctotherm.h"
-#include "ThreadLocked.h"
+#include "Cohort.h"
 
-/** \brief  Performs metabolism */
-class Metabolism : public EcologicalProcessWithinGridCell {
+/** \brief Interface for implementations of the ecological process of metabolism */
+class Metabolism {
 public:
-    /** \brief Constructor Metabolism: fills the list of available implementations of metabolism*/
-    Metabolism( std::string globalModelTimeStepUnit );
 
-    /** Destrcutor to tidy up pointers */
-    ~Metabolism( );
-
-private:
-    /** \brief Initializes an implementation of metabolism
-    @param gcl The current grid cell 
-    @param params A bunch of parameters 'n' stuff 'n' things 
-    @param implementationKey The name of the implementation of metabolism to initialize  */
-    void InitializeEcologicalProcess( GridCell&, MadingleyInitialisation&, std::string );
-
-    /** \brief Run metabolism
-    @param gcl The current grid cell 
-    @param actingCohort The acting cohort  
+    /** \brief Calculate the biomass lost through metabolism and update the relevant deltas for the acting cohort
+    @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
-    @param partial Thread-locked variables 
-    @param currentMonth The current model month
-    @param params some parameters  */
-    void RunEcologicalProcess( GridCell&, Cohort&, unsigned, ThreadLockedParallelVariables&, unsigned, MadingleyInitialisation& );
-    
-    std::map< std::string, MetabolismImplementation* > Implementations;
+    @param currentMonth The current month in the model */
+    virtual void Run( Cohort&, unsigned, unsigned ) {
+        std::cout << "If this got called you ended up in a virtual function! MetabolismImplementation RunMetabolism" << std::endl;
+    }
 };
 #endif

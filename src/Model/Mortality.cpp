@@ -1,6 +1,6 @@
-#include "Mortality.h"
+#include "MortalitySet.h"
 
-Mortality::Mortality( string globalModelTimeStepUnit ) {
+MortalitySet::MortalitySet( string globalModelTimeStepUnit ) {
     // Add the background mortality implementation to the list of implementations
     MortalityBackground* BackgroundMortalityImplementation = new MortalityBackground( globalModelTimeStepUnit );
     mImplementations[ "basic background mortality" ] = BackgroundMortalityImplementation;
@@ -15,17 +15,17 @@ Mortality::Mortality( string globalModelTimeStepUnit ) {
 
 }
 
-Mortality::~Mortality( ) {
+MortalitySet::~MortalitySet( ) {
     delete mImplementations[ "basic background mortality" ];
     delete mImplementations[ "basic senescence mortality" ];
     delete mImplementations[ "basic starvation mortality" ];
 }
 
-void Mortality::InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, string implementationKey ) {
+void MortalitySet::InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, string implementationKey ) {
 
 }
 
-void Mortality::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadLockedParallelVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
+void MortalitySet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
     // Variables to hold the mortality rates
     double MortalityRateBackground;
     double MortalityRateSenescence;

@@ -5,7 +5,7 @@
  */
 
 /** \brief A formulation of the process of starvation mortality */
-class StarvationMortality: public MortalityImplementation {
+class StarvationMortality: public Mortality {
     //----------------------------------------------------------------------------------------------
     //Variables
     //----------------------------------------------------------------------------------------------
