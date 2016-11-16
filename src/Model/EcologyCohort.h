@@ -7,7 +7,7 @@
 #include "Reproduction.h"
 #include "Mortality.h"
 #include "Metabolism.h"
-#include "ApplyEcology.h"
+#include "EcologyApply.h"
 
 /** \brief A class to specify, initalise and run ecological processes pertaining to cohorts */
 class EcologyCohort {
@@ -46,6 +46,6 @@ public:
     /** \brief A sorted list of formulations of reproduction */
     std::map< std::string, EcologicalProcessWithinGridCell* > mReproductionFormulations;
     /** \brief An instance of apply ecology */
-    ApplyEcology mApplyEcologicalProcessResults;
+    EcologyApply mApplyEcologicalProcessResults;
 };
 #endif

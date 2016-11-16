@@ -1,6 +1,8 @@
 #ifndef MORTALITYIMPLEMENTATION
 #define MORTALITYIMPLEMENTATION
 
+#include "Cohort.h"
+
 /** \brief Interface for implementations of the ecological process of mortality */
 class MortalityImplementation {
 public:
@@ -10,7 +12,7 @@ public:
     @param currentTimestep The current model time step 
     @return The number of individuals lost to a cohort through mortality */
     virtual double CalculateMortalityRate( Cohort&, double, unsigned ) {
-        std::cout << "If this got called you ended up in a virtual function! MortalityImplementation CalculateMortalityRate";
+        std::cout << "If this got called you ended up in a virtual function! MortalityImplementation CalculateMortalityRate" << std::endl;
     }
 };
 //}

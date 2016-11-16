@@ -270,13 +270,13 @@ void Madingley::Output( unsigned step ) {
                     }
                 } );
         gridCell.ApplyFunctionToAllStocks( [&]( Stock & s ) {
-            double thisStockBiomass = s.TotalBiomass / 1000.;
+            double thisStockBiomass = s.mTotalBiomass / 1000.;
             stockBiomassThisCell += thisStockBiomass; //convert from g to kg
                     totalStockBiomass += thisStockBiomass;
 
-            if( mStockLeafStrategy[ s.FunctionalGroupIndex ] == "na" ) phytoplanktonBiomassThisCell += thisStockBiomass;
-            else if( mStockLeafStrategy[ s.FunctionalGroupIndex ] == "deciduous" ) deciduousBiomassThisCell += thisStockBiomass;
-            else if( mStockLeafStrategy[ s.FunctionalGroupIndex ] == "evergreen" ) evergreenBiomassThisCell += thisStockBiomass;
+            if( mStockLeafStrategy[ s.mFunctionalGroupIndex ] == "na" ) phytoplanktonBiomassThisCell += thisStockBiomass;
+            else if( mStockLeafStrategy[ s.mFunctionalGroupIndex ] == "deciduous" ) deciduousBiomassThisCell += thisStockBiomass;
+            else if( mStockLeafStrategy[ s.mFunctionalGroupIndex ] == "evergreen" ) evergreenBiomassThisCell += thisStockBiomass;
             } );
 
         double biomassThisCell = cohortBiomassThisCell + stockBiomassThisCell + respirationThisCell + organicMatterThisCell;

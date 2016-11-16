@@ -1,12 +1,11 @@
-#ifndef APPLYECOLOGY
-#define APPLYECOLOGY
+#ifndef ECOLOGYAPPLY
+#define ECOLOGYAPPLY
 
 #include "GridCell.h"
 
 /** \brief Class for applying changes from the ecological processes to the properties of the acting cohort and to the environment */
-class ApplyEcology {
+class EcologyApply {
 public:
-
     /** \brief  Apply all updates from the ecological processes to the properties of the acting cohort and to the environment
     @param gcl The gridCell 
     @param actingCohort The acting cohort 

@@ -27,16 +27,16 @@ void AutotrophProcessor::ConvertNPPToAutotroph( GridCell& gcl, Stock& actingStoc
         //Finally convert to g/cell/month and add to the stock totalbiomass
         NPP *= mUtilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), "day" );
 
-        actingStock.TotalBiomass += NPP;
+        actingStock.mTotalBiomass += NPP;
 
         // If the biomass of the autotroph stock has been made less than zero (i.e. because of negative NPP) then reset to zero
-        if( actingStock.TotalBiomass < 0.0 )
-            actingStock.TotalBiomass = 0.0;
+        if( actingStock.mTotalBiomass < 0.0 )
+            actingStock.mTotalBiomass = 0.0;
     }// Else if neither on land or in the ocean
     else {
         Logger::Get( )->LogMessage( "This is not a marine cell!" );
         // Set the autotroph biomass to zero
-        actingStock.TotalBiomass = 0.0;
+        actingStock.mTotalBiomass = 0.0;
     }
-    assert( actingStock.TotalBiomass >= 0.0 && "stock negative" );
+    assert( actingStock.mTotalBiomass >= 0.0 && "stock negative" );
 }

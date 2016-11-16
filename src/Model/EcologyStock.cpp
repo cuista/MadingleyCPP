@@ -9,10 +9,10 @@ void EcologyStock::RunWithinCellEcology( GridCell& gcl, Stock& actingStock, unsi
         mMarineNPPtoAutotrophStock.ConvertNPPToAutotroph( gcl, actingStock );
     } else {
         // Run the dynamic plant model to update the leaf stock for this time step
-        double NPPWetMatter = mDynamicPlantModel.UpdateLeafStock( gcl, actingStock, currentTimeStep, madingleyStockDefinitions.GetTraitNames( "leaf strategy", actingStock.FunctionalGroupIndex ) == "deciduous", Parameters::Get( )->GetTimeStepUnits( ), currentMonth );
+        double NPPWetMatter = mDynamicPlantModel.UpdateLeafStock( gcl, actingStock, currentTimeStep, madingleyStockDefinitions.GetTraitNames( "leaf strategy", actingStock.mFunctionalGroupIndex ) == "deciduous", Parameters::Get( )->GetTimeStepUnits( ), currentMonth );
 
         // Apply human appropriation of NPP - note in the latest C# version this is changed to include the NPPWetMatter calculated above
         double fhanpp = mHANPP.RemoveHumanAppropriatedMatter( NPPWetMatter, gcl, Parameters::Get( )->GetHumanNPPExtraction( ), actingStock, currentTimeStep, currentMonth );
-        actingStock.TotalBiomass += NPPWetMatter * ( 1 - fhanpp );
+        actingStock.mTotalBiomass += NPPWetMatter * ( 1 - fhanpp );
     }
 }

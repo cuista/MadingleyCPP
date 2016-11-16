@@ -1,10 +1,12 @@
 #ifndef TREPRODUCTIONBASIC_H
 #define TREPRODUCTIONBASIC_H
-#include <limits>
-#include <assert.h>
 
+#include "ReproductionImplementation.h"
 #include "Cohort.h"
 #include "GridCell.h"
+
+#include <limits>
+#include <assert.h>
 /** \file TReproductionBasic.h
  * \brief the TReproductionBasic header file
  */

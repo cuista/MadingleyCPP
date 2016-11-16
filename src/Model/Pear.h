@@ -13,6 +13,7 @@ public:
     double mDistance;
 
     struct PearComparator {
+
         bool operator()( const Pear& u, const Pear& v ) {
             return (u.mDistance < v.mDistance );
         }

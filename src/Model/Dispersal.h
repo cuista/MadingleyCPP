@@ -3,9 +3,9 @@
 
 #include "GridCell.h"
 #include "DispersalImplementation.h"
-#include "TAdvectiveDispersal.h"
+#include "DispersalAdvective.h"
 #include "TResponsiveDispersal.h"
-#include "TDiffusiveDispersal.h"
+#include "DispersalDiffusive.h"
 #include "Parameters.h"
 #include "Types.h"
 

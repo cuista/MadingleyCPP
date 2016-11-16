@@ -86,12 +86,12 @@ void Cohort::ResetMassFluxes( ) {
     mMassFluxes["respiratoryCO2pool"]["metabolism"] = 0.0;
 }
 
-double Cohort::Realm( ) {
-    return mCurrentCell->Realm( );
+double Cohort::GetRealm( ) {
+    return mCurrentCell->GetRealm( );
 }
 
 void Cohort::TryLivingAt( Types::GridCellPointer destination, Location& L ) {
-    if( destination != 0 && destination->Realm( ) == Realm( ) ) {
+    if( destination != 0 && destination->GetRealm( ) == GetRealm( ) ) {
         mDestinationCell = destination;
         mDestinationLocation = L;
     }

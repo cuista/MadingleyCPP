@@ -129,7 +129,7 @@ public:
             // Loop over stocks within the functional group
             for( int i = 0; i < gcl.mStocks[FunctionalGroup].size( ); i++ ) {
                 // Get the mass from this stock that is available for eating (assumes only 10% is edible)
-                EdibleMass = gcl.mStocks[FunctionalGroup][i].TotalBiomass * 0.1;
+                EdibleMass = gcl.mStocks[FunctionalGroup][i].mTotalBiomass * 0.1;
 
                 // Calculate the potential biomass eaten from this stock by the acting cohort
                 PotentialBiomassesEaten[FunctionalGroup][i] = CalculatePotentialBiomassEatenTerrestrial( EdibleMass, BodyMassHerbivore );
@@ -173,7 +173,7 @@ public:
             for( int i = 0; i < gcl.mStocks[FunctionalGroup].size( ); i++ ) {
                 // Get the mass from this stock that is available for eating (assumes all marine autotrophic organisms are edible)
                 //EdibleMass = gridCellStocks[FunctionalGroup][i].TotalBiomass * 0.1; //MB weird line
-                EdibleMass = gcl.mStocks[FunctionalGroup][i].TotalBiomass;
+                EdibleMass = gcl.mStocks[FunctionalGroup][i].mTotalBiomass;
                 // Calculate the potential biomass eaten from this stock by the acting cohort
                 PotentialBiomassesEaten[FunctionalGroup][i] = CalculatePotentialBiomassEatenMarine( EdibleMass, BodyMassHerbivore );
 
@@ -201,13 +201,13 @@ public:
             // Loop over stocks within the functional groups
             for( int i = 0; i < gcl.mStocks[FunctionalGroup].size( ); i++ ) {
                 // Get the mass from this stock that is available for eating (assumes only 10% is edible in the terrestrial realm)
-                EdibleMass = gcl.mStocks[FunctionalGroup][i].TotalBiomass * EdibleScaling;
+                EdibleMass = gcl.mStocks[FunctionalGroup][i].mTotalBiomass * EdibleScaling;
 
                 // Calculate the biomass actually eaten from this stock by the acting cohort
                 BiomassesEaten[FunctionalGroup][i] = CalculateBiomassesEaten( PotentialBiomassesEaten[FunctionalGroup][i], mTimeUnitsToHandlePotentialFoodItems, actingCohort.mCohortAbundance, EdibleMass );
 
                 // Remove the biomass eaten from the autotroph stock
-                gcl.mStocks[FunctionalGroup][i].TotalBiomass -= BiomassesEaten[FunctionalGroup][i];
+                gcl.mStocks[FunctionalGroup][i].mTotalBiomass -= BiomassesEaten[FunctionalGroup][i];
 
 
                 // Check that the biomass eaten is not a negative value

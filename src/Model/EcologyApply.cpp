@@ -1,10 +1,10 @@
-#include "ApplyEcology.h"
+#include "EcologyApply.h"
 #include "Cohort.h"
 #include "Logger.h"
 
 #include <assert.h>
 
-void ApplyEcology::UpdateAllEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep ) {
+void EcologyApply::UpdateAllEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep ) {
     // Apply cohort abundance changes
     UpdateAbundance( gcl, actingCohort );
     // Apply cohort biomass changes
@@ -13,7 +13,7 @@ void ApplyEcology::UpdateAllEcology( GridCell& gcl, Cohort& actingCohort, unsign
     UpdatePools( gcl );
 }
 
-void ApplyEcology::UpdateAbundance( GridCell& gcl, Cohort& actingCohort ) {
+void EcologyApply::UpdateAbundance( GridCell& gcl, Cohort& actingCohort ) {
     // Variable to calculate net abundance change to check that cohort abundance will not become negative
     double NetAbundanceChange = 0.0;
     // Loop over all abundance deltas
@@ -37,7 +37,7 @@ void ApplyEcology::UpdateAbundance( GridCell& gcl, Cohort& actingCohort ) {
 
 }
 
-void ApplyEcology::UpdateBiomass( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep ) {
+void EcologyApply::UpdateBiomass( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep ) {
     // Variable to calculate net biomass change to check that cohort individual body mass will not become negative
     double NetBiomass = 0.0;
 
@@ -102,7 +102,7 @@ void ApplyEcology::UpdateBiomass( GridCell& gcl, Cohort& actingCohort, unsigned 
     //Note that maturity time step is set in TReproductionBasic
 }
 
-void ApplyEcology::UpdatePools( GridCell& gcl ) {
+void EcologyApply::UpdatePools( GridCell& gcl ) {
     // Loop over all keys in the organic pool deltas sorted list
     for( auto &D: Cohort::mMassFluxes["organicpool"] ) {
         // Check that the delta value is not negative

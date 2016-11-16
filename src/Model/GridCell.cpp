@@ -7,19 +7,16 @@ GridCell::GridCell( ) {
 void GridCell::SetCellCoords( unsigned index ) {
     // set values for this grid cell
     // Also standardise missing values
-
     mIndex = index;
     Types::DataIndicesPointer indices = Parameters::Get( )->GetDataIndicesFromCellIndex( mIndex );
-
-    //Add the latitude and longitude indices
+    // Add the latitude and longitude indices
     mLatitudeIndex = indices->GetY( );
     mLongitudeIndex = indices->GetX( );
-
     // Add the grid cell area (in km2) to the cell environment with an initial value of 0
     // Calculate the area of this grid cell
     // Add it to the cell environment- latitude value is cell lower left corner
-    //Is this really consistent with below? The C# code also has a half cell shift, but in the height and width
-    //whereas the utilities code says it wants lower left corner for both areas and lengths
+    // Is this really consistent with below? The C# code also has a half cell shift, but in the height and width
+    // whereas the utilities code says it wants lower left corner for both areas and lengths
     mCellArea = mUtilities.CalculateGridCellArea( Parameters::Get( )->GetUserLatitudeAtIndex( indices->GetY( ) ), Parameters::Get( )->GetGridCellSize( ) );
     // Calculate the lengths of widths of grid cells in each latitudinal strip
     // Assume that we are at the midpoint of each cell when calculating lengths
@@ -52,7 +49,7 @@ void GridCell::RandomizeCohorts( ) {
     }
 }
 
-double GridCell::Realm( ) {
+double GridCell::GetRealm( ) {
     return Environment::Get( "Realm", *this );
 }
 

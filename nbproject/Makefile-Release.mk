@@ -53,13 +53,15 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Input/Parameters.o \
 	${OBJECTDIR}/src/Main.o \
 	${OBJECTDIR}/src/Model/Activity.o \
-	${OBJECTDIR}/src/Model/ApplyEcology.o \
 	${OBJECTDIR}/src/Model/AutotrophProcessor.o \
 	${OBJECTDIR}/src/Model/Cohort.o \
 	${OBJECTDIR}/src/Model/CohortMerge.o \
 	${OBJECTDIR}/src/Model/Dispersal.o \
+	${OBJECTDIR}/src/Model/DispersalAdvective.o \
+	${OBJECTDIR}/src/Model/DispersalDiffusive.o \
 	${OBJECTDIR}/src/Model/DispersalImplementation.o \
 	${OBJECTDIR}/src/Model/Eating.o \
+	${OBJECTDIR}/src/Model/EcologyApply.o \
 	${OBJECTDIR}/src/Model/EcologyCohort.o \
 	${OBJECTDIR}/src/Model/EcologyStock.o \
 	${OBJECTDIR}/src/Model/Environment.o \
@@ -70,8 +72,12 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/Madingley.o \
 	${OBJECTDIR}/src/Model/MadingleyInitialisation.o \
 	${OBJECTDIR}/src/Model/Metabolism.o \
+	${OBJECTDIR}/src/Model/Mortality.o \
+	${OBJECTDIR}/src/Model/MortalityBackground.o \
 	${OBJECTDIR}/src/Model/Pear.o \
+	${OBJECTDIR}/src/Model/Reproduction.o \
 	${OBJECTDIR}/src/Model/Stock.o \
+	${OBJECTDIR}/src/Model/TerrestrialCarbon.o \
 	${OBJECTDIR}/src/Model/Time.o \
 	${OBJECTDIR}/src/Output/BasicDatum.o \
 	${OBJECTDIR}/src/Output/DataRecorder.o \
@@ -208,11 +214,6 @@ ${OBJECTDIR}/src/Model/Activity.o: src/Model/Activity.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Activity.o src/Model/Activity.cpp
 
-${OBJECTDIR}/src/Model/ApplyEcology.o: src/Model/ApplyEcology.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Model
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/ApplyEcology.o src/Model/ApplyEcology.cpp
-
 ${OBJECTDIR}/src/Model/AutotrophProcessor.o: src/Model/AutotrophProcessor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
@@ -233,6 +234,16 @@ ${OBJECTDIR}/src/Model/Dispersal.o: src/Model/Dispersal.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Dispersal.o src/Model/Dispersal.cpp
 
+${OBJECTDIR}/src/Model/DispersalAdvective.o: src/Model/DispersalAdvective.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/DispersalAdvective.o src/Model/DispersalAdvective.cpp
+
+${OBJECTDIR}/src/Model/DispersalDiffusive.o: src/Model/DispersalDiffusive.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/DispersalDiffusive.o src/Model/DispersalDiffusive.cpp
+
 ${OBJECTDIR}/src/Model/DispersalImplementation.o: src/Model/DispersalImplementation.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
@@ -242,6 +253,11 @@ ${OBJECTDIR}/src/Model/Eating.o: src/Model/Eating.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Eating.o src/Model/Eating.cpp
+
+${OBJECTDIR}/src/Model/EcologyApply.o: src/Model/EcologyApply.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/EcologyApply.o src/Model/EcologyApply.cpp
 
 ${OBJECTDIR}/src/Model/EcologyCohort.o: src/Model/EcologyCohort.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
@@ -293,15 +309,35 @@ ${OBJECTDIR}/src/Model/Metabolism.o: src/Model/Metabolism.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Metabolism.o src/Model/Metabolism.cpp
 
+${OBJECTDIR}/src/Model/Mortality.o: src/Model/Mortality.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Mortality.o src/Model/Mortality.cpp
+
+${OBJECTDIR}/src/Model/MortalityBackground.o: src/Model/MortalityBackground.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MortalityBackground.o src/Model/MortalityBackground.cpp
+
 ${OBJECTDIR}/src/Model/Pear.o: src/Model/Pear.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Pear.o src/Model/Pear.cpp
 
+${OBJECTDIR}/src/Model/Reproduction.o: src/Model/Reproduction.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Reproduction.o src/Model/Reproduction.cpp
+
 ${OBJECTDIR}/src/Model/Stock.o: src/Model/Stock.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Stock.o src/Model/Stock.cpp
+
+${OBJECTDIR}/src/Model/TerrestrialCarbon.o: src/Model/TerrestrialCarbon.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/TerrestrialCarbon.o src/Model/TerrestrialCarbon.cpp
 
 ${OBJECTDIR}/src/Model/Time.o: src/Model/Time.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model

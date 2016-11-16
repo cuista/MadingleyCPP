@@ -2,8 +2,8 @@
 
 Dispersal::Dispersal( ) {
     // Assign dispersal implementations
-    mChoose[ "advective" ] = new AdvectiveDispersal( );
-    mChoose[ "diffusive" ] = new DiffusiveDispersal( );
+    mChoose[ "advective" ] = new DispersalAdvective( );
+    mChoose[ "diffusive" ] = new DispersalDiffusive( );
     mChoose[ "responsive"] = new ResponsiveDispersal( );
 }
 

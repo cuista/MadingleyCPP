@@ -15,13 +15,14 @@ public:
     GridCell( );
 
     void SetCellCoords( unsigned );
+    
+    double GetRealm( );
+    bool IsMarine( );
+    
     void InsertCohort( Cohort& );
     void RemoveCohort( Cohort& );
     void MoveCohort( Cohort& );
-    void RandomizeCohorts( );
 
-    double Realm( );
-    bool IsMarine( );
     unsigned GetIndex( ) const;
     unsigned GetLatitudeIndex( ) const;
     unsigned GetLongitudeIndex( ) const;
@@ -77,6 +78,8 @@ public:
     Types::StocksMap mStocks;
 
 private:
+    void RandomizeCohorts( );
+
     unsigned mIndex;
     unsigned mLatitudeIndex;
     unsigned mLongitudeIndex;

@@ -2,7 +2,7 @@
 #define ECOLOGYSTOCK
 
 #include "AutotrophProcessor.h"
-#include "RevisedTerrestrialPlantModel.h"
+#include "TerrestrialCarbon.h"
 #include "HANPP.h"
 
 #include "MadingleyInitialisation.h"
@@ -23,7 +23,7 @@ public:
     /** \brief An instance of the Autotroph Processor for this model */
     AutotrophProcessor mMarineNPPtoAutotrophStock;
     /** \brief An instance of the plant model class */
-    RevisedTerrestrialPlantModel mDynamicPlantModel;
+    TerrestrialCarbon mDynamicPlantModel;
     /** \brief An instance of the class for human appropriation of NPP */
     HumanAutotrophMatterAppropriation mHANPP;
 };

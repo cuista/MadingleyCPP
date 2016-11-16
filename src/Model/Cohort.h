@@ -37,7 +37,7 @@ public:
     bool IsMarine( );
     bool IsPlanktonic( MadingleyInitialisation& );
     std::string DispersalType( MadingleyInitialisation& );
-    double Realm( );
+    double GetRealm( );
     void TryLivingAt( Types::GridCellPointer, Location& );
     void Move( );
     static void ResetMassFluxes( );

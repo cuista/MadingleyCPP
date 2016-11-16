@@ -2,7 +2,7 @@ tic
 %clear
 
 %% User Defined Parameters
-optionCurrentDataSet            = '2016-11-15_13-04-55';
+optionCurrentDataSet            = '2016-11-15_17-57-07';
 optionOutputDirectory           = '/home/philju/Dropbox/Development/MadingleyCPP/output/';
 
 optionOutputParametersFile      = 'OutputControlParameters.csv';
