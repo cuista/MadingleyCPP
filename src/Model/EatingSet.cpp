@@ -2,8 +2,8 @@
 
 EatingSet::EatingSet( std::string globalModelTimeStepUnit ) {
     // Add the revised herbivory implementation to the list of implementations
-    RevisedHerbivory *RevisedHerbivoryImplementation = new RevisedHerbivory( globalModelTimeStepUnit );
-    mImplementations["revised herbivory"] = RevisedHerbivoryImplementation;
+    EatingHerbivory *eatingHerbivory = new EatingHerbivory( globalModelTimeStepUnit );
+    mImplementations["revised herbivory"] = eatingHerbivory;
     //Add the revised predation implementation to the list of implementations
     RevisedPredation *RevisedPredationImplementation = new RevisedPredation( globalModelTimeStepUnit );
     mImplementations["revised predation"] = RevisedPredationImplementation;
@@ -46,7 +46,7 @@ void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsig
                 mImplementations[ "revised herbivory" ]->GetEatingPotentialTerrestrial( gcl, actingCohort, params );
 
             // Run herbivory to apply changes in autotroph biomass from herbivory and add biomass eaten to the delta arrays
-            mImplementations[ "revised herbivory" ]->RunEating( gcl, actingCohort, currentTimestep, params );
+            mImplementations[ "revised herbivory" ]->Run( gcl, actingCohort, currentTimestep, params );
 
             break;
 
@@ -62,7 +62,7 @@ void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsig
             else
                 mImplementations[ "revised predation" ]->GetEatingPotentialTerrestrial( gcl, actingCohort, params );
             // Run predation to apply changes in prey biomass from predation and add biomass eaten to the delta arrays
-            mImplementations[ "revised predation" ]->RunEating( gcl, actingCohort, currentTimestep, params );
+            mImplementations[ "revised predation" ]->Run( gcl, actingCohort, currentTimestep, params );
 
             break;
 
@@ -99,10 +99,10 @@ void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsig
             mImplementations[ "revised predation" ]->mTimeUnitsToHandlePotentialFoodItems = mTotalTimeToEatForOmnivores;
 
             // Run predation to update prey cohorts and delta biomasses for the acting cohort
-            mImplementations[ "revised predation" ]->RunEating( gcl, actingCohort, currentTimestep, params );
+            mImplementations[ "revised predation" ]->Run( gcl, actingCohort, currentTimestep, params );
 
             // Run herbivory to update autotroph biomass and delta biomasses for the acting cohort
-            mImplementations[ "revised herbivory" ]->RunEating( gcl, actingCohort, currentTimestep, params );
+            mImplementations[ "revised herbivory" ]->Run( gcl, actingCohort, currentTimestep, params );
 
             break;
 

@@ -436,7 +436,7 @@ public:
     @param gridCell The current grid cell 
     @param actingCohort The acting cohort 
     @param currentTimestep The current model time step */
-    void RunEating( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep,
+    void Run( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep,
             MadingleyInitialisation& params ) {
 
         Tempdouble = 0.0;

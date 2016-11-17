@@ -4,7 +4,7 @@
 #include "Eating.h"
 #include "EcologicalProcessWithinGridCell.h"
 #include "TRevisedPredation.h"
-#include "TRevisedHerbivory.h"
+#include "EatingHerbivory.h"
 
 /** \brief Performs eating */
 class EatingSet : public EcologicalProcessWithinGridCell {

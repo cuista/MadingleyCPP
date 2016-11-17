@@ -16,15 +16,11 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/TDiffusiveDispersal.h</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/CohortMerge.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/CohortMerge.h</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MadingleyModelInitialisation.h</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/ModelGrid.h</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/DispersalImplementation.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Tools/Stopwatch.h</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Main.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/DispersalImplementation.h</file>
+            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/EatingHerbivory.h</file>
+            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/EatingSet.h</file>
+            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/Eating.h</file>
+            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/EatingHerbivory.cpp</file>
+            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/EatingSet.cpp</file>
         </group>
     </open-files>
 </project-private>

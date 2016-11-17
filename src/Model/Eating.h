@@ -47,7 +47,7 @@ public:
     @param gcl The current grid cell 
     @param currentTimestep The current model time step 
     @param params the actual model settings  */
-    virtual void RunEating( GridCell&, Cohort&, unsigned, MadingleyInitialisation& ) {
+    virtual void Run( GridCell&, Cohort&, unsigned, MadingleyInitialisation& ) {
         std::cout << "Top level IEatingImplementation RunEating process called: should be virtual so this is probably not what you want!" << std::endl;
     }
 

@@ -61,6 +61,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/DispersalDiffusive.o \
 	${OBJECTDIR}/src/Model/DispersalResponsive.o \
 	${OBJECTDIR}/src/Model/DispersalSet.o \
+	${OBJECTDIR}/src/Model/EatingHerbivory.o \
 	${OBJECTDIR}/src/Model/EatingSet.o \
 	${OBJECTDIR}/src/Model/EcologyApply.o \
 	${OBJECTDIR}/src/Model/EcologyCohort.o \
@@ -258,6 +259,11 @@ ${OBJECTDIR}/src/Model/DispersalSet.o: src/Model/DispersalSet.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/DispersalSet.o src/Model/DispersalSet.cpp
+
+${OBJECTDIR}/src/Model/EatingHerbivory.o: src/Model/EatingHerbivory.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/EatingHerbivory.o src/Model/EatingHerbivory.cpp
 
 ${OBJECTDIR}/src/Model/EatingSet.o: src/Model/EatingSet.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
