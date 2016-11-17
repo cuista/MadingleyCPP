@@ -6,11 +6,11 @@ MortalitySet::MortalitySet( string globalModelTimeStepUnit ) {
     mImplementations[ "basic background mortality" ] = BackgroundMortalityImplementation;
 
     // Add the senescence mortality implementation to the list of implementations
-    SenescenceMortality* SenescenceMortalityImplementation = new SenescenceMortality( globalModelTimeStepUnit );
+    MortalitySenescence* SenescenceMortalityImplementation = new MortalitySenescence( globalModelTimeStepUnit );
     mImplementations[ "basic senescence mortality" ] = SenescenceMortalityImplementation;
 
     // Add the starvation mortality implementation to the list of implementations
-    StarvationMortality* StarvationMortalityImplementation = new StarvationMortality( globalModelTimeStepUnit );
+    MortalityStarvation* StarvationMortalityImplementation = new MortalityStarvation( globalModelTimeStepUnit );
     mImplementations[ "basic starvation mortality" ] = StarvationMortalityImplementation;
 
 }

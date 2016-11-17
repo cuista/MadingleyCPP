@@ -3,6 +3,12 @@
 EatingHerbivory::EatingHerbivory( std::string globalModelTimeStepUnit ) {
     // Calculate the scalar to convert from the time step units used by this implementation of herbivory to the global model time step units
     mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
+    mCellArea = 0;
+    mCellAreaHectares = 0;
+    mBodyMassHerbivore = 0;
+    mEdibleMass = 0;
+    mEdibleScaling = 0;
+    mInstantFractionEaten = 0;
 }
 
 EatingHerbivory::~EatingHerbivory( ) {

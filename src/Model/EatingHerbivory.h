@@ -21,27 +21,27 @@ public:
     @param params  The model parameters */
     void Run( GridCell&, Cohort&, unsigned, MadingleyInitialisation& );
 
-private:
     /** \brief Initialises herbivory implementation each time step
     @param gcl The current grid cell 
     @param params The definitions of model parameters 
     \remark This only works if: a) herbivory is initialised in every grid cell; and b) if parallelisation is done by latitudinal strips
     It is critical to run this every time step */
     void InitializeEatingPerTimeStep( GridCell&, MadingleyInitialisation& );
-    
+
     /** \brief Calculate the potential biomass that could be gained through herbivory on each grid cell autotroph stock
     @param gcl The current grid cell 
     @param actingCohort The acting cohort 
     @param params The definitions for stuff in the model */
     void GetEatingPotentialTerrestrial( GridCell&, Cohort&, MadingleyInitialisation& );
-    
+
     /** \brief Calculate the potential biomass that could be gained through herbivory on each grid cell autotroph stock
     @param gcl The current grid cell 
     @param actingCohort The acting cohort 
     @params All your base are belong to us */
     void GetEatingPotentialMarine( GridCell&, Cohort&, MadingleyInitialisation& );
-    
-    
+
+private:
+
     /** \brief Calculates the potential biomass of an autotroph stock eaten by a herbivore cohort (terrestrial)
     @param autotrophBiomass The total biomass of the autotroph stock 
     @param herbivoreIndividualMass The individual body mass of the acting (herbivore) cohort 
@@ -76,7 +76,7 @@ private:
     @param autotrophBiomass The total biomass in the autotroph stock 
     @return The biomass eaten by the herbivore cohort from the autotroph stock*/
     double CalculateBiomassesEaten( double, double, double, double );
-    
+
     /** \brief Instance of the class to perform general functions*/
     UtilityFunctions mUtilities;
     /** \brief The time unit associated with this herbivory implementation and its parameters */

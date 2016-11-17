@@ -7,7 +7,7 @@
 #include "Parameters.h"
 #include "DataLayerSet.h"
 #include "DataIndices.h"
-#include "Time.h"
+#include "TimeStep.h"
 #include "Layer2D.h"
 #include "Layer3D.h"
 
@@ -107,7 +107,7 @@ double& Environment::Get( string name, GridCell& gcl ) {
 
 void Environment::SetTemperature( ) {
     for( unsigned timeIndex = 0; timeIndex < 12; timeIndex++ ) {
-        Time::Get( )->SetMonthlyTimeStep( timeIndex );
+        TimeStep::Get( )->SetMonthly( timeIndex );
         mLayers[ "Temperature" ]->SetTime( timeIndex );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
@@ -129,7 +129,7 @@ void Environment::SetTemperature( ) {
 
 void Environment::SetUVel( ) {
     for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
-        Time::Get( )->SetMonthlyTimeStep( timeIndex );
+        TimeStep::Get( )->SetMonthly( timeIndex );
         mLayers[ "uVel" ]->SetTime( timeIndex );
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
             double d = Constants::cMissingValue;
@@ -144,7 +144,7 @@ void Environment::SetUVel( ) {
 
 void Environment::SetVVel( ) {
     for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
-        Time::Get( )->SetMonthlyTimeStep( timeIndex );
+        TimeStep::Get( )->SetMonthly( timeIndex );
         mLayers[ "vVel" ]->SetTime( timeIndex );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
@@ -160,7 +160,7 @@ void Environment::SetVVel( ) {
 
 void Environment::SetDiurnalTemperatureRange( ) {
     for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
-        Time::Get( )->SetMonthlyTimeStep( timeIndex );
+        TimeStep::Get( )->SetMonthly( timeIndex );
         mLayers[ "DiurnalTemperatureRange" ]->SetTime( timeIndex );
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
 
@@ -179,7 +179,7 @@ void Environment::SetPrecipitation( ) {
         ( *mLayers[ "TotalPrecip" ] )[cellIndex] = 0;
     }
     for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
-        Time::Get( )->SetMonthlyTimeStep( timeIndex );
+        TimeStep::Get( )->SetMonthly( timeIndex );
         mLayers[ "Precipitation" ]->SetTime( timeIndex );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
@@ -201,7 +201,7 @@ void Environment::SetPrecipitation( ) {
 
 void Environment::SetNPP( ) {
     for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
-        Time::Get( )->SetMonthlyTimeStep( timeIndex );
+        TimeStep::Get( )->SetMonthly( timeIndex );
         mLayers[ "NPP" ]->SetTime( timeIndex );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
@@ -256,7 +256,7 @@ void Environment::SetAVGSDTemp( ) {
 
             double d = Constants::cMissingValue;
 
-            Time::Get( )->SetMonthlyTimeStep( timeIndex );
+            TimeStep::Get( )->SetMonthly( timeIndex );
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "MarineTemp", cellIndex );
             } else if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
@@ -272,7 +272,7 @@ void Environment::SetAVGSDTemp( ) {
         std::vector< double > exptdev( 12 );
         for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
             double d = Constants::cMissingValue;
-            Time::Get( )->SetMonthlyTimeStep( timeIndex );
+            TimeStep::Get( )->SetMonthly( timeIndex );
 
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "MarineTemp", cellIndex );
@@ -345,7 +345,7 @@ void Environment::SetFrostandFire( ) {
         std::vector< double > FrostDays( 12 ), Temperature( 12 ), Precipitation( 12 );
         for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
 
-            Time::Get( )->SetMonthlyTimeStep( timeIndex );
+            TimeStep::Get( )->SetMonthly( timeIndex );
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
                 FrostDays[timeIndex] = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialFrost", cellIndex );
                 Precipitation[timeIndex] = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialPre", cellIndex );

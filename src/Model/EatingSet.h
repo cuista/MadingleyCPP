@@ -3,7 +3,7 @@
 
 #include "Eating.h"
 #include "EcologicalProcessWithinGridCell.h"
-#include "TRevisedPredation.h"
+#include "EatingCarnivory.h"
 #include "EatingHerbivory.h"
 
 /** \brief Performs eating */

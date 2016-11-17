@@ -38,6 +38,7 @@
         <itemPath>src/Model/DispersalResponsive.h</itemPath>
         <itemPath>src/Model/DispersalSet.h</itemPath>
         <itemPath>src/Model/Eating.h</itemPath>
+        <itemPath>src/Model/EatingCarnivory.h</itemPath>
         <itemPath>src/Model/EatingHerbivory.h</itemPath>
         <itemPath>src/Model/EatingSet.h</itemPath>
         <itemPath>src/Model/EcologicalProcessWithinGridCell.h</itemPath>
@@ -59,18 +60,17 @@
         <itemPath>src/Model/MetabolismSet.h</itemPath>
         <itemPath>src/Model/Mortality.h</itemPath>
         <itemPath>src/Model/MortalityBackground.h</itemPath>
+        <itemPath>src/Model/MortalitySenescence.h</itemPath>
         <itemPath>src/Model/MortalitySet.h</itemPath>
+        <itemPath>src/Model/MortalityStarvation.h</itemPath>
         <itemPath>src/Model/Pear.h</itemPath>
         <itemPath>src/Model/Reproduction.h</itemPath>
         <itemPath>src/Model/ReproductionBasic.h</itemPath>
         <itemPath>src/Model/ReproductionSet.h</itemPath>
         <itemPath>src/Model/Stock.h</itemPath>
-        <itemPath>src/Model/TRevisedPredation.h</itemPath>
-        <itemPath>src/Model/TSenescenceMortality.h</itemPath>
-        <itemPath>src/Model/TStarvationMortality.h</itemPath>
         <itemPath>src/Model/TerrestrialCarbon.h</itemPath>
         <itemPath>src/Model/ThreadVariables.h</itemPath>
-        <itemPath>src/Model/Time.h</itemPath>
+        <itemPath>src/Model/TimeStep.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="Output" projectFiles="true">
         <itemPath>src/Output/BasicDatum.h</itemPath>
@@ -90,6 +90,7 @@
         <itemPath>src/Tools/Stopwatch.h</itemPath>
         <itemPath>src/Tools/UtilityFunctions.h</itemPath>
       </logicalFolder>
+      <itemPath>src/Temporary.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -128,6 +129,7 @@
         <itemPath>src/Model/DispersalDiffusive.cpp</itemPath>
         <itemPath>src/Model/DispersalResponsive.cpp</itemPath>
         <itemPath>src/Model/DispersalSet.cpp</itemPath>
+        <itemPath>src/Model/EatingCarnivory.cpp</itemPath>
         <itemPath>src/Model/EatingHerbivory.cpp</itemPath>
         <itemPath>src/Model/EatingSet.cpp</itemPath>
         <itemPath>src/Model/EcologyApply.cpp</itemPath>
@@ -146,12 +148,14 @@
         <itemPath>src/Model/MetabolismSet.cpp</itemPath>
         <itemPath>src/Model/Mortality.cpp</itemPath>
         <itemPath>src/Model/MortalityBackground.cpp</itemPath>
+        <itemPath>src/Model/MortalitySenescence.cpp</itemPath>
+        <itemPath>src/Model/MortalityStarvation.cpp</itemPath>
         <itemPath>src/Model/Pear.cpp</itemPath>
         <itemPath>src/Model/ReproductionBasic.cpp</itemPath>
         <itemPath>src/Model/ReproductionSet.cpp</itemPath>
         <itemPath>src/Model/Stock.cpp</itemPath>
         <itemPath>src/Model/TerrestrialCarbon.cpp</itemPath>
-        <itemPath>src/Model/Time.cpp</itemPath>
+        <itemPath>src/Model/TimeStep.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="Output" projectFiles="true">
         <itemPath>src/Output/BasicDatum.cpp</itemPath>
@@ -343,6 +347,10 @@
       </item>
       <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/EatingCarnivory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/EatingCarnivory.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/EatingHerbivory.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/EatingHerbivory.h" ex="false" tool="3" flavor2="0">
@@ -439,7 +447,15 @@
       </item>
       <item path="src/Model/MortalityBackground.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/MortalitySenescence.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySenescence.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/MortalitySet.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityStarvation.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityStarvation.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Pear.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -459,21 +475,15 @@
       </item>
       <item path="src/Model/Stock.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/TRevisedPredation.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TSenescenceMortality.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TStarvationMortality.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/Model/TerrestrialCarbon.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/TerrestrialCarbon.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/ThreadVariables.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/Time.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/Model/TimeStep.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/Model/Time.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/TimeStep.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Output/BasicDatum.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -494,6 +504,8 @@
       <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Temporary.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.h"
             ex="false"
@@ -680,6 +692,10 @@
       </item>
       <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/EatingCarnivory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/EatingCarnivory.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/EatingHerbivory.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/EatingHerbivory.h" ex="false" tool="3" flavor2="0">
@@ -776,7 +792,15 @@
       </item>
       <item path="src/Model/MortalityBackground.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/MortalitySenescence.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySenescence.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/MortalitySet.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityStarvation.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityStarvation.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Pear.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -796,21 +820,15 @@
       </item>
       <item path="src/Model/Stock.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/TRevisedPredation.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TSenescenceMortality.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TStarvationMortality.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/Model/TerrestrialCarbon.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/TerrestrialCarbon.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/ThreadVariables.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/Time.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/Model/TimeStep.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/Model/Time.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/TimeStep.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Output/BasicDatum.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -831,6 +849,8 @@
       <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Temporary.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.h"
             ex="false"

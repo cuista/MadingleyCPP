@@ -61,6 +61,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/DispersalDiffusive.o \
 	${OBJECTDIR}/src/Model/DispersalResponsive.o \
 	${OBJECTDIR}/src/Model/DispersalSet.o \
+	${OBJECTDIR}/src/Model/EatingCarnivory.o \
 	${OBJECTDIR}/src/Model/EatingHerbivory.o \
 	${OBJECTDIR}/src/Model/EatingSet.o \
 	${OBJECTDIR}/src/Model/EcologyApply.o \
@@ -79,12 +80,14 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/MetabolismSet.o \
 	${OBJECTDIR}/src/Model/Mortality.o \
 	${OBJECTDIR}/src/Model/MortalityBackground.o \
+	${OBJECTDIR}/src/Model/MortalitySenescence.o \
+	${OBJECTDIR}/src/Model/MortalityStarvation.o \
 	${OBJECTDIR}/src/Model/Pear.o \
 	${OBJECTDIR}/src/Model/ReproductionBasic.o \
 	${OBJECTDIR}/src/Model/ReproductionSet.o \
 	${OBJECTDIR}/src/Model/Stock.o \
 	${OBJECTDIR}/src/Model/TerrestrialCarbon.o \
-	${OBJECTDIR}/src/Model/Time.o \
+	${OBJECTDIR}/src/Model/TimeStep.o \
 	${OBJECTDIR}/src/Output/BasicDatum.o \
 	${OBJECTDIR}/src/Output/DataRecorder.o \
 	${OBJECTDIR}/src/Output/FileWriter.o \
@@ -260,6 +263,11 @@ ${OBJECTDIR}/src/Model/DispersalSet.o: src/Model/DispersalSet.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/DispersalSet.o src/Model/DispersalSet.cpp
 
+${OBJECTDIR}/src/Model/EatingCarnivory.o: src/Model/EatingCarnivory.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/EatingCarnivory.o src/Model/EatingCarnivory.cpp
+
 ${OBJECTDIR}/src/Model/EatingHerbivory.o: src/Model/EatingHerbivory.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
@@ -350,6 +358,16 @@ ${OBJECTDIR}/src/Model/MortalityBackground.o: src/Model/MortalityBackground.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MortalityBackground.o src/Model/MortalityBackground.cpp
 
+${OBJECTDIR}/src/Model/MortalitySenescence.o: src/Model/MortalitySenescence.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MortalitySenescence.o src/Model/MortalitySenescence.cpp
+
+${OBJECTDIR}/src/Model/MortalityStarvation.o: src/Model/MortalityStarvation.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MortalityStarvation.o src/Model/MortalityStarvation.cpp
+
 ${OBJECTDIR}/src/Model/Pear.o: src/Model/Pear.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
@@ -375,10 +393,10 @@ ${OBJECTDIR}/src/Model/TerrestrialCarbon.o: src/Model/TerrestrialCarbon.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/TerrestrialCarbon.o src/Model/TerrestrialCarbon.cpp
 
-${OBJECTDIR}/src/Model/Time.o: src/Model/Time.cpp 
+${OBJECTDIR}/src/Model/TimeStep.o: src/Model/TimeStep.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Time.o src/Model/Time.cpp
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/TimeStep.o src/Model/TimeStep.cpp
 
 ${OBJECTDIR}/src/Output/BasicDatum.o: src/Output/BasicDatum.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Output

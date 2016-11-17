@@ -1,39 +1,39 @@
-#include "Time.h"
+#include "TimeStep.h"
 #include "Maths.h"
 
-Types::TimePointer Time::mThis = NULL;
+Types::TimeStepPointer TimeStep::mThis = NULL;
 
-Time::Time( ) {
+TimeStep::TimeStep( ) {
     mMonthlyTimeStep = 0;
     mAnnualTimeStep = 0;
 }
 
-Time::~Time( ) {
+TimeStep::~TimeStep( ) {
 
 }
 
-Types::TimePointer Time::Get( ) {
+Types::TimeStepPointer TimeStep::Get( ) {
     if( mThis == NULL ) {
-        mThis = new Time( );
+        mThis = new TimeStep( );
     }
     return mThis;
 }
 
-unsigned Time::GetTimeStep( const std::string& timeUnit ) {
+unsigned TimeStep::Get( const std::string& timeUnit ) {
     if( timeUnit == Constants::cMonthlyTimeUnitName )
         return mMonthlyTimeStep;
     else
         return mAnnualTimeStep;
 }
 
-void Time::SetMonthlyTimeStep( const unsigned& monthlyTimeStep ) {
+void TimeStep::SetMonthly( const unsigned& monthlyTimeStep ) {
     mMonthlyTimeStep = monthlyTimeStep;
 
     if( monthlyTimeStep != 0 && Maths::Get( )->Mod( mMonthlyTimeStep, 12 ) == 0 )
         mAnnualTimeStep += 1;
 }
 
-void Time::SetAnnualTimeStep( const unsigned& annualTimeStep ) {
+void TimeStep::SetAnnual( const unsigned& annualTimeStep ) {
     mAnnualTimeStep = annualTimeStep;
     mMonthlyTimeStep = mAnnualTimeStep * 12;
 }

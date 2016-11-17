@@ -2,7 +2,7 @@
 
 #include "Constants.h"
 #include "Parameters.h"
-#include "Time.h"
+#include "TimeStep.h"
 
 BasicDatum::BasicDatum( const std::string& name, const std::string& timeUnit, const std::string& dataUnit ) {
     mName = name;
@@ -38,9 +38,9 @@ float* BasicDatum::GetData( ) const {
 }
 
 void BasicDatum::SetData( const float& data ) {
-    mData[ Time::Get( )->GetTimeStep( mTimeUnit ) ] = data;
+    mData[ TimeStep::Get( )->Get( mTimeUnit ) ] = data;
 }
 
 void BasicDatum::AddData( const float& data ) {
-    mData[ Time::Get( )->GetTimeStep( mTimeUnit ) ] += data;
+    mData[ TimeStep::Get( )->Get( mTimeUnit ) ] += data;
 }

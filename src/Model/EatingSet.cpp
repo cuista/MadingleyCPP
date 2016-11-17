@@ -5,7 +5,7 @@ EatingSet::EatingSet( std::string globalModelTimeStepUnit ) {
     EatingHerbivory *eatingHerbivory = new EatingHerbivory( globalModelTimeStepUnit );
     mImplementations["revised herbivory"] = eatingHerbivory;
     //Add the revised predation implementation to the list of implementations
-    RevisedPredation *RevisedPredationImplementation = new RevisedPredation( globalModelTimeStepUnit );
+    EatingCarnivory *RevisedPredationImplementation = new EatingCarnivory( globalModelTimeStepUnit );
     mImplementations["revised predation"] = RevisedPredationImplementation;
     mTotalTimeToEatForOmnivores = 0;
 }
@@ -61,6 +61,7 @@ void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsig
                 mImplementations[ "revised predation" ]->GetEatingPotentialMarine( gcl, actingCohort, params );
             else
                 mImplementations[ "revised predation" ]->GetEatingPotentialTerrestrial( gcl, actingCohort, params );
+            
             // Run predation to apply changes in prey biomass from predation and add biomass eaten to the delta arrays
             mImplementations[ "revised predation" ]->Run( gcl, actingCohort, currentTimestep, params );
 

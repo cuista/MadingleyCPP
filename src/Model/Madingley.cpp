@@ -23,7 +23,7 @@ void Madingley::Run( ) {
     /// Run the model
     for( unsigned timeStep = 0; timeStep < Parameters::Get( )->GetLengthOfSimulationInMonths( ); timeStep += 1 ) {
 
-        Time::Get( )->SetMonthlyTimeStep( timeStep );
+        TimeStep::Get( )->SetMonthly( timeStep );
 
         Logger::Get( )->LogMessage( "Running time step " + Convertor::Get( )->ToString( timeStep + 1 ) + "..." );
 

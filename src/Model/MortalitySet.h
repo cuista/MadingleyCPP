@@ -4,8 +4,8 @@
 #include "Mortality.h"
 #include "EcologicalProcessWithinGridCell.h"
 #include "MortalityBackground.h"
-#include "TSenescenceMortality.h"
-#include "TStarvationMortality.h"
+#include "MortalitySenescence.h"
+#include "MortalityStarvation.h"
 #include "Cohort.h"
 
 #include <limits>

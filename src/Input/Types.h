@@ -35,7 +35,7 @@ class Maths;
 class Parameters;
 class Processor;
 class Stock;
-class Time;
+class TimeStep;
 class Variable;
 
 namespace Types {
@@ -62,7 +62,7 @@ namespace Types {
     typedef Maths* MathsPointer;
     typedef Parameters* ParametersPointer;
     typedef Processor* ProcessorPointer;
-    typedef Time* TimePointer;
+    typedef TimeStep* TimeStepPointer;
     typedef Variable* VariablePointer;
 
     // Containers of pointers/objects
