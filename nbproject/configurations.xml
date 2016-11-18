@@ -90,7 +90,6 @@
         <itemPath>src/Tools/Stopwatch.h</itemPath>
         <itemPath>src/Tools/UtilityFunctions.h</itemPath>
       </logicalFolder>
-      <itemPath>src/Temporary.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -146,9 +145,9 @@
         <itemPath>src/Model/MetabolismEndotherm.cpp</itemPath>
         <itemPath>src/Model/MetabolismHeterotroph.cpp</itemPath>
         <itemPath>src/Model/MetabolismSet.cpp</itemPath>
-        <itemPath>src/Model/Mortality.cpp</itemPath>
         <itemPath>src/Model/MortalityBackground.cpp</itemPath>
         <itemPath>src/Model/MortalitySenescence.cpp</itemPath>
+        <itemPath>src/Model/MortalitySet.cpp</itemPath>
         <itemPath>src/Model/MortalityStarvation.cpp</itemPath>
         <itemPath>src/Model/Pear.cpp</itemPath>
         <itemPath>src/Model/ReproductionBasic.cpp</itemPath>
@@ -439,8 +438,6 @@
       </item>
       <item path="src/Model/MetabolismSet.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/Mortality.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/MortalityBackground.cpp" ex="false" tool="1" flavor2="0">
@@ -450,6 +447,8 @@
       <item path="src/Model/MortalitySenescence.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/MortalitySenescence.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySet.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/MortalitySet.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -504,8 +503,6 @@
       <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Temporary.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.h"
             ex="false"
@@ -784,8 +781,6 @@
       </item>
       <item path="src/Model/MetabolismSet.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/Mortality.cpp" ex="false" tool="1" flavor2="0">
-      </item>
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/MortalityBackground.cpp" ex="false" tool="1" flavor2="0">
@@ -795,6 +790,8 @@
       <item path="src/Model/MortalitySenescence.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/MortalitySenescence.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySet.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/MortalitySet.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -849,8 +846,6 @@
       <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Temporary.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.h"
             ex="false"

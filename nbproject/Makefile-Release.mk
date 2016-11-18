@@ -78,9 +78,9 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/MetabolismEndotherm.o \
 	${OBJECTDIR}/src/Model/MetabolismHeterotroph.o \
 	${OBJECTDIR}/src/Model/MetabolismSet.o \
-	${OBJECTDIR}/src/Model/Mortality.o \
 	${OBJECTDIR}/src/Model/MortalityBackground.o \
 	${OBJECTDIR}/src/Model/MortalitySenescence.o \
+	${OBJECTDIR}/src/Model/MortalitySet.o \
 	${OBJECTDIR}/src/Model/MortalityStarvation.o \
 	${OBJECTDIR}/src/Model/Pear.o \
 	${OBJECTDIR}/src/Model/ReproductionBasic.o \
@@ -348,11 +348,6 @@ ${OBJECTDIR}/src/Model/MetabolismSet.o: src/Model/MetabolismSet.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MetabolismSet.o src/Model/MetabolismSet.cpp
 
-${OBJECTDIR}/src/Model/Mortality.o: src/Model/Mortality.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Model
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Mortality.o src/Model/Mortality.cpp
-
 ${OBJECTDIR}/src/Model/MortalityBackground.o: src/Model/MortalityBackground.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
@@ -362,6 +357,11 @@ ${OBJECTDIR}/src/Model/MortalitySenescence.o: src/Model/MortalitySenescence.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MortalitySenescence.o src/Model/MortalitySenescence.cpp
+
+${OBJECTDIR}/src/Model/MortalitySet.o: src/Model/MortalitySet.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MortalitySet.o src/Model/MortalitySet.cpp
 
 ${OBJECTDIR}/src/Model/MortalityStarvation.o: src/Model/MortalityStarvation.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
