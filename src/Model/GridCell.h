@@ -40,7 +40,7 @@ public:
             for( Cohort& c : mCohorts[ index ] ) {
                 f( c );
             }
-        }
+        } 
     }
 
     template <typename F>
