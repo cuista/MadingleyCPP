@@ -2,7 +2,7 @@
 #define COHORTMERGE
 
 #include "Cohort.h"
-#include "Pear.h"
+#include "CohortPair.h"
 #include "MadingleyInitialisation.h"
 #include "NonStaticSimpleRNG.h"
 #include "Parameters.h"

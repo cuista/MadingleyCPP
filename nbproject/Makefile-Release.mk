@@ -56,6 +56,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/AutotrophProcessor.o \
 	${OBJECTDIR}/src/Model/Cohort.o \
 	${OBJECTDIR}/src/Model/CohortMerger.o \
+	${OBJECTDIR}/src/Model/CohortPair.o \
 	${OBJECTDIR}/src/Model/Dispersal.o \
 	${OBJECTDIR}/src/Model/DispersalAdvective.o \
 	${OBJECTDIR}/src/Model/DispersalDiffusive.o \
@@ -82,7 +83,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Model/MortalitySenescence.o \
 	${OBJECTDIR}/src/Model/MortalitySet.o \
 	${OBJECTDIR}/src/Model/MortalityStarvation.o \
-	${OBJECTDIR}/src/Model/Pear.o \
 	${OBJECTDIR}/src/Model/ReproductionBasic.o \
 	${OBJECTDIR}/src/Model/ReproductionSet.o \
 	${OBJECTDIR}/src/Model/Stock.o \
@@ -93,6 +93,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Output/FileWriter.o \
 	${OBJECTDIR}/src/Output/GridDatum.o \
 	${OBJECTDIR}/src/Output/Logger.o \
+	${OBJECTDIR}/src/Tools/ClimateVariablesCalculator.o \
 	${OBJECTDIR}/src/Tools/Convertor.o \
 	${OBJECTDIR}/src/Tools/Date.o \
 	${OBJECTDIR}/src/Tools/Maths.o \
@@ -238,6 +239,11 @@ ${OBJECTDIR}/src/Model/CohortMerger.o: src/Model/CohortMerger.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/CohortMerger.o src/Model/CohortMerger.cpp
 
+${OBJECTDIR}/src/Model/CohortPair.o: src/Model/CohortPair.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Model
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/CohortPair.o src/Model/CohortPair.cpp
+
 ${OBJECTDIR}/src/Model/Dispersal.o: src/Model/Dispersal.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
@@ -368,11 +374,6 @@ ${OBJECTDIR}/src/Model/MortalityStarvation.o: src/Model/MortalityStarvation.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/MortalityStarvation.o src/Model/MortalityStarvation.cpp
 
-${OBJECTDIR}/src/Model/Pear.o: src/Model/Pear.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Model
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Model/Pear.o src/Model/Pear.cpp
-
 ${OBJECTDIR}/src/Model/ReproductionBasic.o: src/Model/ReproductionBasic.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Model
 	${RM} "$@.d"
@@ -422,6 +423,11 @@ ${OBJECTDIR}/src/Output/Logger.o: src/Output/Logger.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Output
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Output/Logger.o src/Output/Logger.cpp
+
+${OBJECTDIR}/src/Tools/ClimateVariablesCalculator.o: src/Tools/ClimateVariablesCalculator.cpp 
+	${MKDIR} -p ${OBJECTDIR}/src/Tools
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/ClimateVariablesCalculator.o src/Tools/ClimateVariablesCalculator.cpp
 
 ${OBJECTDIR}/src/Tools/Convertor.o: src/Tools/Convertor.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Tools

@@ -1,5 +1,5 @@
 #include "CohortMerger.h"
-#include "Pear.h"
+#include "CohortPair.h"
 
 CohortMerger::CohortMerger( ) {
     if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
@@ -27,7 +27,7 @@ double CohortMerger::CalculateDistance( Cohort& cohortA, Cohort& cohortB ) {
 int CohortMerger::MergeToReachThresholdFast( GridCell& gcl, MadingleyInitialisation& params ) {
     // Set of lists of shortest distances in each functional group
     // set is automatically sorted - multiset allows for elements with the same distance
-    multiset< Pear, Pear::PearComparator > SortedDistances;
+    multiset< CohortPair, CohortPair::PearComparator > SortedDistances;
     // How many cohorts to remove to hit the threshold
     unsigned MergeCounter = 0;
 
@@ -41,7 +41,7 @@ int CohortMerger::MergeToReachThresholdFast( GridCell& gcl, MadingleyInitialisat
                 for( int cc = 0; cc < gcl.mCohorts[ff].size( ) - 1; cc++ ) {
                     // Loop through comparison cohorts
                     for( int dd = cc + 1; dd < gcl.mCohorts[ff].size( ); dd++ ) {
-                        Pear PairwiseDistance( &gcl.mCohorts[ff][cc], &gcl.mCohorts[ff][dd], mRandomNumber.GetUniform( ) );
+                        CohortPair PairwiseDistance( &gcl.mCohorts[ff][cc], &gcl.mCohorts[ff][dd], mRandomNumber.GetUniform( ) );
                         SortedDistances.insert( PairwiseDistance );
                     }
                 }

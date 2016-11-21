@@ -1,12 +1,12 @@
-#include "Pear.h"
+#include "CohortPair.h"
 
-Pear::Pear( ) {
+CohortPair::CohortPair( ) {
     mCohortA = NULL;
     mCohortB = NULL;
     mDistance = 0;
 }
 
-Pear::Pear( Cohort* cohortA, Cohort* cohortB, double r ) {
+CohortPair::CohortPair( Cohort* cohortA, Cohort* cohortB, double r ) {
     if( r > 0.5 ) {
         mCohortA = cohortA;
         mCohortB = cohortB;
@@ -16,5 +16,3 @@ Pear::Pear( Cohort* cohortA, Cohort* cohortB, double r ) {
     }
     mDistance = CohortMerger::CalculateDistance( *mCohortA, *mCohortB );
 }
-
-

@@ -1,12 +1,12 @@
-#ifndef PEAR
-#define	PEAR
+#ifndef COHORTPAIR
+#define	COHORTPAIR
 
 #include "CohortMerger.h"
 
-class Pear { // FIX - Rename this class?
+class CohortPair {
 public:
-    Pear( );
-    Pear( Cohort*, Cohort*, double );
+    CohortPair( );
+    CohortPair( Cohort*, Cohort*, double );
 
     Cohort* mCohortA;
     Cohort* mCohortB;
@@ -14,11 +14,9 @@ public:
 
     struct PearComparator {
 
-        bool operator()( const Pear& u, const Pear& v ) {
+        bool operator()( const CohortPair& u, const CohortPair& v ) {
             return (u.mDistance < v.mDistance );
         }
     };
 };
-
 #endif
-

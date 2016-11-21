@@ -32,6 +32,7 @@
         <itemPath>src/Model/AutotrophProcessor.h</itemPath>
         <itemPath>src/Model/Cohort.h</itemPath>
         <itemPath>src/Model/CohortMerger.h</itemPath>
+        <itemPath>src/Model/CohortPair.h</itemPath>
         <itemPath>src/Model/Dispersal.h</itemPath>
         <itemPath>src/Model/DispersalAdvective.h</itemPath>
         <itemPath>src/Model/DispersalDiffusive.h</itemPath>
@@ -63,7 +64,6 @@
         <itemPath>src/Model/MortalitySenescence.h</itemPath>
         <itemPath>src/Model/MortalitySet.h</itemPath>
         <itemPath>src/Model/MortalityStarvation.h</itemPath>
-        <itemPath>src/Model/Pear.h</itemPath>
         <itemPath>src/Model/Reproduction.h</itemPath>
         <itemPath>src/Model/ReproductionBasic.h</itemPath>
         <itemPath>src/Model/ReproductionSet.h</itemPath>
@@ -123,6 +123,7 @@
         <itemPath>src/Model/AutotrophProcessor.cpp</itemPath>
         <itemPath>src/Model/Cohort.cpp</itemPath>
         <itemPath>src/Model/CohortMerger.cpp</itemPath>
+        <itemPath>src/Model/CohortPair.cpp</itemPath>
         <itemPath>src/Model/Dispersal.cpp</itemPath>
         <itemPath>src/Model/DispersalAdvective.cpp</itemPath>
         <itemPath>src/Model/DispersalDiffusive.cpp</itemPath>
@@ -149,7 +150,6 @@
         <itemPath>src/Model/MortalitySenescence.cpp</itemPath>
         <itemPath>src/Model/MortalitySet.cpp</itemPath>
         <itemPath>src/Model/MortalityStarvation.cpp</itemPath>
-        <itemPath>src/Model/Pear.cpp</itemPath>
         <itemPath>src/Model/ReproductionBasic.cpp</itemPath>
         <itemPath>src/Model/ReproductionSet.cpp</itemPath>
         <itemPath>src/Model/Stock.cpp</itemPath>
@@ -164,6 +164,7 @@
         <itemPath>src/Output/Logger.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Tools" projectFiles="true">
+        <itemPath>src/Tools/ClimateVariablesCalculator.cpp</itemPath>
         <itemPath>src/Tools/Convertor.cpp</itemPath>
         <itemPath>src/Tools/Date.cpp</itemPath>
         <itemPath>src/Tools/Maths.cpp</itemPath>
@@ -324,6 +325,10 @@
       </item>
       <item path="src/Model/CohortMerger.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/CohortPair.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/CohortPair.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/Dispersal.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Dispersal.h" ex="false" tool="3" flavor2="0">
@@ -456,10 +461,6 @@
       </item>
       <item path="src/Model/MortalityStarvation.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/Pear.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Model/Pear.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/ReproductionBasic.cpp" ex="false" tool="1" flavor2="0">
@@ -503,6 +504,11 @@
       <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/ClimateVariablesCalculator.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.h"
             ex="false"
@@ -667,6 +673,10 @@
       </item>
       <item path="src/Model/CohortMerger.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/CohortPair.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/CohortPair.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/Dispersal.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Dispersal.h" ex="false" tool="3" flavor2="0">
@@ -799,10 +809,6 @@
       </item>
       <item path="src/Model/MortalityStarvation.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/Pear.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Model/Pear.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/ReproductionBasic.cpp" ex="false" tool="1" flavor2="0">
@@ -846,6 +852,11 @@
       <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/ClimateVariablesCalculator.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.h"
             ex="false"
