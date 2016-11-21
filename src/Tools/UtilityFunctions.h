@@ -62,23 +62,24 @@ public:
      */
     vector<unsigned> NonRandomlyOrderedCohorts( unsigned cohortNumber, unsigned currentTimeStep ) {
         //A vector to hold indices of cohorts in order
-        vector<unsigned> RandomOrderCohorts( cohortNumber ),OrderedCohorts( cohortNumber );
-        for( unsigned i = 0; i < cohortNumber; i++ ) {RandomOrderCohorts[i] = i;OrderedCohorts[i]=i;}
+        vector<unsigned> RandomOrderCohorts( cohortNumber ), OrderedCohorts( cohortNumber );
+        for( unsigned i = 0; i < cohortNumber; i++ ) {
+            RandomOrderCohorts[i] = i;
+            OrderedCohorts[i] = i;
+        }
         NonStaticSimpleRNG randomizer;
-        randomizer.SetSeed(currentTimeStep);
-                    // Loop over cohorts
-            for (int ii = 0; ii < OrderedCohorts.size(); ii++)
-            {
-                // Generate a pseudo-random integer to swap this cohort index with
-                int SwapIndex = (int)(randomizer.GetUniform()* (OrderedCohorts.size()-1)+0.5);// random.Next(ii, OrderedCohorts.Length);
-                // If the cohort index to swap is not the same as the active cohort index, then swap the values
-                if (SwapIndex != ii)
-                {
-                    uint Temp = RandomOrderCohorts[ii];
-                    RandomOrderCohorts[ii] = RandomOrderCohorts[SwapIndex];
-                    RandomOrderCohorts[SwapIndex] = Temp;
-                }
+        randomizer.SetSeed( currentTimeStep );
+        // Loop over cohorts
+        for( int ii = 0; ii < OrderedCohorts.size( ); ii++ ) {
+            // Generate a pseudo-random integer to swap this cohort index with
+            int SwapIndex = ( int ) ( randomizer.GetUniform( )* ( OrderedCohorts.size( ) - 1 ) + 0.5 ); // random.Next(ii, OrderedCohorts.Length);
+            // If the cohort index to swap is not the same as the active cohort index, then swap the values
+            if( SwapIndex != ii ) {
+                uint Temp = RandomOrderCohorts[ii];
+                RandomOrderCohorts[ii] = RandomOrderCohorts[SwapIndex];
+                RandomOrderCohorts[SwapIndex] = Temp;
             }
+        }
         return RandomOrderCohorts;
     }
     //----------------------------------------------------------------------------------------------
@@ -107,10 +108,10 @@ public:
                 Month = currentTimestep % 12;
                 break;
             case 2://week
-                Month = ( unsigned )floor( currentTimestep / ( ( DaysInYear / MonthsInYear ) / DaysInWeek ) ) % 12;
+                Month = ( unsigned ) floor( currentTimestep / ( ( DaysInYear / MonthsInYear ) / DaysInWeek ) ) % 12;
                 break;
             case 3://day
-                Month = ( unsigned )floor( currentTimestep / ( DaysInYear / MonthsInYear ) ) % 12;
+                Month = ( unsigned ) floor( currentTimestep / ( DaysInYear / MonthsInYear ) ) % 12;
                 break;
             default://should the program bomb out at this point?
                 cout << "Requested model time units not currently supported" << endl;
