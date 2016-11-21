@@ -1,9 +1,20 @@
 #include "EatingCarnivory.h"
 
 EatingCarnivory::EatingCarnivory( std::string globalModelTimeStepUnit ) {
+    mTimeUnitImplementation = "Day";
+    mHandlingTimeScalarTerrestrial = 0.5;
+    mHandlingTimeExponentTerrestrial = 0.7;
+    mHandlingTimeScalarMarine = 0.5;
+    mHandlingTimeExponentMarine = 0.7;
+    mReferenceMass = 1.0;
+    mKillRateConstant = 1E-6;
+    mKillRateConstantMassExponent = 1.0;
+    mFeedingPreferenceStandardDeviation = 0.7;
+    mNumberOfBins = 12;
+    
     // Calculate the scalar to convert from the time step units used by this implementation of predation to the global model time step units
     mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
-    mReferenceMassRatio = 0;
+    
     mSpecificPredatorHandlingTimeScaling = 0;
     mSpecificPredatorKillRateConstant = 0;
     mOptimalPreyPredatorMassRatioTerrestrial = 0;
@@ -21,11 +32,18 @@ EatingCarnivory::EatingCarnivory( std::string globalModelTimeStepUnit ) {
     mBodyMassPrey = 0;
     mBodyMassPredator = 0;
     mAbundancePredator = 0;
+    mReferenceMassRatioScalingTerrestrial = 0;
     mReferenceMassRatioScalingMarine = 0;
     mPredatorAbundanceMultipliedByTimeEating = 0;
     mTemporaryValue = 0;
     mPreyMassBinNumber = 0;
     mTrackIndividualCohorts = false;
+    
+    // From base class
+    mAssimilationEfficiency = 0;
+    mProportionTimeEating = 0;
+    mTimeUnitsToHandlePotentialFoodItems = 0;
+    mTotalBiomassEatenByCohort = 0;
 }
 
 EatingCarnivory::~EatingCarnivory( ) {

@@ -1,6 +1,11 @@
 #include "MortalityStarvation.h"
 
 MortalityStarvation::MortalityStarvation( std::string globalModelTimeStepUnit ) {
+    mTimeUnitImplementation = "Day";
+    mLogisticInflectionPoint = 0.6;
+    mLogisticScalingParameter = 0.05;
+    mMaximumStarvationRate = 1;
+    
     //Calculate the scalar to convert from the time step units used by this implementation of mortality to the global model time step units
     mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
 }

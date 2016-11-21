@@ -29,13 +29,13 @@ private:
     /** \brief Include Utility class */
     UtilityFunctions mUtilities;
     /** \brief The time units associated with this implementation of dispersal */
-    const std::string mTimeUnitImplementation = "Day";
+    std::string mTimeUnitImplementation;;
     /** \brief The inflection point of the curve describing the relationship between body mass and mortality rate */
-    const double mLogisticInflectionPoint = 0.6;
+    double mLogisticInflectionPoint;
     /** \brief The steepness of the curve describing the relationship between body mass and mortality rate */
-    const double mLogisticScalingParameter = 0.05;
+    double mLogisticScalingParameter;
     /** \brief The asymptote of the curve describing the relationship between body mass and mortality rate */
-    const double mMaximumStarvationRate = 1;
+    double mMaximumStarvationRate;
     /** \brief Scalar to convert from the time step units used by this formulation of dispersal to global model time step units */
     double mDeltaT;
 };

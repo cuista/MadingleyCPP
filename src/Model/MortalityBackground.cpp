@@ -1,6 +1,8 @@
 #include "MortalityBackground.h"
 
 MortalityBackground::MortalityBackground( std::string globalModelTimeStepUnit ) {
+    mTimeUnitImplementation = "Day";
+    mMortailtyRate = 0.001;
     // Calculate the scalar to convert from the time step units used by this implementation of mortality to the global model time step units
     mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
 }

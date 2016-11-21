@@ -1,7 +1,8 @@
 #include "AutotrophProcessor.h"
 
-AutotrophProcessor::AutotrophProcessor( ): mPhytoplanktonConversionRatio( 10 ), mMsqToKmSqConversion( 1000000.0 ) {
-
+AutotrophProcessor::AutotrophProcessor( ) {
+    mPhytoplanktonConversionRatio = 10;
+    mMsqToKmSqConversion = 1000000;
 }
 
 void AutotrophProcessor::ConvertNPPToAutotroph( GridCell& gcl, Stock& actingStock ) {

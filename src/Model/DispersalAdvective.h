@@ -44,13 +44,13 @@ private:
     /** \brief Include Utility class */
     //UtilityFunctions mUtilities;
     /** \brief The time units associated with this implementation of dispersal*/
-    const std::string mTimeUnitImplementation = "month";
+    std::string mTimeUnitImplementation;
     /** \brief The horizontal diffusivity parameter (m^2/s) */
-    const double mHorizontalDiffusivity = 100;
+    double mHorizontalDiffusivity;
     /** \brief The length of the time-step for advective dispersal, in hours*/
-    const unsigned mAdvectiveModelTimeStepLengthHours = 18;
+    unsigned mAdvectiveModelTimeStepLengthHours;
     /** \brief Horizontal diffusivity in km^2/advective-dispersal-time-step*/
-    const double mHorizontalDiffusivityKmSqPerADTimeStep = mHorizontalDiffusivity / ( 1000 * 1000 ) * 60 * 60 * mAdvectiveModelTimeStepLengthHours;
+    double mHorizontalDiffusivityKmSqPerADTimeStep;
     /** \brief Time unit scalar to apply to advective dispersal*/
     double mAdvectionTimeStepsPerModelTimeStep;
     /** \brief Factor to convert velocity from m/s to km/month*/

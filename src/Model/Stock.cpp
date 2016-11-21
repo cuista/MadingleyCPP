@@ -5,6 +5,9 @@
 #include "Constants.h"
 
 Stock::Stock( FunctionalGroupDefinitions& stockDefinitions, const unsigned functionalGroup, GridCell& gridCell, bool& success ) {
+
+    mCell = NULL;
+
     mFunctionalGroupIndex = functionalGroup;
     // Get the individual body masses for organisms in each stock functional group
     mIndividualBodyMass = stockDefinitions.GetBiologicalPropertyOneFunctionalGroup( "individual mass", functionalGroup );

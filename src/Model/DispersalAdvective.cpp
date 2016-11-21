@@ -1,6 +1,12 @@
 #include "DispersalAdvective.h"
 
 DispersalAdvective::DispersalAdvective( ) {
+
+    mTimeUnitImplementation = "month";
+    mHorizontalDiffusivity = 100;
+    mAdvectiveModelTimeStepLengthHours = 18;
+    mHorizontalDiffusivityKmSqPerADTimeStep = mHorizontalDiffusivity / ( 1000 * 1000 ) * 60 * 60 * mAdvectiveModelTimeStepLengthHours;
+
     // Calculate the scalar to convert from the time step units used by this implementation of dispersal to the global model time step units
     mDeltaT = mUtilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), mTimeUnitImplementation );
 
@@ -15,7 +21,7 @@ DispersalAdvective::DispersalAdvective( ) {
     if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
         seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
     }
-    mRandomNumber1.SetSeed( seed );
+    mRandomNumberA.SetSeed( seed );
 
 }
 
@@ -54,7 +60,7 @@ void DispersalAdvective::CalculateDispersalProbability( Grid& madingleyGrid, Coh
 
     // Length in km of a cell boundary longitudinally
     double lonCellLength;
-    
+
     // Get the u speed and the v speed from the cell data
     uAdvectiveSpeed = Environment::Get( "uVel", *( c.mDestinationCell ) );
     assert( uAdvectiveSpeed > -9999 );
@@ -85,8 +91,8 @@ Types::DoubleVector DispersalAdvective::CalculateDiffusion( ) {
     // Note that this formulation drops the delta t because we set the horizontal diffusivity to be at the same temporal
     // scale as the time step
 
-    outputsUandV[ 0 ] = mRandomNumber1.GetNormal( ) * sqrt( ( 2.0 * mHorizontalDiffusivityKmSqPerADTimeStep ) );
-    outputsUandV[ 1 ] = mRandomNumber1.GetNormal( ) * sqrt( ( 2.0 * mHorizontalDiffusivityKmSqPerADTimeStep ) );
+    outputsUandV[ 0 ] = mRandomNumberA.GetNormal( ) * sqrt( ( 2.0 * mHorizontalDiffusivityKmSqPerADTimeStep ) );
+    outputsUandV[ 1 ] = mRandomNumberA.GetNormal( ) * sqrt( ( 2.0 * mHorizontalDiffusivityKmSqPerADTimeStep ) );
 
     return outputsUandV;
 }

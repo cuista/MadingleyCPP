@@ -53,16 +53,16 @@ private:
     MadingleyInitialisation mParams;
     /** \brief An instance of the merging class */
     CohortMerger mCohortMerger;
+    /** \brief Instance of the class to perform general functions */
+    UtilityFunctions mUtilities;
+    /** \brief An instance of StopWatch to time individual time steps */
+    Stopwatch mEcologyTimer;
+    Stopwatch mDispersalTimer;
+    Stopwatch mOutputTimer;
+    Stopwatch mMergeTimer;
     Types::DispersalSetPointer mDispersalSet; //FIX - Does this need to be a pointer?
     /** \brief A list of global diagnostics for this model run */
     Types::DoubleMap mGlobalDiagnosticVariables;
-    /** \brief An instance of StopWatch to time individual time steps */
-    StopWatch mEcologyTimer;
-    StopWatch mDispersalTimer;
-    StopWatch mOutputTimer;
-    StopWatch mMergeTimer;
-    /** \brief Instance of the class to perform general functions */
-    UtilityFunctions mUtilities;
     Types::StringVector mStockLeafStrategy;
     Types::StringVector mCohortNutritionSource;
     Types::StringVector mCohortThermoregulation;

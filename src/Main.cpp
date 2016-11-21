@@ -32,7 +32,7 @@ int main( ) {
         Madingley madingleyModel;
 
         // Declare and start a timer
-        StopWatch s;
+        Stopwatch s;
         s.Start( );
 
         // Run the simulation

@@ -1,6 +1,10 @@
 #include "DispersalDiffusive.h"
 
 DispersalDiffusive::DispersalDiffusive( ) {
+    
+    mTimeUnitImplementation = "month";
+    mDispersalSpeedBodyMassScalar = 0.0278;
+    mDispersalSpeedBodyMassExponent = 0.48;
 
     // Calculate the scalar to convert from the time step units used by this implementation of dispersal to the global model time step units
     mDeltaT = mUtilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), mTimeUnitImplementation );
@@ -10,7 +14,7 @@ DispersalDiffusive::DispersalDiffusive( ) {
     if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
         seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
     }
-    mRandomNumber1.SetSeed( seed );
+    mRandomNumberA.SetSeed( seed );
 }
 
 void DispersalDiffusive::Run( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
@@ -32,7 +36,7 @@ void DispersalDiffusive::CalculateDispersalProbability( Grid& madingleyGrid, Coh
     double lonCellLength = cohort.mCurrentCell->GetCellWidth( );
 
     // Pick a direction at random
-    double randomDirection = mRandomNumber1.GetUniform( )* 2 * acos( -1. );
+    double randomDirection = mRandomNumberA.GetUniform( )* 2 * acos( -1. );
 
 
     // Calculate the u and v components given the dispersal speed

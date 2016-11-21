@@ -171,6 +171,8 @@
         <itemPath>src/Tools/Maths.cpp</itemPath>
         <itemPath>src/Tools/NonStaticSimpleRNG.cpp</itemPath>
         <itemPath>src/Tools/Processor.cpp</itemPath>
+        <itemPath>src/Tools/Stopwatch.cpp</itemPath>
+        <itemPath>src/Tools/UtilityFunctions.cpp</itemPath>
       </logicalFolder>
       <itemPath>src/Main.cpp</itemPath>
     </logicalFolder>
@@ -541,7 +543,11 @@
       </item>
       <item path="src/Tools/Processor.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Tools/Stopwatch.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Tools/Stopwatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/UtilityFunctions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/UtilityFunctions.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -893,7 +899,11 @@
       </item>
       <item path="src/Tools/Processor.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Tools/Stopwatch.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Tools/Stopwatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/UtilityFunctions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/UtilityFunctions.h" ex="false" tool="3" flavor2="0">
       </item>

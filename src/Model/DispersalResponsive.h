@@ -35,16 +35,16 @@ private:
     void CalculateDispersalProbability( Grid&, Cohort&, double );
 
     /** \brief The time units associated with this implementation of dispersal */
-    const std::string mTimeUnitImplementation = "month";
+    std::string mTimeUnitImplementation;
     /** \brief Density threshold below which adult individuals may move to look for other adults of the same cohort
     \remarks The density scales with cohort weight via: Min Density = DensityThresholdScaling / MatureMass (g) */
-    const double mDensityThresholdScaling = 50000;
+    double mDensityThresholdScaling;
     /** \brief Scalar relating dispersal speed to individual body mass */
-    const double mDispersalSpeedBodyMassScalar = 0.0278;
+    double mDispersalSpeedBodyMassScalar;
     /** \brief Body-mass exponent of the relationship between disperal speed and individual body mass */
-    const double mDispersalSpeedBodyMassExponent = 0.48;
+    double mDispersalSpeedBodyMassExponent;
     /** \brief The proportion of body mass loss at which the cohort will try to disperse every time during a time step */
-    const double mStarvationDispersalBodyMassThreshold = 0.8;
+    double mStarvationDispersalBodyMassThreshold;
     /** \brief Scalar to convert from the time step units used by this formulation of dispersal to global model time step units */
     double mDeltaT;
 };

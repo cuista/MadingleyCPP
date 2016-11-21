@@ -36,7 +36,7 @@ public:
     void UpdateEcology( GridCell&, Cohort&, unsigned );
 
     /** \brief  A vector of stopwatch objects for timing the ecological processes*/
-    std::vector< StopWatch > mStopWatches;
+    std::vector< Stopwatch > mStopWatches;
     /** \brief A sorted list of formulations of metabolism */
     std::map< std::string, EcologicalProcessWithinGridCell* > mMetabolismFormulations;
     /** \brief A sorted list of formulations of eating */

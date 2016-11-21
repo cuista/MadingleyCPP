@@ -1,5 +1,9 @@
 #include "MassBinsHandler.h"
 
+MassBinsHandler::MassBinsHandler( ) {
+    mNumMassBins = 50;
+}
+
 void MassBinsHandler::SetUpMassBins( std::string massBinsFile ) {
 
     massBinsFile = Constants::cConfigurationDirectory + massBinsFile;

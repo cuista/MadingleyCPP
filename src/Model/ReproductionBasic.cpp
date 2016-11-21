@@ -1,6 +1,13 @@
 #include "ReproductionBasic.h"
 
 ReproductionBasic::ReproductionBasic( std::string globalModelTimeStepUnit, bool drawRandomly ) {
+
+    mTimeUnitImplementation = "month";
+    mMassRatioThreshold = 1.5;
+    mMassEvolutionProbabilityThreshold = 0.95;
+    mMassEvolutionStandardDeviation = 0.05;
+    mSemelparityAdultMassAllocation = 0.5;
+
     // Calculate the scalar to convert from the time step units used by this implementation of dispersal to the global model time step units
     mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
 
@@ -151,7 +158,7 @@ std::vector< double > ReproductionBasic::GetOffspringCohortProperties( Cohort& a
         std::normal_distribution< double > randomNumberA( actingCohort.mAdultMass, mMassEvolutionStandardDeviation * actingCohort.mAdultMass );
         double RandomValueA = randomNumberA( mRandomNumber );
         cohortJuvenileAdultMasses[ 1 ] = min( RandomValueA, cohortDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Maximum mass", actingCohort.mFunctionalGroupIndex ) );
-    
+
     } else { // If not, it just gets the same values as the parent cohort
         // Assign masses to the offspring cohort that are equal to those of the parent cohort
         cohortJuvenileAdultMasses[ 0 ] = actingCohort.mJuvenileMass;

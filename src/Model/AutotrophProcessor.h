@@ -19,8 +19,8 @@ public:
     UtilityFunctions mUtilities;
     /** \brief Factor to convert phytoplankton biomass from grams carbon to grams wet weight
     @remark Currently derived from Ho et al. (2003) J. Phycol., Dalsgaard and Pauly (1997) and Strickland (1966)*/
-    const double mPhytoplanktonConversionRatio;
+    double mPhytoplanktonConversionRatio;
     /** \brief Factor to convert NPP from units per m^2 to units per km^2 */
-    const double mMsqToKmSqConversion;
+    double mMsqToKmSqConversion;
 };
 #endif

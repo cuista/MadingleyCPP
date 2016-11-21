@@ -36,7 +36,7 @@ public:
 
 private:
     // Variable to make sure that not more than one grid is instantiated
-    unsigned mNumGrids = 0;
+    unsigned mNumGrids;
     /** \brief Array of grid cells */
     Types::GridCellMap mCells;
 };

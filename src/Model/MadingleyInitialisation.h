@@ -43,7 +43,7 @@ private:
     MassBinsHandler mModelMassBins;
     /** Instance of Utilities for timestep conversions */
     UtilityFunctions mUtilities;
-    StopWatch mInitializationTimer;
+    Stopwatch mInitializationTimer;
     NonStaticSimpleRNG mRandomNumber;
     /** \brief Information from the initialization file  */
     Types::StringMap mInitialisationFileStrings;

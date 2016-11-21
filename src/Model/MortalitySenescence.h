@@ -20,9 +20,9 @@ private:
     /** \brief Include Utility class */
     UtilityFunctions mUtilities;
     /** \brief The time units associated with this implementation of dispersal*/
-    const std::string mTimeUnitImplementation = "Day";
+    std::string mTimeUnitImplementation;
     /** \brief Cohort senescence mortality rate scalar: the rate of individuals dying in a time step when they reach maturity */
-    const double mMortalityRate = 0.003;
+    double mMortalityRate;
     /** \brief Scalar to convert from the time step units used by this formulation of dispersal to global model time step units */
     double mDeltaT;
 };

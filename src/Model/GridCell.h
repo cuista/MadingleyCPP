@@ -80,13 +80,12 @@ public:
 private:
     void RandomizeCohorts( );
 
+    UtilityFunctions mUtilities;
     unsigned mIndex;
     unsigned mLatitudeIndex;
     unsigned mLongitudeIndex;
     double mCellArea;
     double mCellHeightKm;
     double mCellWidthKm;
-
-    UtilityFunctions mUtilities;
 };
 #endif

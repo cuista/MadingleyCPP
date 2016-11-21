@@ -1,6 +1,12 @@
 #include "DispersalResponsive.h"
 
 DispersalResponsive::DispersalResponsive( ) {
+    mTimeUnitImplementation = "month";
+    mDensityThresholdScaling = 50000;
+    mDispersalSpeedBodyMassScalar = 0.0278;
+    mDispersalSpeedBodyMassExponent = 0.48;
+    mStarvationDispersalBodyMassThreshold = 0.8;
+
     // Calculate the scalar to convert from the time step units used by this implementation of dispersal to the global model time step units
     mDeltaT = mUtilities.ConvertTimeUnits( Parameters::Get( )->GetTimeStepUnits( ), mTimeUnitImplementation );
 
@@ -9,7 +15,7 @@ DispersalResponsive::DispersalResponsive( ) {
     if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
         seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
     }
-    mRandomNumber1.SetSeed( seed );
+    mRandomNumberA.SetSeed( seed );
 }
 
 void DispersalResponsive::Run( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
@@ -56,7 +62,7 @@ bool DispersalResponsive::CheckStarvationDispersal( Grid& gridForDispersal, Coho
             // Cohort tries to disperse with a particular probability
             // Draw a random number
             //std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
-            double randomValue = mRandomNumber1.GetUniform( );
+            double randomValue = mRandomNumberA.GetUniform( );
             if( ( ( 1.0 - proportionalPresentMass ) / ( 1.0 - mStarvationDispersalBodyMassThreshold ) ) > randomValue ) {
 
                 CalculateDispersalProbability( gridForDispersal, cohortToDisperse, CalculateDispersalSpeed( adultMass ) );
@@ -95,7 +101,7 @@ void DispersalResponsive::CalculateDispersalProbability( Grid& madingleyGrid, Co
 
     // Pick a direction at random
     //std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 ); // FIX - Real distribution?
-    double randomDirection = mRandomNumber1.GetUniform( ) * 2 * acos( -1. );
+    double randomDirection = mRandomNumberA.GetUniform( ) * 2 * acos( -1. );
 
     // Calculate the u and v components given the dispersal speed
     double uSpeed = dispersalSpeed * cos( randomDirection );

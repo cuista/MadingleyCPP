@@ -47,9 +47,9 @@ private:
     double mEnergyScalar;
     /** \brief Scalar value for endotherm body temperature*/
     double mEndothermBodyTemperature;
-    /** \brief Scalar to convert from the time units used by this metabolism implementation to the global model time step units */
-    double mDeltaT;
     /** \brief Constant to convert temperature in degrees Celsius to temperature in Kelvin */
     double mTemperatureUnitsConvert;
+    /** \brief Scalar to convert from the time units used by this metabolism implementation to the global model time step units */
+    double mDeltaT;
 };
 #endif

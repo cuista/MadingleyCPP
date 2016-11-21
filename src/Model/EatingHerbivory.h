@@ -80,25 +80,25 @@ private:
     /** \brief Instance of the class to perform general functions*/
     UtilityFunctions mUtilities;
     /** \brief The time unit associated with this herbivory implementation and its parameters */
-    const std::string mTimeUnitImplementation = "Day";
+    std::string mTimeUnitImplementation;
     /** \brief The scalar of the relationship between handling time and the function of herbivore mass for the terrestrial realm */
-    const double mHandlingTimeScalarTerrestrial = 0.7;
+    double mHandlingTimeScalarTerrestrial;
     /** \brief The scalar of the relationship between handling time and the function of herbivore mass for the marine realm */
-    const double mHandlingTimeScalarMarine = 0.7;
+    double mHandlingTimeScalarMarine;
     /** \brief The exponent applied to herbivore mass in the handling time relationship for the terrestrial realm */
-    const double mHandlingTimeExponentTerrestrial = 0.7;
+    double mHandlingTimeExponentTerrestrial;
     /** \brief The exponent applied to herbivore mass in the handling time relationship for the marine realm */
-    const double mHandlingTimeExponentMarine = 0.7;
+    double mHandlingTimeExponentMarine;
     /** \brief Reference mass of plant matter for calculating handling times */
-    const double mReferenceMass = 1.0;
+    double mReferenceMass;
     /** \brief The maximum herbivory rate for a herbivore of 1 g */
-    const double mHerbivoryRateConstant = 1.0E-11;
+    double mHerbivoryRateConstant;
     /** \brief The exponent to apply to body mass in the relationship between body mass and herbivory rate */
-    const double mHerbivoryRateMassExponent = 1.0;
+    double mHerbivoryRateMassExponent;
     /** \brief The exponent applied to prey density when calculating attack rates for organisms in the terrestrial realm */
-    const double mAttackRateExponentTerrestrial = 2.0;
+    double mAttackRateExponentTerrestrial;
     /** \brief The exponent applied to prey density when calculating attack rates for organisms in the marine realm */
-    const double mAttackRateExponentMarine = 2.0;
+    double mAttackRateExponentMarine;
     /** \brief Jagged array mirroring the grid cell stocks to store the biomasses eaten in herbivory*/
     std::vector< std::vector< double > > mBiomassesEaten;
     /** \brief Jagged array mirroring the grid cell stocks to store the potential biomasses eaten (given the rate of encounter) in herbivory*/
@@ -117,7 +117,6 @@ private:
     double mEdibleScaling;
     /** \brief Variable to hold the instantaneous fraction of the autotroph stock biomass that is eaten*/
     double mInstantFractionEaten;
-
 };
 
 #endif

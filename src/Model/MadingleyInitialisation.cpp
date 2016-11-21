@@ -1,7 +1,8 @@
 #include "MadingleyInitialisation.h"
 
 MadingleyInitialisation::MadingleyInitialisation( ) {
-    ;
+    mOutputPath = "";
+    mNextCohortID = 0;
 }
 
 MadingleyInitialisation::MadingleyInitialisation( long long& nextCohortID, double& numberOfCohorts, double& numberOfStocks, Grid& modelGrid ) {

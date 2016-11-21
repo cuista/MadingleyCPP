@@ -32,14 +32,12 @@ private:
     @param dispersalSpeed The average speed at which individuals in this cohort move around their environment, in km per month */
     void CalculateDispersalProbability( Grid&, Cohort&, double );
     
-    /** \brief Include Utility class */
-    //UtilityFunctions mUtilities;
     /** \brief The time units associated with this implementation of dispersal */
-    const std::string mTimeUnitImplementation = "month";
+    std::string mTimeUnitImplementation;
     /** \brief Scalar relating dispersal speed to individual body mass */
-    const double mDispersalSpeedBodyMassScalar = 0.0278;
+    double mDispersalSpeedBodyMassScalar;
     /** \brief Body-mass exponent of the relationship between disperal speed and individual body mass */
-    const double mDispersalSpeedBodyMassExponent = 0.48;
+    double mDispersalSpeedBodyMassExponent;
     /** \brief Scalar to convert from the time step units used by this formulation of dispersal to global model time step units */
     double mDeltaT;
 };

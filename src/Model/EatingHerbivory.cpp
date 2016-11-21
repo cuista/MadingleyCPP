@@ -1,14 +1,31 @@
 #include "EatingHerbivory.h"
 
 EatingHerbivory::EatingHerbivory( std::string globalModelTimeStepUnit ) {
+    mTimeUnitImplementation = "Day";
+    mHandlingTimeScalarTerrestrial = 0.7;
+    mHandlingTimeScalarMarine = 0.7;
+    mHandlingTimeExponentTerrestrial = 0.7;
+    mHandlingTimeExponentMarine = 0.7;
+    mReferenceMass = 1.0;
+    mHerbivoryRateConstant = 1.0E-11;
+    mHerbivoryRateMassExponent = 1.0;
+    mAttackRateExponentTerrestrial = 2.0;
+    mAttackRateExponentMarine = 2.0;
     // Calculate the scalar to convert from the time step units used by this implementation of herbivory to the global model time step units
     mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
+
     mCellArea = 0;
     mCellAreaHectares = 0;
     mBodyMassHerbivore = 0;
     mEdibleMass = 0;
     mEdibleScaling = 0;
     mInstantFractionEaten = 0;
+
+    // From base class
+    mAssimilationEfficiency = 0;
+    mProportionTimeEating = 0;
+    mTimeUnitsToHandlePotentialFoodItems = 0;
+    mTotalBiomassEatenByCohort = 0;
 }
 
 EatingHerbivory::~EatingHerbivory( ) {
@@ -114,7 +131,7 @@ void EatingHerbivory::Run( GridCell& gcl, Cohort& actingCohort, unsigned current
 
             // Remove the biomass eaten from the autotroph stock
             gcl.mStocks[FunctionalGroup][i].mTotalBiomass -= mBiomassesEaten[FunctionalGroup][i];
-            
+
             // Check that the biomass eaten is not a negative value
             if( mBiomassesEaten[FunctionalGroup][i] < 0 ) {
                 std::cout << "Herbivory negative for this herbivore cohort " << actingCohort.mFunctionalGroupIndex << " " << actingCohort.mID << endl;

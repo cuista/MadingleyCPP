@@ -20,8 +20,8 @@ public:
     /** \brief Include Utility class */
     UtilityFunctions mUtilities;
     /** \brief An instance of the simple random number generator class */
-    NonStaticSimpleRNG mRandomNumber1;
-    NonStaticSimpleRNG mRandomNumber2;
+    NonStaticSimpleRNG mRandomNumberA;
+    NonStaticSimpleRNG mRandomNumberB;
 };
 
 #endif

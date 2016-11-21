@@ -104,26 +104,46 @@ public:
     double CalculateVisibility( double );
 
 private:
+    /** \brief Instance of the class to perform general functions */
+    UtilityFunctions mUtilities;
+    /** \brief Jagged array mirroring the grid cell cohorts to store the potential abundance gained (given the number of encounters) from predation on each cohort */
+    std::vector< std::vector < double> > mPotentialAbundanceEaten;
+    /** \brief Jagged array mirroring the grid cell cohorts to store the abundance gained from predation on each cohort */
+    std::vector< std::vector < double> > mAbundancesEaten;
+    /** \brief The matrix to hold the abundance of prey items in each functional group and weight bin */
+    std::vector< vector<double> > mBinnedPreyDensities;
+    /** \brief Number of cohorts in each functional group that were present in the grid cell before this time step's new cohorts were created*/
+    std::vector<int> mNumberCohortsPerFunctionalGroupNoNewCohorts;
+    /** \brief Identifies which functional groups are carnivores */
+    std::vector<bool> mCarnivoreFunctionalGroups;
+    /** \brief Identifies which functional groups are carnivores */
+    std::vector<bool> mOmnivoreFunctionalGroups;
+    /** \brief Identifies which functional groups are carnivores */
+    std::vector<bool> mPlanktonFunctionalGroups;
+
     /** \brief The time unit associated with this particular implementation of predation and its parameters */
-    const std::string mTimeUnitImplementation = "Day";
-    /** \brief The assimilation efficiency of eaten prey mass into predator body mass*/
-    //double AssimilationEfficiency;    
+    std::string mTimeUnitImplementation;
     /** \brief The scalar of the relationship between handling time and the function of predator and prey masses for terrestrial animals*/
-    double mHandlingTimeScalarTerrestrial = 0.5;
+    double mHandlingTimeScalarTerrestrial;
     /** \brief The exponent applied to predator mass in the handling time relationship for terrestrial animals*/
-    double mHandlingTimeExponentTerrestrial = 0.7;
+    double mHandlingTimeExponentTerrestrial;
     /** \brief The scalar of the relationship between handling time and the function of predator and prey masses for terrestrial animals*/
-    const double mHandlingTimeScalarMarine = 0.5;
+    double mHandlingTimeScalarMarine;
     /** \brief The exponent applied to predator mass in the handling time relationship for terrestrial animals*/
-    const double mHandlingTimeExponentMarine = 0.7;
+    double mHandlingTimeExponentMarine;
     /** \brief The reference mass property */
-    const double mReferenceMass = 1.0;
-    /** \brief What's this? */
-    double mReferenceMassRatio;
+    double mReferenceMass;
+    /** \brief The maximum kill rate for a predator of 1 g on prey of an optimal size*/
+    double mKillRateConstant;
+    /** \brief The exponent on body mass in the relationship between body mass and attack rate*/
+    double mKillRateConstantMassExponent;
+    /** \brief The standard deviation in attack rates around the optimal prey to predator mass ratio*/
+    double mFeedingPreferenceStandardDeviation;
+    /** \brief The number of bins in which to combine prey cohorts. THIS SHOULD ALWAYS BE AN EVEN VALUE */
+    int mNumberOfBins;
+    
     /** \brief Pre-calculate the specific predator handling time scaling to prevent having to do it for every prey cohort*/
     double mSpecificPredatorHandlingTimeScaling;
-    /** \brief The maximum kill rate for a predator of 1 g on prey of an optimal size*/
-    const double mKillRateConstant = 1E-6;
     /** \brief Pre-calculate the maximum kill rate for a specific predator of 1 g on prey of an optimal size*/
     double mSpecificPredatorKillRateConstant;
     /** \brief The optimal ratio of prey to predator body masses for terrestrial animals*/
@@ -134,35 +154,12 @@ private:
     double mRelativeFeedingPreference;
     /** \brief Pre-calculate the proportion of time spent eating (in appropriate time units for this class) for a specific predator*/
     double mSpecificPredatorTimeUnitsEatingPerGlobalTimeStep;
-    /** \brief The standard deviation in attack rates around the optimal prey to predator mass ratio*/
-    const double mFeedingPreferenceStandardDeviation = 0.7;
     /** \brief Prey density per hectare; */
     double mPreyDensityPerHectare;
     /** \brief Killing rate of an individual predator per unit prey density per hectare per time unit */
     double mAlphaIJ;
-    /** \brief Variable to hold the instantaneous fraction of the prey cohort that is eaten */
-    //double InstantFractionKilled;
-    /** \brief Fraction of of the prey cohort remaining given the proportion of time that the predator cohort spends eating */
-    //double FractionRemaining;
-    /** \brief The exponent on body mass in the relationship between body mass and attack rate*/
-    const double mKillRateConstantMassExponent = 1.0;
     /** \brief Scalar to convert from the time step units used by this predation implementation to global model time step units */
     double mDeltaT;
-    /** \brief The proportion of time that a predator cohort spends eating */
-    //double ProportionOfTimeEating; //MB should it be ProportionTimeEating, as in the base class? I have assumed so...
-    /** \brief Jagged array mirroring the grid cell cohorts to store the abundance gained from predation on each cohort */
-    std::vector< std::vector < double> > mAbundancesEaten;
-    /** \brief Jagged array mirroring the grid cell cohorts to store the potential abundance gained (given the number of encounters) from predation on each cohort */
-    std::vector< std::vector < double> > mPotentialAbundanceEaten;
-    /** \brief List of cohort functional group indices to be eaten in predation */
-    //        vector<int> FunctionalGroupIndicesToEat; //defined in base class
-    /** \brief The total biomass eaten by the acting cohort  */
-    //double TotalBiomassEatenByCohort; defined in base class
-    /** \brief Cumulative number of time units to handle all of the potential kills from all cohorts */
-    //double TimeUnitsToHandlePotentialFoodItems; defined in base class
-    /** \brief The area (in square km) of the grid cell
-     Cell area for the cell within which this predation object is instantiated. Extracted once to speed up calculations.
-     */
     double mCellArea;
     /** \brief The area of the current grid cell in hectares */
     double mCellAreaHectares;
@@ -183,30 +180,12 @@ private:
     double mReferenceMassRatioScalingTerrestrial;
     double mReferenceMassRatioScalingMarine;
     double mPredatorAbundanceMultipliedByTimeEating;
-    /** \brief Identifies which functional groups are carnivores */
-    std::vector<bool> mCarnivoreFunctionalGroups;
-    /** \brief Identifies which functional groups are carnivores */
-    std::vector<bool> mOmnivoreFunctionalGroups;
-    /** \brief Identifies which functional groups are carnivores */
-    std::vector<bool> mPlanktonFunctionalGroups;
-    /** \brief A boolean which monitors whether or not to track individual cohorts*/
-    bool mTrackIndividualCohorts;
-    /** \brief Number of cohorts in each functional group that were present in the grid cell before this time step's new cohorts were created*/
-    std::vector<int> mNumberCohortsPerFunctionalGroupNoNewCohorts;
-    /** The matrix to hold the abundance of prey items in each functional group and weight bin */
-    std::vector< vector<double> > mBinnedPreyDensities;
-    //
-    //        // The number of bins in which to combine prey cohorts
-    //        // THIS SHOULD ALWAYS BE AN EVEN VALUE
-    int mNumberOfBins = 12;
-    /** The mass bin number of an individual prey cohort */
-    int mPreyMassBinNumber;
     /** Temporary value to hold calculations */
     double mTemporaryValue;
-    /** \brief Instance of the class to perform general functions */
-    UtilityFunctions mUtilities;
-    /** \brief An instance of the simple random number generator class */
-    //std::mt19937_64 mRandomNumberGenerator;
+    /** The mass bin number of an individual prey cohort */
+    int mPreyMassBinNumber;
+    /** \brief A boolean which monitors whether or not to track individual cohorts*/
+    bool mTrackIndividualCohorts;
 };
 
 #endif

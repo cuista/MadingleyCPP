@@ -1,7 +1,7 @@
 #include "Grid.h"
 
 Grid::Grid( ) {
-    ;
+    mNumGrids = 0;
 }
 
 void Grid::SetUpGrid( ) {

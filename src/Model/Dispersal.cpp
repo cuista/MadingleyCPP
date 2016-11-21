@@ -14,9 +14,9 @@ void Dispersal::ResetRandom( ) {
     if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
         seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
     }
-    mRandomNumber1.Reset( );
-    mRandomNumber1.SetSeed( seed );
-    mRandomNumber2.Reset( );
+    mRandomNumberA.Reset( );
+    mRandomNumberA.SetSeed( seed );
+    mRandomNumberB.Reset( );
 }
 
 void Dispersal::NewCell( Grid& madingleyGrid, double& uSpeed, double& vSpeed, double & LonCellLength, double & LatCellLength, Cohort& c ) {
@@ -46,7 +46,7 @@ void Dispersal::NewCell( Grid& madingleyGrid, double& uSpeed, double& vSpeed, do
     // to determine the direction in which the cohort moves probabilistically
     //std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 );
     //double RandomValue = randomNumber( RandomNumberGenerator );
-    double RandomValue = mRandomNumber2.GetUniform( );
+    double RandomValue = mRandomNumberB.GetUniform( );
 
     if( DispersalProbability >= RandomValue ) {
         int signu = ( uSpeed > 0 ) - ( uSpeed < 0 );

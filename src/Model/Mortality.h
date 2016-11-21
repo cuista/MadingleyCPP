@@ -15,5 +15,4 @@ public:
         std::cout << "If this got called you ended up in a virtual function! MortalityImplementation CalculateMortalityRate" << std::endl;
     }
 };
-//}
 #endif

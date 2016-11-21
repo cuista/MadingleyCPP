@@ -42,9 +42,9 @@ private:
     double mBoltzmannConstant;
     /** \brief Scalar to convert energy in kJ to energy in grams mass */
     double mEnergyScalar;
-    /** \brief Scalar to convert from the time step units used by this formulation of dispersal to global model time step units */
-    double mDeltaT;
     /** \brief Constant to convert temperature in degrees Celsius to temperature in Kelvin */
     double mTemperatureUnitsConvert;
+    /** \brief Scalar to convert from the time step units used by this formulation of dispersal to global model time step units */
+    double mDeltaT;
 };
 #endif

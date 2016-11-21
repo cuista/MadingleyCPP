@@ -21,9 +21,9 @@ private:
     /** \brief Include Utility class */
     UtilityFunctions mUtilities;
     /** \brief The time units associated with this implementation of dispersal*/
-    const std::string mTimeUnitImplementation = "Day";
+    std::string mTimeUnitImplementation;
     /** \brief Cohort background mortality rate - the proportion of individuals dying in a time step */
-    const double mMortailtyRate = 0.001;
+    double mMortailtyRate;
     /** \brief Scalar to convert from the time step units used by this formulation of dispersal to global model time step units */
     double mDeltaT;
 };

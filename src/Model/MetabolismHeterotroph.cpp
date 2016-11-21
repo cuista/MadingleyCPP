@@ -10,10 +10,10 @@ MetabolismHeterotroph::MetabolismHeterotroph( std::string globalModelTimeStepUni
     mBoltzmannConstant = 8.617e-5;
     // Currently a very rough estimate based on calorific values of fat, protein and carbohydrate
     mEnergyScalar = 1.0 / 20000.0;
-    // Calculate the scalar to convert from the time step units used by this implementation of metabolism to the global  model time step units
-    mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
     // Set the constant to convert temperature in degrees Celsius to Kelvin
     mTemperatureUnitsConvert = 273.0;
+    // Calculate the scalar to convert from the time step units used by this implementation of metabolism to the global  model time step units
+    mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
 }
 
 void MetabolismHeterotroph::Run( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {

@@ -43,17 +43,17 @@ private:
     /** \brief An instance of the simple random number generator class */
     std::mt19937_64 mRandomNumber;
     /** \brief The time units associated with this implementation of dispersal */
-    const std::string mTimeUnitImplementation = "month";
+    std::string mTimeUnitImplementation;
     /** \brief The per individual ratio of (adult body mass + reproductive potential mass) to adult body mass above which reproduction is possible*/
-    const double mMassRatioThreshold = 1.5;
+    double mMassRatioThreshold;
     /** \brief The probability that random draws above which result in offspring cohorts with 
     evolved juvenile and adult masses*/
-    const double mMassEvolutionProbabilityThreshold = 0.95;
+    double mMassEvolutionProbabilityThreshold;
     /** \brief The standard deviation around the parent cohort's adult and juvenile masses to apply when drawing offspring
     adult and juvenile masses (when mass evolution occurs)*/
-    const double mMassEvolutionStandardDeviation = 0.05;
+    double mMassEvolutionStandardDeviation;
     /** \brief The proportion of adult (non-reproductive) biomass allocated to offspring during a reproductive event by semelparous organisms*/
-    const double mSemelparityAdultMassAllocation = 0.5;
+    double mSemelparityAdultMassAllocation;
     /** \brief Scalar to convert from the time step units used by this formulation of reproduction to global model time step units */
     double mDeltaT;
 };
