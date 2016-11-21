@@ -17,7 +17,7 @@ int main( ) {
     // Write out model details to the console
     Logger::Get( )->LogMessage( "Madingley model C++ v. 0.\n" );
 
-    std::time_t t = system_clock::to_time_t( high_resolution_clock::now( ) );
+    std::time_t t = std::chrono::system_clock::to_time_t( std::chrono::high_resolution_clock::now( ) );
     Logger::Get( )->LogMessage( "Model Run started at " + Convertor::Get( )->ToString( std::ctime( &t ) ) );
 
     FileReader fileReader;

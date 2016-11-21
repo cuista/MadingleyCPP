@@ -3,8 +3,6 @@
 
 #include <chrono>
 
-using namespace std::chrono;
-
 /** \brief Timer to track time elapsed */
 class Stopwatch {
 public:
@@ -28,15 +26,15 @@ public:
 
 private:
     /** \brief The start time of a given stopwatch run */
-    high_resolution_clock::time_point mStartTime;
+    std::chrono::high_resolution_clock::time_point mStartTime;
     /** \brief The stop time of a given stopwatch run */
-    high_resolution_clock::time_point mStopTime;
+    std::chrono::high_resolution_clock::time_point mStopTime;
     /** \brief Whether the stopwatch is running */
-    bool running;
+    bool mIsRunning;
     /** \brief Time accumlated between last start and stop */
-    duration< double > mInterval;
+    std::chrono::duration< double > mInterval;
     /** \brief Time accumlated since this stopwatch was created */
-    duration< double > mAccumulatedTime;
+    std::chrono::duration< double > mAccumulatedTime;
 
 };
 #endif

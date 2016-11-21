@@ -1,21 +1,21 @@
 #include "Stopwatch.h"
 
 Stopwatch::Stopwatch( ) {
-    running = false;
+    mIsRunning = false;
 }
 
 void Stopwatch::Start( ) {
     // Set the start time for the stopwatch run
-    mStartTime = high_resolution_clock::now( );
+    mStartTime = std::chrono::high_resolution_clock::now( );
     // Set the stopwatch as being running
-    running = true;
+    mIsRunning = true;
 }
 
 void Stopwatch::Stop( ) {
     // Set the stop time for the stopwatch run
-    mStopTime = high_resolution_clock::now( );
+    mStopTime = std::chrono::high_resolution_clock::now( );
     // Set the stopwatch as being not running
-    running = false;
+    mIsRunning = false;
     // Calculate the time elapsed during this stopwatch run
     mInterval = ( mStopTime - mStartTime );
     // Update the time accumulated by this stopwatch instance
@@ -24,12 +24,12 @@ void Stopwatch::Stop( ) {
 
 double Stopwatch::GetElapsedTimeMillis( ) {
     //set the units for output - default is second so ratio of 1000 get milliseconds
-    duration<double, std::ratio < 1, 1000 >> elapsed;
+    std::chrono::duration<double, std::ratio < 1, 1000 >> elapsed;
 
     // If the stopwatch is running, then calculate time since the stopwatch started, otherwise use the time elapsed during the last stopwatch run
 
-    if( running )
-        elapsed = high_resolution_clock::now( ) - mStartTime;
+    if( mIsRunning )
+        elapsed = std::chrono::high_resolution_clock::now( ) - mStartTime;
     else
         elapsed = mInterval;
 
@@ -38,9 +38,9 @@ double Stopwatch::GetElapsedTimeMillis( ) {
 
 double Stopwatch::GetElapsedTimeSecs( ) {
     //set the units for output = default is second
-    duration< double > elapsed;
-    if( running )
-        elapsed = high_resolution_clock::now( ) - mStartTime;
+    std::chrono::duration< double > elapsed;
+    if( mIsRunning )
+        elapsed = std::chrono::high_resolution_clock::now( ) - mStartTime;
     else
         elapsed = mStopTime - mStartTime;
 
