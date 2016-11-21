@@ -5,8 +5,6 @@
 #include <math.h>
 #include <tuple>
 
-using namespace std;
-
 /** \brief Calculates derived climate variables for which no input data exist */
 class ClimateVariablesCalculator {
 public:
@@ -27,12 +25,12 @@ public:
     @param Precipitation Mean monthly precipitation (mm) 
     @param MonthlyTemperatures Mean monthly temperatures, degrees celcius 
     @return A Tuple containing i) monthly actual evapotranspiration (mm), ii) soil water deficit (mm) and, iii) fire season length (between 0 and 360 days) */
-    tuple<vector<double>, double, double> MonthlyActualEvapotranspirationSoilMoisture( double AvailableWaterCapacity, vector<double> Precipitation, vector<double> MonthlyTemperatures );
+    std::tuple< std::vector<double>, double, double> MonthlyActualEvapotranspirationSoilMoisture( double, std::vector<double>, std::vector<double> );
 
     /** \brief Calculates the monthly potential evapotranspiration according to
     Malmstrom VH (1969) A new approach to the classification of climate. J Geog 68:351–357.
     @param Temperature Mean monthly temperature, degrees Celsius 
-    @return Potential Monthly Evapotranspiration, mm*/
+    @return Potential Monthly Evapotranspiration, mm */
     double CalculatePotentialEvapotranspiration( double Temperature );
 
     /** \brief Estimates the fraction of the year in which the temperature drops below zero at some time in the day
@@ -40,14 +38,14 @@ public:
     @param monthlyFrostDays A vector containing the number of frost days each month 
     @param monthlyTemperature A vector containing average temperatures for each month 
     @param missingValue The missing value used in the the environmental datasets 
-    @return The fraction of the year in which temperature drops below zero at some point in the day*/
-    double GetNDF( std::vector<double>& monthlyFrostDays, std::vector<double>& monthlyTemperature, double missingValue );
+    @return The fraction of the year in which temperature drops below zero at some point in the day */
+    double GetNDF( std::vector<double>&, std::vector<double>&, double );
 
     /** \brief Calculates the number of days frost using an alternative algorithm to that in ClimateLookup
     that is based on mean annual temperature data alone. This will probably be a coarse representation
     of the number of frost days but will do for now.
     @param MATData Mean monthly temperatures, degrees celcius 
-    @return Fraction of the year that experiences frost*/
-    double ApproximateNDF( vector<double> MATData );
+    @return Fraction of the year that experiences frost */
+    double ApproximateNDF( std::vector<double> MATData );
 };
 #endif
