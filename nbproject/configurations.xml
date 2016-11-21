@@ -167,7 +167,9 @@
         <itemPath>src/Tools/ClimateVariablesCalculator.cpp</itemPath>
         <itemPath>src/Tools/Convertor.cpp</itemPath>
         <itemPath>src/Tools/Date.cpp</itemPath>
+        <itemPath>src/Tools/MassBinsHandler.cpp</itemPath>
         <itemPath>src/Tools/Maths.cpp</itemPath>
+        <itemPath>src/Tools/NonStaticSimpleRNG.cpp</itemPath>
         <itemPath>src/Tools/Processor.cpp</itemPath>
       </logicalFolder>
       <itemPath>src/Main.cpp</itemPath>
@@ -523,11 +525,15 @@
       </item>
       <item path="src/Tools/Date.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Tools/MassBinsHandler.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Tools/MassBinsHandler.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/Maths.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/Maths.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/NonStaticSimpleRNG.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/NonStaticSimpleRNG.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -871,11 +877,15 @@
       </item>
       <item path="src/Tools/Date.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Tools/MassBinsHandler.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Tools/MassBinsHandler.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/Maths.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/Maths.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/NonStaticSimpleRNG.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/NonStaticSimpleRNG.h" ex="false" tool="3" flavor2="0">
       </item>
