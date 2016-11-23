@@ -79,7 +79,7 @@ void Madingley::RunWithinCellStockEcology( GridCell& gcl ) {
     // Create a local instance of the stock ecology class
     EcologyStock MadingleyEcologyStock;
     // Get the list of functional group indices for autotroph stocks
-    vector<int> AutotrophStockFunctionalGroups = mParams.mStockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
+    std::vector<int> AutotrophStockFunctionalGroups = mParams.mStockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
     // Loop over autotroph functional groups
     for( unsigned FunctionalGroup: AutotrophStockFunctionalGroups ) {
         for( auto& ActingStock: gcl.mStocks[FunctionalGroup] ) {
@@ -141,7 +141,7 @@ void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadVariables& part
 void Madingley::RunExtinction( GridCell& gcl, ThreadVariables& partial ) {
 
     // Loop over cohorts and remove any whose abundance is below the extinction threshold
-    vector<Cohort>CohortsToRemove;
+    std::vector<Cohort> CohortsToRemove;
     gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
         if( c.mCohortAbundance - Parameters::Get( )->GetExtinctionThreshold( ) <= 0 || c.mIndividualBodyMass <= 0 ) {
             CohortsToRemove.push_back( c );

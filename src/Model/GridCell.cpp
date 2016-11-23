@@ -29,7 +29,7 @@ void GridCell::InsertCohort( Cohort& c ) {
 }
 
 void GridCell::RemoveCohort( Cohort& c ) {
-    vector<Cohort>& z = mCohorts[ c.mFunctionalGroupIndex ];
+    std::vector<Cohort>& z = mCohorts[ c.mFunctionalGroupIndex ];
     auto h = find_if( z.begin( ), z.end( ), [ c ]( Cohort & k ) {
         return c.mID == k.mID;
     } );

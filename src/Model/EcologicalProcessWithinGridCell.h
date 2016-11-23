@@ -23,7 +23,7 @@ public:
     @param gridCell The current grid cell
     @params params parameters for the model 
     @param implementationKey The name of the specific implementation of this process to initialize */
-    virtual void InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, string implementationKey ) {
+    virtual void InitializeEcologicalProcess( GridCell&, MadingleyInitialisation&, std::string ) {
         ;
     }
 

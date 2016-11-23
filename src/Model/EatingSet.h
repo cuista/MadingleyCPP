@@ -22,7 +22,7 @@ public:
     @param implementationKey The name of the implementation of eating to initialize 
     \remarks Eating needs to be initialized every time step */
     
-    void InitializeEcologicalProcess( GridCell&, MadingleyInitialisation&, string );
+    void InitializeEcologicalProcess( GridCell&, MadingleyInitialisation&, std::string );
     /** \brief Run eating 
     @param gcl The current grid cell 
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 

@@ -77,7 +77,7 @@ void DispersalAdvective::CalculateDispersalProbability( Grid& madingleyGrid, Coh
     latCellLength = ( *( c.mDestinationCell ) ).GetCellHeight( );
     lonCellLength = ( *( c.mDestinationCell ) ).GetCellWidth( );
 
-    if( abs( uDistanceTravelled ) > lonCellLength ) cout << "BIG U " << uAdvectiveSpeed << endl;
+    if( abs( uDistanceTravelled ) > lonCellLength ) std::cout << "BIG U " << uAdvectiveSpeed << std::endl;
     assert( abs( uDistanceTravelled ) <= lonCellLength && "u velocity greater than cell width" );
     assert( abs( vDistanceTravelled ) <= latCellLength && "v velocity greater than cell width" );
     NewCell( madingleyGrid, uDistanceTravelled, vDistanceTravelled, lonCellLength, latCellLength, c );

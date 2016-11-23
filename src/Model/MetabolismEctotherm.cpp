@@ -27,7 +27,7 @@ void MetabolismEctotherm::Run( Cohort& actingCohort, unsigned currentTimestep, u
     Cohort::mMassFluxes["biomass"]["metabolism"] = -CalculateIndividualMetabolicRate( actingCohort.mIndividualBodyMass, Environment::Get( "Temperature", actingCohort.GetCurrentCell( ) ) + mTemperatureUnitsConvert, actingCohort.mProportionTimeActive ) * mDeltaT;
 
     // If metabolic loss is greater than individual body mass after herbivory and predation, then set equal to individual body mass
-    Cohort::mMassFluxes["biomass"]["metabolism"] = max( Cohort::mMassFluxes["biomass"]["metabolism"], -( actingCohort.mIndividualBodyMass + Cohort::mMassFluxes["biomass"]["predation"] + Cohort::mMassFluxes["biomass"]["herbivory"] ) );
+    Cohort::mMassFluxes["biomass"]["metabolism"] = std::max( Cohort::mMassFluxes["biomass"]["metabolism"], -( actingCohort.mIndividualBodyMass + Cohort::mMassFluxes["biomass"]["predation"] + Cohort::mMassFluxes["biomass"]["herbivory"] ) );
 
     // Add total metabolic loss for all individuals in the cohort to delta biomass for metabolism in the respiratory CO2 pool
     Cohort::mMassFluxes["respiratoryCO2pool"]["metabolism"] = -Cohort::mMassFluxes["biomass"]["metabolism"] * actingCohort.mCohortAbundance;

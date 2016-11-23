@@ -31,7 +31,7 @@ private:
     /** \brief Include Utility class */
     UtilityFunctions mUtilities;
     /** \brief Time units associated with the formulation of metabolism */
-    string mTimeUnitImplementation;
+    std::string mTimeUnitImplementation;
     /** \brief Exponent describing the mass-dependency of metabolic rate */
     double mMetabolismMassExponent;
     /** \brief Normalization constatnt for metabolic rate  (independent of mass and temperature) */

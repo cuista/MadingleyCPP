@@ -11,6 +11,8 @@
 #include "Layer2D.h"
 #include "Layer3D.h"
 
+#include <string.h>
+
 Types::EnvironmentPointer Environment::mThis = NULL;
 Types::LayerMap Environment::mLayers;
 
@@ -87,19 +89,19 @@ Environment* Environment::Get( ) {
     return mThis;
 }
 
-double& Environment::Get( string name, unsigned cellIndex ) {
+double& Environment::Get( std::string name, unsigned cellIndex ) {
     if( mThis == NULL ) mThis = new Environment( );
     if( mLayers.count( name ) == 0 ) {
-        cout << "Invalid Layer Request in Environment:: " << name << endl;
+        std::cout << "Invalid Layer Request in Environment:: " << name << std::endl;
         exit( 0 );
     }
     return ( *mLayers[ name ] )[ cellIndex ];
 }
 
-double& Environment::Get( string name, GridCell& gcl ) {
+double& Environment::Get( std::string name, GridCell& gcl ) {
     if( mThis == 0 )mThis = new Environment( );
     if( mLayers.count( name ) == 0 ) {
-        cout << "Invalid Layer Request in Environment:: " << name << endl;
+        std::cout << "Invalid Layer Request in Environment:: " << name << std::endl;
         exit( 0 );
     }
     return (*mLayers[ name ] )[ gcl.GetIndex( ) ];
@@ -120,7 +122,7 @@ void Environment::SetTemperature( ) {
 
             if( d == Constants::cMissingValue ) {
                 d = 0;
-                cout << "Warning Environment::setTemperature- missing values in temperature field!!" << endl;
+                std::cout << "Warning Environment::setTemperature- missing values in temperature field!!" << std::endl;
             }
             ( *mLayers[ "Temperature" ] )[ cellIndex ] = d;
         }
@@ -191,7 +193,7 @@ void Environment::SetPrecipitation( ) {
 
             if( d == Constants::cMissingValue ) {
                 d = 0;
-                cout << "Warning Environment::setPrecipitation- missing values in precipitation field!!" << endl;
+                std::cout << "Warning Environment::setPrecipitation- missing values in precipitation field!!" << std::endl;
             }
             ( *mLayers[ "Precipitation" ] )[ cellIndex ] = d;
             ( *mLayers[ "TotalPrecip" ] )[ cellIndex ] += d;
@@ -214,7 +216,7 @@ void Environment::SetNPP( ) {
 
             if( d == Constants::cMissingValue ) {
                 d = 0;
-                cout << "Warning Environment::setNPP- missing values in NPP field!!" << endl;
+                std::cout << "Warning Environment::setNPP- missing values in NPP field!!" << std::endl;
             }
             ( *mLayers[ "NPP" ] )[ cellIndex ] = d;
         }
@@ -358,7 +360,7 @@ void Environment::SetFrostandFire( ) {
 
         for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
             mLayers[ "Fraction Month Frost" ]->SetTime( timeIndex );
-            ( *mLayers[ "Fraction Month Frost" ] )[ cellIndex ] = min( FrostDays[timeIndex] / MonthDays[timeIndex], ( double )1.0 );
+            ( *mLayers[ "Fraction Month Frost" ] )[ cellIndex ] = std::min( FrostDays[timeIndex] / MonthDays[timeIndex], ( double )1.0 );
         }
         double AWC = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialAWC", cellIndex );
 
@@ -366,10 +368,10 @@ void Environment::SetFrostandFire( ) {
         ( *mLayers[ "TotalAET" ] )[cellIndex ] = 0;
         for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
             mLayers[ "AET" ]->SetTime( timeIndex );
-            ( *mLayers[ "AET" ] )[ cellIndex ] = get< 0 >( TempTuple )[ timeIndex ];
-            ( *mLayers[ "TotalAET" ] )[ cellIndex ] += get< 0 >( TempTuple )[ timeIndex ];
+            ( *mLayers[ "AET" ] )[ cellIndex ] = std::get< 0 >( TempTuple )[ timeIndex ];
+            ( *mLayers[ "TotalAET" ] )[ cellIndex ] += std::get< 0 >( TempTuple )[ timeIndex ];
         }
-        ( *mLayers["Fraction Year Fire"] )[ cellIndex ] = ( get< 2 > ( TempTuple ) / 360 );
+        ( *mLayers["Fraction Year Fire"] )[ cellIndex ] = ( std::get< 2 > ( TempTuple ) / 360 );
     }
 }
 //----------------------------------------------------------------------------------------------
@@ -381,7 +383,7 @@ void Environment::SetBreeding( ) {
         double maxSeason = -1;
         for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
             mLayers[ "Seasonality" ]->SetTime( timeIndex );
-            maxSeason = max( maxSeason, ( *mLayers[ "Seasonality" ] )[ cellIndex ] );
+            maxSeason = std::max( maxSeason, ( *mLayers[ "Seasonality" ] )[ cellIndex ] );
         }
         for( int i = 0; i < 12; i++ ) {
             mLayers[ "Seasonality" ]->SetTime( i );

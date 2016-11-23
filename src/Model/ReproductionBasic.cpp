@@ -152,12 +152,12 @@ std::vector< double > ReproductionBasic::GetOffspringCohortProperties( Cohort& a
         // Determine the new juvenile body mass // MB correctly formulated?
         std::normal_distribution< double > randomNumberJ( actingCohort.mJuvenileMass, mMassEvolutionStandardDeviation * actingCohort.mJuvenileMass );
         double RandomValueJ = randomNumberJ( mRandomNumber );
-        cohortJuvenileAdultMasses[ 0 ] = max( RandomValueJ, cohortDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Minimum mass", actingCohort.mFunctionalGroupIndex ) );
+        cohortJuvenileAdultMasses[ 0 ] = std::max( RandomValueJ, cohortDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Minimum mass", actingCohort.mFunctionalGroupIndex ) );
 
         // Determine the new adult body mass
         std::normal_distribution< double > randomNumberA( actingCohort.mAdultMass, mMassEvolutionStandardDeviation * actingCohort.mAdultMass );
         double RandomValueA = randomNumberA( mRandomNumber );
-        cohortJuvenileAdultMasses[ 1 ] = min( RandomValueA, cohortDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Maximum mass", actingCohort.mFunctionalGroupIndex ) );
+        cohortJuvenileAdultMasses[ 1 ] = std::min( RandomValueA, cohortDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Maximum mass", actingCohort.mFunctionalGroupIndex ) );
 
     } else { // If not, it just gets the same values as the parent cohort
         // Assign masses to the offspring cohort that are equal to those of the parent cohort

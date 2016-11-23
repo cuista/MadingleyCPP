@@ -134,7 +134,7 @@ void EatingHerbivory::Run( GridCell& gcl, Cohort& actingCohort, unsigned current
 
             // Check that the biomass eaten is not a negative value
             if( mBiomassesEaten[FunctionalGroup][i] < 0 ) {
-                std::cout << "Herbivory negative for this herbivore cohort " << actingCohort.mFunctionalGroupIndex << " " << actingCohort.mID << endl;
+                std::cout << "Herbivory negative for this herbivore cohort " << actingCohort.mFunctionalGroupIndex << " " << actingCohort.mID << std::endl;
                 exit( 1 );
             }
             // Add the biomass eaten and assimilated by an individual to the delta biomass for the acting cohort

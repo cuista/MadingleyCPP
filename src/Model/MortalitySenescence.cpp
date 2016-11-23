@@ -1,7 +1,7 @@
 #include "MortalitySenescence.h"
 
 /** \brief Constructor for senscence mortality: assigns all parameter values */
-MortalitySenescence::MortalitySenescence( string globalModelTimeStepUnit ) {
+MortalitySenescence::MortalitySenescence( std::string globalModelTimeStepUnit ) {
     mTimeUnitImplementation = "Day";
     mMortalityRate = 0.003;
     // Calculate the scalar to convert from the time step units used by this implementation of mortality to the global model time step units

@@ -107,7 +107,7 @@ long MadingleyInitialisation::SeedGridCellCohorts( GridCell& gcl ) {
 
                     cohortAdultMass = pow( 10, ( mRandomNumber.GetUniform( ) * ( log10( massMaximum ) - log10( 50 * massMinimum ) ) + log10( 50 * massMinimum ) ) );
                     //Changes from original code
-                    optimalPreyBodySizeRatio = max( 0.01, mRandomNumber.GetNormal( 0.1, 0.02 ) );
+                    optimalPreyBodySizeRatio = std::max( 0.01, mRandomNumber.GetNormal( 0.1, 0.02 ) );
 
                     if( !gcl.IsMarine( ) ) {
                         do {

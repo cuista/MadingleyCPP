@@ -1,6 +1,6 @@
 #include "MortalitySet.h"
 
-MortalitySet::MortalitySet( string globalModelTimeStepUnit ) {
+MortalitySet::MortalitySet( std::string globalModelTimeStepUnit ) {
     // Add the background mortality implementation to the list of implementations
     MortalityBackground* BackgroundMortalityImplementation = new MortalityBackground( globalModelTimeStepUnit );
     mImplementations[ "basic background mortality" ] = BackgroundMortalityImplementation;
@@ -21,7 +21,7 @@ MortalitySet::~MortalitySet( ) {
     delete mImplementations[ "basic starvation mortality" ];
 }
 
-void MortalitySet::InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, string implementationKey ) {
+void MortalitySet::InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, std::string implementationKey ) {
 
 }
 
@@ -50,7 +50,7 @@ void MortalitySet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, un
         BodyMassIncludingChangeThisTimeStep += Biomass.second;
     }
 
-    BodyMassIncludingChangeThisTimeStep = min( actingCohort.mAdultMass, BodyMassIncludingChangeThisTimeStep + actingCohort.mIndividualBodyMass );
+    BodyMassIncludingChangeThisTimeStep = std::min( actingCohort.mAdultMass, BodyMassIncludingChangeThisTimeStep + actingCohort.mIndividualBodyMass );
 
     // Temporary variable to hold net reproductive biomass change of individuals in this cohort as a result of other ecological processes
     ReproductiveMassIncludingChangeThisTimeStep = 0.0;

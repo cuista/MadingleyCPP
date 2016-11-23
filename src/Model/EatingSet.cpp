@@ -15,7 +15,7 @@ EatingSet::~EatingSet( ) {
     delete mImplementations["revised predation"];
 }
 
-void EatingSet::InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, string implementationKey ) {
+void EatingSet::InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisation& params, std::string implementationKey ) {
     // Initialize the implementation of the eating process
     mImplementations[implementationKey]->InitializeEatingPerTimeStep( gcl, params );
 }

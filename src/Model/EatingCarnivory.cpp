@@ -322,7 +322,7 @@ void EatingCarnivory::Run( GridCell& gcl, Cohort& actingCohort, unsigned current
 
             // Check that the abundance eaten from this cohort is not negative
             if( mAbundancesEaten[FunctionalGroup][i] < 0. ) {
-                cout << "Predation negative for this prey cohort" << actingCohort.mFunctionalGroupIndex << " " << actingCohort.mID << mAbundancesEaten[FunctionalGroup][i] << endl;
+                std::cout << "Predation negative for this prey cohort" << actingCohort.mFunctionalGroupIndex << " " << actingCohort.mID << mAbundancesEaten[FunctionalGroup][i] << std::endl;
             }
             // Create a temporary value to speed up the predation function
             // This is equivalent to the body mass of the prey cohort including reproductive potential mass, times the abundance eaten of the prey cohort,

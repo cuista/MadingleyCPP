@@ -111,7 +111,7 @@ private:
     /** \brief Jagged array mirroring the grid cell cohorts to store the abundance gained from predation on each cohort */
     std::vector< std::vector < double> > mAbundancesEaten;
     /** \brief The matrix to hold the abundance of prey items in each functional group and weight bin */
-    std::vector< vector<double> > mBinnedPreyDensities;
+    std::vector< std::vector< double > > mBinnedPreyDensities;
     /** \brief Number of cohorts in each functional group that were present in the grid cell before this time step's new cohorts were created*/
     std::vector<int> mNumberCohortsPerFunctionalGroupNoNewCohorts;
     /** \brief Identifies which functional groups are carnivores */

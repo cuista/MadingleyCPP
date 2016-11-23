@@ -12,7 +12,7 @@ public:
         ;
     }
 
-    Eating( string globalModelTimeStepUnit ) {
+    Eating( std::string globalModelTimeStepUnit ) {
         std::cout << "Virtual IEatingImplementation constructor called:This is probably a mistake" << std::endl;
     }
 

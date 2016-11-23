@@ -109,7 +109,7 @@ double TerrestrialCarbon::CalculateEquilibriumLeafMass( GridCell& gcl, bool deci
     return LeafWetMatter;
 }
 
-double TerrestrialCarbon::UpdateLeafStock( GridCell& gcl, Stock& actingStock, unsigned currentTimeStep, bool deciduous, string GlobalModelTimeStepUnit, unsigned currentMonth ) {
+double TerrestrialCarbon::UpdateLeafStock( GridCell& gcl, Stock& actingStock, unsigned currentTimeStep, bool deciduous, std::string GlobalModelTimeStepUnit, unsigned currentMonth ) {
 
     // ESTIMATE ANNUAL LEAF CARBON FIXATION ASSUMING ENVIRONMENT THROUGHOUT THE YEAR IS THE SAME AS IN THIS MONTH
     // Get annual average temperature
@@ -183,7 +183,7 @@ double TerrestrialCarbon::UpdateLeafStock( GridCell& gcl, Stock& actingStock, un
 
     // Add the leaf wet matter to the acting stock - this line has been change in the latest version!
     // actingStock.TotalBiomass += max( -actingStock.TotalBiomass, WetMatterIncrement );
-    double NPPWetMatter = max( -actingStock.mTotalBiomass, WetMatterIncrement );
+    double NPPWetMatter = std::max( -actingStock.mTotalBiomass, WetMatterIncrement );
 
 
     // Calculate fractional leaf mortality
@@ -205,7 +205,7 @@ double TerrestrialCarbon::CalculateMiamiNPP( double temperature, double precipit
     double NPPPrecip = mMaxNPP * ( 1 - exp( -mPNPP * precipitation ) );
 
     // Calculate the maximum annual NPP that could be sustained based on temperature and precipitation
-    return min( NPPTemp, NPPPrecip );
+    return std::min( NPPTemp, NPPPrecip );
 }
 
 double TerrestrialCarbon::CalculateFracStruct( double NPP ) {

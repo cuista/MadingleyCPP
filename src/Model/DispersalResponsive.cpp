@@ -109,8 +109,8 @@ void DispersalResponsive::CalculateDispersalProbability( Grid& madingleyGrid, Co
 
     // Check that the whole cell hasn't moved out (i.e. that dispersal speed is not greater than cell length). 
     // This could happen if dispersal speed was high enough; indicates a need to adjust the time step, or to slow dispersal
-    if( uSpeed > lonCellLength )cout << "Dispersal Big U " << uSpeed << endl;
-    if( vSpeed > latCellLength )cout << "Dispersal Big V " << vSpeed << endl;
+    if( uSpeed > lonCellLength ) std::cout << "Dispersal Big U " << uSpeed << std::endl;
+    if( vSpeed > latCellLength ) std::cout << "Dispersal Big V " << vSpeed << std::endl;
 
     assert( ( ( uSpeed < lonCellLength ) && ( vSpeed < latCellLength ) ) && "Dispersal probability should always be <= 1" );
 

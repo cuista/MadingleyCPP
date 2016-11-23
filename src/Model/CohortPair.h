@@ -14,7 +14,7 @@ public:
 
     struct Comparator {
         bool operator()( const CohortPair& u, const CohortPair& v ) {
-            return (u.mDistance < v.mDistance );
+            return ( u.mDistance < v.mDistance );
         }
     };
 };
