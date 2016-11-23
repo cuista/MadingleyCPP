@@ -12,8 +12,7 @@ public:
     Cohort* mCohortB;
     double mDistance;
 
-    struct PearComparator {
-
+    struct Comparator {
         bool operator()( const CohortPair& u, const CohortPair& v ) {
             return (u.mDistance < v.mDistance );
         }
