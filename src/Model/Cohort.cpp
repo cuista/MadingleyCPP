@@ -126,8 +126,8 @@ bool Cohort::IsPlanktonic( MadingleyInitialisation& params ) {
     return ( IsMarine( ) && ( ( mIndividualBodyMass <= Parameters::Get( )->GetPlanktonSizeThreshold( ) ) || ( params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", mFunctionalGroupIndex ) == "planktonic" ) ) );
 }
 
-string Cohort::DispersalType( MadingleyInitialisation& params ) {
-    string dispersalName;
+std::string Cohort::GetDispersalType( MadingleyInitialisation& params ) {
+    std::string dispersalName;
     if( IsPlanktonic( params ) ) {
         // Advective dispersal
         dispersalName = "advective";

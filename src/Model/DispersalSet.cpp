@@ -30,8 +30,8 @@ void DispersalSet::ResetRandoms( ) {
 @param currentMonth The current model month */
 void DispersalSet::RunCrossGridCellEcologicalProcess( GridCell& gcl, Grid& gridForDispersal, MadingleyInitialisation& params, unsigned currentMonth ) {
     gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
-        if( mChoose.count( c.DispersalType( params ) ) != 0 ) {
-            mChoose[c.DispersalType( params )]->Run( gridForDispersal, c, currentMonth );
+        if( mChoose.count( c.GetDispersalType( params ) ) != 0 ) {
+            mChoose[c.GetDispersalType( params )]->Run( gridForDispersal, c, currentMonth );
 
         }
         if( c.IsMoving( ) )mDispersers.push_back( c );

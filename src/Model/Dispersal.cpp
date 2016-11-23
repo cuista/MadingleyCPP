@@ -6,7 +6,7 @@ Dispersal::Dispersal( ) {
 
 /** \brief Run the dispersal implementation */
 void Dispersal::Run( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
-    cout << "Called virtual dispersal runner: probably not what you want" << endl;
+    std::cout << "Called virtual dispersal runner: probably not what you want" << std::endl;
 }
 
 void Dispersal::ResetRandom( ) {
@@ -37,7 +37,7 @@ void Dispersal::NewCell( Grid& madingleyGrid, double& uSpeed, double& vSpeed, do
     // Convert areas to a probability
     double DispersalProbability = ( AreaOutsideU + AreaOutsideV + AreaOutsideBoth ) / CellArea;
     // Check that we don't have any issues
-    if( DispersalProbability > 1 )cout << "Bad Dispersal Probability " << DispersalProbability << endl;
+    if( DispersalProbability > 1 ) std::cout << "Bad Dispersal Probability " << DispersalProbability << std::endl;
     //assert(DispersalProbability <= 1 && "Dispersal probability should always be <= 1");
     GridCell* DestinationCell = 0;
     // Check to see in which axis the cohort disperses

@@ -36,7 +36,7 @@ public:
     bool IsMature( );
     bool IsMarine( );
     bool IsPlanktonic( MadingleyInitialisation& );
-    std::string DispersalType( MadingleyInitialisation& );
+    std::string GetDispersalType( MadingleyInitialisation& );
     double GetRealm( );
     void TryLivingAt( Types::GridCellPointer, Location& );
     void Move( );
