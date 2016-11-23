@@ -1,6 +1,6 @@
 #include "UtilityFunctions.h"
 
-void UtilityFunctions::ConvertToM180To180( vector<double>& lons ) {
+void UtilityFunctions::ConvertToM180To180( std::vector<double>& lons ) {
     // Loop over longitudinal coordinates of the model grid cells
     for( unsigned jj = 0; jj < lons.size( ); jj++ ) {
         // If longitudinal coorindates exceed 180, then subtrarct 360 to correct the coorindates
@@ -12,19 +12,19 @@ void UtilityFunctions::ConvertToM180To180( vector<double>& lons ) {
     sort( lons.begin( ), lons.end( ) );
 }
 
-vector<unsigned> UtilityFunctions::RandomlyOrderedCohorts( unsigned cohortNumber ) {
+std::vector<unsigned> UtilityFunctions::RandomlyOrderedCohorts( unsigned cohortNumber ) {
     //A vector to hold indices of cohorts in order
-    vector<unsigned> RandomOrderCohorts( cohortNumber );
+    std::vector<unsigned> RandomOrderCohorts( cohortNumber );
     for( unsigned i = 0; i < cohortNumber; i++ ) RandomOrderCohorts[i] = i;
     // Return the randomly ordered vector of cohort indices - randomly off system clock...c++11 style
     unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
-    shuffle( RandomOrderCohorts.begin( ), RandomOrderCohorts.end( ), std::default_random_engine( seed ) );
+    std::shuffle( RandomOrderCohorts.begin( ), RandomOrderCohorts.end( ), std::default_random_engine( seed ) );
     return RandomOrderCohorts;
 }
 
-vector<unsigned> UtilityFunctions::NonRandomlyOrderedCohorts( unsigned cohortNumber, unsigned currentTimeStep ) {
+std::vector<unsigned> UtilityFunctions::NonRandomlyOrderedCohorts( unsigned cohortNumber, unsigned currentTimeStep ) {
     //A vector to hold indices of cohorts in order
-    vector<unsigned> RandomOrderCohorts( cohortNumber ), OrderedCohorts( cohortNumber );
+    std::vector<unsigned> RandomOrderCohorts( cohortNumber ), OrderedCohorts( cohortNumber );
     for( unsigned i = 0; i < cohortNumber; i++ ) {
         RandomOrderCohorts[i] = i;
         OrderedCohorts[i] = i;
@@ -37,7 +37,7 @@ vector<unsigned> UtilityFunctions::NonRandomlyOrderedCohorts( unsigned cohortNum
         int SwapIndex = ( int )( randomizer.GetUniform( )* ( OrderedCohorts.size( ) - 1 ) + 0.5 ); // random.Next(ii, OrderedCohorts.Length);
         // If the cohort index to swap is not the same as the active cohort index, then swap the values
         if( SwapIndex != ii ) {
-            uint Temp = RandomOrderCohorts[ii];
+            unsigned Temp = RandomOrderCohorts[ii];
             RandomOrderCohorts[ii] = RandomOrderCohorts[SwapIndex];
             RandomOrderCohorts[SwapIndex] = Temp;
         }
@@ -53,7 +53,7 @@ unsigned UtilityFunctions::GetCurrentMonth( unsigned currentTimestep ) {
     double DaysInWeek = 7.0;
 
     //C++ can only use intergers or enums in a switch, so make a map to convert.
-    map<string, int> units;
+    std::map<std::string, int> units;
 
     units["year" ] = 0;
     units["month"] = 1;
@@ -75,7 +75,7 @@ unsigned UtilityFunctions::GetCurrentMonth( unsigned currentTimestep ) {
             Month = ( unsigned )floor( currentTimestep / ( DaysInYear / MonthsInYear ) ) % 12;
             break;
         default://should the program bomb out at this point?
-            cout << "Requested model time units not currently supported" << endl;
+            std::cout << "Requested model time units not currently supported" << std::endl;
             Month = 100;
             break;
 
@@ -83,7 +83,7 @@ unsigned UtilityFunctions::GetCurrentMonth( unsigned currentTimestep ) {
     return Month;
 }
 
-double UtilityFunctions::ConvertTimeUnits( string fromUnit, string toUnit ) {
+double UtilityFunctions::ConvertTimeUnits( std::string fromUnit, std::string toUnit ) {
     //transform( fromUnit.begin( ), fromUnit.end( ), fromUnit.begin( ), ::tolower );
     toUnit = Convertor::Get( )->ToLowercase( toUnit );
     // Variable to hold the conversion factor
@@ -93,7 +93,7 @@ double UtilityFunctions::ConvertTimeUnits( string fromUnit, string toUnit ) {
     double DaysInWeek = 7.0;
 
     //C++ can only use intergers or enums in a switch, so make a map to convert.
-    map<string, int> units;
+    std::map<std::string, int> units;
 
     units["year"] = 0;
     units["month"] = 1;
@@ -122,7 +122,7 @@ double UtilityFunctions::ConvertTimeUnits( string fromUnit, string toUnit ) {
                     ConversionValue = DaysInYear;
                     break;
                 default:
-                    cout << "Requested combination of time units not currently supported" << endl;
+                    std::cout << "Requested combination of time units not currently supported" << std::endl;
                     ConversionValue = 0;
                     break;
             }
@@ -148,7 +148,7 @@ double UtilityFunctions::ConvertTimeUnits( string fromUnit, string toUnit ) {
                     ConversionValue = ( DaysInYear / MonthsInYear ) * 24.0 * 60.0 * 60.0;
                     break;
                 default:
-                    cout << "Requested combination of time units not currently supported" << endl;
+                    std::cout << "Requested combination of time units not currently supported" << std::endl;
                     ConversionValue = 0;
                     break;
             }
@@ -174,7 +174,7 @@ double UtilityFunctions::ConvertTimeUnits( string fromUnit, string toUnit ) {
                     ConversionValue = ( DaysInYear / ( MonthsInYear * 2 ) ) * 24.0 * 60.0 * 60.0;
                     break;
                 default:
-                    cout << "Requested combination of time units not currently supported" << endl;
+                    std::cout << "Requested combination of time units not currently supported" << std::endl;
                     ConversionValue = 0;
                     break;
             }
@@ -201,7 +201,7 @@ double UtilityFunctions::ConvertTimeUnits( string fromUnit, string toUnit ) {
                     ConversionValue = DaysInWeek * 24.0 * 60.0 * 60.0;
                     break;
                 default:
-                    cout << "Requested combination of time units not currently supported" << endl;
+                    std::cout << "Requested combination of time units not currently supported" << std::endl;
                     ConversionValue = 0;
                     break;
             }
@@ -224,13 +224,13 @@ double UtilityFunctions::ConvertTimeUnits( string fromUnit, string toUnit ) {
                     ConversionValue = 1.0;
                     break;
                 default:
-                    cout << "Requested combination of time units not currently supported" << endl;
+                    std::cout << "Requested combination of time units not currently supported" << std::endl;
                     ConversionValue = 0;
                     break;
             }
             break;
         default:
-            cout << "Requested combination of time units not currently supported" << endl;
+            std::cout << "Requested combination of time units not currently supported" << std::endl;
             ConversionValue = 0;
             break;
     }
@@ -239,9 +239,9 @@ double UtilityFunctions::ConvertTimeUnits( string fromUnit, string toUnit ) {
     return ConversionValue;
 }
 
-vector<int> UtilityFunctions::FindJaggedArrayIndex( unsigned valueToFind, vector< vector < unsigned> > arrayToSearch, unsigned totalNumberOfCohorts ) {
+std::vector<int> UtilityFunctions::FindJaggedArrayIndex( unsigned valueToFind, std::vector< std::vector < unsigned> > arrayToSearch, unsigned totalNumberOfCohorts ) {
     // Create a vector to hold the location of the cohort in the jagged array
-    vector<int> ValueLocation( 2 );
+    std::vector<int> ValueLocation( 2 );
 
     // Check to make sure that specified cohort index is not greater than the total number of cohorts
     assert( valueToFind < totalNumberOfCohorts && "Value searched for in jagged array is bigger than the biggest value in the jagged array" );

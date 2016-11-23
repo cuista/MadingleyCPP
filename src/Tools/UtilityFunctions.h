@@ -22,18 +22,18 @@ public:
 
     /** \brief If longitudinal cell coordinates run from 0 to 360, the convert to -180 to 180 values
     @param lons The longitudinal coorindates of the cells in the model grid */
-    void ConvertToM180To180( vector<double>& lons );
+    void ConvertToM180To180( std::vector<double>& lons );
 
     /** \brief Generate a random order in which cohorts will be subjected to ecological processes
     @param cohortNumber The number of cohorts in the current grid cell
     @return A vector of randomly ordered integers corresponding to the cohorts in the grid cell - will change with every run */
-    vector<unsigned> RandomlyOrderedCohorts( unsigned cohortNumber );
+    std::vector<unsigned> RandomlyOrderedCohorts( unsigned cohortNumber );
 
     /** \brief Generate a non-random order in which cohorts will be subjected to ecological processes
     @param cohortNumber The number of cohorts in the current grid cell
     @param currentTimeStep The current time step of the model
     @return A vector of non-randomly ordered integers corresponding to the cohorts in the grid cell -will be systematic in some way... */
-    vector<unsigned> NonRandomlyOrderedCohorts( unsigned cohortNumber, unsigned currentTimeStep );
+    std::vector<unsigned> NonRandomlyOrderedCohorts( unsigned cohortNumber, unsigned currentTimeStep );
 
     unsigned GetCurrentMonth( unsigned currentTimestep );
 
@@ -41,14 +41,14 @@ public:
     @param fromUnit Time unit to convert from
     @param toUnit Time unit to convert to
     @return Factor to convert between time units */
-    double ConvertTimeUnits( string fromUnit, string toUnit );
+    double ConvertTimeUnits( std::string fromUnit, std::string toUnit );
 
     /** \brief For a given cohort index, return a vector pair of values corresponding to the cohort's location in the jagged array of grid cell cohorts
     @param valueToFind The index of the cohort (values range between zero and the number of cohorts in the jagged arrray)
     @param arrayToSearch The jaggged array of cohorts, where rows correspond to functional groups, and columns to cohorts within functional groups
     @param totalNumberOfCohorts The total number of cohorts in the grid cell
     @return The position of the specified cohort in the jagged array of grid cell cohorts, where the first value is the row index (functional group) and the second value is the column index (position within functional group)</returns> */
-    vector<int> FindJaggedArrayIndex( unsigned valueToFind, vector< vector < unsigned> > arrayToSearch, unsigned totalNumberOfCohorts );
+    std::vector<int> FindJaggedArrayIndex( unsigned valueToFind, std::vector< std::vector < unsigned> > arrayToSearch, unsigned totalNumberOfCohorts );
 
     /** \briefConverts values per square km to per square degree, given cell latitude
     @param valueToConvert The value per square km

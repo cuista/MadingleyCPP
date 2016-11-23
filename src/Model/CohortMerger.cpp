@@ -14,14 +14,13 @@ CohortMerger::CohortMerger( ) {
 /** \brief Calculate the distance between two cohorts in multi-dimensional trait space (body mass, adult mass, juvenile mass)
 @param Cohort1 The first cohort to calculate distance to 
 @param Cohort2 The cohort to compare to 
-@returns The relative distance in trait space
- */
+@returns The relative distance in trait space */
 double CohortMerger::CalculateDistance( Cohort& cohortA, Cohort& cohortB ) {
     double AdultMassDistance = ( cohortA.mAdultMass - cohortB.mAdultMass ) / cohortA.mAdultMass;
     double JuvenileMassDistance = ( cohortA.mJuvenileMass - cohortB.mJuvenileMass ) / cohortA.mJuvenileMass;
     double CurrentMassDistance = ( cohortA.mIndividualBodyMass - cohortB.mIndividualBodyMass ) / cohortA.mIndividualBodyMass;
 
-    return (( AdultMassDistance * AdultMassDistance ) + ( JuvenileMassDistance * JuvenileMassDistance ) + ( CurrentMassDistance * CurrentMassDistance ) );
+    return ( ( AdultMassDistance * AdultMassDistance ) + ( JuvenileMassDistance * JuvenileMassDistance ) + ( CurrentMassDistance * CurrentMassDistance ) );
 }
 
 int CohortMerger::MergeToReachThresholdFast( GridCell& gcl, MadingleyInitialisation& params ) {
