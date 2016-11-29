@@ -42,7 +42,7 @@ void ReproductionBasic::Run( GridCell& gcl, Cohort& actingCohort, unsigned curre
     // Calculate the biomass of an individual in this cohort including changes this time step from other ecological processes  
     bodyMassIncludingChangeThisTimeStep = 0.0;
 
-    for( auto& Biomass: Cohort::mMassFluxes[ "biomass" ] ) {
+    for( auto& Biomass: Cohort::mMassAccounting[ "biomass" ] ) {
         // Add the delta biomass to net biomass
         bodyMassIncludingChangeThisTimeStep += Biomass.second;
     }
@@ -51,7 +51,7 @@ void ReproductionBasic::Run( GridCell& gcl, Cohort& actingCohort, unsigned curre
     // Calculate the reproductive biomass of an individual in this cohort including changes this time step from other ecological processes  
     reproductiveMassIncludingChangeThisTimeStep = 0.0;
 
-    for( auto& ReproBiomass: Cohort::mMassFluxes[ "reproductivebiomass" ] ) {
+    for( auto& ReproBiomass: Cohort::mMassAccounting[ "reproductivebiomass" ] ) {
         // Add the delta reproductive biomass to net biomass
         reproductiveMassIncludingChangeThisTimeStep += ReproBiomass.second;
     }
@@ -93,8 +93,8 @@ void ReproductionBasic::Run( GridCell& gcl, Cohort& actingCohort, unsigned curre
 
             // Subtract all of the reproductive potential mass of the parent cohort, which has been used to generate the new
             // cohort, from the delta reproductive potential mass and delta adult body mass
-            Cohort::mMassFluxes[ "reproductivebiomass" ][ "reproduction" ] -= reproductiveMassIncludingChangeThisTimeStep;
-            Cohort::mMassFluxes[ "biomass" ][ "reproduction" ] -= adultMassLost;
+            Cohort::mMassAccounting[ "reproductivebiomass" ][ "reproduction" ] -= reproductiveMassIncludingChangeThisTimeStep;
+            Cohort::mMassAccounting[ "biomass" ][ "reproduction" ] -= adultMassLost;
         } else {
             // Organism is not large enough, or it is not the breeding season, so take no action
         }
@@ -112,7 +112,7 @@ void ReproductionBasic::MassAssignment( GridCell& gcl, Cohort& actingCohort, uns
     NetBiomassFromOtherEcologicalFunctionsThisTimeStep = 0.0;
 
     // Loop over all items in the biomass deltas
-    for( auto Biomass: Cohort::mMassFluxes[ "biomass" ] ) {
+    for( auto Biomass: Cohort::mMassAccounting[ "biomass" ] ) {
         // Add the delta biomass to net biomass
         NetBiomassFromOtherEcologicalFunctionsThisTimeStep += Biomass.second;
     }
@@ -132,8 +132,8 @@ void ReproductionBasic::MassAssignment( GridCell& gcl, Cohort& actingCohort, uns
         }
 
         // Assign the specified mass to reproductive potential mass and remove it from individual biomass
-        Cohort::mMassFluxes[ "reproductivebiomass" ][ "reproduction" ] += BiomassToAssignToReproductivePotential;
-        Cohort::mMassFluxes[ "biomass" ][ "reproduction" ] -= BiomassToAssignToReproductivePotential;
+        Cohort::mMassAccounting[ "reproductivebiomass" ][ "reproduction" ] += BiomassToAssignToReproductivePotential;
+        Cohort::mMassAccounting[ "biomass" ][ "reproduction" ] -= BiomassToAssignToReproductivePotential;
 
     } else {
         // Cohort has not gained sufficient biomass to assign any to reproductive potential, so take no action

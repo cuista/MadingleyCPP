@@ -8,10 +8,6 @@ MortalitySenescence::MortalitySenescence( std::string globalModelTimeStepUnit ) 
     mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
 }
 
-/** \brief Calculate the rate of individuals in a cohort that die from senescence mortality in a model time step 
-@param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
-@param currentTimestep The current model time step 
-@return The rate of individuals in the cohort that die from senescence mortality*/
 double MortalitySenescence::CalculateMortalityRate( Cohort& actingCohort, double bodyMassIncludingChangeThisTimeStep, unsigned currentTimestep ) {
     // Calculate the age (in model time steps) that the cohort reached maturity
     double TimeToMaturity = actingCohort.mMaturityTimeStep - actingCohort.mBirthTimeStep;

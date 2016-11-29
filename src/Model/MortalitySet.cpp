@@ -45,7 +45,7 @@ void MortalitySet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, un
 
     BodyMassIncludingChangeThisTimeStep = 0.0;
     // Loop over all items in the biomass deltas
-    for( auto Biomass: Cohort::mMassFluxes[ "biomass" ] ) {
+    for( auto Biomass: Cohort::mMassAccounting[ "biomass" ] ) {
         // Add the delta biomass to net biomass
         BodyMassIncludingChangeThisTimeStep += Biomass.second;
     }
@@ -56,7 +56,7 @@ void MortalitySet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, un
     ReproductiveMassIncludingChangeThisTimeStep = 0.0;
 
     // Loop over all items in the biomass Cohort::Deltas
-    for( auto Biomass: Cohort::mMassFluxes[ "reproductivebiomass" ] ) {
+    for( auto Biomass: Cohort::mMassAccounting[ "reproductivebiomass" ] ) {
         // Add the delta biomass to net biomass
         ReproductiveMassIncludingChangeThisTimeStep += Biomass.second;
     }
@@ -90,9 +90,9 @@ void MortalitySet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, un
     }
 
     // Remove individuals that have died from the delta abundance for this cohort
-    Cohort::mMassFluxes[ "abundance" ][ "mortality" ] = MortalityTotal;
+    Cohort::mMassAccounting[ "abundance" ][ "mortality" ] = MortalityTotal;
 
     // Add the biomass of individuals that have died to the delta biomass in the organic pool (including reproductive 
     // potential mass, and mass gained through eating, and excluding mass lost through metabolism)
-    Cohort::mMassFluxes[ "organicpool" ][ "mortality" ] = ( 1 - MortalityTotal ) * actingCohort.mCohortAbundance * ( BodyMassIncludingChangeThisTimeStep + ReproductiveMassIncludingChangeThisTimeStep );
+    Cohort::mMassAccounting[ "organicpool" ][ "mortality" ] = ( 1 - MortalityTotal ) * actingCohort.mCohortAbundance * ( BodyMassIncludingChangeThisTimeStep + ReproductiveMassIncludingChangeThisTimeStep );
 }

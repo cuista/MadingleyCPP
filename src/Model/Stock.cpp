@@ -32,6 +32,3 @@ Stock::Stock( FunctionalGroupDefinitions& stockDefinitions, const unsigned funct
     }
     mCell = &gridCell;
 }
-
-
-

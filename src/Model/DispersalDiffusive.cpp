@@ -1,7 +1,6 @@
 #include "DispersalDiffusive.h"
 
 DispersalDiffusive::DispersalDiffusive( ) {
-    
     mTimeUnitImplementation = "month";
     mDispersalSpeedBodyMassScalar = 0.0278;
     mDispersalSpeedBodyMassExponent = 0.48;

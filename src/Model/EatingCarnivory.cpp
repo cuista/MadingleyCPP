@@ -332,16 +332,16 @@ void EatingCarnivory::Run( GridCell& gcl, Cohort& actingCohort, unsigned current
     }
 
     // Add the biomass eaten and assimilated by an individual to the delta biomass for the acting (predator) cohort
-    Cohort::mMassFluxes["biomass"]["predation"] = mTemporaryValue * mPredatorAssimilationEfficiency;
+    Cohort::mMassAccounting["biomass"]["predation"] = mTemporaryValue * mPredatorAssimilationEfficiency;
 
     // Move the biomass eaten but not assimilated by an individual into the organic matter pool
-    Cohort::mMassFluxes["organicpool"]["predation"] = mTemporaryValue * mPredatorNonAssimilation * mAbundancePredator;
+    Cohort::mMassAccounting["organicpool"]["predation"] = mTemporaryValue * mPredatorNonAssimilation * mAbundancePredator;
 
     // Check that the delta biomass from eating for the acting cohort is not negative
-    assert( Cohort::mMassFluxes["biomass"]["predation"] >= 0 && "Predation yields negative biomass" );
+    assert( Cohort::mMassAccounting["biomass"]["predation"] >= 0 && "Predation yields negative biomass" );
 
     // Calculate the total biomass eaten by the acting (predator) cohort
-    mTotalBiomassEatenByCohort = Cohort::mMassFluxes["biomass"]["predation"] * mAbundancePredator;
+    mTotalBiomassEatenByCohort = Cohort::mMassAccounting["biomass"]["predation"] * mAbundancePredator;
 }
 
 double EatingCarnivory::CalculateExpectedNumberKilledTerrestrial( double preyAbundance, double preyIndividualMass, int preyMassBinNumber, int preyFunctionalGroup, double predatorIndividualMass, bool preyIsCarnivore, bool preyIsOmnivore, bool predatorIsOmnivore,

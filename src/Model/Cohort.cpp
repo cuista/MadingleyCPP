@@ -8,7 +8,7 @@
 
 unsigned Cohort::mNextID = 0;
 Types::CohortVector Cohort::mNewCohorts;
-Types::Double2DMap Cohort::mMassFluxes;
+Types::Double2DMap Cohort::mMassAccounting;
 
 Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, double optimalPreyBodySizeRatio, unsigned short birthTimeStep, double proportionTimeActive, long long &nextCohortID ) {
     mFunctionalGroupIndex = functionalGroupIndex;
@@ -65,25 +65,25 @@ bool Cohort::IsMature( ) {
 void Cohort::ResetMassFluxes( ) {
     // Initialize delta abundance sorted list with appropriate processes
 
-    mMassFluxes["abundance"]["mortality"] = 0.0;
+    mMassAccounting["abundance"]["mortality"] = 0.0;
 
     // Initialize delta biomass sorted list with appropriate processes
-    mMassFluxes["biomass"]["metabolism"] = 0.0;
-    mMassFluxes["biomass"]["predation"] = 0.0;
-    mMassFluxes["biomass"]["herbivory"] = 0.0;
-    mMassFluxes["biomass"]["reproduction"] = 0.0;
+    mMassAccounting["biomass"]["metabolism"] = 0.0;
+    mMassAccounting["biomass"]["predation"] = 0.0;
+    mMassAccounting["biomass"]["herbivory"] = 0.0;
+    mMassAccounting["biomass"]["reproduction"] = 0.0;
 
     // Initialize delta reproductive biomass vector with appropriate processes
 
-    mMassFluxes["reproductivebiomass"]["reproduction"] = 0.0;
+    mMassAccounting["reproductivebiomass"]["reproduction"] = 0.0;
 
     // Initialize organic pool delta vector with appropriate processes
-    mMassFluxes["organicpool"]["herbivory"] = 0.0;
-    mMassFluxes["organicpool"]["predation"] = 0.0;
-    mMassFluxes["organicpool"]["mortality"] = 0.0;
+    mMassAccounting["organicpool"]["herbivory"] = 0.0;
+    mMassAccounting["organicpool"]["predation"] = 0.0;
+    mMassAccounting["organicpool"]["mortality"] = 0.0;
 
     // Initialize respiratory CO2 pool delta vector with appropriate processes
-    mMassFluxes["respiratoryCO2pool"]["metabolism"] = 0.0;
+    mMassAccounting["respiratoryCO2pool"]["metabolism"] = 0.0;
 }
 
 double Cohort::GetRealm( ) {

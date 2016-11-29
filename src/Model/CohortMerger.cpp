@@ -9,12 +9,7 @@ CohortMerger::CohortMerger( ) {
         mRandomNumber.SetSeed( 4000 );
     }
 }
-//----------------------------------------------------------------------------------------------
 
-/** \brief Calculate the distance between two cohorts in multi-dimensional trait space (body mass, adult mass, juvenile mass)
-@param Cohort1 The first cohort to calculate distance to 
-@param Cohort2 The cohort to compare to 
-@returns The relative distance in trait space */
 double CohortMerger::CalculateDistance( Cohort& cohortA, Cohort& cohortB ) {
     double AdultMassDistance = ( cohortA.mAdultMass - cohortB.mAdultMass ) / cohortA.mAdultMass;
     double JuvenileMassDistance = ( cohortA.mJuvenileMass - cohortB.mJuvenileMass ) / cohortA.mJuvenileMass;

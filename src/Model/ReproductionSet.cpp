@@ -26,4 +26,3 @@ void ReproductionSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort,
     // due to other ecological processes
     mImplementations["reproduction basic"]->Run( gcl, actingCohort, currentTimestep, partial, _Iteroparous, currentMonth, params );
 }
-

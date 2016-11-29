@@ -21,13 +21,6 @@ void DispersalSet::ResetRandoms( ) {
     mChoose[ "responsive" ]->ResetRandom( );
 }
 
-/** \brief Run dispersal 
-@param cellIndex The cell index for the active cell in the model grid 
-@param gridForDispersal The model grid to run the process for 
-@param dispersalOnly Whether we are running dispersal only 
-@param madingleyCohortDefinitions The functional group definitions for cohorts in the model 
-@param madingleyStockDefinitions The functional group definitions for stocks in the model 
-@param currentMonth The current model month */
 void DispersalSet::RunCrossGridCellEcologicalProcess( GridCell& gcl, Grid& gridForDispersal, MadingleyInitialisation& params, unsigned currentMonth ) {
     gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
         if( mChoose.count( c.GetDispersalType( params ) ) != 0 ) {

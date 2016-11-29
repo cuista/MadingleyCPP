@@ -115,6 +115,6 @@ void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsig
 
     }
     // Check that the biomasses from predation and herbivory in the deltas is a number
-    assert( !std::isnan( Cohort::mMassFluxes["biomass"]["predation"] ) && "BiomassFromEating is NaN" );
-    assert( !std::isnan( Cohort::mMassFluxes["biomass"]["herbivory"] ) && "BiomassFromEating is NaN" );
+    assert( !std::isnan( Cohort::mMassAccounting["biomass"]["predation"] ) && "BiomassFromEating is NaN" );
+    assert( !std::isnan( Cohort::mMassAccounting["biomass"]["herbivory"] ) && "BiomassFromEating is NaN" );
 }
