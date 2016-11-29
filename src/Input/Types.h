@@ -19,23 +19,23 @@ class DataLayer;
 class DataLayerProcessor;
 class DataLayerSet;
 class DataRecorder;
-class Dispersal;
+class DispersalSet;
 class Environment;
 class FileReader;
 class FileWriter;
 class GridCell;
 class GridDatum;
-class IDispersalImplementation;
+class Dispersal;
 class InputData;
 class InputDatum;
 class Layer;
 class Logger;
-class MadingleyModelInitialisation;
+class MadingleyInitialisation;
 class Maths;
 class Parameters;
 class Processor;
 class Stock;
-class Time;
+class TimeStep;
 class Variable;
 
 namespace Types {
@@ -48,13 +48,13 @@ namespace Types {
     typedef DataLayerProcessor* DataLayerProcessorPointer;
     typedef DataLayerSet* DataLayerSetPointer;
     typedef DataRecorder* DataRecorderPointer;
-    typedef Dispersal* DispersalPointer;
+    typedef DispersalSet* DispersalSetPointer;
     typedef Environment* EnvironmentPointer;
     typedef FileReader* FileReaderPointer;
     typedef FileWriter* FileWriterPointer;
     typedef GridDatum* GridDatumPointer;
     typedef GridCell* GridCellPointer;
-    typedef IDispersalImplementation* IDispersalImplementationPointer;
+    typedef Dispersal* DispersalPointer;
     typedef InputData* InputDataPointer;
     typedef InputDatum* InputDatumPointer;
     typedef Layer* LayerPointer;
@@ -62,7 +62,7 @@ namespace Types {
     typedef Maths* MathsPointer;
     typedef Parameters* ParametersPointer;
     typedef Processor* ProcessorPointer;
-    typedef Time* TimePointer;
+    typedef TimeStep* TimeStepPointer;
     typedef Variable* VariablePointer;
 
     // Containers of pointers/objects
@@ -71,7 +71,7 @@ namespace Types {
     typedef std::map< std::string, BasicDatumPointer > BasicDatumMap;
     typedef std::map< std::string, DataLayerPointer > DataLayerMap;
     typedef std::map< std::string, GridDatumPointer > GridDatumMap;
-    typedef std::map< std::string, IDispersalImplementationPointer > IDispersalMap;
+    typedef std::map< std::string, DispersalPointer > DispersalMap;
     typedef std::map< std::string, LayerPointer > LayerMap;
 
     typedef std::pair< DataCoordsPointer, DataIndicesPointer > CoordsIndicesPair;

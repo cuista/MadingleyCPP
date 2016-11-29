@@ -3,7 +3,7 @@
 #include "Constants.h"
 #include "Types.h"
 #include "Parameters.h"
-#include "Time.h"
+#include "TimeStep.h"
 
 GridDatum::GridDatum( const std::string& name, const std::string& timeUnit, const std::string& dataUnit ) {
     mName = name;
@@ -40,7 +40,7 @@ float* GridDatum::GetData( ) const {
 
 void GridDatum::SetData( const unsigned& cellIndex, const float& data ) {
 
-    unsigned dataIndex = cellIndex + ( Time::Get( )->GetTimeStep( mTimeUnit ) * Parameters::Get( )->GetNumberOfGridCells( ) );
+    unsigned dataIndex = cellIndex + ( TimeStep::Get( )->Get( mTimeUnit ) * Parameters::Get( )->GetNumberOfGridCells( ) );
     
     mData[ dataIndex ] = data;
 }

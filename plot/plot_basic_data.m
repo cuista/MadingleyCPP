@@ -46,6 +46,7 @@ if exist( [ optionOutputDirectory optionCurrentDataSet optionMonthlyBasicFile ],
             if optionPrintPlotsToFile == 1
                 disp( [ optionOutputDirectory optionCurrentDataSet dataSetName '.' optionOutputFileFormat  ] );
                 printPlotToFile( handle, [ optionPlotImageWidth optionPlotImageHeight ], [ optionOutputDirectory optionCurrentDataSet dataSetName ], optionOutputFileFormat );
+                close( handle );
             end
         catch
             disp( [ 'ERROR> Unable to plot variable "' OutputParameters{ monthlyBasicIndices( plotIndex ) } '" in ' optionMonthlyBasicFile '.' ] );

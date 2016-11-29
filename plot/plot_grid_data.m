@@ -54,6 +54,7 @@ if exist( [ optionOutputDirectory optionCurrentDataSet optionMonthlyGridFile ], 
                 if optionPrintPlotsToFile == 1
                     disp( [ optionOutputDirectory optionCurrentDataSet dataSetName '.' optionOutputFileFormat  ] );
                     printPlotToFile( handle, [ optionPlotImageWidth optionPlotImageHeight ], [ optionOutputDirectory optionCurrentDataSet dataSetName ], optionOutputFileFormat );
+                    close( handle );
                 end
             else
                 disp( [ 'ERROR> optionMonthIndex is set to ' num2str( optionMonthIndex ) '. Data only has a temporal resolution of ' num2str( temporalResolution ) '.' ] );

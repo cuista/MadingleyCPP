@@ -1,74 +1,33 @@
-#ifndef REPRODUCTION_H
-#define REPRODUCTION_H
-#include <IReproductionImplementation.h>
-#include <IEcologicalProcessWithinGridCells.h>
-#include <TReproductionBasic.h>
+#ifndef REPRODUCTION
+#define REPRODUCTION
 
-/** \file Reproduction.h
- * \brief the Reproduction header file
- */
+#include "MadingleyInitialisation.h"
+#include "ThreadVariables.h"
 
-/** \brief Performs reproduction */
-class Reproduction: public IEcologicalProcessWithinGridCell {
+#include <map>
+
+/** \brief Interface for implementations of the ecological process of reproduction */
+class Reproduction {
 public:
-    //----------------------------------------------------------------------------------------------
-    //Variables
-    //----------------------------------------------------------------------------------------------
-    /** \brief The available implementations of the reproduction process */
-    map<string, IReproductionImplementation*> Implementations;
-    //----------------------------------------------------------------------------------------------
-    //Methods
-    //----------------------------------------------------------------------------------------------
 
-    //----------------------------------------------------------------------------------------------
-
-    /**  \brief Constructor for Reproduction: fills the list of available implementations of reproduction */
-    Reproduction( string globalModelTimeStepUnit, bool drawRandomly ) {
-        // Add the basic reproduction implementation to the list of implementations
-        ReproductionBasic* ReproductionImplementation = new ReproductionBasic( globalModelTimeStepUnit, drawRandomly );
-        Implementations["reproduction basic"] = ReproductionImplementation;
+    /** \brief Generate new cohorts from reproductive potential mass
+    @param gridCell The current grid cell 
+    @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
+    @param currentTimestep The current model time step 
+    @param partial Thread-locked variables 
+    @param iteroparous Whether the acting cohort is iteroparous, as opposed to semelparous 
+    @param currentMonth The current model month */
+    virtual void Run( GridCell&, Cohort&, unsigned, ThreadVariables&, bool, unsigned, MadingleyInitialisation& ) {
+        std::cout << "ReproductionImplementation RunReproductionEvents should be virtual: you probably don't want to be here" << std::endl;
     }
-    //----------------------------------------------------------------------------------------------
 
-    /** Destructor ensure we tidy everything up */
-    ~Reproduction( ) {
-        delete Implementations["reproduction basic"];
+    /** \brief Assigns surplus body mass to reproductive potential mass
+    @param gridCell The current grid cell 
+    @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
+    @param currentTimestep The current model time step 
+    @param trackProcesses An instance of ProcessTracker to hold diagnostics for reproduction */
+    virtual void MassAssignment( GridCell&, Cohort&, unsigned, MadingleyInitialisation& ) {
+        std::cout << "IReproductionImplementation RunReproductiveMassAssignment should be virtual: you probably don't want to be here" << std::endl;
     }
-    //----------------------------------------------------------------------------------------------
-
-    /** \brief Initialize an implementation of reproduction. This is only in here to satisfy the requirements of IEcologicalProcessWithinGridCells
-
-    @param gcl The current grid cell 
-    @param params The definitions for functional groups in the model, among other things 
-    @param implementationKey The name of the reproduction implementation to initialize 
-     */
-    void InitializeEcologicalProcess( GridCell& gcl, MadingleyModelInitialisation& params, string implementationKey ) {
-    }
-    //----------------------------------------------------------------------------------------------
-
-    /** \brief Run reproduction
-    @param gcl The current grid cell 
-    @param actingCohort The acting cohort 
-    @param currentTimeStep The current model time step 
-    @param partial Thread-locked variables for the parallelised version 
-    @param currentMonth The current model month 
-    @params Parameters defined here */
-    void RunEcologicalProcess( GridCell& gcl,
-            Cohort& actingCohort,
-            unsigned currentTimestep,
-            ThreadLockedParallelVariables& partial,
-            unsigned currentMonth, MadingleyModelInitialisation& params ) {
-
-        // Holds the reproductive strategy of a cohort
-        bool _Iteroparous = (params.mCohortFunctionalGroupDefinitions.GetTraitNames( "reproductive strategy", actingCohort.mFunctionalGroupIndex ) == "iteroparity");
-
-        // Assign mass to reproductive potential
-        Implementations["reproduction basic"]->RunReproductiveMassAssignment( gcl, actingCohort, currentTimestep, params );
-
-        // Run reproductive events. Note that we can't skip juveniles here as they could conceivably grow to adulthood and get enough biomass to reproduce in a single time step
-        // due to other ecological processes
-        Implementations["reproduction basic"]->RunReproductionEvents( gcl, actingCohort, currentTimestep, partial, _Iteroparous, currentMonth, params );
-    }
-    //----------------------------------------------------------------------------------------------
 };
 #endif

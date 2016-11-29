@@ -2,28 +2,62 @@
 #define COHORT_H
 
 #include "Types.h"
+#include "Location.h"
 
-/** \file Cohort.h
- * \brief the Cohort header file
- */
-
-/** \brief Class to hold properties of a single cohort */
-class location{
-public:
-    unsigned lonIndex,latIndex;
-    location(){lonIndex=0;latIndex=0;}
-    location(const location& L_in){lonIndex=L_in.lonIndex; latIndex=L_in.latIndex;}
-    bool operator==(const location& L_in){return (lonIndex==L_in.lonIndex) && (latIndex==L_in.latIndex);}
-    void setIndices(unsigned latI,unsigned lonI){latIndex=latI;lonIndex=lonI;}
-};
 class Cohort {
 public:
+    /** \brief Constructor for the Cohort class: assigns cohort starting properties at beginning of model run
+    @param gcl The grid cell that holds this cohort 
+    @param juvenileBodyMass The mean juvenile body mass of individuals in the cohort 
+    @param adultBodyMass The mean mature adult body mass of individuals in the cohort 
+    @param initialBodyMass The intial mean body mass of individuals in this cohort 
+    @param initialAbundance The intial number of individuals in this cohort 
+    @param optimalPreyBodySizeRatio The optimal prey body mass (as a percentage of this cohorts mass) for individuals in this cohort 
+    @param birthTimeStep The birth time step for this cohort 
+    @param nextCohortID The unique ID to assign to the next cohort created    */
+    Cohort( GridCell&, unsigned, double, double, double, double, double, unsigned short, double, long long& );
+
+    /** \brief Constructor for the Cohort class: assigns cohort starting properties on reproduction
+    @param actingCohort The parent of this cohort
+    @param p track position of this cohort in the list held in the cell 
+    @param juvenileBodyMass The mean juvenile body mass of individuals in the cohort 
+    @param adultBodyMass The mean mature adult body mass of individuals in the cohort 
+    @param initialBodyMass The intial mean body mass of individuals in this cohort 
+    @param initialAbundance The intial number of individuals in this cohort 
+    @param birthTimeStep The birth time step for this cohort 
+    @param nextCohortID The unique ID to assign to the next cohort created    */
+    Cohort( Cohort&, double, double, double, double, unsigned, long long& );
+
+    GridCell& GetCurrentCell( );
+    GridCell& GetDestination( );
+    void SetCurrentCell( Types::GridCellPointer );
+
+    bool IsMoving( );
+    bool IsMature( );
+    bool IsMarine( );
+    bool IsPlanktonic( MadingleyInitialisation& );
+    std::string GetDispersalType( MadingleyInitialisation& );
+    double GetRealm( );
+    void TryLivingAt( Types::GridCellPointer, Location& );
+    void Move( );
+    static void ResetMassFluxes( );
+
+    static Types::Double2DMap mMassAccounting;
+    static Types::CohortVector mNewCohorts; // FIX - Why does Cohort contain a vector to the Cohorts?
+    static unsigned mNextID;
+
+    long long mID;
+    /** \brief A list of all cohort IDs ever associated with individuals in this current cohort */
+    Types::LongVector mCohortID;
+
+    GridCell* mCurrentCell;
+    GridCell* mDestinationCell;
+    Location mCurrentLocation;
+    Location mDestinationLocation;
     /** \brief Time step when the cohort was generated */
     unsigned mBirthTimeStep;
     /** \brief The time step at which this cohort reached maturity */
     unsigned mMaturityTimeStep;
-    /** \brief A list of all cohort IDs ever associated with individuals in this current cohort */
-    Types::LongVector mCohortID;
     /** \brief The mean juvenile mass of individuals in this cohort */
     double mJuvenileMass;
     /** \brief The mean mature adult mass of individuals in this cohort */
@@ -36,57 +70,15 @@ public:
     double mMaximumAchievedBodyMass;
     /** \brief The number of individuals in the cohort */
     double mCohortAbundance;
-    /** \brief The index of the functional group that the cohort belongs to */
-    unsigned mFunctionalGroupIndex;
-    /** \brief Whether this cohort has ever been merged with another cohort */
-    bool mMerged;
     /** \brief The proportion of the timestep for which this cohort is active */
     double mProportionTimeActive;
     /** \brief The optimal prey body size for individuals in this cohort */
     double mLogOptimalPreyBodySizeRatio;
-    long long mID;
-    GridCell* mCell;
-    GridCell* mDestination;
-    location mPlace,mDest;
-    static Types::Double2DMap mMassFluxes;
-    static Types::CohortVector mNewCohorts;
-    static unsigned mNextID;
-    
-    /** \brief Constructor for the Cohort class: assigns cohort starting properties at beginning of model run
-    @param gcl The grid cell that holds this cohort 
-    @param juvenileBodyMass The mean juvenile body mass of individuals in the cohort 
-    @param adultBodyMass The mean mature adult body mass of individuals in the cohort 
-    @param initialBodyMass The intial mean body mass of individuals in this cohort 
-    @param initialAbundance The intial number of individuals in this cohort 
-    @param optimalPreyBodySizeRatio The optimal prey body mass (as a percentage of this cohorts mass) for individuals in this cohort 
-    @param birthTimeStep The birth time step for this cohort 
-    @param nextCohortID The unique ID to assign to the next cohort created    */
-    Cohort( GridCell&, unsigned, double, double, double, double, double, unsigned short, double, long long & );
+    /** \brief The index of the functional group that the cohort belongs to */
+    unsigned mFunctionalGroupIndex;
+    /** \brief Whether this cohort has ever been merged with another cohort */
+    bool mMerged;
 
-    /** \brief Constructor for the Cohort class: assigns cohort starting properties on reproduction
-    @param actingCohort The parent of this cohort
-    @param p track position of this cohort in the list held in the cell 
-    @param juvenileBodyMass The mean juvenile body mass of individuals in the cohort 
-    @param adultBodyMass The mean mature adult body mass of individuals in the cohort 
-    @param initialBodyMass The intial mean body mass of individuals in this cohort 
-    @param initialAbundance The intial number of individuals in this cohort 
-    @param birthTimeStep The birth time step for this cohort 
-    @param nextCohortID The unique ID to assign to the next cohort created    */
-    Cohort( Cohort&, double, double, double, double, unsigned, long long& );
-    
-    GridCell& GetCurrentCell( );
-    GridCell& GetDestination();
-    void SetCurrentCell( Types::GridCellPointer );
-    
-    bool IsMoving( );
-    bool IsMature( );
-    bool IsMarine( );
-    bool IsPlanktonic( MadingleyModelInitialisation& );
-    std::string DispersalType( MadingleyModelInitialisation& );
-    double Realm( );
-    void TryLivingAt( Types::GridCellPointer,location& );
-    void Move( );
-    static void ResetMassFluxes( );
 };
 
 #endif

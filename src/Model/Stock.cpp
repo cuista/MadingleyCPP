@@ -1,44 +1,34 @@
-/** \file Stock.cc
- * \brief the Stock implementation file
- */
-#include <RevisedTerrestrialPlantModel.h>
-#include <Environment.h>
-#include <GridCell.h>
-
+#include "Stock.h"
+#include "TerrestrialCarbon.h"
+#include "Environment.h"
+#include "GridCell.h"
 #include "Constants.h"
-using namespace std;
-//----------------------------------------------------------------------------------------------
-//Methods
-//----------------------------------------------------------------------------------------------
-//Constructor
 
-Stock::Stock( FunctionalGroupDefinitions& StockDefinitions, const unsigned FunctionalGroup, GridCell& gcl, bool& success ) {
+Stock::Stock( FunctionalGroupDefinitions& stockDefinitions, const unsigned functionalGroup, GridCell& gridCell, bool& success ) {
 
-    FunctionalGroupIndex = FunctionalGroup;
+    mCell = NULL;
 
+    mFunctionalGroupIndex = functionalGroup;
     // Get the individual body masses for organisms in each stock functional group
-    IndividualBodyMass = StockDefinitions.GetBiologicalPropertyOneFunctionalGroup( "individual mass", FunctionalGroup );
+    mIndividualBodyMass = stockDefinitions.GetBiologicalPropertyOneFunctionalGroup( "individual mass", functionalGroup );
 
     success = false;
 
     // If it is a functional group that corresponds to the current realm, then seed the stock
-    if( !gcl.IsMarine( ) && Environment::Get( "Precipitation", gcl ) != Constants::cMissingValue && Environment::Get( "Temperature", gcl ) != Constants::cMissingValue ) {
-        if( StockDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "terrestrial" ) {
+    if( !gridCell.IsMarine( ) && Environment::Get( "Precipitation", gridCell ) != Constants::cMissingValue && Environment::Get( "Temperature", gridCell ) != Constants::cMissingValue ) {
+        if( stockDefinitions.GetTraitNames( "Realm", functionalGroup ) == "terrestrial" ) {
             // An instance of the terrestrial carbon model class
-            RevisedTerrestrialPlantModel PlantModel;
+            TerrestrialCarbon PlantModel;
 
             // Calculate predicted leaf mass at equilibrium for this stock
-            TotalBiomass = PlantModel.CalculateEquilibriumLeafMass( gcl, StockDefinitions.GetTraitNames( "leaf strategy", FunctionalGroup ) == "deciduous" );
+            mTotalBiomass = PlantModel.CalculateEquilibriumLeafMass( gridCell, stockDefinitions.GetTraitNames( "leaf strategy", functionalGroup ) == "deciduous" );
             success = true;
         }
-    } else if( gcl.IsMarine( ) && Environment::Get( "NPP", gcl ) != Constants::cMissingValue ) {
-        if( StockDefinitions.GetTraitNames( "Realm", FunctionalGroup ) == "marine" ) {
-            TotalBiomass = 1.e12;
+    } else if( gridCell.IsMarine( ) && Environment::Get( "NPP", gridCell ) != Constants::cMissingValue ) {
+        if( stockDefinitions.GetTraitNames( "Realm", functionalGroup ) == "marine" ) {
+            mTotalBiomass = 1.e12;
             success = true;
         }
     }
-    mCell = &gcl;
+    mCell = &gridCell;
 }
-
-
-

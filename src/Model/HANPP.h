@@ -27,7 +27,7 @@ public:
     @param gridCellStocks The stocks in the current grid cell 
     @param actingStock The position of the acting stock in the jagged array of grid cell stocks 
     @param currentTimestep The current model time step */
-    double RemoveHumanAppropriatedMatter(double NPPWetMatter, GridCell& gcl, string humanNPPExtraction, Stock& actingStock, unsigned currentTimestep, unsigned currentMonth ) {
+    double RemoveHumanAppropriatedMatter(double NPPWetMatter, GridCell& gcl, std::string humanNPPExtraction, Stock& actingStock, unsigned currentTimestep, unsigned currentMonth ) {
         // Factor to convert NPP from units per m2 to units per km2
        /* double m2Tokm2Conversion = 1000000.0;
 

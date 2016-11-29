@@ -1,94 +1,86 @@
-/* 
- * File:   Environment.cc
- * Author: mb425
- *
- * Created on 26 November 2015, 13:32
- */
-#include <Environment.h>
-#include <GridCell.h>
-#include <ClimateVariablesCalculator.h>
-
+#include "Environment.h"
+#include "GridCell.h"
+#include "ClimateVariablesCalculator.h"
 #include "Types.h"
 #include "FileReader.h"
 #include "Logger.h"
 #include "Parameters.h"
 #include "DataLayerSet.h"
 #include "DataIndices.h"
-#include "Time.h"
+#include "TimeStep.h"
+#include "Layer2D.h"
+#include "Layer3D.h"
+
+#include <string.h>
 
 Types::EnvironmentPointer Environment::mThis = NULL;
 Types::LayerMap Environment::mLayers;
-//------------------------------------------------------------------------------
 
 Environment::Environment( ) {
-    addLayer( "Realm" );
-    setRealm( );
+    AddLayer2D( "Realm" );
+    SetRealm( );
 
-    addLayer( "TerrestrialHANPP" );
-    setHANPP( );
+    AddLayer2D( "TerrestrialHANPP" );
+    SetHANPP( );
 
-    addLayerT( "uVel" );
-    setUVel( );
-    addLayerT( "vVel" );
-    setVVel( );
+    AddLayer3D( "uVel" );
+    SetUVel( );
+    AddLayer3D( "vVel" );
+    SetVVel( );
 
-    addLayerT( "Temperature" );
-    setTemperature( );
-    addLayerT( "DiurnalTemperatureRange" );
+    AddLayer3D( "Temperature" );
+    SetTemperature( );
+    AddLayer3D( "DiurnalTemperatureRange" );
 
-    setDiurnalTemperatureRange( );
+    SetDiurnalTemperatureRange( );
 
-    addLayerT( "Precipitation" );
+    AddLayer3D( "Precipitation" );
 
-    addLayer( "TotalPrecip" );
-    setPrecipitation( );
+    AddLayer2D( "TotalPrecip" );
+    SetPrecipitation( );
 
-    addLayerT( "NPP" );
-    setNPP( );
+    AddLayer3D( "NPP" );
+    SetNPP( );
 
-    addLayerT( "Seasonality" );
-    setNPPSeasonality( );
-    addLayerT( "Breeding Season" );
-    setBreeding( );
+    AddLayer3D( "Seasonality" );
+    SetNPPSeasonality( );
+    AddLayer3D( "Breeding Season" );
+    SetBreeding( );
 
 
-    addLayer( "Organic Pool" );
-    setOrganicPool( );
+    AddLayer2D( "Organic Pool" );
+    SetOrganicPool( );
 
-    addLayer( "Respiratory CO2 Pool" );
-    setRespiratoryCO2Pool( );
+    AddLayer2D( "Respiratory CO2 Pool" );
+    SetRespiratoryCO2Pool( );
 
-    addLayer( "AnnualTemperature" );
-    addLayer( "SDTemperature" );
-    addLayerT( "ExpTDevWeight" );
-    setAVGSDTemp( );
+    AddLayer2D( "AnnualTemperature" );
+    AddLayer2D( "SDTemperature" );
+    AddLayer3D( "ExpTDevWeight" );
+    SetAVGSDTemp( );
 
-    addLayerT( "AET" );
-    addLayer( "TotalAET" );
-    addLayerT( "Fraction Month Frost" );
-    addLayer( "Fraction Year Frost" );
-    addLayer( "Fraction Year Fire" );
-    setFrostandFire( );
+    AddLayer3D( "AET" );
+    AddLayer2D( "TotalAET" );
+    AddLayer3D( "Fraction Month Frost" );
+    AddLayer2D( "Fraction Year Frost" );
+    AddLayer2D( "Fraction Year Fire" );
+    SetFrostandFire( );
 
     //make sure all time dependent fields set to the start
-    update( 0 );
+    Update( 0 );
 }
-//------------------------------------------------------------------------------
 
-void Environment::update( int currentMonth ) {
-    for( auto& L: mLayers )L.second->setTime( currentMonth );
+void Environment::Update( unsigned currentMonth ) {
+    for( auto& L: mLayers ) L.second->SetTime( currentMonth );
 }
-//------------------------------------------------------------------------------
 
-void Environment::addLayer( string s ) {
-    mLayers[s] = new layer0( Parameters::Get( )->GetNumberOfGridCells( ) );
+void Environment::AddLayer2D( std::string name ) {
+    mLayers[ name ] = new Layer2D( Parameters::Get( )->GetNumberOfGridCells( ) );
 }
-//------------------------------------------------------------------------------
 
-void Environment::addLayerT( string s ) {
-    mLayers[s] = new layerT( 12, Parameters::Get( )->GetNumberOfGridCells( ) );
+void Environment::AddLayer3D( std::string name ) {
+    mLayers[ name ] = new Layer3D( 12, Parameters::Get( )->GetNumberOfGridCells( ) );
 }
-//------------------------------------------------------------------------------
 
 Environment* Environment::Get( ) {
     if( mThis == NULL ) {
@@ -96,32 +88,29 @@ Environment* Environment::Get( ) {
     }
     return mThis;
 }
-//------------------------------------------------------------------------------
 
-double& Environment::Get( string s, int cellIndex ) {
+double& Environment::Get( std::string name, unsigned cellIndex ) {
     if( mThis == NULL ) mThis = new Environment( );
-    if( mLayers.count( s ) == 0 ) {
-        cout << "Invalid Layer Request in Environment:: " << s << endl;
+    if( mLayers.count( name ) == 0 ) {
+        std::cout << "Invalid Layer Request in Environment:: " << name << std::endl;
         exit( 0 );
     }
-    return (*mLayers[s] )[cellIndex];
+    return ( *mLayers[ name ] )[ cellIndex ];
 }
-//------------------------------------------------------------------------------
 
-double& Environment::Get( string s, GridCell& gcl ) {
+double& Environment::Get( std::string name, GridCell& gcl ) {
     if( mThis == 0 )mThis = new Environment( );
-    if( mLayers.count( s ) == 0 ) {
-        cout << "Invalid Layer Request in Environment:: " << s << endl;
+    if( mLayers.count( name ) == 0 ) {
+        std::cout << "Invalid Layer Request in Environment:: " << name << std::endl;
         exit( 0 );
     }
-    return (*mLayers[s] )[ gcl.GetIndex( ) ];
+    return (*mLayers[ name ] )[ gcl.GetIndex( ) ];
 }
-//------------------------------------------------------------------------------
 
-void Environment::setTemperature( ) {
-    for( int tm = 0; tm < 12; tm++ ) {
-        Time::Get( )->SetMonthlyTimeStep( tm );
-        mLayers["Temperature"]->setTime( tm );
+void Environment::SetTemperature( ) {
+    for( unsigned timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+        TimeStep::Get( )->SetMonthly( timeIndex );
+        mLayers[ "Temperature" ]->SetTime( timeIndex );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
             double d = Constants::cMissingValue;
@@ -133,34 +122,32 @@ void Environment::setTemperature( ) {
 
             if( d == Constants::cMissingValue ) {
                 d = 0;
-                cout << "Warning Environment::setTemperature- missing values in temperature field!!" << endl;
+                std::cout << "Warning Environment::setTemperature- missing values in temperature field!!" << std::endl;
             }
-            ( *mLayers["Temperature"] )[cellIndex] = d;
+            ( *mLayers[ "Temperature" ] )[ cellIndex ] = d;
         }
     }
 }
-//------------------------------------------------------------------------------
 
-void Environment::setUVel( ) {
-    for( int tm = 0; tm < 12; tm++ ) {
-        Time::Get( )->SetMonthlyTimeStep( tm );
-        mLayers["uVel"]->setTime( tm );
+void Environment::SetUVel( ) {
+    for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+        TimeStep::Get( )->SetMonthly( timeIndex );
+        mLayers[ "uVel" ]->SetTime( timeIndex );
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
             double d = Constants::cMissingValue;
 
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "MarineEastVel", cellIndex );
             }
-            ( *mLayers["uVel"] )[cellIndex] = d;
+            ( *mLayers[ "uVel" ] )[ cellIndex ] = d;
         }
     }
 }
-//------------------------------------------------------------------------------
 
-void Environment::setVVel( ) {
-    for( int tm = 0; tm < 12; tm++ ) {
-        Time::Get( )->SetMonthlyTimeStep( tm );
-        mLayers["vVel"]->setTime( tm );
+void Environment::SetVVel( ) {
+    for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+        TimeStep::Get( )->SetMonthly( timeIndex );
+        mLayers[ "vVel" ]->SetTime( timeIndex );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
             double d = Constants::cMissingValue;
@@ -168,36 +155,34 @@ void Environment::setVVel( ) {
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "MarineNorthVel", cellIndex );
             }
-            ( *mLayers["vVel"] )[cellIndex] = d;
+            ( *mLayers[ "vVel" ] )[ cellIndex ] = d;
         }
     }
 }
-//------------------------------------------------------------------------------
 
-void Environment::setDiurnalTemperatureRange( ) {
-    for( int tm = 0; tm < 12; tm++ ) {
-        Time::Get( )->SetMonthlyTimeStep( tm );
-        mLayers["DiurnalTemperatureRange"]->setTime( tm );
+void Environment::SetDiurnalTemperatureRange( ) {
+    for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+        TimeStep::Get( )->SetMonthly( timeIndex );
+        mLayers[ "DiurnalTemperatureRange" ]->SetTime( timeIndex );
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
-            
+
             double d = Constants::cMissingValue;
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialDTR", cellIndex );
             }
 
-            ( *mLayers["DiurnalTemperatureRange"] )[cellIndex] = d;
+            ( *mLayers[ "DiurnalTemperatureRange" ] )[ cellIndex ] = d;
         }
     }
 }
-//------------------------------------------------------------------------------
 
-void Environment::setPrecipitation( ) {
+void Environment::SetPrecipitation( ) {
     for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
-        ( *mLayers["TotalPrecip"] )[cellIndex] = 0;
+        ( *mLayers[ "TotalPrecip" ] )[cellIndex] = 0;
     }
-    for( int tm = 0; tm < 12; tm++ ) {
-        Time::Get( )->SetMonthlyTimeStep( tm );
-        mLayers["Precipitation"]->setTime( tm );
+    for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+        TimeStep::Get( )->SetMonthly( timeIndex );
+        mLayers[ "Precipitation" ]->SetTime( timeIndex );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
             double d = 0; // There are missing values here. No marine precipitation data.
@@ -208,19 +193,18 @@ void Environment::setPrecipitation( ) {
 
             if( d == Constants::cMissingValue ) {
                 d = 0;
-                cout << "Warning Environment::setPrecipitation- missing values in precipitation field!!" << endl;
+                std::cout << "Warning Environment::setPrecipitation- missing values in precipitation field!!" << std::endl;
             }
-            ( *mLayers["Precipitation"] )[cellIndex] = d;
-            ( *mLayers["TotalPrecip"] )[cellIndex] += d;
+            ( *mLayers[ "Precipitation" ] )[ cellIndex ] = d;
+            ( *mLayers[ "TotalPrecip" ] )[ cellIndex ] += d;
         }
     }
 }
-//------------------------------------------------------------------------------
 
-void Environment::setNPP( ) {
-    for( int tm = 0; tm < 12; tm++ ) {
-        Time::Get( )->SetMonthlyTimeStep( tm );
-        mLayers["NPP"]->setTime( tm );
+void Environment::SetNPP( ) {
+    for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+        TimeStep::Get( )->SetMonthly( timeIndex );
+        mLayers[ "NPP" ]->SetTime( timeIndex );
 
         for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
             double d = Constants::cMissingValue;
@@ -232,15 +216,15 @@ void Environment::setNPP( ) {
 
             if( d == Constants::cMissingValue ) {
                 d = 0;
-                cout << "Warning Environment::setNPP- missing values in NPP field!!" << endl;
+                std::cout << "Warning Environment::setNPP- missing values in NPP field!!" << std::endl;
             }
-            ( *mLayers["NPP"] )[cellIndex] = d; 
+            ( *mLayers[ "NPP" ] )[ cellIndex ] = d;
         }
     }
 }
 //------------------------------------------------------------------------------
 
-void Environment::setRealm( ) {
+void Environment::SetRealm( ) {
     for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
         float d = 0;
         if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
@@ -248,33 +232,33 @@ void Environment::setRealm( ) {
         } else if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
             d = 1.0;
         }
-        ( *mLayers["Realm"] )[cellIndex] = d;
+        ( *mLayers[ "Realm" ] )[ cellIndex ] = d;
     }
 }
 //------------------------------------------------------------------------------
 
-void Environment::setOrganicPool( ) {
+void Environment::SetOrganicPool( ) {
     for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
-        ( *mLayers["Organic Pool"] )[cellIndex] = 0;
+        ( *mLayers[ "Organic Pool" ] )[ cellIndex ] = 0;
     }
 }
 //------------------------------------------------------------------------------
 
-void Environment::setRespiratoryCO2Pool( ) {
+void Environment::SetRespiratoryCO2Pool( ) {
     for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
-        ( *mLayers["Respiratory CO2 Pool"] )[cellIndex] = 0;
+        ( *mLayers[ "Respiratory CO2 Pool" ] )[ cellIndex ] = 0;
     }
 }
 //------------------------------------------------------------------------------
 
-void Environment::setAVGSDTemp( ) {
+void Environment::SetAVGSDTemp( ) {
     for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
         double avg = 0;
-        for( int tm = 0; tm < 12; tm++ ) {
+        for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
 
-            double d = Constants::cMissingValue ;
+            double d = Constants::cMissingValue;
 
-            Time::Get( )->SetMonthlyTimeStep( tm );
+            TimeStep::Get( )->SetMonthly( timeIndex );
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "MarineTemp", cellIndex );
             } else if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
@@ -286,12 +270,12 @@ void Environment::setAVGSDTemp( ) {
         }
         avg = avg / 12;
         double sota = 0, sumExp = 0;
-        vector<double>exptdev( 12 );
-        for( int tm = 0; tm < 12; tm++ ) {
 
+        std::vector< double > exptdev( 12 );
+        for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
             double d = Constants::cMissingValue;
-            Time::Get( )->SetMonthlyTimeStep( tm );
-            
+            TimeStep::Get( )->SetMonthly( timeIndex );
+
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 1 ) {
                 d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "MarineTemp", cellIndex );
             } else if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
@@ -300,16 +284,16 @@ void Environment::setAVGSDTemp( ) {
 
             if( d == Constants::cMissingValue )d = 0;
             sota += ( d - avg )*( d - avg );
-            exptdev[tm] = exp( -( d - avg ) / 3 );
-            sumExp += exptdev[tm];
+            exptdev[ timeIndex ] = exp( -( d - avg ) / 3 );
+            sumExp += exptdev[ timeIndex ];
         }
         for( int tm = 0; tm < 12; tm++ ) {
-            mLayers["ExpTDevWeight"]->setTime( tm );
-            ( *mLayers["ExpTDevWeight"] )[cellIndex] = exptdev[tm] / sumExp;
+            mLayers[ "ExpTDevWeight" ]->SetTime( tm );
+            ( *mLayers[ "ExpTDevWeight" ] )[ cellIndex ] = exptdev[tm] / sumExp;
         }
 
-        ( *mLayers["AnnualTemperature"] )[cellIndex] = avg;
-        ( *mLayers["SDTemperature"] )[cellIndex] = sqrt( sota / 12 );
+        ( *mLayers[ "AnnualTemperature" ] )[cellIndex] = avg;
+        ( *mLayers[ "SDTemperature" ] )[ cellIndex ] = sqrt( sota / 12 );
     }
 }
 //----------------------------------------------------------------------------------------------
@@ -317,34 +301,34 @@ void Environment::setAVGSDTemp( ) {
 /** \brief Calculate monthly seasonality values of Net Primary Production - ignores missing values. If there is no NPP data (ie all zero or missing values)
 then assign 1/12 for each month.
  */
-void Environment::setNPPSeasonality( ) {
+void Environment::SetNPPSeasonality( ) {
     for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
         // Loop over months and calculate total annual NPP
-        double TotalNPP = 0.0;
-        for( int i = 0; i < 12; i++ ) {
-            mLayers["NPP"]->setTime( i );
-            double N = ( *mLayers["NPP"] )[cellIndex];
-            if( N != Constants::cMissingValue && N > 0 ) TotalNPP += N;
+        double totalNPP = 0.0;
+        for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+            mLayers["NPP"]->SetTime( timeIndex );
+            double N = ( *mLayers["NPP"] )[ cellIndex ];
+            if( N != Constants::cMissingValue && N > 0 ) totalNPP += N;
         }
-        if( TotalNPP == 0 ) {
+        if( totalNPP == 0 ) {
             // Loop over months and calculate seasonality
             // If there is no NPP value then assign a uniform flat seasonality
-            for( int i = 0; i < 12; i++ ) {
-                mLayers["Seasonality"]->setTime( i );
-                ( *mLayers["Seasonality"] )[cellIndex] = 1.0 / 12.0;
+            for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+                mLayers["Seasonality"]->SetTime( timeIndex );
+                ( *mLayers["Seasonality"] )[ cellIndex ] = 1.0 / 12.0;
             }
 
         } else {
             // Some NPP data exists for this grid cell so use that to infer the NPP seasonality
             // Loop over months and calculate seasonality
-            for( int i = 0; i < 12; i++ ) {
-                mLayers["NPP"]->setTime( i );
-                mLayers["Seasonality"]->setTime( i );
-                double N = ( *mLayers["NPP"] )[cellIndex];
+            for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+                mLayers["NPP"]->SetTime( timeIndex );
+                mLayers["Seasonality"]->SetTime( timeIndex );
+                double N = ( *mLayers["NPP"] )[ cellIndex ];
                 if( N != Constants::cMissingValue && N > 0 ) {
-                    ( *mLayers["Seasonality"] )[cellIndex] = N / TotalNPP;
+                    ( *mLayers["Seasonality"] )[ cellIndex ] = N / totalNPP;
                 } else {
-                    ( *mLayers["Seasonality"] )[cellIndex] = 0.0;
+                    ( *mLayers["Seasonality"] )[ cellIndex ] = 0.0;
                 }
             }
         }
@@ -353,70 +337,70 @@ void Environment::setNPPSeasonality( ) {
 }
 //----------------------------------------------------------------------------------------------
 
-void Environment::setFrostandFire( ) {
+void Environment::SetFrostandFire( ) {
     // Calculate other climate variables from temperature and precipitation
     // Declare an instance of the climate variables calculator
     ClimateVariablesCalculator CVC;
 
     for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
         // Calculate the fraction of the year that experiences frost
-        vector<double> FrostDays( 12 ), Temperature( 12 ), Precipitation( 12 );
-        for( int i = 0; i < 12; i++ ) {
+        std::vector< double > FrostDays( 12 ), Temperature( 12 ), Precipitation( 12 );
+        for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
 
-            Time::Get( )->SetMonthlyTimeStep( i );
+            TimeStep::Get( )->SetMonthly( timeIndex );
             if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
-                FrostDays[i] = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialFrost", cellIndex );
-                Precipitation[i] = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialPre", cellIndex );
-                Temperature[i] = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialTemp", cellIndex );
+                FrostDays[timeIndex] = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialFrost", cellIndex );
+                Precipitation[timeIndex] = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialPre", cellIndex );
+                Temperature[timeIndex] = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialTemp", cellIndex );
             }
         }
-        ( *mLayers["Fraction Year Frost"] )[cellIndex] = CVC.GetNDF( FrostDays, Temperature, Constants::cMissingValue );
+        ( *mLayers[ "Fraction Year Frost" ] )[ cellIndex ] = CVC.GetNDF( FrostDays, Temperature, Constants::cMissingValue );
 
-        vector<double> MonthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        std::vector< double > MonthDays = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-        for( int i = 0; i < 12; i++ ) {
-            mLayers["Fraction Month Frost"]->setTime( i );
-            ( *mLayers["Fraction Month Frost"] )[cellIndex] = min( FrostDays[i] / MonthDays[i], ( double )1.0 );
+        for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+            mLayers[ "Fraction Month Frost" ]->SetTime( timeIndex );
+            ( *mLayers[ "Fraction Month Frost" ] )[ cellIndex ] = std::min( FrostDays[timeIndex] / MonthDays[timeIndex], ( double )1.0 );
         }
         double AWC = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialAWC", cellIndex );
 
-        tuple<vector<double>, double, double> TempTuple = CVC.MonthlyActualEvapotranspirationSoilMoisture( AWC, Precipitation, Temperature );
-        ( *mLayers["TotalAET"] )[cellIndex] = 0;
-        for( int i = 0; i < 12; i++ ) {
-            mLayers["AET"]->setTime( i );
-            ( *mLayers["AET"] )[cellIndex] = get<0>( TempTuple )[i];
-            ( *mLayers["TotalAET"] )[cellIndex] += get<0>( TempTuple )[i];
+        std::tuple< std::vector< double >, double, double > TempTuple = CVC.MonthlyActualEvapotranspirationSoilMoisture( AWC, Precipitation, Temperature );
+        ( *mLayers[ "TotalAET" ] )[cellIndex ] = 0;
+        for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+            mLayers[ "AET" ]->SetTime( timeIndex );
+            ( *mLayers[ "AET" ] )[ cellIndex ] = std::get< 0 >( TempTuple )[ timeIndex ];
+            ( *mLayers[ "TotalAET" ] )[ cellIndex ] += std::get< 0 >( TempTuple )[ timeIndex ];
         }
-        ( *mLayers["Fraction Year Fire"] )[cellIndex] = ( get<2> ( TempTuple ) / 360 );
+        ( *mLayers["Fraction Year Fire"] )[ cellIndex ] = ( std::get< 2 > ( TempTuple ) / 360 );
     }
 }
 //----------------------------------------------------------------------------------------------
 
-void Environment::setBreeding( ) {
+void Environment::SetBreeding( ) {
     // Designate a breeding season for this grid cell, where a month is considered to be part of the breeding season if its NPP is at
     // least 80% of the maximum NPP throughout the whole year
     for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
         double maxSeason = -1;
-        for( int i = 0; i < 12; i++ ) {
-            mLayers["Seasonality"]->setTime( i );
-            maxSeason = max( maxSeason, ( *mLayers["Seasonality"] )[cellIndex] );
+        for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+            mLayers[ "Seasonality" ]->SetTime( timeIndex );
+            maxSeason = std::max( maxSeason, ( *mLayers[ "Seasonality" ] )[ cellIndex ] );
         }
         for( int i = 0; i < 12; i++ ) {
-            mLayers["Seasonality"]->setTime( i );
-            mLayers["Breeding Season"]->setTime( i );
+            mLayers[ "Seasonality" ]->SetTime( i );
+            mLayers[ "Breeding Season" ]->SetTime( i );
 
-            if( ( *mLayers["Seasonality"] )[cellIndex] / maxSeason > 0.5 ) {
-                ( *mLayers["Breeding Season"] )[cellIndex] = 1.0;
+            if( ( *mLayers[ "Seasonality" ] )[ cellIndex ] / maxSeason > 0.5 ) {
+                ( *mLayers[ "Breeding Season" ] )[ cellIndex ] = 1.0;
             } else {
-                ( *mLayers["Breeding Season"] )[cellIndex] = 0.0;
+                ( *mLayers[ "Breeding Season" ] )[ cellIndex ] = 0.0;
             }
         }
     }
 }
 //------------------------------------------------------------------------------
 
-void Environment::setHANPP( ) {
+void Environment::SetHANPP( ) {
     for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
-        ( *mLayers["TerrestrialHANPP"] )[cellIndex] = 0;
+        ( *mLayers[ "TerrestrialHANPP" ] )[ cellIndex ] = 0;
     }
 }

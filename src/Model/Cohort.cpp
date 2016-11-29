@@ -1,17 +1,16 @@
 #include <Cohort.h>
 #include <limits.h>
 #include <GridCell.h>
-#include <MadingleyModelInitialisation.h>
-#include <Dispersal.h>
+#include <MadingleyInitialisation.h>
+#include <DispersalSet.h>
 
 #include "Parameters.h"
 
 unsigned Cohort::mNextID = 0;
 Types::CohortVector Cohort::mNewCohorts;
-Types::Double2DMap Cohort::mMassFluxes;
+Types::Double2DMap Cohort::mMassAccounting;
 
 Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, double optimalPreyBodySizeRatio, unsigned short birthTimeStep, double proportionTimeActive, long long &nextCohortID ) {
-
     mFunctionalGroupIndex = functionalGroupIndex;
     mJuvenileMass = juvenileBodyMass;
     mAdultMass = adultBodyMass;
@@ -23,21 +22,20 @@ Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBod
     mMaximumAchievedBodyMass = juvenileBodyMass;
     mMerged = false;
     mProportionTimeActive = proportionTimeActive;
-    mCell = &gcl;
-    mDestination = mCell;
-    mPlace.setIndices(gcl.GetLatitudeIndex(),gcl.GetLongitudeIndex());
-    mDest=mPlace;
-    
-    mIndividualReproductivePotentialMass= (double)0.;
+    mCurrentCell = &gcl;
+    mDestinationCell = mCurrentCell;
+    mCurrentLocation.SetIndices( gcl.GetLatitudeIndex( ), gcl.GetLongitudeIndex( ) );
+    mDestinationLocation = mCurrentLocation;
+
+    mIndividualReproductivePotentialMass = 0;
 
     mID = mNextID; //MB added to track this object.
 
     mNextID++;
-    nextCohortID++;
+    nextCohortID++; // FIX - Is this increment required?
 }
 
 Cohort::Cohort( Cohort& actingCohort, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, unsigned birthTimeStep, long long& nextCohortID ) {
-
     mFunctionalGroupIndex = actingCohort.mFunctionalGroupIndex;
     mJuvenileMass = juvenileBodyMass;
     mAdultMass = adultBodyMass;
@@ -49,81 +47,87 @@ Cohort::Cohort( Cohort& actingCohort, double juvenileBodyMass, double adultBodyM
     mMaximumAchievedBodyMass = juvenileBodyMass;
     mMerged = false;
     mProportionTimeActive = actingCohort.mProportionTimeActive;
-    mCell = actingCohort.mCell;
-    mPlace= actingCohort.mPlace;
-    mDestination = mCell;
-    mDest=actingCohort.mDest;
-    mIndividualReproductivePotentialMass= (double)0.;
+    mCurrentCell = actingCohort.mCurrentCell;
+    mDestinationCell = mCurrentCell;
+    mCurrentLocation = actingCohort.mCurrentLocation;
+    mDestinationLocation = actingCohort.mDestinationLocation;
+    mIndividualReproductivePotentialMass = 0;
     mID = mNextID; //MB added to track this object.
     mNextID++;
-    nextCohortID++;
+    nextCohortID++; // FIX - Is this increment required?
 
 }
 
 bool Cohort::IsMature( ) {
-    return (mMaturityTimeStep < std::numeric_limits<unsigned>::max( ) );
+    return ( mMaturityTimeStep < std::numeric_limits<unsigned>::max( ) );
 }
 
 void Cohort::ResetMassFluxes( ) {
     // Initialize delta abundance sorted list with appropriate processes
 
-    mMassFluxes["abundance"]["mortality"] = 0.0;
+    mMassAccounting["abundance"]["mortality"] = 0.0;
 
     // Initialize delta biomass sorted list with appropriate processes
-    mMassFluxes["biomass"]["metabolism"] = 0.0;
-    mMassFluxes["biomass"]["predation"] = 0.0;
-    mMassFluxes["biomass"]["herbivory"] = 0.0;
-    mMassFluxes["biomass"]["reproduction"] = 0.0;
+    mMassAccounting["biomass"]["metabolism"] = 0.0;
+    mMassAccounting["biomass"]["predation"] = 0.0;
+    mMassAccounting["biomass"]["herbivory"] = 0.0;
+    mMassAccounting["biomass"]["reproduction"] = 0.0;
 
     // Initialize delta reproductive biomass vector with appropriate processes
 
-    mMassFluxes["reproductivebiomass"]["reproduction"] = 0.0;
+    mMassAccounting["reproductivebiomass"]["reproduction"] = 0.0;
 
     // Initialize organic pool delta vector with appropriate processes
-    mMassFluxes["organicpool"]["herbivory"] = 0.0;
-    mMassFluxes["organicpool"]["predation"] = 0.0;
-    mMassFluxes["organicpool"]["mortality"] = 0.0;
+    mMassAccounting["organicpool"]["herbivory"] = 0.0;
+    mMassAccounting["organicpool"]["predation"] = 0.0;
+    mMassAccounting["organicpool"]["mortality"] = 0.0;
 
     // Initialize respiratory CO2 pool delta vector with appropriate processes
-    mMassFluxes["respiratoryCO2pool"]["metabolism"] = 0.0;
-} 
-
-double Cohort::Realm( ) {
-    return mCell->Realm( );
+    mMassAccounting["respiratoryCO2pool"]["metabolism"] = 0.0;
 }
 
-void Cohort::TryLivingAt( Types::GridCellPointer destination, location& L ) {
-    if( destination != 0 && destination->Realm( ) == Realm( ) ) {mDestination = destination;mDest=L;}
+double Cohort::GetRealm( ) {
+    return mCurrentCell->GetRealm( );
 }
-GridCell& Cohort::GetDestination(){
-    return *mDestination;
+
+void Cohort::TryLivingAt( Types::GridCellPointer destination, Location& L ) {
+    if( destination != 0 && destination->GetRealm( ) == GetRealm( ) ) {
+        mDestinationCell = destination;
+        mDestinationLocation = L;
+    }
 }
+
+GridCell& Cohort::GetDestination( ) {
+    return *mDestinationCell;
+}
+
 GridCell& Cohort::GetCurrentCell( ) {
-    return *mCell;
+    return *mCurrentCell;
 }
+
 void Cohort::SetCurrentCell( Types::GridCellPointer gclp ) {
-    mCell = gclp;
+    mCurrentCell = gclp;
 }
 
 bool Cohort::IsMoving( ) {
-    return mCell != mDestination;
+    return mCurrentCell != mDestinationCell;
 }
 
 void Cohort::Move( ) {
-    mCell->MoveCohort( *this );
-    mDestination=mCell;
+    mCurrentCell->MoveCohort( *this );
+    mDestinationCell = mCurrentCell;
 }
 
 bool Cohort::IsMarine( ) {
-    return mCell->IsMarine( );
+    return mCurrentCell->IsMarine( );
 }
 
-bool Cohort::IsPlanktonic( MadingleyModelInitialisation& params ) {
+bool Cohort::IsPlanktonic( MadingleyInitialisation& params ) {
     return ( IsMarine( ) && ( ( mIndividualBodyMass <= Parameters::Get( )->GetPlanktonSizeThreshold( ) ) || ( params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Mobility", mFunctionalGroupIndex ) == "planktonic" ) ) );
 }
 
-string Cohort::DispersalType( MadingleyModelInitialisation& params ) {
-    string dispersalName;
+std::string Cohort::GetDispersalType( MadingleyInitialisation& params ) {
+    std::string dispersalName;
     if( IsPlanktonic( params ) ) {
         // Advective dispersal
         dispersalName = "advective";

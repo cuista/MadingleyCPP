@@ -14,6 +14,9 @@
         <itemPath>src/Data/DataLayer3DwithTime.h</itemPath>
         <itemPath>src/Data/DataLayerProcessor.h</itemPath>
         <itemPath>src/Data/DataLayerSet.h</itemPath>
+        <itemPath>src/Data/Layer.h</itemPath>
+        <itemPath>src/Data/Layer2D.h</itemPath>
+        <itemPath>src/Data/Layer3D.h</itemPath>
         <itemPath>src/Data/Variable.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="Input" projectFiles="true">
@@ -26,46 +29,48 @@
       </logicalFolder>
       <logicalFolder name="f1" displayName="Model" projectFiles="true">
         <itemPath>src/Model/Activity.h</itemPath>
-        <itemPath>src/Model/ApplyEcology.h</itemPath>
         <itemPath>src/Model/AutotrophProcessor.h</itemPath>
         <itemPath>src/Model/Cohort.h</itemPath>
-        <itemPath>src/Model/CohortMerge.h</itemPath>
+        <itemPath>src/Model/CohortMerger.h</itemPath>
+        <itemPath>src/Model/CohortPair.h</itemPath>
         <itemPath>src/Model/Dispersal.h</itemPath>
+        <itemPath>src/Model/DispersalAdvective.h</itemPath>
+        <itemPath>src/Model/DispersalDiffusive.h</itemPath>
+        <itemPath>src/Model/DispersalResponsive.h</itemPath>
+        <itemPath>src/Model/DispersalSet.h</itemPath>
         <itemPath>src/Model/Eating.h</itemPath>
+        <itemPath>src/Model/EatingCarnivory.h</itemPath>
+        <itemPath>src/Model/EatingHerbivory.h</itemPath>
+        <itemPath>src/Model/EatingSet.h</itemPath>
+        <itemPath>src/Model/EcologicalProcessWithinGridCell.h</itemPath>
+        <itemPath>src/Model/EcologyApply.h</itemPath>
         <itemPath>src/Model/EcologyCohort.h</itemPath>
         <itemPath>src/Model/EcologyStock.h</itemPath>
         <itemPath>src/Model/Environment.h</itemPath>
         <itemPath>src/Model/FunctionalGroupDefinitions.h</itemPath>
+        <itemPath>src/Model/Grid.h</itemPath>
         <itemPath>src/Model/GridCell.h</itemPath>
         <itemPath>src/Model/HANPP.h</itemPath>
-        <itemPath>src/Model/IDispersalImplementation.h</itemPath>
-        <itemPath>src/Model/IEatingImplementation.h</itemPath>
-        <itemPath>src/Model/IEcologicalProcessWithinGridCells.h</itemPath>
-        <itemPath>src/Model/IMetabolismImplementation.h</itemPath>
-        <itemPath>src/Model/IMortalityImplementation.h</itemPath>
-        <itemPath>src/Model/IReproductionImplementation.h</itemPath>
-        <itemPath>src/Model/MadingleyModel.h</itemPath>
-        <itemPath>src/Model/MadingleyModelInitialisation.h</itemPath>
+        <itemPath>src/Model/Location.h</itemPath>
+        <itemPath>src/Model/Madingley.h</itemPath>
+        <itemPath>src/Model/MadingleyInitialisation.h</itemPath>
         <itemPath>src/Model/Metabolism.h</itemPath>
-        <itemPath>src/Model/ModelGrid.h</itemPath>
+        <itemPath>src/Model/MetabolismEctotherm.h</itemPath>
+        <itemPath>src/Model/MetabolismEndotherm.h</itemPath>
+        <itemPath>src/Model/MetabolismHeterotroph.h</itemPath>
+        <itemPath>src/Model/MetabolismSet.h</itemPath>
         <itemPath>src/Model/Mortality.h</itemPath>
+        <itemPath>src/Model/MortalityBackground.h</itemPath>
+        <itemPath>src/Model/MortalitySenescence.h</itemPath>
+        <itemPath>src/Model/MortalitySet.h</itemPath>
+        <itemPath>src/Model/MortalityStarvation.h</itemPath>
         <itemPath>src/Model/Reproduction.h</itemPath>
-        <itemPath>src/Model/RevisedTerrestrialPlantModel.h</itemPath>
+        <itemPath>src/Model/ReproductionBasic.h</itemPath>
+        <itemPath>src/Model/ReproductionSet.h</itemPath>
         <itemPath>src/Model/Stock.h</itemPath>
-        <itemPath>src/Model/TAdvectiveDispersal.h</itemPath>
-        <itemPath>src/Model/TBackgroundMortality.h</itemPath>
-        <itemPath>src/Model/TDiffusiveDispersal.h</itemPath>
-        <itemPath>src/Model/TMetabolismEctotherm.h</itemPath>
-        <itemPath>src/Model/TMetabolismEndotherm.h</itemPath>
-        <itemPath>src/Model/TMetabolismHeterotroph.h</itemPath>
-        <itemPath>src/Model/TReproductionBasic.h</itemPath>
-        <itemPath>src/Model/TResponsiveDispersal.h</itemPath>
-        <itemPath>src/Model/TRevisedHerbivory.h</itemPath>
-        <itemPath>src/Model/TRevisedPredation.h</itemPath>
-        <itemPath>src/Model/TSenescenceMortality.h</itemPath>
-        <itemPath>src/Model/TStarvationMortality.h</itemPath>
-        <itemPath>src/Model/ThreadLocked.h</itemPath>
-        <itemPath>src/Model/Time.h</itemPath>
+        <itemPath>src/Model/TerrestrialCarbon.h</itemPath>
+        <itemPath>src/Model/ThreadVariables.h</itemPath>
+        <itemPath>src/Model/TimeStep.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="Output" projectFiles="true">
         <itemPath>src/Output/BasicDatum.h</itemPath>
@@ -103,6 +108,8 @@
         <itemPath>src/Data/DataLayer3DwithTime.cpp</itemPath>
         <itemPath>src/Data/DataLayerProcessor.cpp</itemPath>
         <itemPath>src/Data/DataLayerSet.cpp</itemPath>
+        <itemPath>src/Data/Layer2D.cpp</itemPath>
+        <itemPath>src/Data/Layer3D.cpp</itemPath>
         <itemPath>src/Data/Variable.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f3" displayName="Input" projectFiles="true">
@@ -112,10 +119,42 @@
         <itemPath>src/Input/Parameters.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="Model" projectFiles="true">
+        <itemPath>src/Model/Activity.cpp</itemPath>
+        <itemPath>src/Model/AutotrophProcessor.cpp</itemPath>
         <itemPath>src/Model/Cohort.cpp</itemPath>
+        <itemPath>src/Model/CohortMerger.cpp</itemPath>
+        <itemPath>src/Model/CohortPair.cpp</itemPath>
+        <itemPath>src/Model/Dispersal.cpp</itemPath>
+        <itemPath>src/Model/DispersalAdvective.cpp</itemPath>
+        <itemPath>src/Model/DispersalDiffusive.cpp</itemPath>
+        <itemPath>src/Model/DispersalResponsive.cpp</itemPath>
+        <itemPath>src/Model/DispersalSet.cpp</itemPath>
+        <itemPath>src/Model/EatingCarnivory.cpp</itemPath>
+        <itemPath>src/Model/EatingHerbivory.cpp</itemPath>
+        <itemPath>src/Model/EatingSet.cpp</itemPath>
+        <itemPath>src/Model/EcologyApply.cpp</itemPath>
+        <itemPath>src/Model/EcologyCohort.cpp</itemPath>
+        <itemPath>src/Model/EcologyStock.cpp</itemPath>
         <itemPath>src/Model/Environment.cpp</itemPath>
+        <itemPath>src/Model/FunctionalGroupDefinitions.cpp</itemPath>
+        <itemPath>src/Model/Grid.cpp</itemPath>
+        <itemPath>src/Model/GridCell.cpp</itemPath>
+        <itemPath>src/Model/Location.cpp</itemPath>
+        <itemPath>src/Model/Madingley.cpp</itemPath>
+        <itemPath>src/Model/MadingleyInitialisation.cpp</itemPath>
+        <itemPath>src/Model/MetabolismEctotherm.cpp</itemPath>
+        <itemPath>src/Model/MetabolismEndotherm.cpp</itemPath>
+        <itemPath>src/Model/MetabolismHeterotroph.cpp</itemPath>
+        <itemPath>src/Model/MetabolismSet.cpp</itemPath>
+        <itemPath>src/Model/MortalityBackground.cpp</itemPath>
+        <itemPath>src/Model/MortalitySenescence.cpp</itemPath>
+        <itemPath>src/Model/MortalitySet.cpp</itemPath>
+        <itemPath>src/Model/MortalityStarvation.cpp</itemPath>
+        <itemPath>src/Model/ReproductionBasic.cpp</itemPath>
+        <itemPath>src/Model/ReproductionSet.cpp</itemPath>
         <itemPath>src/Model/Stock.cpp</itemPath>
-        <itemPath>src/Model/Time.cpp</itemPath>
+        <itemPath>src/Model/TerrestrialCarbon.cpp</itemPath>
+        <itemPath>src/Model/TimeStep.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f4" displayName="Output" projectFiles="true">
         <itemPath>src/Output/BasicDatum.cpp</itemPath>
@@ -125,12 +164,17 @@
         <itemPath>src/Output/Logger.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Tools" projectFiles="true">
+        <itemPath>src/Tools/ClimateVariablesCalculator.cpp</itemPath>
         <itemPath>src/Tools/Convertor.cpp</itemPath>
         <itemPath>src/Tools/Date.cpp</itemPath>
+        <itemPath>src/Tools/MassBinsHandler.cpp</itemPath>
         <itemPath>src/Tools/Maths.cpp</itemPath>
+        <itemPath>src/Tools/NonStaticSimpleRNG.cpp</itemPath>
         <itemPath>src/Tools/Processor.cpp</itemPath>
+        <itemPath>src/Tools/Stopwatch.cpp</itemPath>
+        <itemPath>src/Tools/UtilityFunctions.cpp</itemPath>
       </logicalFolder>
-      <itemPath>src/Program.cpp</itemPath>
+      <itemPath>src/Main.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -233,6 +277,16 @@
       </item>
       <item path="src/Data/DataLayerSet.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Data/Layer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Data/Layer2D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Data/Layer2D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Data/Layer3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Data/Layer3D.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Data/Variable.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Data/Variable.h" ex="false" tool="3" flavor2="0">
@@ -257,9 +311,13 @@
       </item>
       <item path="src/Input/Types.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Activity.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/Activity.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/ApplyEcology.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/AutotrophProcessor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/AutotrophProcessor.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -267,13 +325,62 @@
       </item>
       <item path="src/Model/Cohort.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/CohortMerge.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/CohortMerger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/CohortMerger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/CohortPair.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/CohortPair.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Dispersal.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Dispersal.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/DispersalAdvective.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalAdvective.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalDiffusive.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalDiffusive.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalResponsive.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalResponsive.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalSet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalSet.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/EatingCarnivory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/EatingCarnivory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EatingHerbivory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/EatingHerbivory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EatingSet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/EatingSet.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologicalProcessWithinGridCell.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/EcologyApply.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyApply.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyCohort.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/EcologyCohort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyStock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/EcologyStock.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -281,95 +388,106 @@
       </item>
       <item path="src/Model/Environment.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/FunctionalGroupDefinitions.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="src/Model/FunctionalGroupDefinitions.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
+      <item path="src/Model/Grid.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Grid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/GridCell.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/GridCell.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/HANPP.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/IDispersalImplementation.h"
+      <item path="src/Model/Location.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Location.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Madingley.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Madingley.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MadingleyInitialisation.cpp"
             ex="false"
-            tool="3"
+            tool="1"
             flavor2="0">
       </item>
-      <item path="src/Model/IEatingImplementation.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/IEcologicalProcessWithinGridCells.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IMetabolismImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IMortalityImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IReproductionImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/MadingleyModel.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/MadingleyModelInitialisation.h"
+      <item path="src/Model/MadingleyInitialisation.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
       <item path="src/Model/Metabolism.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/ModelGrid.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/MetabolismEctotherm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEctotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEndotherm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEndotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismHeterotroph.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismHeterotroph.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismSet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismSet.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/MortalityBackground.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityBackground.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySenescence.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySenescence.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySet.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityStarvation.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityStarvation.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/RevisedTerrestrialPlantModel.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="src/Model/ReproductionBasic.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/ReproductionBasic.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/ReproductionSet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/ReproductionSet.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Stock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Stock.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/TAdvectiveDispersal.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/TerrestrialCarbon.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/Model/TBackgroundMortality.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/TerrestrialCarbon.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/TDiffusiveDispersal.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/ThreadVariables.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/TMetabolismEctotherm.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/TimeStep.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/Model/TMetabolismEndotherm.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TMetabolismHeterotroph.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TReproductionBasic.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TResponsiveDispersal.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TRevisedHerbivory.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TRevisedPredation.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TSenescenceMortality.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TStarvationMortality.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/ThreadLocked.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/Time.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Model/Time.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/TimeStep.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Output/BasicDatum.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -391,7 +509,10 @@
       </item>
       <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Program.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/Tools/ClimateVariablesCalculator.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.h"
             ex="false"
@@ -406,11 +527,15 @@
       </item>
       <item path="src/Tools/Date.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Tools/MassBinsHandler.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Tools/MassBinsHandler.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/Maths.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/Maths.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/NonStaticSimpleRNG.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/NonStaticSimpleRNG.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -418,7 +543,11 @@
       </item>
       <item path="src/Tools/Processor.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Tools/Stopwatch.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Tools/Stopwatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/UtilityFunctions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/UtilityFunctions.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -504,6 +633,16 @@
       </item>
       <item path="src/Data/DataLayerSet.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Data/Layer.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Data/Layer2D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Data/Layer2D.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Data/Layer3D.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Data/Layer3D.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Data/Variable.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Data/Variable.h" ex="false" tool="3" flavor2="0">
@@ -528,9 +667,13 @@
       </item>
       <item path="src/Input/Types.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Main.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Activity.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/Activity.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/ApplyEcology.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/AutotrophProcessor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/AutotrophProcessor.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -538,13 +681,62 @@
       </item>
       <item path="src/Model/Cohort.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/CohortMerge.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/CohortMerger.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/CohortMerger.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/CohortPair.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/CohortPair.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Dispersal.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Dispersal.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/DispersalAdvective.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalAdvective.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalDiffusive.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalDiffusive.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalResponsive.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalResponsive.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalSet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/DispersalSet.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/Eating.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/EatingCarnivory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/EatingCarnivory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EatingHerbivory.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/EatingHerbivory.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EatingSet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/EatingSet.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologicalProcessWithinGridCell.h"
+            ex="false"
+            tool="3"
+            flavor2="0">
+      </item>
+      <item path="src/Model/EcologyApply.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyApply.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyCohort.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/EcologyCohort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/EcologyStock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/EcologyStock.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -552,95 +744,106 @@
       </item>
       <item path="src/Model/Environment.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/FunctionalGroupDefinitions.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
       <item path="src/Model/FunctionalGroupDefinitions.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
+      <item path="src/Model/Grid.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Grid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/GridCell.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Model/GridCell.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/HANPP.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/IDispersalImplementation.h"
+      <item path="src/Model/Location.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Location.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/Madingley.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/Madingley.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MadingleyInitialisation.cpp"
             ex="false"
-            tool="3"
+            tool="1"
             flavor2="0">
       </item>
-      <item path="src/Model/IEatingImplementation.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/IEcologicalProcessWithinGridCells.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IMetabolismImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IMortalityImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/IReproductionImplementation.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="src/Model/MadingleyModel.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/MadingleyModelInitialisation.h"
+      <item path="src/Model/MadingleyInitialisation.h"
             ex="false"
             tool="3"
             flavor2="0">
       </item>
       <item path="src/Model/Metabolism.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/ModelGrid.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/MetabolismEctotherm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEctotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEndotherm.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismEndotherm.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismHeterotroph.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismHeterotroph.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismSet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MetabolismSet.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Mortality.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Model/MortalityBackground.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityBackground.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySenescence.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySenescence.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalitySet.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityStarvation.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/MortalityStarvation.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="src/Model/Reproduction.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/RevisedTerrestrialPlantModel.h"
-            ex="false"
-            tool="3"
-            flavor2="0">
+      <item path="src/Model/ReproductionBasic.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/ReproductionBasic.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Model/ReproductionSet.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Model/ReproductionSet.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Model/Stock.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Model/Stock.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/TAdvectiveDispersal.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/TerrestrialCarbon.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/Model/TBackgroundMortality.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/TerrestrialCarbon.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/TDiffusiveDispersal.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/ThreadVariables.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Model/TMetabolismEctotherm.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/TimeStep.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/Model/TMetabolismEndotherm.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TMetabolismHeterotroph.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TReproductionBasic.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TResponsiveDispersal.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TRevisedHerbivory.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TRevisedPredation.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TSenescenceMortality.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/TStarvationMortality.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/ThreadLocked.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Model/Time.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Model/Time.h" ex="false" tool="3" flavor2="0">
+      <item path="src/Model/TimeStep.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Output/BasicDatum.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -662,7 +865,10 @@
       </item>
       <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Program.cpp" ex="false" tool="1" flavor2="0">
+      <item path="src/Tools/ClimateVariablesCalculator.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.h"
             ex="false"
@@ -677,11 +883,15 @@
       </item>
       <item path="src/Tools/Date.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Tools/MassBinsHandler.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Tools/MassBinsHandler.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/Maths.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/Maths.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/NonStaticSimpleRNG.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/NonStaticSimpleRNG.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -689,7 +899,11 @@
       </item>
       <item path="src/Tools/Processor.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="src/Tools/Stopwatch.cpp" ex="false" tool="1" flavor2="0">
+      </item>
       <item path="src/Tools/Stopwatch.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/UtilityFunctions.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/UtilityFunctions.h" ex="false" tool="3" flavor2="0">
       </item>
