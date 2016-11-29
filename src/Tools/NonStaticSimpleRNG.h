@@ -2,7 +2,7 @@
 #ifndef NONSTATICSIMPLERNG_H
 #define	NONSTATICSIMPLERNG_H
 
-#include <math.h>
+#include <cmath>
 #include <assert.h>
 #include <chrono>
 

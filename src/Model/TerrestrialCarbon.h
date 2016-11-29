@@ -5,7 +5,7 @@
 #include "GridCell.h"
 #include "UtilityFunctions.h"
 
-#include <math.h>
+#include <cmath>
 
 /** \brief Revised version of Matt Smith's terrestrial carbon model */
 class TerrestrialCarbon {

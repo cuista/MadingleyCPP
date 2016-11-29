@@ -5,7 +5,7 @@
 #include "Parameters.h"
 #include "Convertor.h"
 
-#include <math.h>
+#include <cmath>
 #include <algorithm>
 #include <vector>
 #include <map>
@@ -14,7 +14,6 @@
 #include <assert.h>
 #include <iostream>
 
-/** \brief Generic functions */
 using namespace std;
 
 class UtilityFunctions {

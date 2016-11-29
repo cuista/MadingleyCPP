@@ -2,7 +2,7 @@
 #define CLIMATEVARIABLESCALCULATOR
 
 #include <vector>
-#include <math.h>
+#include <cmath>
 #include <tuple>
 
 /** \brief Calculates derived climate variables for which no input data exist */

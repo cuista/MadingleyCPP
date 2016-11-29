@@ -1,8 +1,3 @@
-//Magindgley model entry point.
-//Changes from original PLOS Biology version:-
-//MB 6/8/2015 - 15/11/2015 - converted C# to C++
-
-/** \brief This is the main entry point for the Madingley code */
 #include <fenv.h>
 
 #include <Madingley.h>

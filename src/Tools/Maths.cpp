@@ -2,7 +2,6 @@
 
 //#include "Parameters.h"
 
-#include <math.h>
 #include <cmath> 
 
 Types::MathsPointer Maths::mThis = NULL;
