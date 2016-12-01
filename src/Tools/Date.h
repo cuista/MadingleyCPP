@@ -9,8 +9,8 @@ class Date {
 public:
     Date( );
     ~Date( );
-    
-    std::string GetDateAndTimeString( const std::string format = Constants::cDataSetNameFormat ) const;
+
+    static std::string GetDateAndTimeString( const std::string format = Constants::cDataSetNameFormat );
 };
 
 #endif

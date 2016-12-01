@@ -57,6 +57,7 @@ namespace Constants {
 
     const std::string cOutputBaseDirectory = "./output/";
     const std::string cDataSetNameFormat = "%Y-%m-%d_%H-%M-%S";
+    const std::string cCompleteDateFormat = "%c";
     const std::string cUnitsString = "units";
     const std::string cTimeVariableUnits = "months";
 

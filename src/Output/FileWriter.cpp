@@ -32,11 +32,9 @@ std::string& FileWriter::GetOutputDirectory( ) {
 }
 
 void FileWriter::InitialiseOutputDirectory( ) {
-    Date date;
-
     mOutputDirectory = Constants::cOutputBaseDirectory;
     mkdir( mOutputDirectory.c_str( ), Constants::cOutputFolderPermissions );
-    mOutputDirectory.append( date.GetDateAndTimeString( ) );
+    mOutputDirectory.append( Date::GetDateAndTimeString( ) );
     mkdir( mOutputDirectory.c_str( ), Constants::cOutputFolderPermissions );
     mOutputDirectory.append( Convertor::Get( )->ToString( Constants::cFolderDelimiter ) );
 }
