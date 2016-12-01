@@ -5,15 +5,14 @@
 #include "FileReader.h"
 #include "FileWriter.h"
 #include "Logger.h"
+#include "Date.h"
 
 int main( ) {
     //this line enables the gdb debugger to catch Nan or floating point problems
-    feenableexcept( FE_INVALID | FE_OVERFLOW );
+    feraiseexcept( FE_INVALID | FE_OVERFLOW );
     // Write out model details to the console
     Logger::Get( )->LogMessage( "Madingley model C++ v. 0.\n" );
-
-    std::time_t t = std::chrono::system_clock::to_time_t( std::chrono::high_resolution_clock::now( ) );
-    Logger::Get( )->LogMessage( "Model Run started at " + Convertor::Get( )->ToString( std::ctime( &t ) ) );
+    Logger::Get( )->LogMessage( "Model Run started at " + Date::GetDateAndTimeString( Constants::cCompleteDateFormat ) );
 
     FileReader fileReader;
 

@@ -13,6 +13,7 @@ public:
     @return The number of individuals lost to a cohort through mortality */
     virtual double CalculateMortalityRate( Cohort&, double, unsigned ) {
         std::cout << "If this got called you ended up in a virtual function! MortalityImplementation CalculateMortalityRate" << std::endl;
+        return 1;
     }
 };
 #endif
