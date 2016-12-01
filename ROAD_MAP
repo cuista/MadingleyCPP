@@ -1,8 +1,8 @@
 PLANNED FUTURE CHANGES
 
 Primary
-- Integrate state reading/writing code
 - Finish and integrate tagging/tracker code
+- Integrate state reading/writing code
 - Time-varying input fields
 - HANPP
 - User-guide/tutorial
