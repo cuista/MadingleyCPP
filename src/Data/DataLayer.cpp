@@ -22,7 +22,7 @@ Types::VariablePointer DataLayer::GetVariable( const std::string& name ) const {
     }
 
     if( variablePointer == NULL ) {
-        Logger::Get( )->LogMessage( "ERROR> Variable with name \"" + name + "\" is not found." );
+        std::cout << "ERROR> Variable with name \"" << name << "\" is not found." << std::endl;
     }
 
     return variablePointer;

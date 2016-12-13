@@ -1,6 +1,5 @@
 #include "EcologyApply.h"
 #include "Cohort.h"
-#include "Logger.h"
 
 #include <assert.h>
 
@@ -52,7 +51,7 @@ void EcologyApply::UpdateBiomass( GridCell& gcl, Cohort& actingCohort, unsigned 
 
         BiomassCheck = actingCohort.mIndividualBodyMass + NetBiomass;
         if( BiomassCheck < 0 ) {
-            Logger::Get( )->LogMessage( "Biomass going negative, acting cohort: " + Convertor::Get( )->ToString( actingCohort.mFunctionalGroupIndex ) + ", " + Convertor::Get( )->ToString( actingCohort.mID ) );
+            std::cout << "Biomass going negative, acting cohort: " << actingCohort.mFunctionalGroupIndex << ", " << actingCohort.mID << std::endl;
             exit( 1 );
         }
     }
@@ -105,7 +104,7 @@ void EcologyApply::UpdatePools( GridCell& gcl ) {
     // Loop over all keys in the organic pool deltas sorted list
     for( auto &D: Cohort::mMassAccounting["organicpool"] ) {
         // Check that the delta value is not negative
-        if( D.second < 0 ) Logger::Get( )->LogMessage( "organic pool " + Convertor::Get( )->ToString( D.first ) + " " + Convertor::Get( )->ToString( D.second ) );
+        if( D.second < 0 ) std::cout << "organic pool " << D.first << " " << D.second << std::endl;
 
         //assert(D.second >= 0.0 && "A delta value for the organic pool is negative " );
         // Update the organic pool biomass

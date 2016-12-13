@@ -33,7 +33,7 @@ void GridCell::RemoveCohort( Cohort& c ) {
     auto h = find_if( z.begin( ), z.end( ), [ c ]( Cohort & k ) {
         return c.mID == k.mID;
     } );
-    if( c.mID != ( *h ).mID ) Logger::Get( )->LogMessage( "Strange things happening in grid delete? " + Convertor::Get( )->ToString( c.mID ) + " " + Convertor::Get( )->ToString( ( *h ).mID ) );
+    if( c.mID != ( *h ).mID ) std::cout << "Strange things happening in grid delete? " << c.mID << " " <<( *h ).mID << std::endl;
     z.erase( h );
 }
 

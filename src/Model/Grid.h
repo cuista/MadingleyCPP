@@ -3,7 +3,6 @@
 
 #include "GridCell.h"
 #include "Parameters.h"
-#include "Logger.h"
 
 /** \brief A class containing the model grid (composed of individual grid cells) along with grid attributes. */
 class Grid {

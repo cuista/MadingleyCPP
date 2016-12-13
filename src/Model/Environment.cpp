@@ -3,7 +3,6 @@
 #include "ClimateVariablesCalculator.h"
 #include "Types.h"
 #include "FileReader.h"
-#include "Logger.h"
 #include "Parameters.h"
 #include "DataLayerSet.h"
 #include "DataIndices.h"

@@ -4,21 +4,19 @@
 
 #include "FileReader.h"
 #include "FileWriter.h"
-#include "Logger.h"
 #include "Date.h"
 
 int main( ) {
     //this line enables the gdb debugger to catch Nan or floating point problems
     feraiseexcept( FE_INVALID | FE_OVERFLOW );
     // Write out model details to the console
-    Logger::Get( )->LogMessage( "Madingley model C++ v. 0.\n" );
-    Logger::Get( )->LogMessage( "Model Run started at " + Date::GetDateAndTimeString( Constants::cCompleteDateFormat ) );
+    std::cout << "Madingley model C++ v. 0." << std::endl;
+    std::cout << "Model Run started at " << Date::GetDateAndTimeString( Constants::cCompleteDateFormat ) << std::endl;
 
     FileReader fileReader;
 
     if( fileReader.ReadFiles( ) == true ) {
-        Logger::Get( )->LogMessage( "Files read successfully..." );
-        Logger::Get( )->LogMessage( "" );
+        std::cout << "Files read successfully..." << std::endl << std::endl;
         FileWriter fileWriter;
 
         // Initialise the model
@@ -33,14 +31,14 @@ int main( ) {
         madingleyModel.Run( );
 
         if( fileWriter.WriteFiles( ) == true )
-            Logger::Get( )->LogMessage( "Files written to \"" + fileWriter.GetOutputDirectory( ) + "\" successfully..." );
+            std::cout << "Files written to \"" << fileWriter.GetOutputDirectory( ) << "\" successfully..." << std::endl;
 
         // Stop the timer and write out the time taken to run this simulation
         s.Stop( );
-        Logger::Get( )->LogMessage( "Model run finished" );
-        Logger::Get( )->LogMessage( "Total elapsed time was " + Convertor::Get( )->ToString( s.GetElapsedTimeSecs( ) ) + " seconds." );
+        std::cout << "Model run finished" << std::endl;
+        std::cout << "Total elapsed time was " + Convertor::Get( )->ToString( s.GetElapsedTimeSecs( ) ) + " seconds." << std::endl;
     } else {
-        Logger::Get( )->LogMessage( "ERROR> File reading failed. System exiting..." );
+        std::cout << "ERROR> File reading failed. System exiting..." << std::endl;
     }
     return 0;
 }

@@ -2,7 +2,6 @@
 #define FUNCTIONALGROUPDEFINITIONS
 
 #include "Constants.h"
-#include "Logger.h"
 #include "Types.h"
 
 /** \brief Reads in and performs look-ups on functional group definitions

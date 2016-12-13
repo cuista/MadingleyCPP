@@ -3,7 +3,6 @@
 
 #include "Types.h"
 #include "Constants.h"
-#include "Logger.h"
 
 /** \brief Handles the mass bins to be used in model outputs */
 class MassBinsHandler {

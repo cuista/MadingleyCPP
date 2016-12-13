@@ -1,6 +1,5 @@
 #include "FileWriter.h"
 
-#include "Logger.h"
 #include "Constants.h"
 #include "Date.h"
 #include "Convertor.h"
@@ -104,7 +103,7 @@ bool FileWriter::WriteBasicOutputs( ) const {
 
             } catch( netCDF::exceptions::NcException& e ) {
                 e.what( );
-                Logger::Get( )->LogMessage( "ERROR> File path \"" + filePath + "\" is invalid." );
+                std::cout << "ERROR> File path \"" << filePath << "\" is invalid." << std::endl;
             }
         }
 
@@ -132,7 +131,7 @@ bool FileWriter::WriteBasicOutputs( ) const {
 
             } catch( netCDF::exceptions::NcException& e ) {
                 e.what( );
-                Logger::Get( )->LogMessage( "ERROR> File path \"" + filePath + "\" is invalid." );
+                std::cout << "ERROR> File path \"" << filePath << "\" is invalid." << std::endl;
             }
         }
 
@@ -199,7 +198,7 @@ bool FileWriter::WriteGridOutputs( ) const {
 
             } catch( netCDF::exceptions::NcException& e ) {
                 e.what( );
-                Logger::Get( )->LogMessage( "ERROR> File path \"" + filePath + "\" is invalid." );
+                std::cout << "ERROR> File path \"" << filePath << "\" is invalid." << std::endl;
             }
         }
 
@@ -240,7 +239,7 @@ bool FileWriter::WriteGridOutputs( ) const {
 
             } catch( netCDF::exceptions::NcException& e ) {
                 e.what( );
-                Logger::Get( )->LogMessage( "ERROR> File path \"" + filePath + "\" is invalid." );
+                std::cout << "ERROR> File path \"" << filePath << "\" is invalid." << std::endl;
             }
         }
     } else {

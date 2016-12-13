@@ -26,7 +26,7 @@ Types::DataLayerMap DataLayerProcessor::ConvertReadDataIntoLayers( const Types::
     for( unsigned index = 0; index < inputData->GetNumberOfInputDatums( ); ++index ) {
         Types::InputDatumPointer inputDatum = inputData->GetInputDatum( index );
 
-        Logger::Get( )->LogMessage( "Processing read data for datum \"" + inputDatum->GetName( ) + "\"..." );
+        std::cout << "Processing read data for datum \"" << inputDatum->GetName( ) << "\"..." << std::endl;
 
         Types::DataLayerPointer dataLayer = MakeDataLayer( inputDatum );
         dataLayerMap.insert( std::pair< std::string, Types::DataLayerPointer >( inputDatum->GetName( ), dataLayer ) );
@@ -203,15 +203,15 @@ Types::DataLayerPointer DataLayerProcessor::MakeDataLayer( const Types::InputDat
 
         } else {
             if( longitudeVariable == NULL && latitudeVariable == NULL ) {
-                Logger::Get( )->LogMessage( "ERROR> Attempted creation of datum \"" + datum->GetName( ) + "\" failed with no longitude and latitude set." );
+                std::cout << "ERROR> Attempted creation of datum \"" << datum->GetName( ) << "\" failed with no longitude and latitude set." << std::endl;
             } else if( longitudeVariable == NULL ) {
-                Logger::Get( )->LogMessage( "ERROR> Attempted creation of datum \"" + datum->GetName( ) + "\" failed with no longitude set." );
+                std::cout << "ERROR> Attempted creation of datum \"" << datum->GetName( ) << "\" failed with no longitude set." << std::endl;
             } else {
-                Logger::Get( )->LogMessage( "ERROR> Attempted creation of datum \"" + datum->GetName( ) + "\" failed with no latitude set." );
+                std::cout << "ERROR> Attempted creation of datum \"" << datum->GetName( ) << "\" failed with no latitude set." << std::endl;
             }
         }
     } else {
-        Logger::Get( )->LogMessage( "ERROR> Attempted creation of datum \"" + datum->GetName( ) + "\" failed with no variables set." );
+        std::cout << "ERROR> Attempted creation of datum \"" << datum->GetName( ) << "\" failed with no variables set." << std::endl;
     }
 
     return concreteDataLayer;

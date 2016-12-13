@@ -35,7 +35,7 @@ void AutotrophProcessor::ConvertNPPToAutotroph( GridCell& gcl, Stock& actingStoc
             actingStock.mTotalBiomass = 0.0;
     }// Else if neither on land or in the ocean
     else {
-        Logger::Get( )->LogMessage( "This is not a marine cell!" );
+        std::cout << "This is not a marine cell!" << std::endl;
         // Set the autotroph biomass to zero
         actingStock.mTotalBiomass = 0.0;
     }
