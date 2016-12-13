@@ -7,7 +7,6 @@
 #include "Environment.h"
 #include "Parameters.h"
 #include "DataIndices.h"
-#include "Logger.h"
 #include "Convertor.h"
 
 class GridCell {

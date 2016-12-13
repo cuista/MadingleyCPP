@@ -3,7 +3,6 @@
 
 #include "Types.h"
 #include "Variable.h"
-#include "Logger.h"
 
 class DataLayer {
 public:

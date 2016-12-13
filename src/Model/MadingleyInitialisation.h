@@ -2,7 +2,6 @@
 #define MADINGLEYINITIALISATION
 
 #include "Types.h"
-#include "Logger.h"
 #include "MassBinsHandler.h"
 #include "FunctionalGroupDefinitions.h"
 #include "UtilityFunctions.h"

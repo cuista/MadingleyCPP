@@ -1,8 +1,6 @@
 #include "InputDatum.h"
 
 #include "Variable.h"
-#include "Logger.h"
-#include "Convertor.h"
 
 InputDatum::InputDatum( const std::string& name, const std::string& variableName, const Types::UnsignedVector& variableDimensions, const unsigned& size, float* variableData, const bool isDefault ) {
     mName = name;

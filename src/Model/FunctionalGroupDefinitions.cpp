@@ -5,7 +5,7 @@ FunctionalGroupDefinitions::FunctionalGroupDefinitions( ) {
 }
 
 FunctionalGroupDefinitions::FunctionalGroupDefinitions( std::string fileName ) {
-    Logger::Get( )->LogMessage( "Reading \"" + fileName + "\" functional group definitions." );
+    std::cout << "Reading \"" << fileName << "\" functional group definitions." << std::endl;
     fileName = Constants::cConfigurationDirectory + fileName;
     std::ifstream infile( fileName.c_str( ) );
 
@@ -63,7 +63,7 @@ FunctionalGroupDefinitions::FunctionalGroupDefinitions( std::string fileName ) {
             }
         }
     } else {
-        Logger::Get( )->LogMessage( "Something wrong with functional group definitions file " + fileName );
+        std::cout << "Something wrong with functional group definitions file " << fileName << std::endl;
     }
     infile.close( );
 
@@ -151,13 +151,13 @@ Types::IntegerVector FunctionalGroupDefinitions::GetFunctionalGroupIndex( std::s
             return mIndexLookupFromTrait[ searchTraits ][ searchTraitValues ];
         }//If trait value string not found then show error message
         else {
-            Logger::Get( )->LogMessage( searchTraitValues );
-            Logger::Get( )->LogMessage( "Trait Value to search for not found in lookup tables" );
+            std::cout << searchTraitValues << std::endl;
+            std::cout << "Trait Value to search for not found in lookup tables" << std::endl;
             exit( 1 );
         }
     }//If trait name string not found then show error message
     else {
-        Logger::Get( )->LogMessage( "Trait to search for not found in lookup tables" );
+        std::cout << "Trait to search for not found in lookup tables" << std::endl;
         exit( 1 );
     }
     std::sort( indexList.begin( ), indexList.end( ) );

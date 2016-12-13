@@ -77,7 +77,6 @@
         <itemPath>src/Output/DataRecorder.h</itemPath>
         <itemPath>src/Output/FileWriter.h</itemPath>
         <itemPath>src/Output/GridDatum.h</itemPath>
-        <itemPath>src/Output/Logger.h</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Tools" projectFiles="true">
         <itemPath>src/Tools/ClimateVariablesCalculator.h</itemPath>
@@ -161,7 +160,6 @@
         <itemPath>src/Output/DataRecorder.cpp</itemPath>
         <itemPath>src/Output/FileWriter.cpp</itemPath>
         <itemPath>src/Output/GridDatum.cpp</itemPath>
-        <itemPath>src/Output/Logger.cpp</itemPath>
       </logicalFolder>
       <logicalFolder name="f2" displayName="Tools" projectFiles="true">
         <itemPath>src/Tools/ClimateVariablesCalculator.cpp</itemPath>
@@ -504,10 +502,6 @@
       <item path="src/Output/GridDatum.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Output/GridDatum.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.cpp"
             ex="false"
@@ -860,10 +854,6 @@
       <item path="src/Output/GridDatum.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Output/GridDatum.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="src/Output/Logger.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Output/Logger.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/ClimateVariablesCalculator.cpp"
             ex="false"

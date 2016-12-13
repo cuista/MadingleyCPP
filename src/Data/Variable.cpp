@@ -1,7 +1,6 @@
 #include "Variable.h"
 
 #include "Constants.h"
-#include "Logger.h"
 #include "Convertor.h"
 
 Variable::Variable( const std::string& name, const Types::UnsignedVector& dimensions, const unsigned& size, float* data, const bool isDefault ) {
@@ -45,10 +44,10 @@ float Variable::GetDataAtIndex( const int& index ) const {
         if( index < ( int )mSize ) {
             data = mData[ index ];
         } else {
-            Logger::Get( )->LogMessage( "ERROR> Index of " + Convertor::Get( )->ToString( index ) + " exceeds size (" + Convertor::Get( )->ToString( mSize ) + ") of variable \"" + mName + "\"." );
+            std::cout << "ERROR> Index of " << index << " exceeds size (" << mSize << ") of variable \"" << mName << "\"." << std::endl;
         }
     } else {
-        Logger::Get( )->LogMessage( "ERROR> Index of " + Convertor::Get( )->ToString( index ) + " is invalid." );
+        std::cout << "ERROR> Index of " << index << " is invalid." << std::endl;
     }
 
     return data;
@@ -73,10 +72,10 @@ void Variable::SetDataAtIndex( const int& index, const float& data ) {
         if( index < ( int )mSize ) {
             mData[ index ] = data;
         } else {
-            Logger::Get( )->LogMessage( "ERROR> Index of " + Convertor::Get( )->ToString( index ) + " exceeds size (" + Convertor::Get( )->ToString( mSize ) + ") of variable \"" + mName + "\"." );
+            std::cout << "ERROR> Index of " << index << " exceeds size (" << mSize << ") of variable \"" << mName << "\"." << std::endl;
         }
     } else {
-        Logger::Get( )->LogMessage( "ERROR> Index of " + Convertor::Get( )->ToString( index ) + " is invalid." );
+        std::cout << "ERROR> Index of " << index << " is invalid." << std::endl;
     }
 }
 

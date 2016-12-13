@@ -1,6 +1,5 @@
 #include "FileReader.h"
 
-#include "Logger.h"
 #include "Convertor.h"
 #include "Constants.h"
 #include "InputData.h"
@@ -40,7 +39,7 @@ bool FileReader::ReadTextFile( const std::string& filePath ) {
 
     ClearMetadata( );
 
-    Logger::Get( )->LogMessage( "Reading text file \"" + filePath + "\"..." );
+    std::cout << "Reading text file \"" << filePath << "\"..." << std::endl;
     std::ifstream fileStream( filePath.c_str( ), std::ios::in );
 
     if( fileStream.is_open( ) ) {
@@ -59,7 +58,7 @@ bool FileReader::ReadTextFile( const std::string& filePath ) {
         fileStream.close( );
         DataRecorder::Get( )->AddInputFilePath( filePath );
     } else {
-        Logger::Get( )->LogMessage( "File path \"" + filePath + "\" is invalid." );
+        std::cout << "File path \"" << filePath << "\" is invalid." << std::endl;
     }
 
     return success;
@@ -99,7 +98,7 @@ bool FileReader::ReadInputDataFiles( ) {
                 filePath.append( Convertor::Get( )->ToString( Parameters::Get( )->GetGridCellSize( ) ) );
                 filePath.append( "deg/" );
                 filePath.append( mMetadata[ environmentalDataFileIndex ][ Constants::eFilePath ] );
-                Logger::Get( )->LogMessage( "Reading NetCDF file \"" + filePath + "\"..." );
+                std::cout << "Reading NetCDF file \"" << filePath << "\"..." << std::endl;
 
                 try {
                     netCDF::NcFile inputNcFile( filePath, netCDF::NcFile::read ); // Open the file for read access
@@ -128,7 +127,7 @@ bool FileReader::ReadInputDataFiles( ) {
 
                 } catch( netCDF::exceptions::NcException& e ) {
                     e.what( );
-                    Logger::Get( )->LogMessage( "ERROR> File path \"" + filePath + "\" is invalid." );
+                    std::cout << "ERROR> File path \"" << filePath << "\" is invalid." << std::endl;
                 }
             }
 

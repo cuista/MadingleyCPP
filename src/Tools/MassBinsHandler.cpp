@@ -21,7 +21,7 @@ void MassBinsHandler::SetUpMassBins( std::string massBinsFile ) {
         std::sort( mMassBins.begin( ), mMassBins.end( ) );
         massFile.close( );
     } else {
-        Logger::Get( )->LogMessage( "Problem with Mass Bins file!! " + massBinsFile );
+        std::cout << "Problem with Mass Bins file!! " << massBinsFile << std::endl;
         exit( 1 );
     }
 }
