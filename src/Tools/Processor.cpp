@@ -3,7 +3,6 @@
 #include "Variable.h"
 #include "Parameters.h"
 #include "Maths.h"
-#include "Logger.h"
 #include "Convertor.h"
 
 Types::ProcessorPointer Processor::mThis = NULL;
@@ -78,7 +77,7 @@ int Processor::FindVariableIndexOfValue( const Types::VariablePointer variable, 
     }
 
     if( closestIndex == Constants::cMissingValue ) {
-        Logger::Get( )->LogMessage( "Value \"" + Convertor::Get( )->ToString( value ) + "\" was not found in variable \"" + variable->GetName( ) + "\"." );
+        std::cout << "Value \"" << value << "\" was not found in variable \"" << variable->GetName( ) << "\"." << std::endl;
     }
 
     return closestIndex;

@@ -92,7 +92,6 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Output/DataRecorder.o \
 	${OBJECTDIR}/src/Output/FileWriter.o \
 	${OBJECTDIR}/src/Output/GridDatum.o \
-	${OBJECTDIR}/src/Output/Logger.o \
 	${OBJECTDIR}/src/Tools/ClimateVariablesCalculator.o \
 	${OBJECTDIR}/src/Tools/Convertor.o \
 	${OBJECTDIR}/src/Tools/Date.o \
@@ -422,11 +421,6 @@ ${OBJECTDIR}/src/Output/GridDatum.o: src/Output/GridDatum.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Output
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Output/GridDatum.o src/Output/GridDatum.cpp
-
-${OBJECTDIR}/src/Output/Logger.o: src/Output/Logger.cpp 
-	${MKDIR} -p ${OBJECTDIR}/src/Output
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Output/Logger.o src/Output/Logger.cpp
 
 ${OBJECTDIR}/src/Tools/ClimateVariablesCalculator.o: src/Tools/ClimateVariablesCalculator.cpp 
 	${MKDIR} -p ${OBJECTDIR}/src/Tools

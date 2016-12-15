@@ -1,6 +1,5 @@
 #include "InputData.h"
 #include "InputDatum.h"
-#include "Logger.h"
 #include "Variable.h"
 #include "Constants.h"
 #include "Convertor.h"
@@ -38,7 +37,7 @@ Types::InputDatumPointer InputData::GetInputDatum( const std::string& name, cons
     }
 
     if( inputDatum == NULL && isInternalSearch == false ) {
-        Logger::Get( )->LogMessage( "ERROR> Variable with name \"" + name + "\" is not found." );
+        std::cout << "ERROR> Variable with name \"" << name << "\" is not found." << std::endl;
     }
 
     return inputDatum;

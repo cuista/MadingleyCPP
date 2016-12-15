@@ -57,7 +57,7 @@ Types::DataLayerPointer DataLayerSet::GetDataLayerWithName( const std::string& n
     if( iter != mDataLayerMap.end( ) ) {
         dataLayer = iter->second;
     } else {
-        Logger::Get( )->LogMessage( "ERROR> DataLayer with name \"" + name + "\" was not found." );
+        std::cout << "ERROR> DataLayer with name \"" << name << "\" was not found." << std::endl;
     }
 
     return dataLayer;

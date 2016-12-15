@@ -2,7 +2,6 @@
 
 #include "Constants.h"
 #include "Convertor.h"
-#include "Logger.h"
 #include "Maths.h"
 #include "Processor.h"
 #include "DataCoords.h"

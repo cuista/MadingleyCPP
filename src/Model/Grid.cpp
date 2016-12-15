@@ -8,14 +8,14 @@ void Grid::SetUpGrid( ) {
     // Add one to the counter of the number of grids. If there is more than one model grid, exit the program with a debug crash.
     mNumGrids = mNumGrids + 1;
     assert( mNumGrids < 2 && "You have initialised more than one grid on which to apply models. At present, this is not supported" );
-    Logger::Get( )->LogMessage( "Initialising grid cell environment" );
+    std::cout << "Initialising grid cell environment" << std::endl;
 
     // Instantiate a grid of grid cells
     for( unsigned index = 0; index < Parameters::Get( )->GetNumberOfGridCells( ); ++index ) {
         // Create the grid cell at the specified position
         mCells[ index ].SetCellCoords( index );
     }
-    Logger::Get( )->LogMessage( "" );
+    std::cout << std::endl;
 }
 
 GridCell* Grid::GetNewCell( GridCell* gridCell, const int& v, const int& u ) {

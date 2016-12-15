@@ -29,6 +29,7 @@ $(TARGET) : $(OBJ)
 	@echo Linking...
 	@mkdir -p $(BINDIR)
 	@$(CXX) $(CXXFLAGS) -o $(BINDIR)$@ $(OBJ) $(LIBS)
+	@cp -R ../input $(BINDIR)
 	@echo Madingley compilation complete.
 
 $(OBJDIR)%.o : %.cpp

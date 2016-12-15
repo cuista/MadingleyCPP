@@ -7,7 +7,7 @@ MadingleyInitialisation::MadingleyInitialisation( ) {
 
 MadingleyInitialisation::MadingleyInitialisation( long long& nextCohortID, double& numberOfCohorts, double& numberOfStocks, Grid& modelGrid ) {
     //Write to console
-    Logger::Get( )->LogMessage( "Initialising model..." );
+    std::cout << "Initialising model..." << std::endl;
     //read and store environmental layers
     Environment::Get( );
     mNextCohortID = 0;
@@ -26,21 +26,20 @@ MadingleyInitialisation::MadingleyInitialisation( long long& nextCohortID, doubl
         totalStocks += SeedGridCellStocks( c );
     } );
 
-    Logger::Get( )->LogMessage( "Total cohorts initialised: " + Convertor::Get( )->ToString( totalCohorts ) );
-    Logger::Get( )->LogMessage( "Total stocks created " + Convertor::Get( )->ToString( totalStocks ) );
-    Logger::Get( )->LogMessage( "" );
+    std::cout << "Total cohorts initialised: " << totalCohorts << std::endl;
+    std::cout << "Total stocks created " << totalStocks << std::endl << std::endl;
 
     nextCohortID = mNextCohortID;
     numberOfCohorts = totalCohorts;
     numberOfStocks = totalStocks;
     mInitializationTimer.Stop( );
     Cohort::ResetMassFluxes( );
-    Logger::Get( )->LogMessage( "Time required: " + Convertor::Get( )->ToString( mInitializationTimer.GetElapsedTimeSecs( ) ) );
+    std::cout << "Time required: " << mInitializationTimer.GetElapsedTimeSecs( ) << std::endl;
 }
 
 void MadingleyInitialisation::ReadInitialisationFiles( ) {
 
-    Logger::Get( )->LogMessage( "Reading functional group definitions..." );
+    std::cout << "Reading functional group definitions..." << std::endl;
     mInitialisationFileStrings["CohortFunctional"] = Constants::cCohortDefinitionsFileName;
     mCohortFunctionalGroupDefinitions = FunctionalGroupDefinitions( Constants::cCohortDefinitionsFileName );
     mInitialisationFileStrings["StockFunctional"] = Constants::cStockDefinitionsFileName;

@@ -14,11 +14,9 @@
 #include "ThreadVariables.h"
 #include "Environment.h"
 #include "TimeStep.h"
-#include "Logger.h"
 #include "Maths.h"
 #include "Parameters.h"
 #include "DataRecorder.h"
-#include "Logger.h"
 #include "Types.h"
 
 /** \brief The ecosystem model */

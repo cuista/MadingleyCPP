@@ -109,7 +109,7 @@ void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsig
 
         default:
             // For nutrition source that are not supported, throw an error
-            Logger::Get( )->LogMessage( "The model currently does not contain an eating model for nutrition source:" + nutritionSource );
+            std::cout << "The model currently does not contain an eating model for nutrition source:" << nutritionSource << std::endl;
             exit( 1 );
             break;
 

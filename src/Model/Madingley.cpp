@@ -16,8 +16,8 @@ Madingley::Madingley( ) {
 
 void Madingley::Run( ) {
     // Write out model run details to the console
-    Logger::Get( )->LogMessage( "Running model" );
-    Logger::Get( )->LogMessage( "Number of time steps is: " + Convertor::Get( )->ToString( Parameters::Get( )->GetLengthOfSimulationInMonths( ) ) );
+    std::cout << "Running model" << std::endl;
+    std::cout << "Number of time steps is: " << Parameters::Get( )->GetLengthOfSimulationInMonths( ) << std::endl;
 
     mDispersals = 0;
     /// Run the model
@@ -25,7 +25,7 @@ void Madingley::Run( ) {
 
         TimeStep::Get( )->SetMonthly( timeStep );
 
-        Logger::Get( )->LogMessage( "Running time step " + Convertor::Get( )->ToString( timeStep + 1 ) + "..." );
+        std::cout << "Running time step " << timeStep + 1 << "..." << std::endl;
 
         // Get current time step and month
         mCurrentTimeStep = timeStep;
@@ -36,21 +36,21 @@ void Madingley::Run( ) {
 
         RunWithinCells( );
         mEcologyTimer.Stop( );
-        Logger::Get( )->LogMessage( "Within grid ecology took: " + Convertor::Get( )->ToString( mEcologyTimer.GetElapsedTimeSecs( ) ) );
+        std::cout << "Within grid ecology took: " << mEcologyTimer.GetElapsedTimeSecs( ) << std::endl;
 
         mDispersalTimer.Start( );
 
         RunCrossGridCellEcology( mDispersals );
         mDispersalTimer.Stop( );
-        Logger::Get( )->LogMessage( "Across grid ecology took: " + Convertor::Get( )->ToString( mDispersalTimer.GetElapsedTimeSecs( ) ) );
+        std::cout << "Across grid ecology took: " << mDispersalTimer.GetElapsedTimeSecs( ) << std::endl;
 
         mOutputTimer.Start( );
         Output( timeStep );
         mOutputTimer.Stop( );
-        Logger::Get( )->LogMessage( "Global Outputs took: " + Convertor::Get( )->ToString( mOutputTimer.GetElapsedTimeSecs( ) ) );
+        std::cout << "Global Outputs took: " << mOutputTimer.GetElapsedTimeSecs( ) << std::endl;
 
         // Write the results of dispersal to the console
-        Logger::Get( )->LogMessage( "Total Cohorts remaining " + Convertor::Get( )->ToString( mGlobalDiagnosticVariables["NumberOfCohortsInModel"] ) );
+        std::cout << "Total Cohorts remaining " << mGlobalDiagnosticVariables["NumberOfCohortsInModel"] << std::endl;
     }
 }
 
@@ -122,7 +122,7 @@ void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadVariables& part
 
     for( auto& c: Cohort::mNewCohorts ) {
         gcl.InsertCohort( c );
-        if( c.mDestinationCell != &gcl ) Logger::Get( )->LogMessage( "whut? wrong cell?" );
+        if( c.mDestinationCell != &gcl ) std::cout << "whut? wrong cell?" << std::endl;
     }
     partial.mProductions += Cohort::mNewCohorts.size( );
     Cohort::mNewCohorts.clear( );
@@ -154,7 +154,7 @@ void Madingley::RunExtinction( GridCell& gcl, ThreadVariables& partial ) {
 
         // Add biomass of the extinct cohort to the organic matter pool
         double deadMatter = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance;
-        if( deadMatter < 0 ) Logger::Get( )->LogMessage( "Dead " + Convertor::Get( )->ToString( deadMatter ) );
+        if( deadMatter < 0 ) std::cout << "Dead " << deadMatter << std::endl;
         Environment::Get( "Organic Pool", c.GetCurrentCell( ) ) += deadMatter;
         assert( Environment::Get( "Organic Pool", c.GetCurrentCell( ) ) >= 0 && "Organic pool < 0" );
 
