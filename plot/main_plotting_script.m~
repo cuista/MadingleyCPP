@@ -2,7 +2,7 @@ tic
 %clear
 
 %% User Defined Parameters
-optionCurrentDataSet            = '2016-12-15_11-35-35';
+optionCurrentDataSet            = '2016-11-09_12-45-31';
 optionOutputDirectory           = '/home/philju/Dropbox/Development/MadingleyCPP/output/';
 
 optionOutputParametersFile      = 'OutputControlParameters.csv';
@@ -17,7 +17,7 @@ optionPlotImageWidth            = 12; % cm
 optionPlotImageHeight           = 10; % cm
 
 optionMissingValue              = -9999;
-optionMonthIndex                = 500; % Time index for plotting grid datums
+optionMonthIndex                = 1000; % Time index for plotting grid datums
 
 %% Input Formatting
 if strcmp( optionOutputDirectory( end ), '/' ) == 0
@@ -31,10 +31,10 @@ end
 %% Plot Script Execution
 if exist( [ optionOutputDirectory optionCurrentDataSet ], 'dir' ) == 7
     %% Plot basic datums
-    plot_basic_data
+    %plot_basic_data
     
     %% Plot grid datums
-    %plot_grid_data
+    plot_grid_data
 else
     disp( 'ERROR> Input directories do not exist.' );
 end

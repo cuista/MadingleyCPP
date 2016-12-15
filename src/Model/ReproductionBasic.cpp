@@ -14,9 +14,9 @@ ReproductionBasic::ReproductionBasic( std::string globalModelTimeStepUnit, bool 
     // Set the seed for the random number generator
     if( drawRandomly ) {
         unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
-        mRandomNumber.seed( seed );
+        mRandomNumber.SetSeed( seed );
     } else {
-        mRandomNumber.seed( 4000 );
+        mRandomNumber.SetSeed( 4000 );
     }
 }
 
@@ -145,18 +145,15 @@ std::vector< double > ReproductionBasic::GetOffspringCohortProperties( Cohort& a
     std::vector< double > cohortJuvenileAdultMasses( 2 );
 
     // Determine whether offspring cohort 'evolves' in terms of adult and juvenile body masses
-    std::uniform_real_distribution< double > randomNumber( 0.0, 1.0 );
-    double RandomValue = randomNumber( mRandomNumber );
+    double RandomValue = mRandomNumber.GetUniform( );
 
     if( RandomValue > mMassEvolutionProbabilityThreshold ) {
         // Determine the new juvenile body mass // MB correctly formulated?
-        std::normal_distribution< double > randomNumberJ( actingCohort.mJuvenileMass, mMassEvolutionStandardDeviation * actingCohort.mJuvenileMass );
-        double RandomValueJ = randomNumberJ( mRandomNumber );
+        double RandomValueJ = mRandomNumber.GetNormal( actingCohort.mJuvenileMass, mMassEvolutionStandardDeviation * actingCohort.mJuvenileMass );
         cohortJuvenileAdultMasses[ 0 ] = std::max( RandomValueJ, cohortDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Minimum mass", actingCohort.mFunctionalGroupIndex ) );
 
         // Determine the new adult body mass
-        std::normal_distribution< double > randomNumberA( actingCohort.mAdultMass, mMassEvolutionStandardDeviation * actingCohort.mAdultMass );
-        double RandomValueA = randomNumberA( mRandomNumber );
+        double RandomValueA = mRandomNumber.GetNormal( actingCohort.mAdultMass, mMassEvolutionStandardDeviation * actingCohort.mAdultMass );
         cohortJuvenileAdultMasses[ 1 ] = std::min( RandomValueA, cohortDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Maximum mass", actingCohort.mFunctionalGroupIndex ) );
 
     } else { // If not, it just gets the same values as the parent cohort

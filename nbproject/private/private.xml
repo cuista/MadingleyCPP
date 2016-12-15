@@ -16,43 +16,8 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/EcologyApply.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MetabolismEndotherm.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/Madingley.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MortalityStarvation.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/Dispersal.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/EatingHerbivory.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/TerrestrialCarbon.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/EatingSet.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/Grid.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/AutotrophProcessor.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/DispersalSet.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/DispersalAdvective.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/GridCell.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/CohortPair.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/DispersalDiffusive.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/EcologyStock.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MetabolismSet.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MortalitySenescence.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/Activity.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/Stock.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/CohortMerger.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/EatingCarnivory.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/EcologyCohort.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/Environment.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/Cohort.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/Location.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MortalityBackground.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MetabolismEctotherm.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/DispersalResponsive.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MetabolismHeterotroph.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/TimeStep.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MortalitySenescence.h</file>
+            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Input/FileReader.cpp</file>
             <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MadingleyInitialisation.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/ReproductionBasic.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/MortalitySet.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/FunctionalGroupDefinitions.cpp</file>
-            <file>file:/home/philju/Dropbox/Development/MadingleyCPP/src/Model/ReproductionSet.cpp</file>
         </group>
     </open-files>
 </project-private>

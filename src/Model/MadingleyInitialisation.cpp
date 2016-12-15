@@ -51,14 +51,7 @@ void MadingleyInitialisation::ReadInitialisationFiles( ) {
 }
 
 long MadingleyInitialisation::SeedGridCellCohorts( GridCell& gcl ) {
-
     long totalCohorts = 0;
-    // Set the seed for the random number generator from the system time
-    unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
-    if( Parameters::Get( )->GetDrawRandomly( ) == true ) mRandomNumber.SetSeed( seed );
-    else mRandomNumber.SetSeed( 1000 );
-
-
     unsigned numCohortsThisCell = 0;
     // Define local variables
     double cohortJuvenileMass;
@@ -68,9 +61,6 @@ long MadingleyInitialisation::SeedGridCellCohorts( GridCell& gcl ) {
     double totalNewBiomass = 0.0;
     double optimalPreyBodySizeRatio;
 
-
-    //Variable for altering the juvenile to adult mass ratio for marine cells when handling certain functional groups eg baleen whales
-    double scaling = 0.0;
     gcl.SetCohortSize( mCohortFunctionalGroupDefinitions.mAllFunctinoalGroupsIndex.size( ) );
     for( int FunctionalGroup: mCohortFunctionalGroupDefinitions.mAllFunctinoalGroupsIndex ) {
         int N = mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Initial number of GridCellCohorts", FunctionalGroup );

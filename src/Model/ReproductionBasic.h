@@ -4,6 +4,7 @@
 #include "Reproduction.h"
 #include "Cohort.h"
 #include "GridCell.h"
+#include "NonStaticSimpleRNG.h"
 
 #include <limits>
 #include <assert.h>
@@ -41,7 +42,7 @@ private:
     /** \brief Include Utility class */
     UtilityFunctions mUtilities;
     /** \brief An instance of the simple random number generator class */
-    std::mt19937_64 mRandomNumber;
+    NonStaticSimpleRNG mRandomNumber;
     /** \brief The time units associated with this implementation of dispersal */
     std::string mTimeUnitImplementation;
     /** \brief The per individual ratio of (adult body mass + reproductive potential mass) to adult body mass above which reproduction is possible*/
