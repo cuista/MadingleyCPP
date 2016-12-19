@@ -105,8 +105,6 @@ double ClimateVariablesCalculator::CalculatePotentialEvapotranspiration( double 
 }
 
 double ClimateVariablesCalculator::GetNDF( std::vector<double>& monthlyFrostDays, std::vector<double>& monthlyTemperature, double missingValue ) {
-    double DataToReturn = 0.0;
-
     if( monthlyFrostDays[ 0 ] > missingValue ) {
         double NumMonthsFrost = 0; // will monitor the integrated number of frost months (a continuous variable)
         int prevmonth;
@@ -132,13 +130,10 @@ double ClimateVariablesCalculator::GetNDF( std::vector<double>& monthlyFrostDays
             }
         }
 
-        DataToReturn = NumMonthsFrost / 12; // convert to a fraction of a year
+        return NumMonthsFrost / 12; // convert to a fraction of a year
     } else {
-        ApproximateNDF( monthlyTemperature );
+        return ApproximateNDF( monthlyTemperature );
     }
-
-
-    return DataToReturn;
 }
 
 double ClimateVariablesCalculator::ApproximateNDF( std::vector<double> MATData ) {

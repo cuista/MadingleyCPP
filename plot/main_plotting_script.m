@@ -2,7 +2,7 @@ tic
 %clear
 
 %% User Defined Parameters
-optionCurrentDataSet            = '2016-12-15_11-35-35';
+optionCurrentDataSet            = '2016-12-15_12-44-21';
 optionOutputDirectory           = '/home/philju/Dropbox/Development/MadingleyCPP/output/';
 
 optionOutputParametersFile      = 'OutputControlParameters.csv';
@@ -34,7 +34,7 @@ if exist( [ optionOutputDirectory optionCurrentDataSet ], 'dir' ) == 7
     plot_basic_data
     
     %% Plot grid datums
-    %plot_grid_data
+    plot_grid_data
 else
     disp( 'ERROR> Input directories do not exist.' );
 end
