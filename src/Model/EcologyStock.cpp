@@ -12,7 +12,7 @@ void EcologyStock::RunWithinCellEcology( GridCell& gcl, Stock& actingStock, unsi
         double NPPWetMatter = mDynamicPlantModel.UpdateLeafStock( gcl, actingStock, currentTimeStep, madingleyStockDefinitions.GetTraitNames( "leaf strategy", actingStock.mFunctionalGroupIndex ) == "deciduous", Parameters::Get( )->GetTimeStepUnits( ), currentMonth );
 
         // Apply human appropriation of NPP - note in the latest C# version this is changed to include the NPPWetMatter calculated above
-        double fhanpp = mHANPP.RemoveHumanAppropriatedMatter( NPPWetMatter, gcl, Parameters::Get( )->GetHumanNPPExtraction( ), actingStock, currentTimeStep, currentMonth );
+        double fhanpp = mHANPP.RemoveHumanAppropriatedMatter( NPPWetMatter, gcl,actingStock, currentTimeStep, currentMonth );
         actingStock.mTotalBiomass += NPPWetMatter * ( 1 - fhanpp );
     }
 }

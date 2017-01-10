@@ -1,5 +1,5 @@
 Parameter,Value
-RootDataDirectory,/home/philju/Data/Madingley/Standardised/
+RootDataDirectory,/home/mb425/Madingley/MadingleyMasterCC/MadingleyData-master/
 TimeStepUnits,month
 LengthOfSimulationInYears,100
 MinimumLongitude,-180
@@ -11,4 +11,9 @@ ExtinctionThreshold,1
 MaximumNumberOfCohorts,100
 PlanktonSizeThreshold,0.01
 DrawRandomly,no
-HumanNPPExtraction,no
+HumanNPPScenarioType,none
+HumanNPPExtractionScale,0.
+HumanNPPScenarioDuration,0.
+BurninSteps,0
+ImpactSteps,0
+RecoverySteps,0
