@@ -4,7 +4,6 @@ Primary
 - Finish and integrate tagging/tracker code
 - Integrate state reading/writing code
 - Time-varying input fields
-- HANPP
 - User-guide/tutorial
 - Compile on Windows/OS X
 - Formal testing strategy
@@ -22,3 +21,6 @@ Tertiary
 - Drop std namespaces.
 - Drop cout and switch to use of Logger class.
 - Terminal output written to file as model runs.
+
+COMPLETED
+HANPP

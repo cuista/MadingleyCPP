@@ -54,7 +54,12 @@ bool Parameters::Initialise( const Types::StringMatrix& rawInputParameterData ) 
                 else if( parameterName == "maximumnumberofcohorts" ) SetMaximumNumberOfCohorts( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
                 else if( parameterName == "planktonsizethreshold" ) SetPlanktonSizeThreshold( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
                 else if( parameterName == "drawrandomly" ) SetDrawRandomly( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
-                else if( parameterName == "humannppextraction" ) SetHumanNPPExtraction( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+                else if( parameterName == "humannppscenariotype" ) SetHumanNPPScenarioType( Convertor::Get( )->RemoveWhiteSpace( Convertor::Get( )->ToLowercase( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) ) );
+                else if( parameterName == "humannppextractionscale" ) SetHumanNPPExtractionScale( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "humannppscenarioduration" ) SetHumanNPPScenarioDuration( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "burninsteps" ) SetBurninSteps( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "impactsteps" ) SetImpactSteps( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
+                else if( parameterName == "recoverysteps" ) SetRecoverySteps( Convertor::Get( )->StringToNumber( rawInputParameterData[ rowIndex ][ Constants::eParameterValue ] ) );
             }
             CalculateParameters( );
             
@@ -180,8 +185,24 @@ bool Parameters::GetDrawRandomly( ) const {
     return mDrawRandomly;
 }
 
-std::string Parameters::GetHumanNPPExtraction( ) const {
-    return mHumanNPPExtraction;
+
+std::string Parameters::GetHumanNPPScenarioType( ) const {
+    return mHumanNPPScenarioType;
+}
+double Parameters::GetHumanNPPExtractionScale( ) const{
+    return mHumanNPPExtractionScale;
+}
+double Parameters::GetHumanNPPScenarioDuration( ) const{
+    return mHumanNPPScenarioDuration;
+}
+unsigned Parameters::GetBurninSteps( ) const{
+    return mBurninSteps;
+}
+unsigned Parameters::GetImpactSteps( ) const{
+    return mImpactSteps;
+}
+unsigned Parameters::GetRecoverySteps( ) const{
+    return mRecoverySteps;
 }
 
 void Parameters::SetRootDataDirectory( const std::string& rootDataDirectory ) {
@@ -235,8 +256,23 @@ void Parameters::SetDrawRandomly( const std::string& drawRandomlyString ) {
         mDrawRandomly = false;
 }
 
-void Parameters::SetHumanNPPExtraction( const std::string& humanNPPExtraction ) {
-    mHumanNPPExtraction = humanNPPExtraction;
+void Parameters::SetHumanNPPScenarioType(const std::string& humanNPPScenarioType){
+    mHumanNPPScenarioType=humanNPPScenarioType;
+}
+void Parameters::SetHumanNPPExtractionScale(const double& humanNPPExtractionScale ){
+    mHumanNPPExtractionScale=humanNPPExtractionScale;
+}
+void Parameters::SetHumanNPPScenarioDuration(const double & humanNPPScenarioDuration){
+    mHumanNPPScenarioDuration=humanNPPScenarioDuration;
+}
+void Parameters::SetBurninSteps(const unsigned& burninSteps){
+    mBurninSteps=burninSteps;
+}
+void Parameters::SetImpactSteps(const unsigned& impactSteps){
+    mImpactSteps=impactSteps;
+}
+void Parameters::SetRecoverySteps(const unsigned& recoverySteps){
+    mRecoverySteps=recoverySteps;
 }
 
 unsigned Parameters::GetNumberOfGridCells( ) const {

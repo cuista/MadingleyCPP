@@ -1,4 +1,13 @@
 MadingleyCPP
 
 Version history
-0.1 (01/04/2016) - Modifications to MadingleyCPP to fix correct data indexing associated with a reduced user-configured model domain. Included the latest NetCDFIO and reduced the input parameters so that both codebases use the same input file.
+0.2 (10/01/2017) - Modifications to MadingleyCPP to set up the human approptiation of NPP. Changes have been propagated in from the madingley-merge-and-refactor C# branch
+This needed some extra parameters, so these have been added to SimulationControlParameters.csv viz.
+HumanNPPScenarioType
+HumanNPPExtractionScale
+HumanNPPScenarioDuration
+BurninSteps
+ImpactSteps
+RecoverySteps
+and the original HumanNPPExtraction parameter has been removed. HANPP.cpp now gets all these parameters from the Parameters singleton rather than via arguments
+

@@ -23,8 +23,14 @@ public:
     unsigned GetMaximumNumberOfCohorts( ) const;
     float GetPlanktonSizeThreshold( ) const;
     bool GetDrawRandomly( ) const;
-    std::string GetHumanNPPExtraction( ) const;
 
+    std::string GetHumanNPPScenarioType( ) const;
+    double GetHumanNPPExtractionScale( ) const;
+    double GetHumanNPPScenarioDuration( ) const;
+    unsigned GetBurninSteps( ) const;
+    unsigned GetImpactSteps( ) const;
+    unsigned GetRecoverySteps( ) const;
+        
     void SetRootDataDirectory( const std::string& );
     void SetTimeStepUnits( const std::string& );
     void SetLengthOfSimulationInMonths( const unsigned& );
@@ -37,8 +43,14 @@ public:
     void SetMaximumNumberOfCohorts( const unsigned& );
     void SetPlanktonSizeThreshold( const float& );
     void SetDrawRandomly( const std::string& );
-    void SetHumanNPPExtraction( const std::string& );
 
+    void SetHumanNPPScenarioType(const std::string& humanNPPScenarioType);
+    void SetHumanNPPExtractionScale(const double& humanNPPExtractionScale );
+    void SetHumanNPPScenarioDuration(const double & humanNPPScenarioDuration);
+    void SetBurninSteps(const unsigned& burninSteps);
+    void SetImpactSteps(const unsigned& impactSteps);
+    void SetRecoverySteps(const unsigned& recoverySteps);
+    
     // Calculated parameters
     unsigned GetNumberOfGridCells( ) const;
     unsigned GetLengthOfSimulationInMonths( ) const;
@@ -89,8 +101,13 @@ private:
     unsigned mMaximumNumberOfCohorts;
     float mPlanktonSizeThreshold;
     bool mDrawRandomly;
-    std::string mHumanNPPExtraction;
 
+    std::string mHumanNPPScenarioType;
+    double mHumanNPPExtractionScale;
+    double mHumanNPPScenarioDuration;
+    unsigned mBurninSteps;
+    unsigned mImpactSteps;
+    unsigned mRecoverySteps;
     // Calculated parameters
     unsigned mLengthOfSimulationInMonths;
     unsigned mNumberOfGridCells;
