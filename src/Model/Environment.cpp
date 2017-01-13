@@ -402,4 +402,23 @@ void Environment::SetHANPP( ) {
     for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
         ( *mLayers[ "TerrestrialHANPP" ] )[ cellIndex ] = 0;
     }
+
+    for( int timeIndex = 0; timeIndex < 12; timeIndex++ ) {
+        TimeStep::Get( )->SetMonthly( timeIndex );
+        mLayers[ "TerrestrialHANPP" ]->SetTime( timeIndex );
+
+        for( unsigned cellIndex = 0; cellIndex < Parameters::Get( )->GetNumberOfGridCells( ); cellIndex++ ) {
+            double d = 0; // There are missing values here. No marine precipitation data.
+
+            if( DataLayerSet::Get( )->GetDataAtCellIndexFor( "Realm", cellIndex ) == 2 ) {
+                d = DataLayerSet::Get( )->GetDataAtCellIndexFor( "TerrestrialHANPP", cellIndex );
+            }
+
+            if( d == Constants::cMissingValue ) {
+                d = 0;
+                std::cout << "Warning Environment::setHANPP- missing values in TerrestrialHANPP field!!" << std::endl;
+            }
+            ( *mLayers[ "TerrestrialHANPP" ] )[ cellIndex ] = d;
+        }
+    }
 }
