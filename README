@@ -1,13 +1,5 @@
 MadingleyCPP
 
 Version history
-0.2 (10/01/2017) - Modifications to MadingleyCPP to set up the human approptiation of NPP. Changes have been propagated in from the madingley-merge-and-refactor C# branch
-This needed some extra parameters, so these have been added to SimulationControlParameters.csv viz.
-HumanNPPScenarioType
-HumanNPPExtractionScale
-HumanNPPScenarioDuration
-BurninSteps
-ImpactSteps
-RecoverySteps
-and the original HumanNPPExtraction parameter has been removed. HANPP.cpp now gets all these parameters from the Parameters singleton rather than via arguments
-
+0.2 (02/02/2017) - the first conversopn from C# used references to store the cohorts. This can lead to some awkward coding in places
+and may also be somewhat inefficient in terms of speed. This new version replaces all references to Cohorts with pointers. 
