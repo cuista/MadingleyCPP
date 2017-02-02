@@ -25,13 +25,13 @@ public:
     @param gcl The current grid cell 
     @param actingCohort The acting cohort 
     @param The definitions for all the model parameters */
-    void GetEatingPotentialMarine( GridCell&, Cohort&, MadingleyInitialisation& );
+    void GetEatingPotentialMarine( GridCell&, Cohort*, MadingleyInitialisation& );
 
     /** \brief Create the matrix of prey abundances in each weight bin
     @param gcl The current grid cell 
     @param actingCohort The predator cohort 
     @param logOptimalPreyBodySizeRatio How big is the prey  */
-    void PopulateBinnedPreyAbundance( GridCell&, Cohort&, double );
+    void PopulateBinnedPreyAbundance( GridCell&, Cohort*, double );
 
     /** \brief Get the bin number for a prey of a particular body mass */
     int GetBinNumber( double, double, double );
@@ -43,13 +43,13 @@ public:
     @param gcl The current grid cell 
     @param actingCohort The acting cohort 
     @param params The definitions for items in the model  */
-    void GetEatingPotentialTerrestrial( GridCell&, Cohort&, MadingleyInitialisation& );
+    void GetEatingPotentialTerrestrial( GridCell&, Cohort*, MadingleyInitialisation& );
 
     /** \brief Apply the changes from predation to prey cohorts, and update deltas for the predator cohort
     @param gridCell The current grid cell 
     @param actingCohort The acting cohort 
     @param currentTimestep The current model time step */
-    void Run( GridCell&, Cohort&, unsigned, MadingleyInitialisation& );
+    void Run( GridCell&, Cohort*, unsigned, MadingleyInitialisation& );
 
     /** \brief Calculate the potential number of individuals in a prey cohort eaten by an acting predator cohort given the number of prey detections
     @param preyAbundance The number of individuals in the prey cohort 

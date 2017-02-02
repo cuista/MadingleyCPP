@@ -24,23 +24,19 @@ void GridCell::SetCellCoords( unsigned index ) {
     mCellWidthKm = mUtilities.CalculateLengthOfDegreeLongitude( Parameters::Get( )->GetUserLatitudeAtIndex( indices->GetY( ) ) + Parameters::Get( )->GetGridCellSize( ) / 2 ) * Parameters::Get( )->GetGridCellSize( );
 }
 
-void GridCell::InsertCohort( Cohort& c ) {
-    mCohorts[ c.mFunctionalGroupIndex ].push_back( c );
+void GridCell::InsertCohort( Cohort* c ) {
+    mCohorts[ c->mFunctionalGroupIndex ].push_back( c );
 }
 
-void GridCell::RemoveCohort( Cohort& c ) {
-    std::vector<Cohort>& z = mCohorts[ c.mFunctionalGroupIndex ];
-    auto h = find_if( z.begin( ), z.end( ), [ c ]( Cohort & k ) {
-        return c.mID == k.mID;
-    } );
-    if( c.mID != ( *h ).mID ) std::cout << "Strange things happening in grid delete? " << c.mID << " " <<( *h ).mID << std::endl;
-    z.erase( h );
+void GridCell::RemoveCohort( Cohort* c ) {
+    std::vector<Cohort*>& z = mCohorts[ c->mFunctionalGroupIndex ];
+    z.erase(std::remove(z.begin(),z.end(),c),z.end());
 }
 
-void GridCell::MoveCohort( Cohort& c ) {
-    c.GetCurrentCell( ).RemoveCohort( c );
-    c.SetCurrentCell( c.mDestinationCell );
-    c.GetCurrentCell( ).InsertCohort( c );
+void GridCell::MoveCohort( Cohort* c ) {
+    RemoveCohort( c );
+    c->mCurrentCell= c->mDestinationCell;
+    c->mCurrentCell->InsertCohort(c);
 }
 
 void GridCell::RandomizeCohorts( ) {

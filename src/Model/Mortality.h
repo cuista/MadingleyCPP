@@ -11,7 +11,7 @@ public:
     @param bodyMassIncludingChangeThisTimeStep The body mass that individuals in this cohort will have at the end of this time step 
     @param currentTimestep The current model time step 
     @return The number of individuals lost to a cohort through mortality */
-    virtual double CalculateMortalityRate( Cohort&, double, unsigned ) {
+    virtual double CalculateMortalityRate( Cohort*, double, unsigned ) {
         std::cout << "If this got called you ended up in a virtual function! MortalityImplementation CalculateMortalityRate" << std::endl;
         return 1;
     }

@@ -17,7 +17,7 @@ public:
     @param actingCohortFunctionalGroup The functional group index of the acting cohort 
     @param actingCohortNumber The position of the cohort within the functional group in the array of grid cell cohorts 
     @param currentMonth The current model month */
-    void Run( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth );
+    void Run( Grid& gridForDispersal, Cohort* cohortToDisperse, const unsigned& currentMonth );
 
 private:
     
@@ -30,7 +30,7 @@ private:
     @param madingleyGrid The model grid 
     @param C a cohort
     @param dispersalSpeed The average speed at which individuals in this cohort move around their environment, in km per month */
-    void CalculateDispersalProbability( Grid&, Cohort&, double );
+    void CalculateDispersalProbability( Grid&, Cohort*, double );
     
     /** \brief The time units associated with this implementation of dispersal */
     std::string mTimeUnitImplementation;

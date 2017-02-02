@@ -22,7 +22,7 @@ public:
     @param actingCohortFunctionalGroup The functional group index of the acting cohort 
     @param actingCohortNumber The position of the acting cohort within the functional group in the array of grid cell cohorts 
     @param currentMonth The current model month */
-    void Run( Grid&, Cohort&, const unsigned& );
+    void Run( Grid&, Cohort*, const unsigned& );
     
 private:
     /** \brief    Convert dispersal speed from m per second to km per dispersal time step (currently 18h)
@@ -33,7 +33,7 @@ private:
     /** \brief    Calculates the probability of advective dispersal given the grid cell
     @param madingleyGrid The model grid 
     @param c a cohort */
-    void CalculateDispersalProbability( Grid&, Cohort&, const unsigned& );
+    void CalculateDispersalProbability( Grid&, Cohort*, const unsigned& );
     
     /** \brief    Get a randomly directed diffusion vector. This is derived from the LTRANS model formulation, which itself is derived from Visser 1997 (MEPS)
     We assume that the standard deviation of the random draw is 1.0

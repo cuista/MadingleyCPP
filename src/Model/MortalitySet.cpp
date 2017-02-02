@@ -25,7 +25,7 @@ void MortalitySet::InitializeEcologicalProcess( GridCell& gcl, MadingleyInitiali
 
 }
 
-void MortalitySet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
+void MortalitySet::RunEcologicalProcess( GridCell& gcl, Cohort* actingCohort, unsigned currentTimestep, ThreadVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
     // Variables to hold the mortality rates
     double MortalityRateBackground;
     double MortalityRateSenescence;
@@ -50,7 +50,7 @@ void MortalitySet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, un
         BodyMassIncludingChangeThisTimeStep += Biomass.second;
     }
 
-    BodyMassIncludingChangeThisTimeStep = std::min( actingCohort.mAdultMass, BodyMassIncludingChangeThisTimeStep + actingCohort.mIndividualBodyMass );
+    BodyMassIncludingChangeThisTimeStep = std::min( actingCohort->mAdultMass, BodyMassIncludingChangeThisTimeStep + actingCohort->mIndividualBodyMass );
 
     // Temporary variable to hold net reproductive biomass change of individuals in this cohort as a result of other ecological processes
     ReproductiveMassIncludingChangeThisTimeStep = 0.0;
@@ -61,14 +61,14 @@ void MortalitySet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, un
         ReproductiveMassIncludingChangeThisTimeStep += Biomass.second;
     }
 
-    ReproductiveMassIncludingChangeThisTimeStep += actingCohort.mIndividualReproductivePotentialMass;
+    ReproductiveMassIncludingChangeThisTimeStep += actingCohort->mIndividualReproductivePotentialMass;
     // Check to see if the cohort has already been killed by predation etc
     if( BodyMassIncludingChangeThisTimeStep < 1.e-7 ) {
         //MB a small number ! maybe should be larger? (e.g. min cohort body mass))
         //This causes a difference between C# and c++ versions as there is a rounding error issue - changed in C# code to match
         // If individual body mass is not greater than zero, then all individuals become extinct
         MortalityTotal = 0.0;
-        // used to be actingCohort.mCohortAbundance, but this leads to a large cancellation in applyEcology
+        // used to be actingCohort->mCohortAbundance, but this leads to a large cancellation in applyEcology
         //so mortality total is changed here  - now we only multiply by mortality total - so values can never be negative
         //BodyMassIncludingChangeThisTimeStep = 0; //MB would be a kludge to exclude negative values below - need mass checking throughout the code
     } else {
@@ -76,7 +76,7 @@ void MortalitySet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, un
         MortalityRateBackground = mImplementations[ "basic background mortality" ]->CalculateMortalityRate( actingCohort, BodyMassIncludingChangeThisTimeStep, currentTimestep );
 
         // If the cohort has matured, then calculate senescence mortality rate, otherwise set rate to zero
-        if( actingCohort.mMaturityTimeStep < std::numeric_limits< unsigned >::max( ) ) {
+        if( actingCohort->mMaturityTimeStep < std::numeric_limits< unsigned >::max( ) ) {
             MortalityRateSenescence = mImplementations[ "basic senescence mortality" ]->CalculateMortalityRate( actingCohort, BodyMassIncludingChangeThisTimeStep, currentTimestep );
         } else {
             MortalityRateSenescence = 0.0;
@@ -94,5 +94,5 @@ void MortalitySet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, un
 
     // Add the biomass of individuals that have died to the delta biomass in the organic pool (including reproductive 
     // potential mass, and mass gained through eating, and excluding mass lost through metabolism)
-    Cohort::mMassAccounting[ "organicpool" ][ "mortality" ] = ( 1 - MortalityTotal ) * actingCohort.mCohortAbundance * ( BodyMassIncludingChangeThisTimeStep + ReproductiveMassIncludingChangeThisTimeStep );
+    Cohort::mMassAccounting[ "organicpool" ][ "mortality" ] = ( 1 - MortalityTotal ) * actingCohort->mCohortAbundance * ( BodyMassIncludingChangeThisTimeStep + ReproductiveMassIncludingChangeThisTimeStep );
 }

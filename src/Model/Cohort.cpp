@@ -7,7 +7,7 @@
 #include "Parameters.h"
 
 unsigned Cohort::mNextID = 0;
-Types::CohortVector Cohort::mNewCohorts;
+std::vector<Cohort*> Cohort::mNewCohorts;
 Types::Double2DMap Cohort::mMassAccounting;
 
 Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, double optimalPreyBodySizeRatio, unsigned short birthTimeStep, double proportionTimeActive, long long &nextCohortID ) {
@@ -35,22 +35,22 @@ Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBod
     nextCohortID++; // FIX - Is this increment required?
 }
 
-Cohort::Cohort( Cohort& actingCohort, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, unsigned birthTimeStep, long long& nextCohortID ) {
-    mFunctionalGroupIndex = actingCohort.mFunctionalGroupIndex;
+Cohort::Cohort( Cohort* actingCohort, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, unsigned birthTimeStep, long long& nextCohortID ) {
+    mFunctionalGroupIndex = actingCohort->mFunctionalGroupIndex;
     mJuvenileMass = juvenileBodyMass;
     mAdultMass = adultBodyMass;
     mIndividualBodyMass = initialBodyMass;
     mCohortAbundance = initialAbundance;
     mBirthTimeStep = birthTimeStep;
     mMaturityTimeStep = std::numeric_limits<unsigned>::max( );
-    mLogOptimalPreyBodySizeRatio = actingCohort.mLogOptimalPreyBodySizeRatio;
+    mLogOptimalPreyBodySizeRatio = actingCohort->mLogOptimalPreyBodySizeRatio;
     mMaximumAchievedBodyMass = juvenileBodyMass;
     mMerged = false;
-    mProportionTimeActive = actingCohort.mProportionTimeActive;
-    mCurrentCell = actingCohort.mCurrentCell;
+    mProportionTimeActive = actingCohort->mProportionTimeActive;
+    mCurrentCell = actingCohort->mCurrentCell;
     mDestinationCell = mCurrentCell;
-    mCurrentLocation = actingCohort.mCurrentLocation;
-    mDestinationLocation = actingCohort.mDestinationLocation;
+    mCurrentLocation = actingCohort->mCurrentLocation;
+    mDestinationLocation = mCurrentLocation;
     mIndividualReproductivePotentialMass = 0;
     mID = mNextID; //MB added to track this object.
     mNextID++;
@@ -114,8 +114,7 @@ bool Cohort::IsMoving( ) {
 }
 
 void Cohort::Move( ) {
-    mCurrentCell->MoveCohort( *this );
-    mDestinationCell = mCurrentCell;
+    mCurrentCell->MoveCohort( this );
 }
 
 bool Cohort::IsMarine( ) {

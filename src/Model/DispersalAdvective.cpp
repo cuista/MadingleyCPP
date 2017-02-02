@@ -25,7 +25,7 @@ DispersalAdvective::DispersalAdvective( ) {
 
 }
 
-void DispersalAdvective::Run( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
+void DispersalAdvective::Run( Grid& gridForDispersal, Cohort* cohortToDisperse, const unsigned& currentMonth ) {
     // Loop through a number of times proportional to the rescaled dispersal
     for( int mm = 0; mm < mAdvectionTimeStepsPerModelTimeStep; mm++ ) {
         // Get the probability of dispersal and return a candidate cell
@@ -39,7 +39,7 @@ inline const double DispersalAdvective::RescaleDispersalSpeed( const double& dis
     return dispersalSpeed * mVelocityUnitConversion / mAdvectionTimeStepsPerModelTimeStep;
 }
 
-void DispersalAdvective::CalculateDispersalProbability( Grid& madingleyGrid, Cohort& c, const unsigned& currentMonth ) {
+void DispersalAdvective::CalculateDispersalProbability( Grid& madingleyGrid, Cohort* c, const unsigned& currentMonth ) {
     // Advective speed in u (longitudinal) direction
     double uAdvectiveSpeed;
 
@@ -62,10 +62,10 @@ void DispersalAdvective::CalculateDispersalProbability( Grid& madingleyGrid, Coh
     double lonCellLength;
 
     // Get the u speed and the v speed from the cell data
-    uAdvectiveSpeed = Environment::Get( "uVel", *( c.mDestinationCell ) );
+    uAdvectiveSpeed = Environment::Get( "uVel", *( c->mDestinationCell ) );
     assert( uAdvectiveSpeed > -9999 );
 
-    vAdvectiveSpeed = Environment::Get( "vVel", *( c.mDestinationCell ) );
+    vAdvectiveSpeed = Environment::Get( "vVel", *( c->mDestinationCell ) );
     assert( vAdvectiveSpeed > -9999 );
     // Calculate the diffusive movement speed, with a direction chosen at random
     diffusiveUandVComponents = CalculateDiffusion( );
@@ -74,8 +74,8 @@ void DispersalAdvective::CalculateDispersalProbability( Grid& madingleyGrid, Coh
     vDistanceTravelled = RescaleDispersalSpeed( vAdvectiveSpeed ) + diffusiveUandVComponents[1];
 
     // Check that the u distance travelled and v distance travelled are not greater than the cell length
-    latCellLength = ( *( c.mDestinationCell ) ).GetCellHeight( );
-    lonCellLength = ( *( c.mDestinationCell ) ).GetCellWidth( );
+    latCellLength = c->mDestinationCell->GetCellHeight( );
+    lonCellLength = c->mDestinationCell->GetCellWidth( );
 
     if( abs( uDistanceTravelled ) > lonCellLength ) std::cout << "BIG U " << uAdvectiveSpeed << std::endl;
     assert( abs( uDistanceTravelled ) <= lonCellLength && "u velocity greater than cell width" );

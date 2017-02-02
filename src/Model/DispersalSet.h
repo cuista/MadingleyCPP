@@ -28,7 +28,7 @@ public:
 
     void UpdateCrossGridCellEcology( unsigned& dispersalCounter );
 
-    Types::CohortVector mDispersers;
+    vector<Cohort*> mDispersers;
     /** \brief The available implementations of the dispersal process */
     Types::DispersalMap mChoose;
 };

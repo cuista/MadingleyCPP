@@ -26,7 +26,7 @@ public:
     @param initialAbundance The intial number of individuals in this cohort 
     @param birthTimeStep The birth time step for this cohort 
     @param nextCohortID The unique ID to assign to the next cohort created    */
-    Cohort( Cohort&, double, double, double, double, unsigned, long long& );
+    Cohort( Cohort*, double, double, double, double, unsigned, long long& );
 
     GridCell& GetCurrentCell( );
     GridCell& GetDestination( );
@@ -43,7 +43,7 @@ public:
     static void ResetMassFluxes( );
 
     static Types::Double2DMap mMassAccounting;
-    static Types::CohortVector mNewCohorts; // FIX - Why does Cohort contain a vector to the Cohorts?
+    static std::vector<Cohort*> mNewCohorts; // FIX - Why does Cohort contain a vector to the Cohorts?
     static unsigned mNextID;
 
     long long mID;

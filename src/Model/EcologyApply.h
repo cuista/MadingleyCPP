@@ -10,18 +10,18 @@ public:
     @param gcl The gridCell 
     @param actingCohort The acting cohort 
     @param currentTimestep The current model time step */
-    void UpdateAllEcology( GridCell&, Cohort&, unsigned );
+    void UpdateAllEcology( GridCell&, Cohort*, unsigned );
 
     /** \brief  Update the abundance of the acting cohort according to the delta abundances from the ecological processes
     @param gcl The current grid cell 
     @param actingCohort The acting cohort */
-    void UpdateAbundance( GridCell&, Cohort& );
+    void UpdateAbundance( GridCell&, Cohort* );
     
     /** \brief  Update the individual and reproductive body masses of the acting cohort according to the delta biomasses from the ecological processes
     @param gridCell The current grid cell 
     @param actingCohort The acting cohort  
     @param currentTimestep The current model time step */
-    void UpdateBiomass( GridCell&, Cohort&, unsigned );
+    void UpdateBiomass( GridCell&, Cohort*, unsigned );
     
     /** \brief Update the organic and respiratory biomass pools according to the relevant deltas from the ecological processes
     @param gcl The current grid cell */

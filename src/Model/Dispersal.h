@@ -11,11 +11,11 @@ public:
     Dispersal( );
 
     /** \brief Run the dispersal implementation */
-    virtual void Run( Grid&, Cohort&, const unsigned& );
+    virtual void Run( Grid&, Cohort*, const unsigned& );
 
     void ResetRandom( );
 
-    void NewCell( Grid&, double&, double&, double&, double&, Cohort& );
+    void NewCell( Grid&, double&, double&, double&, double&, Cohort* );
 
     /** \brief Include Utility class */
     UtilityFunctions mUtilities;

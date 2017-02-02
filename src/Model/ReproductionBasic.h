@@ -23,20 +23,20 @@ public:
     @param partial Thread-locked variables 
     @param iteroparous Whether the acting cohort is iteroparous, as opposed to semelparous 
     @param currentMonth The current model month */
-    void Run( GridCell&, Cohort&, unsigned, ThreadVariables&, bool, unsigned, MadingleyInitialisation& );
+    void Run( GridCell&, Cohort*, unsigned, ThreadVariables&, bool, unsigned, MadingleyInitialisation& );
 
     /** \brief assigns ingested biomass from other ecological processes to reproductive potential mass
     @param gridCell The current grid cell 
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
     @param params The model parameters */
-    void MassAssignment( GridCell&, Cohort&, unsigned, MadingleyInitialisation& );
+    void MassAssignment( GridCell&, Cohort*, unsigned, MadingleyInitialisation& );
 
     /** \brief Assign the juvenile and adult masses of the new cohort to produce
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param madingleyCohortDefinitions The definitions of cohort functional groups in the model 
     @return A vector containing the juvenile and adult masses of the cohort to be produced*/
-    std::vector< double > GetOffspringCohortProperties( Cohort&, FunctionalGroupDefinitions& );
+    std::vector< double > GetOffspringCohortProperties( Cohort*, FunctionalGroupDefinitions& );
 
 private:
     /** \brief Include Utility class */

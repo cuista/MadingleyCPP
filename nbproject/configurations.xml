@@ -138,6 +138,7 @@
         <itemPath>src/Model/FunctionalGroupDefinitions.cpp</itemPath>
         <itemPath>src/Model/Grid.cpp</itemPath>
         <itemPath>src/Model/GridCell.cpp</itemPath>
+        <itemPath>src/Model/HANPP.cpp</itemPath>
         <itemPath>src/Model/Location.cpp</itemPath>
         <itemPath>src/Model/Madingley.cpp</itemPath>
         <itemPath>src/Model/MadingleyInitialisation.cpp</itemPath>
@@ -574,7 +575,7 @@
             <pElem>/usr/local/hdf-1.8.15/include</pElem>
             <pElem>/usr/local/zlib-1.2.8/include/</pElem>
           </incDir>
-          <commandLine>-O2 -std=c++11</commandLine>
+          <commandLine>-std=c++11</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>

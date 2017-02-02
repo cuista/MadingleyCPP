@@ -22,12 +22,12 @@ void DispersalSet::ResetRandoms( ) {
 }
 
 void DispersalSet::RunCrossGridCellEcologicalProcess( GridCell& gcl, Grid& gridForDispersal, MadingleyInitialisation& params, unsigned currentMonth ) {
-    gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
-        if( mChoose.count( c.GetDispersalType( params ) ) != 0 ) {
-            mChoose[c.GetDispersalType( params )]->Run( gridForDispersal, c, currentMonth );
+    gcl.ApplyFunctionToAllCohorts( [&]( Cohort* c ) {
+        if( mChoose.count( c->GetDispersalType( params ) ) != 0 ) {
+            mChoose[c->GetDispersalType( params )]->Run( gridForDispersal, c, currentMonth );
 
         }
-        if( c.IsMoving( ) )mDispersers.push_back( c );
+        if( c->IsMoving( ) )mDispersers.push_back( c );
 
     } );
 
@@ -35,8 +35,8 @@ void DispersalSet::RunCrossGridCellEcologicalProcess( GridCell& gcl, Grid& gridF
 
 void DispersalSet::UpdateCrossGridCellEcology( unsigned& dispersalCounter ) {
     dispersalCounter = mDispersers.size( );
-    for( auto& c: mDispersers ) {
-        c.Move( );
+    for( auto c: mDispersers ) {
+        c->Move( );
     }
     mDispersers.clear( );
 }

@@ -17,7 +17,7 @@ public:
     @param Cohort1 The first cohort to calculate distance to 
     @param Cohort2 The cohort to compare to 
     @returns The relative distance in trait space */
-    static double CalculateDistance( Cohort&, Cohort& );
+    static double CalculateDistance( Cohort*, Cohort* );
 
     /** \brief Merge cohorts until below a specified threshold number of cohorts in each grid cell
     @param gridCellCohorts The cohorts within this grid cell 

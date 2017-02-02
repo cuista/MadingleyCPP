@@ -123,12 +123,11 @@ long MadingleyInitialisation::SeedGridCellCohorts( GridCell& gcl ) {
                     NewAbund = NewBiomass / cohortJuvenileMass;
 
                     // Initialise the new cohort with the relevant properties
-                    Cohort NewCohort( gcl, functionalGroup, cohortJuvenileMass, cohortAdultMass, cohortJuvenileMass, NewAbund,
+                    Cohort* NewCohort=new Cohort( gcl, functionalGroup, cohortJuvenileMass, cohortAdultMass, cohortJuvenileMass, NewAbund,
                             optimalPreyBodySizeRatio, 0, proportionTimeActive, mNextCohortID );
 
                     // Add the new cohort to the list of grid cell cohorts
                     gcl.mCohorts[functionalGroup].push_back( NewCohort );
-
                     // Increment the variable tracking the total number of cohorts in the model
                     totalCohorts++;
 

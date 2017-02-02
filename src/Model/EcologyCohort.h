@@ -27,13 +27,13 @@ public:
     @param partial Thread-locked local variables 
     @param currentMonth The current model month
     @param params Things that may be needed */
-    void RunWithinCellEcology( GridCell&, Cohort&, unsigned, ThreadVariables&, unsigned, MadingleyInitialisation& );
+    void RunWithinCellEcology( GridCell&, Cohort*, unsigned, ThreadVariables&, unsigned, MadingleyInitialisation& );
 
     /** \brief Update the properties of the acting cohort and of the environmental biomass pools after running the ecological processes for a cohort
     @param gridCell The current grid cell 
     @param actingCohort The acting cohort 
     @param currentTimestep The current model time step */
-    void UpdateEcology( GridCell&, Cohort&, unsigned );
+    void UpdateEcology( GridCell&, Cohort*, unsigned );
 
     /** \brief  A vector of stopwatch objects for timing the ecological processes*/
     std::vector< Stopwatch > mStopWatches;

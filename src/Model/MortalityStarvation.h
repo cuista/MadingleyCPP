@@ -15,7 +15,7 @@ public:
     @param bodyMassIncludingChangeThisTimeStep Body mass including change from other ecological functions this time step; should not exceed adult mass 
     @param currentTimestep The current model time step 
     @return The proportion of individuals in the cohort that die from starvation mortality */
-    double CalculateMortalityRate( Cohort&, double, unsigned );
+    double CalculateMortalityRate( Cohort*, double, unsigned );
     
 private:
 
@@ -24,7 +24,7 @@ private:
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param bodyMassIncludingChangeThisTimeStep Body mass including change from other ecological functions this time step; should not exceed adult mass 
     @return The starvation mortality rate in mortality formulation time step units */
-    double CalculateStarvationRate( Cohort&, double );
+    double CalculateStarvationRate( Cohort*, double );
 
     /** \brief Include Utility class */
     UtilityFunctions mUtilities;

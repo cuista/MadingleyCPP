@@ -7,7 +7,7 @@ MortalityBackground::MortalityBackground( std::string globalModelTimeStepUnit ) 
     mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
 }
 
-double MortalityBackground::CalculateMortalityRate( Cohort& actingCohort, double bodyMassIncludingChangeThisTimeStep, unsigned currentTimestep ) {
+double MortalityBackground::CalculateMortalityRate( Cohort* actingCohort, double bodyMassIncludingChangeThisTimeStep, unsigned currentTimestep ) {
     // Convert from mortality rate per mortality formulation time step to mortality rate per model time step
     return mMortailtyRate * mDeltaT;
 }

@@ -18,7 +18,7 @@ DispersalResponsive::DispersalResponsive( ) {
     mRandomNumberA.SetSeed( seed );
 }
 
-void DispersalResponsive::Run( Grid& gridForDispersal, Cohort& cohortToDisperse, const unsigned& currentMonth ) {
+void DispersalResponsive::Run( Grid& gridForDispersal, Cohort* cohortToDisperse, const unsigned& currentMonth ) {
     // Starvation driven dispersal takes precedence over density driven dispersal (i.e. a cohort can't do both). Also, the delta 
     // arrays only allow each cohort to perform one type of dispersal each time step
     bool cohortDispersed = false;
@@ -32,15 +32,15 @@ void DispersalResponsive::Run( Grid& gridForDispersal, Cohort& cohortToDisperse,
     }
 }
 
-bool DispersalResponsive::CheckStarvationDispersal( Grid& gridForDispersal, Cohort& cohortToDisperse ) {
+bool DispersalResponsive::CheckStarvationDispersal( Grid& gridForDispersal, Cohort* cohortToDisperse ) {
     // A boolean to check whether a cohort has dispersed
     bool cohortHasDispersed = false;
 
     // Check for starvation driven dispersal
     // What is the present body mass of the cohort?
     // Note that at present we are just tracking starvation for adults
-    double individualBodyMass = cohortToDisperse.mIndividualBodyMass;
-    double adultMass = cohortToDisperse.mAdultMass;
+    double individualBodyMass = cohortToDisperse->mIndividualBodyMass;
+    double adultMass = cohortToDisperse->mAdultMass;
 
     // Assume a linear relationship between probability of dispersal and body mass loss, up to _StarvationDispersalBodyMassThreshold
     // at which point the cohort will try to disperse every time step
@@ -73,18 +73,18 @@ bool DispersalResponsive::CheckStarvationDispersal( Grid& gridForDispersal, Coho
     return cohortHasDispersed;
 }
 
-void DispersalResponsive::CheckDensityDrivenDispersal( Grid& gridForDispersal, Cohort& cohortToDisperse ) {
+void DispersalResponsive::CheckDensityDrivenDispersal( Grid& gridForDispersal, Cohort* cohortToDisperse ) {
     // Check the population density
-    double numberOfIndividuals = cohortToDisperse.mCohortAbundance;
+    double numberOfIndividuals = cohortToDisperse->mCohortAbundance;
 
     // Get the cell area, in kilometres squared
-    double cellArea = cohortToDisperse.mCurrentCell->GetCellArea( );
+    double cellArea = cohortToDisperse->mCurrentCell->GetCellArea( );
 
     // If below the density threshold
-    if( ( numberOfIndividuals / cellArea ) < mDensityThresholdScaling / cohortToDisperse.mAdultMass ) {
+    if( ( numberOfIndividuals / cellArea ) < mDensityThresholdScaling / cohortToDisperse->mAdultMass ) {
         // Check to see if it disperses (based on the same movement scaling as used in diffusive movement)
         // Calculate dispersal speed for that cohort
-        double dispersalSpeed = CalculateDispersalSpeed( cohortToDisperse.mAdultMass );
+        double dispersalSpeed = CalculateDispersalSpeed( cohortToDisperse->mAdultMass );
 
         // Cohort tries to disperse
         CalculateDispersalProbability( gridForDispersal, cohortToDisperse, dispersalSpeed );
@@ -95,9 +95,9 @@ double DispersalResponsive::CalculateDispersalSpeed( double bodyMass ) {
     return mDispersalSpeedBodyMassScalar * pow( bodyMass, mDispersalSpeedBodyMassExponent );
 }
 
-void DispersalResponsive::CalculateDispersalProbability( Grid& madingleyGrid, Cohort& c, double dispersalSpeed ) {
-    double latCellLength = c.mCurrentCell->GetCellHeight( );
-    double lonCellLength = c.mCurrentCell->GetCellWidth( );
+void DispersalResponsive::CalculateDispersalProbability( Grid& madingleyGrid, Cohort* c, double dispersalSpeed ) {
+    double latCellLength = c->mCurrentCell->GetCellHeight( );
+    double lonCellLength = c->mCurrentCell->GetCellWidth( );
 
     // Pick a direction at random
     //std::uniform_real_distribution<double> randomNumber( 0.0, 1.0 ); // FIX - Real distribution?

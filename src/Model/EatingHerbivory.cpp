@@ -41,12 +41,12 @@ void EatingHerbivory::InitializeEatingPerTimeStep( GridCell& gcl, MadingleyIniti
     mFunctionalGroupIndicesToEat = params.mStockFunctionalGroupDefinitions.GetFunctionalGroupIndex( "Heterotroph/Autotroph", "Autotroph", false );
 }
 
-void EatingHerbivory::GetEatingPotentialTerrestrial( GridCell& gcl, Cohort& actingCohort, MadingleyInitialisation& params ) {
+void EatingHerbivory::GetEatingPotentialTerrestrial( GridCell& gcl, Cohort* actingCohort, MadingleyInitialisation& params ) {
     // Set the total biomass eaten by the acting cohort to zero
     mTotalBiomassEatenByCohort = 0.0;
 
     // Get the individual body mass of the acting cohort
-    mBodyMassHerbivore = actingCohort.mIndividualBodyMass;
+    mBodyMassHerbivore = actingCohort->mIndividualBodyMass;
 
     // Set the total number of units to handle all potential biomass eaten to zero
     mTimeUnitsToHandlePotentialFoodItems = 0.0;
@@ -79,12 +79,12 @@ void EatingHerbivory::GetEatingPotentialTerrestrial( GridCell& gcl, Cohort& acti
 
 }
 
-void EatingHerbivory::GetEatingPotentialMarine( GridCell& gcl, Cohort& actingCohort, MadingleyInitialisation& params ) {
+void EatingHerbivory::GetEatingPotentialMarine( GridCell& gcl, Cohort* actingCohort, MadingleyInitialisation& params ) {
     // Set the total biomass eaten by the acting cohort to zero
     mTotalBiomassEatenByCohort = 0.0;
 
     // Get the individual body mass of the acting cohort
-    mBodyMassHerbivore = actingCohort.mIndividualBodyMass;
+    mBodyMassHerbivore = actingCohort->mIndividualBodyMass;
 
     // Set the total number of units to handle all potential biomass eaten to zero
     mTimeUnitsToHandlePotentialFoodItems = 0.0;
@@ -115,7 +115,7 @@ void EatingHerbivory::GetEatingPotentialMarine( GridCell& gcl, Cohort& actingCoh
     }
 }
 
-void EatingHerbivory::Run( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, MadingleyInitialisation& params ) {
+void EatingHerbivory::Run( GridCell& gcl, Cohort* actingCohort, unsigned currentTimestep, MadingleyInitialisation& params ) {
     mEdibleScaling = 1.0;
     if( !gcl.IsMarine( ) ) mEdibleScaling = 0.1;
 
@@ -127,19 +127,19 @@ void EatingHerbivory::Run( GridCell& gcl, Cohort& actingCohort, unsigned current
             mEdibleMass = gcl.mStocks[FunctionalGroup][i].mTotalBiomass * mEdibleScaling;
 
             // Calculate the biomass actually eaten from this stock by the acting cohort
-            mBiomassesEaten[FunctionalGroup][i] = CalculateBiomassesEaten( mPotentialBiomassesEaten[FunctionalGroup][i], mTimeUnitsToHandlePotentialFoodItems, actingCohort.mCohortAbundance, mEdibleMass );
+            mBiomassesEaten[FunctionalGroup][i] = CalculateBiomassesEaten( mPotentialBiomassesEaten[FunctionalGroup][i], mTimeUnitsToHandlePotentialFoodItems, actingCohort->mCohortAbundance, mEdibleMass );
 
             // Remove the biomass eaten from the autotroph stock
             gcl.mStocks[FunctionalGroup][i].mTotalBiomass -= mBiomassesEaten[FunctionalGroup][i];
 
             // Check that the biomass eaten is not a negative value
             if( mBiomassesEaten[FunctionalGroup][i] < 0 ) {
-                std::cout << "Herbivory negative for this herbivore cohort " << actingCohort.mFunctionalGroupIndex << " " << actingCohort.mID << std::endl;
+                std::cout << "Herbivory negative for this herbivore cohort " << actingCohort->mFunctionalGroupIndex << " " << actingCohort->mID << std::endl;
                 exit( 1 );
             }
             // Add the biomass eaten and assimilated by an individual to the delta biomass for the acting cohort
             //MB should we be able to get here if abundance is zero?
-            if( actingCohort.mCohortAbundance > 0 )Cohort::mMassAccounting["biomass"]["herbivory"] += mBiomassesEaten[FunctionalGroup][i] * mAssimilationEfficiency / actingCohort.mCohortAbundance;
+            if( actingCohort->mCohortAbundance > 0 )Cohort::mMassAccounting["biomass"]["herbivory"] += mBiomassesEaten[FunctionalGroup][i] * mAssimilationEfficiency / actingCohort->mCohortAbundance;
 
             // Move the biomass eaten but not assimilated by an individual into the organic matter pool
             Cohort::mMassAccounting["organicpool"]["herbivory"] += mBiomassesEaten[FunctionalGroup][i] * ( 1 - mAssimilationEfficiency );
@@ -149,7 +149,7 @@ void EatingHerbivory::Run( GridCell& gcl, Cohort& actingCohort, unsigned current
         assert( Cohort::mMassAccounting["biomass"]["herbivory"] >= 0 && "Delta biomass from herbviory is negative" );
 
         // Calculate the total biomass eaten by the acting (herbivore) cohort
-        mTotalBiomassEatenByCohort = Cohort::mMassAccounting[ "biomass" ][ "herbivory" ] * actingCohort.mCohortAbundance;
+        mTotalBiomassEatenByCohort = Cohort::mMassAccounting[ "biomass" ][ "herbivory" ] * actingCohort->mCohortAbundance;
     }
 }
 

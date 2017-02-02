@@ -10,7 +10,7 @@ MortalityStarvation::MortalityStarvation( std::string globalModelTimeStepUnit ) 
     mDeltaT = mUtilities.ConvertTimeUnits( globalModelTimeStepUnit, mTimeUnitImplementation );
 }
 
-double MortalityStarvation::CalculateMortalityRate( Cohort& actingCohort, double bodyMassIncludingChangeThisTimeStep, unsigned currentTimestep ) {
+double MortalityStarvation::CalculateMortalityRate( Cohort* actingCohort, double bodyMassIncludingChangeThisTimeStep, unsigned currentTimestep ) {
     // Calculate the starvation rate of the cohort given individual body masses compared to the maximum body
     // mass ever achieved
     double MortalityRate = CalculateStarvationRate( actingCohort, bodyMassIncludingChangeThisTimeStep );
@@ -19,10 +19,10 @@ double MortalityStarvation::CalculateMortalityRate( Cohort& actingCohort, double
     return MortalityRate * mDeltaT;
 }
 
-double MortalityStarvation::CalculateStarvationRate( Cohort& actingCohort, double bodyMassIncludingChangeThisTimeStep ) {
-    if( bodyMassIncludingChangeThisTimeStep < actingCohort.mMaximumAchievedBodyMass ) {
+double MortalityStarvation::CalculateStarvationRate( Cohort* actingCohort, double bodyMassIncludingChangeThisTimeStep ) {
+    if( bodyMassIncludingChangeThisTimeStep < actingCohort->mMaximumAchievedBodyMass ) {
         // Calculate the first part of the relationship between body mass and mortality rate
-        double k = -( bodyMassIncludingChangeThisTimeStep - mLogisticInflectionPoint * actingCohort.mMaximumAchievedBodyMass ) / ( mLogisticScalingParameter * actingCohort.mMaximumAchievedBodyMass );
+        double k = -( bodyMassIncludingChangeThisTimeStep - mLogisticInflectionPoint * actingCohort->mMaximumAchievedBodyMass ) / ( mLogisticScalingParameter * actingCohort->mMaximumAchievedBodyMass );
         // Calculate mortality rate
         return mMaximumStarvationRate / ( 1 + exp( -k ) );
     } else

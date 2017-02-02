@@ -14,7 +14,7 @@ public:
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
     @return The rate of individuals in the cohort that die from senescence mortality*/
-    double CalculateMortalityRate( Cohort&, double, unsigned );
+    double CalculateMortalityRate( Cohort*, double, unsigned );
 
 private:
     /** \brief Include Utility class */
