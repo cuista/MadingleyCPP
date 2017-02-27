@@ -47,7 +47,7 @@ private:
     void Output( unsigned );
 
     /** \brief An instance of ModelGrid to hold the grid to be used in this model */
-    Grid mModelGrid;
+    Grid* mModelGrid;
     MadingleyInitialisation mParams;
     /** \brief An instance of the merging class */
     CohortMerger mCohortMerger;
