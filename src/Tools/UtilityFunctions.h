@@ -1,7 +1,7 @@
 #ifndef UTILITYFUNCTIONS
 #define UTILITYFUNCTIONS
 
-#include "NonStaticSimpleRNG.h"
+#include "RandomSFMT.h"
 #include "Parameters.h"
 #include "Convertor.h"
 

@@ -14,9 +14,8 @@ void Dispersal::ResetRandom( ) {
     if( Parameters::Get( )->GetDrawRandomly( ) == true ) {
         seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
     }
-    mRandomNumberA.Reset( );
     mRandomNumberA.SetSeed( seed );
-    mRandomNumberB.Reset( );
+    mRandomNumberB.SetSeed( 0 );
 }
 
 void Dispersal::NewCell( Grid& madingleyGrid, double& uSpeed, double& vSpeed, double & LonCellLength, double & LatCellLength, Cohort& c ) {

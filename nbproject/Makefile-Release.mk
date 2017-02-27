@@ -98,8 +98,8 @@ OBJECTFILES= \
 	${OBJECTDIR}/src/Tools/Date.o \
 	${OBJECTDIR}/src/Tools/MassBinsHandler.o \
 	${OBJECTDIR}/src/Tools/Maths.o \
-	${OBJECTDIR}/src/Tools/NonStaticSimpleRNG.o \
 	${OBJECTDIR}/src/Tools/Processor.o \
+	${OBJECTDIR}/src/Tools/RandomSFMT.o \
 	${OBJECTDIR}/src/Tools/Stopwatch.o \
 	${OBJECTDIR}/src/Tools/UtilityFunctions.o
 
@@ -453,15 +453,15 @@ ${OBJECTDIR}/src/Tools/Maths.o: src/Tools/Maths.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/Maths.o src/Tools/Maths.cpp
 
-${OBJECTDIR}/src/Tools/NonStaticSimpleRNG.o: src/Tools/NonStaticSimpleRNG.cpp
-	${MKDIR} -p ${OBJECTDIR}/src/Tools
-	${RM} "$@.d"
-	$(COMPILE.cc) -O3 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/NonStaticSimpleRNG.o src/Tools/NonStaticSimpleRNG.cpp
-
 ${OBJECTDIR}/src/Tools/Processor.o: src/Tools/Processor.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Tools
 	${RM} "$@.d"
 	$(COMPILE.cc) -O3 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/Processor.o src/Tools/Processor.cpp
+
+${OBJECTDIR}/src/Tools/RandomSFMT.o: src/Tools/RandomSFMT.cpp
+	${MKDIR} -p ${OBJECTDIR}/src/Tools
+	${RM} "$@.d"
+	$(COMPILE.cc) -O3 -Isrc -Isrc/Data -Isrc/Input -Isrc/Model -Isrc/Output -Isrc/Tools -I/home/philju/Libraries/netcdf-cxx4-4.3/include -I/home/philju/Libraries/netcdf-4.4.1/include -I/home/philju/Libraries/hdf5-1.8.17/include -I/home/philju/Libraries/zlib-1.2.8/include/ -std=c++11 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/src/Tools/RandomSFMT.o src/Tools/RandomSFMT.cpp
 
 ${OBJECTDIR}/src/Tools/Stopwatch.o: src/Tools/Stopwatch.cpp
 	${MKDIR} -p ${OBJECTDIR}/src/Tools

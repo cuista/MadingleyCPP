@@ -9,7 +9,7 @@
 #include "Stopwatch.h"
 #include "Constants.h"
 #include "Parameters.h"
-#include "NonStaticSimpleRNG.h"
+#include "RandomSFMT.h"
 
 /** \ brief* Initialization information for Madingley model simulations */
 class MadingleyInitialisation {
@@ -43,7 +43,7 @@ private:
     /** Instance of Utilities for timestep conversions */
     UtilityFunctions mUtilities;
     Stopwatch mInitializationTimer;
-    NonStaticSimpleRNG mRandomNumber;
+    RandomSFMT mRandomNumber;
     /** \brief Information from the initialization file  */
     Types::StringMap mInitialisationFileStrings;
     /** \brief The paths and filenames for the diagnostics for the ecological processes */

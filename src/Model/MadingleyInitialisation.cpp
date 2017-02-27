@@ -89,7 +89,12 @@ long MadingleyInitialisation::SeedGridCellCohorts( GridCell& gcl ) {
                 numberOfCohortsInThisFunctionalGroup = mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "initial number of gridcellcohorts", functionalGroup );
 
                 for( unsigned jj = 0; jj < numberOfCohortsInThisFunctionalGroup; jj++ ) {
-                    mRandomNumber.SetSeed( ( uint )( jj + 1 ), ( uint )( ( jj + 1 ) * 3 ) );
+                    unsigned seeds[ 2 ];
+
+                    seeds[ 0 ] = ( uint )( jj + 1 );
+                    seeds[ 1 ] = ( uint )( ( jj + 1 ) * 3 );
+
+                    mRandomNumber.SetSeedByArray( seeds, 2 );
 
                     // Draw adult mass from a log-normal distribution with mean -6.9 and standard deviation 10.0,
                     // within the bounds of the minimum and maximum body masses for the functional group

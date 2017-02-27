@@ -4,7 +4,7 @@
 #include "Cohort.h"
 #include "CohortPair.h"
 #include "MadingleyInitialisation.h"
-#include "NonStaticSimpleRNG.h"
+#include "RandomSFMT.h"
 #include "Parameters.h"
 #include <set>
 
@@ -27,7 +27,7 @@ public:
     int MergeToReachThresholdFast( GridCell&, MadingleyInitialisation& );
     
     /** \brief An instance of simple random number generator class */
-    NonStaticSimpleRNG mRandomNumber;
+    RandomSFMT mRandomNumber;
 };
 
 #endif

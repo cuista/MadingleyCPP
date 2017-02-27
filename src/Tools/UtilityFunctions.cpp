@@ -29,8 +29,7 @@ std::vector<unsigned> UtilityFunctions::NonRandomlyOrderedCohorts( unsigned coho
         RandomOrderCohorts[i] = i;
         OrderedCohorts[i] = i;
     }
-    NonStaticSimpleRNG randomizer;
-    randomizer.SetSeed( currentTimeStep );
+    RandomSFMT randomizer( currentTimeStep );
     // Loop over cohorts
     for( int ii = 0; ii < OrderedCohorts.size( ); ii++ ) {
         // Generate a pseudo-random integer to swap this cohort index with

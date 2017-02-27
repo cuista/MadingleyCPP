@@ -84,8 +84,8 @@
         <itemPath>src/Tools/Date.h</itemPath>
         <itemPath>src/Tools/MassBinsHandler.h</itemPath>
         <itemPath>src/Tools/Maths.h</itemPath>
-        <itemPath>src/Tools/NonStaticSimpleRNG.h</itemPath>
         <itemPath>src/Tools/Processor.h</itemPath>
+        <itemPath>src/Tools/RandomSFMT.h</itemPath>
         <itemPath>src/Tools/Stopwatch.h</itemPath>
         <itemPath>src/Tools/UtilityFunctions.h</itemPath>
       </logicalFolder>
@@ -168,8 +168,8 @@
         <itemPath>src/Tools/Date.cpp</itemPath>
         <itemPath>src/Tools/MassBinsHandler.cpp</itemPath>
         <itemPath>src/Tools/Maths.cpp</itemPath>
-        <itemPath>src/Tools/NonStaticSimpleRNG.cpp</itemPath>
         <itemPath>src/Tools/Processor.cpp</itemPath>
+        <itemPath>src/Tools/RandomSFMT.cpp</itemPath>
         <itemPath>src/Tools/Stopwatch.cpp</itemPath>
         <itemPath>src/Tools/UtilityFunctions.cpp</itemPath>
       </logicalFolder>
@@ -521,13 +521,13 @@
       </item>
       <item path="src/Tools/Maths.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Tools/NonStaticSimpleRNG.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Tools/NonStaticSimpleRNG.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/Tools/Processor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/Processor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/RandomSFMT.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Tools/RandomSFMT.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/Stopwatch.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -874,13 +874,13 @@
       </item>
       <item path="src/Tools/Maths.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/Tools/NonStaticSimpleRNG.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="src/Tools/NonStaticSimpleRNG.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="src/Tools/Processor.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="src/Tools/Processor.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/Tools/RandomSFMT.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/Tools/RandomSFMT.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/Tools/Stopwatch.cpp" ex="false" tool="1" flavor2="0">
       </item>

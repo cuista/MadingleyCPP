@@ -3,7 +3,7 @@
 
 #include "Grid.h"
 #include "Cohort.h"
-#include "NonStaticSimpleRNG.h"
+#include "RandomSFMT.h"
 
 /** \brief Base Class for implementations of the ecological process of dispersal */
 class Dispersal {
@@ -20,8 +20,8 @@ public:
     /** \brief Include Utility class */
     UtilityFunctions mUtilities;
     /** \brief An instance of the simple random number generator class */
-    NonStaticSimpleRNG mRandomNumberA;
-    NonStaticSimpleRNG mRandomNumberB;
+    RandomSFMT mRandomNumberA;
+    RandomSFMT mRandomNumberB;
 };
 
 #endif
