@@ -69,7 +69,7 @@ void Cohort::ResetMassFluxes( ) {
 
     // Initialize delta biomass sorted list with appropriate processes
     mIndividualMassAccounting["biomass"]["metabolism"] = 0.0;
-    mIndividualMassAccounting["biomass"]["carnivory"] = 0.0;
+    mIndividualMassAccounting["biomass"]["predation"] = 0.0;
     mIndividualMassAccounting["biomass"]["herbivory"] = 0.0;
     mIndividualMassAccounting["biomass"]["reproduction"] = 0.0;
 
@@ -79,7 +79,7 @@ void Cohort::ResetMassFluxes( ) {
 
     // Initialize organic pool delta vector with appropriate processes
     mIndividualMassAccounting["organicpool"]["herbivory"] = 0.0;
-    mIndividualMassAccounting["organicpool"]["carnivory"] = 0.0;
+    mIndividualMassAccounting["organicpool"]["predation"] = 0.0;
     mIndividualMassAccounting["organicpool"]["mortality"] = 0.0;
 
     // Initialize respiratory CO2 pool delta vector with appropriate processes

@@ -1,12 +1,11 @@
 #include "Madingley.h"
 
 Madingley::Madingley( ) {
-    mModelGrid = new Grid( );
     // Set up list of global diagnostics
     SetUpGlobalDiagnosticsList( );
     // Initialise the cohort ID to zero
     mNextCohortID = 0;
-    mParams = MadingleyInitialisation( mNextCohortID, mGlobalDiagnosticVariables["NumberOfCohortsInModel"], mGlobalDiagnosticVariables["NumberOfStocksInModel"], *mModelGrid );
+    mParams = MadingleyInitialisation( mNextCohortID, mGlobalDiagnosticVariables["NumberOfCohortsInModel"], mGlobalDiagnosticVariables["NumberOfStocksInModel"], mModelGrid );
     mDispersalSet = new DispersalSet( );
 
     mStockLeafStrategy = mParams.mStockFunctionalGroupDefinitions.mTraitLookupFromIndex[ "leaf strategy" ];
@@ -59,7 +58,7 @@ void Madingley::RunWithinCells( ) {
     // Instantiate a class to hold thread locked global diagnostic variables
     ThreadVariables singleThreadDiagnostics( 0, 0, 0, mNextCohortID );
 
-    mModelGrid->ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
+    mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
 
         RunWithinCellStockEcology( gcl );
 
@@ -168,8 +167,8 @@ void Madingley::RunCrossGridCellEcology( unsigned& dispersals ) {
     // Loop through each grid cell, and run dispersal for each.
     // In the original model a new dispersal object is made every timestep - this resets the random number generators
     mDispersalSet->ResetRandoms( );
-    mModelGrid->ApplyFunctionToAllCells( [&]( GridCell & c ) {
-        mDispersalSet->RunCrossGridCellEcologicalProcess( c, *mModelGrid, mParams, mCurrentMonth );
+    mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & c ) {
+        mDispersalSet->RunCrossGridCellEcologicalProcess( c, mModelGrid, mParams, mCurrentMonth );
     } );
 
     // Apply the changes from dispersal
@@ -198,7 +197,7 @@ void Madingley::Output( unsigned step ) {
     long totalCohorts = 0;
     double totalCohortAbundance = 0;
 
-    mModelGrid->ApplyFunctionToAllCells( [&]( GridCell & gridCell ) {
+    mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gridCell ) {
         double organicMatterThisCell = Environment::Get( "Organic Pool", gridCell ) / 1000.;
         double respirationThisCell = Environment::Get( "Respiratory CO2 Pool", gridCell ) / 1000.;
 
