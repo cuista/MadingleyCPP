@@ -42,8 +42,8 @@ public:
     void Move( );
     static void ResetMassFluxes( );
 
-    static Types::Double2DMap mMassAccounting;
-    static Types::CohortVector mNewCohorts; // FIX - Why does Cohort contain a vector to the Cohorts?
+    static Types::Double2DMap mIndividualMassAccounting;
+    static Types::CohortVector mNewCohorts;
     static unsigned mNextID;
 
     long long mID;

@@ -20,13 +20,13 @@ MetabolismEndotherm::MetabolismEndotherm( std::string globalModelTimeStepUnit ) 
 
 void MetabolismEndotherm::Run( Cohort& actingCohort, unsigned currentTimestep, unsigned currentMonth ) {
     // Calculate metabolic loss for an individual and add the value to the delta biomass for metabolism
-    Cohort::mMassAccounting[ "biomass" ][ "metabolism" ] = -CalculateIndividualMetabolicRate( actingCohort.mIndividualBodyMass, Environment::Get( "Temperature", actingCohort.GetCurrentCell( ) ) + mTemperatureUnitsConvert ) * mDeltaT;
+    Cohort::mIndividualMassAccounting[ "biomass" ][ "metabolism" ] = -CalculateIndividualMetabolicRate( actingCohort.mIndividualBodyMass, Environment::Get( "Temperature", actingCohort.GetCurrentCell( ) ) + mTemperatureUnitsConvert ) * mDeltaT;
 
     // If metabolic loss is greater than individual body mass after herbivory and predation, then set equal to individual body mass
-    Cohort::mMassAccounting[ "biomass" ][ "metabolism" ] = std::max( Cohort::mMassAccounting[ "biomass" ][ "metabolism" ], -( actingCohort.mIndividualBodyMass + Cohort::mMassAccounting[ "biomass" ][ "predation" ] + Cohort::mMassAccounting[ "biomass" ][ "herbivory" ] ) );
+    Cohort::mIndividualMassAccounting[ "biomass" ][ "metabolism" ] = std::max( Cohort::mIndividualMassAccounting[ "biomass" ][ "metabolism" ], -( actingCohort.mIndividualBodyMass + Cohort::mIndividualMassAccounting[ "biomass" ][ "carnivory" ] + Cohort::mIndividualMassAccounting[ "biomass" ][ "herbivory" ] ) );
 
     // Add total metabolic loss for all individuals in the cohort to delta biomass for metabolism in the respiratory CO2 pool
-    Cohort::mMassAccounting[ "respiratoryCO2pool" ][ "metabolism" ] = -Cohort::mMassAccounting[ "biomass" ][ "metabolism" ] * actingCohort.mCohortAbundance;
+    Cohort::mIndividualMassAccounting[ "respiratoryCO2pool" ][ "metabolism" ] = -Cohort::mIndividualMassAccounting[ "biomass" ][ "metabolism" ] * actingCohort.mCohortAbundance;
 
 }
 
