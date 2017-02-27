@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="95">
+<configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
@@ -138,6 +138,7 @@
         <itemPath>src/Model/FunctionalGroupDefinitions.cpp</itemPath>
         <itemPath>src/Model/Grid.cpp</itemPath>
         <itemPath>src/Model/GridCell.cpp</itemPath>
+        <itemPath>src/Model/HANPP.cpp</itemPath>
         <itemPath>src/Model/Location.cpp</itemPath>
         <itemPath>src/Model/Madingley.cpp</itemPath>
         <itemPath>src/Model/MadingleyInitialisation.cpp</itemPath>
@@ -173,17 +174,6 @@
         <itemPath>src/Tools/UtilityFunctions.cpp</itemPath>
       </logicalFolder>
       <itemPath>src/Main.cpp</itemPath>
-    </logicalFolder>
-    <logicalFolder name="TestFiles"
-                   displayName="Test Files"
-                   projectFiles="false"
-                   kind="TEST_LOGICAL_FOLDER">
-    </logicalFolder>
-    <logicalFolder name="ExternalFiles"
-                   displayName="Important Files"
-                   projectFiles="false"
-                   kind="IMPORTANT_FILES_FOLDER">
-      <itemPath>Makefile</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -560,7 +550,7 @@
           <standard>10</standard>
         </cTool>
         <ccTool>
-          <developmentMode>5</developmentMode>
+          <developmentMode>6</developmentMode>
           <standard>8</standard>
           <incDir>
             <pElem>src</pElem>
@@ -569,12 +559,11 @@
             <pElem>src/Model</pElem>
             <pElem>src/Output</pElem>
             <pElem>src/Tools</pElem>
-            <pElem>/usr/local/netcdfcxx-4.2.1/include</pElem>
-            <pElem>/usr/local/netcdfc-4.3.3.1/include</pElem>
-            <pElem>/usr/local/hdf-1.8.15/include</pElem>
-            <pElem>/usr/local/zlib-1.2.8/include/</pElem>
+            <pElem>/home/philju/Libraries/netcdf-cxx4-4.3/include</pElem>
+            <pElem>/home/philju/Libraries/netcdf-4.4.1/include</pElem>
+            <pElem>/home/philju/Libraries/hdf5-1.8.17/include</pElem>
+            <pElem>/home/philju/Libraries/zlib-1.2.8/include/</pElem>
           </incDir>
-          <commandLine>-O2 -std=c++11</commandLine>
         </ccTool>
         <fortranCompilerTool>
           <developmentMode>5</developmentMode>
@@ -584,12 +573,11 @@
         </asmTool>
         <linkerTool>
           <linkerLibItems>
-            <linkerLibFileItem>/usr/local/netcdfcxx-4.2.1/lib64/libnetcdf_c++4.a</linkerLibFileItem>
-            <linkerLibFileItem>/usr/local/netcdfc-4.3.3.1/lib64/libnetcdf.a</linkerLibFileItem>
-            <linkerLibFileItem>/usr/local/hdf-1.8.15/lib64/libhdf5_hl.a</linkerLibFileItem>
-            <linkerLibFileItem>/usr/local/hdf-1.8.15/lib64/libhdf5.a</linkerLibFileItem>
-            <linkerLibFileItem>/usr/local/zlib-1.2.8/lib64/libz.a</linkerLibFileItem>
-            <linkerLibFileItem>/usr/lib64/libcurl.so</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/netcdf-cxx4-4.3/lib/libnetcdf_c++4.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/netcdf-4.4.1/lib/libnetcdf.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.17/lib/libhdf5_hl.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.17/lib/libhdf5.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/zlib-1.2.8/lib/libz.a</linkerLibFileItem>
           </linkerLibItems>
           <commandLine>-ldl</commandLine>
         </linkerTool>
