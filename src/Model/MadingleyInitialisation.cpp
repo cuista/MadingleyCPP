@@ -22,6 +22,7 @@ MadingleyInitialisation::MadingleyInitialisation( long long& nextCohortID, doubl
     long totalStocks = 0;
 
     modelGrid.ApplyFunctionToAllCells( [&]( GridCell & c ) {
+        std::cout << "Initialising grid cell " << c.GetIndex( ) + 1 << " of " << Parameters::Get( )->GetNumberOfGridCells( ) << std::endl;
         totalCohorts += SeedGridCellCohorts( c );
         totalStocks += SeedGridCellStocks( c );
     } );

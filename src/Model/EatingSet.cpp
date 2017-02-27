@@ -8,6 +8,10 @@ EatingSet::EatingSet( std::string globalModelTimeStepUnit ) {
     EatingCarnivory *RevisedPredationImplementation = new EatingCarnivory( globalModelTimeStepUnit );
     mImplementations["revised predation"] = RevisedPredationImplementation;
     mTotalTimeToEatForOmnivores = 0;
+    
+    mConsumptionClassification["herbivore"] = 0;
+    mConsumptionClassification["carnivore"] = 1;
+    mConsumptionClassification["omnivore" ] = 2;
 }
 
 EatingSet::~EatingSet( ) {
@@ -24,13 +28,9 @@ void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsig
 
     // Get the nutrition source (herbivory, carnivory or omnivory) of the acting cohort
     std::string nutritionSource = params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Nutrition source", actingCohort.mFunctionalGroupIndex );
-    std::map< std::string, int > vores;
-    vores["herbivore"] = 0;
-    vores["carnivore"] = 1;
-    vores["omnivore" ] = 2;
 
     // Switch to the appropriate eating process(es) given the cohort's nutrition source
-    switch( vores[ nutritionSource ] ) {
+    switch( mConsumptionClassification[ nutritionSource ] ) {
         case 0://"herbivore":
 
             // Get the assimilation efficiency for herbivory for this cohort from the functional group definitions

@@ -1,5 +1,5 @@
 Parameter,Value
-RootDataDirectory,/home/mb425/Madingley/MadingleyMasterCC/MadingleyData-master/
+RootDataDirectory,/home/philju/Data/Madingley/Standardised/
 TimeStepUnits,month
 LengthOfSimulationInYears,100
 MinimumLongitude,-180
