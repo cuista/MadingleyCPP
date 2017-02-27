@@ -211,20 +211,20 @@
             <pElem>src/Model</pElem>
             <pElem>src/Output</pElem>
             <pElem>src/Tools</pElem>
-            <pElem>/usr/local/netcdfcxx-4.2.1/include</pElem>
-            <pElem>/usr/local/netcdfc-4.3.3.1/include</pElem>
-            <pElem>/usr/local/hdf-1.8.15/include</pElem>
-            <pElem>/usr/local/zlib-1.2.8/include/</pElem>
+            <pElem>/home/philju/Libraries/netcdf-cxx4-4.3/include</pElem>
+            <pElem>/home/philju/Libraries/netcdf-4.4.1/include</pElem>
+            <pElem>/home/philju/Libraries/hdf5-1.8.17/include</pElem>
+            <pElem>/home/philju/Libraries/zlib-1.2.8/include/</pElem>
           </incDir>
           <commandLine>-g -std=c++11</commandLine>
         </ccTool>
         <linkerTool>
           <linkerLibItems>
-            <linkerLibFileItem>/usr/local/netcdfcxx-4.2.1/lib64/libnetcdf_c++4.a</linkerLibFileItem>
-            <linkerLibFileItem>/usr/local/netcdfc-4.3.3.1/lib64/libnetcdf.a</linkerLibFileItem>
-            <linkerLibFileItem>/usr/local/hdf-1.8.15/lib64/libhdf5_hl.a</linkerLibFileItem>
-            <linkerLibFileItem>/usr/local/hdf-1.8.15/lib64/libhdf5.a</linkerLibFileItem>
-            <linkerLibFileItem>/usr/local/zlib-1.2.8/lib64/libz.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/netcdf-cxx4-4.3/lib/libnetcdf_c++4.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/netcdf-4.4.1/lib/libnetcdf.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.17/lib/libhdf5_hl.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/hdf5-1.8.17/lib/libhdf5.a</linkerLibFileItem>
+            <linkerLibFileItem>/home/philju/Libraries/zlib-1.2.8/lib/libz.a</linkerLibFileItem>
           </linkerLibItems>
           <commandLine>-ldl</commandLine>
         </linkerTool>
