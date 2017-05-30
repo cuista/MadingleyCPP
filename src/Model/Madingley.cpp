@@ -76,21 +76,22 @@ void Madingley::RunWithinCells( ) {
 }
 
 void Madingley::RunWithinCellsInParallel( ) {
-    #pragma omp parallel num_threads(omp_get_num_procs())
-    {
-        #pragma omp critical
-        {
         // Instantiate a class to hold thread locked global diagnostic variables
         ThreadVariables singleThreadDiagnostics( 0, 0, 0, mNextCohortID );
 
+        #pragma omp parallel num_threads(omp_get_num_procs())
+        {
+            #pragma omp for schedule(dynamic)
             for( unsigned gridCellIndex = 0; gridCellIndex < Parameters::Get( )->GetNumberOfGridCells( ); gridCellIndex++ ) 
             {
-
+                #pragma omp critical
+                {
             RunWithinCellStockEcology( gcl );
-
             RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
-
+                }//END critical
             }
+        }//END PARALLEL REGION
+        
         // Update the variable tracking cohort unique IDs
         mNextCohortID = singleThreadDiagnostics.mNextCohortID;
         // Take the results from the thread local variables and apply to the global diagnostic variables
@@ -98,8 +99,7 @@ void Madingley::RunWithinCellsInParallel( ) {
         mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = singleThreadDiagnostics.mProductions;
         mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = mGlobalDiagnosticVariables["NumberOfCohortsInModel"] + singleThreadDiagnostics.mProductions - singleThreadDiagnostics.mExtinctions;
         mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = singleThreadDiagnostics.mCombinations;   
-        }//END critical
-    }//END PARALLEL REGION
+
 }
 
 void Madingley::RunWithinCellStockEcology( GridCell& gcl ) {
