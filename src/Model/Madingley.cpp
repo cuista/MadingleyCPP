@@ -85,9 +85,9 @@ void Madingley::RunWithinCellsInParallel( ) {
     double startTimeTest = omp_get_wtime( );
     #endif
         
-    #pragma omp parallel num_threads(omp_get_num_procs()) reduction(+:extinctions), reduction(+:productions), reduction(+:combinations)
+    #pragma omp parallel num_threads(omp_get_num_procs()) //FIXME METTERE QUI FIRSTPRIVATE?
     {
-        #pragma omp for schedule(dynamic)
+        #pragma omp for schedule(dynamic) reduction(+:extinctions), reduction(+:productions), reduction(+:combinations) firstprivate(singleThreadDiagnostics)
         for( unsigned gridCellIndex = 0; gridCellIndex < Parameters::Get( )->GetNumberOfGridCells( ); gridCellIndex++ ) 
         {
             RunWithinCellStockEcology( gcl );
