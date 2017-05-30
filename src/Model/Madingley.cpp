@@ -90,16 +90,18 @@ void Madingley::RunWithinCellsInParallel( ) {
         #pragma omp for schedule(dynamic)
         for( unsigned gridCellIndex = 0; gridCellIndex < Parameters::Get( )->GetNumberOfGridCells( ); gridCellIndex++ ) 
         {
-        RunWithinCellStockEcology( gcl );
-            
+            RunWithinCellStockEcology( gcl );
+            RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
+        
+            extinctions += singleThreadDiagnostics.mExtinctions;
+            productions += singleThreadDiagnostics.mProductions;
+            combinations += singleThreadDiagnostics.mCombinations;
+        
+            // Update the variable tracking cohort unique IDs
             #pragma omp critical
             {
-            RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
-            }//END critical
-        
-        extinctions += singleThreadDiagnostics.mExtinctions;
-        productions += singleThreadDiagnostics.mProductions;
-        combinations += singleThreadDiagnostics.mCombinations;
+            mNextCohortID = singleThreadDiagnostics.mNextCohortID;
+            }
         
         }
     }//END PARALLEL REGION
