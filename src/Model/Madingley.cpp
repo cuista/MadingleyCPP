@@ -83,13 +83,14 @@ void Madingley::RunWithinCellsInParallel( ) {
         // Instantiate a class to hold thread locked global diagnostic variables
         ThreadVariables singleThreadDiagnostics( 0, 0, 0, mNextCohortID );
 
-            mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
+            for( unsigned gridCellIndex = 0; gridCellIndex < Parameters::Get( )->GetNumberOfGridCells( ); gridCellIndex++ ) 
+            {
 
-                RunWithinCellStockEcology( gcl );
+            RunWithinCellStockEcology( gcl );
 
-                RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
+            RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
 
-            } );
+            }
         // Update the variable tracking cohort unique IDs
         mNextCohortID = singleThreadDiagnostics.mNextCohortID;
         // Take the results from the thread local variables and apply to the global diagnostic variables
