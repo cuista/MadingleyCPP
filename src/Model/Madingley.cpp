@@ -77,13 +77,15 @@ void Madingley::RunWithinCells( ) {
 
 void Madingley::RunWithinCellsInParallel( ) {
     // Instantiate a class to hold thread locked global diagnostic variables
+    // singleThreadDiagnostic-> extinctions, productions, combinations, NextCohortIDThreadLocked = NextCohortID;
+    int extinctions = 0, productions = 0, combinations = 0;
     ThreadVariables singleThreadDiagnostics( 0, 0, 0, mNextCohortID );
 
     #ifdef _OPENMP
     double startTimeTest = omp_get_wtime( );
     #endif
         
-    #pragma omp parallel num_threads(omp_get_num_procs())
+    #pragma omp parallel num_threads(omp_get_num_procs()) reduction(+:extinctions), reduction(+:productions), reduction(+:combinations)
     {
         #pragma omp for schedule(dynamic)
         for( unsigned gridCellIndex = 0; gridCellIndex < Parameters::Get( )->GetNumberOfGridCells( ); gridCellIndex++ ) 
@@ -94,16 +96,21 @@ void Madingley::RunWithinCellsInParallel( ) {
             {
             RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
             }//END critical
+        
+        extinctions += singleThreadDiagnostics.mExtinctions;
+        productions += singleThreadDiagnostics.mProductions;
+        combinations += singleThreadDiagnostics.mCombinations;
+        
         }
     }//END PARALLEL REGION
         
     // Update the variable tracking cohort unique IDs
     mNextCohortID = singleThreadDiagnostics.mNextCohortID;
     // Take the results from the thread local variables and apply to the global diagnostic variables
-    mGlobalDiagnosticVariables["NumberOfCohortsExtinct"] = singleThreadDiagnostics.mExtinctions - singleThreadDiagnostics.mCombinations;
-    mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = singleThreadDiagnostics.mProductions;
-    mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = mGlobalDiagnosticVariables["NumberOfCohortsInModel"] + singleThreadDiagnostics.mProductions - singleThreadDiagnostics.mExtinctions;
-    mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = singleThreadDiagnostics.mCombinations;
+    mGlobalDiagnosticVariables["NumberOfCohortsExtinct"] = extinctions - combinations;
+    mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = productions;
+    mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = mGlobalDiagnosticVariables["NumberOfCohortsInModel"] + productions - extinctions;
+    mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = combinations;
         
     #ifdef _OPENMP
     double endTimeTest = omp_get_wtime( );
