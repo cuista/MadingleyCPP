@@ -32,6 +32,8 @@ public:
 private:
     /** \brief  Run processes for cells*/
     void RunWithinCells( );
+    /** \brief  Run in parallel processes for cells*/
+    void RunWithinCellsInParallel( );
     /** \brief   Run ecological processes for stocks in a specified grid cell
     @param gcl The current cell */
     void RunWithinCellStockEcology( GridCell& );

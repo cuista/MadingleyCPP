@@ -1,4 +1,5 @@
 #include "Madingley.h"
+#include <omp.h>
 
 Madingley::Madingley( ) {
     // Set up list of global diagnostics
@@ -72,6 +73,32 @@ void Madingley::RunWithinCells( ) {
     mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = singleThreadDiagnostics.mProductions;
     mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = mGlobalDiagnosticVariables["NumberOfCohortsInModel"] + singleThreadDiagnostics.mProductions - singleThreadDiagnostics.mExtinctions;
     mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = singleThreadDiagnostics.mCombinations;
+}
+
+void Madingley::RunWithinCellsInParallel( ) {
+    #pragma omp parallel num_threads(omp_get_num_procs())
+    {
+        #pragma omp critical
+        {
+        // Instantiate a class to hold thread locked global diagnostic variables
+        ThreadVariables singleThreadDiagnostics( 0, 0, 0, mNextCohortID );
+
+            mModelGrid.ApplyFunctionToAllCells( [&]( GridCell & gcl ) {
+
+                RunWithinCellStockEcology( gcl );
+
+                RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
+
+            } );
+        // Update the variable tracking cohort unique IDs
+        mNextCohortID = singleThreadDiagnostics.mNextCohortID;
+        // Take the results from the thread local variables and apply to the global diagnostic variables
+        mGlobalDiagnosticVariables["NumberOfCohortsExtinct"] = singleThreadDiagnostics.mExtinctions - singleThreadDiagnostics.mCombinations;
+        mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = singleThreadDiagnostics.mProductions;
+        mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = mGlobalDiagnosticVariables["NumberOfCohortsInModel"] + singleThreadDiagnostics.mProductions - singleThreadDiagnostics.mExtinctions;
+        mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = singleThreadDiagnostics.mCombinations;   
+        }//END critical
+    }//END PARALLEL REGION
 }
 
 void Madingley::RunWithinCellStockEcology( GridCell& gcl ) {
