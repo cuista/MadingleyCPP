@@ -10,6 +10,18 @@ CohortMerger::CohortMerger( ) {
     }
 }
 
+void CohortMerger::ResetRandom( )
+{
+    if( Parameters::Get( )->GetDrawRandomly( ) == true )
+    {
+        unsigned seed = std::chrono::system_clock::now( ).time_since_epoch( ).count( );
+        mRandomNumber.SetSeed( seed );
+    } else
+    {
+        mRandomNumber.SetSeed( 4000 );
+    }
+}
+
 double CohortMerger::CalculateDistance( Cohort* cohortA, Cohort* cohortB ) {
     double AdultMassDistance = ( cohortA->mAdultMass - cohortB->mAdultMass ) / cohortA->mAdultMass;
     double JuvenileMassDistance = ( cohortA->mJuvenileMass - cohortB->mJuvenileMass ) / cohortA->mJuvenileMass;

@@ -12,6 +12,8 @@
 class CohortMerger {
 public:
     CohortMerger( );
+    
+    void ResetRandom( );
 
     /** \brief Calculate the distance between two cohorts in multi-dimensional trait space (body mass, adult mass, juvenile mass)
     @param Cohort1 The first cohort to calculate distance to 

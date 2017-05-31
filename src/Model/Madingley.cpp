@@ -178,6 +178,7 @@ void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadVariables& part
 
     // Merge cohorts, if necessary
     if( gcl.GetNumberOfCohorts( ) > Parameters::Get( )->GetMaximumNumberOfCohorts( ) ) {
+        mCohortMerger.ResetRandom( );
         partial.mCombinations += mCohortMerger.MergeToReachThresholdFast( gcl, mParams );
 
         //Run extinction a second time to remove those cohorts that have been set to zero abundance when merging
