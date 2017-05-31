@@ -41,10 +41,11 @@ public:
     void TryLivingAt( Types::GridCellPointer, Location& );
     void Move( );
     static void ResetMassFluxes( );
-
-    static Types::Double2DMap mMassAccounting;
+    
     static std::vector<Cohort*> mNewCohorts; // FIX - Why does Cohort contain a vector to the Cohorts?
+    static Types::Double2DMap mMassAccounting;
     static unsigned mNextID;
+    #pragma omp threadprivate(mNewCohorts,mMassAccounting,mNextID)
 
     long long mID;
     /** \brief A list of all cohort IDs ever associated with individuals in this current cohort */
