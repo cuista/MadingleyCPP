@@ -24,6 +24,8 @@ public:
     Location GetNewLocation( const Location& L, const int& v, const int& u );
 
     GridCell& GetACell( const Location& L );
+    
+    GridCell& GetACell( const unsigned index );
 
     //Apply any function that operates on a cell to all cells in the collection
     template <typename Function>

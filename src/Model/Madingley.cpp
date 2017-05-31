@@ -90,8 +90,8 @@ void Madingley::RunWithinCellsInParallel( ) {
         #pragma omp for schedule(dynamic) reduction(+:extinctions), reduction(+:productions), reduction(+:combinations) firstprivate(singleThreadDiagnostics)
         for( unsigned gridCellIndex = 0; gridCellIndex < Parameters::Get( )->GetNumberOfGridCells( ); gridCellIndex++ ) 
         {
-            RunWithinCellStockEcology( gcl );
-            RunWithinCellCohortEcology( gcl, singleThreadDiagnostics );
+            RunWithinCellStockEcology( mModelGrid.GetACell( gridCellIndex ));
+            RunWithinCellCohortEcology( mModelGrid.GetACell( gridCellIndex ), singleThreadDiagnostics );
         
             extinctions += singleThreadDiagnostics.mExtinctions;
             productions += singleThreadDiagnostics.mProductions;
