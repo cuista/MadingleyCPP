@@ -7,7 +7,6 @@
 #include "Parameters.h"
 
 unsigned Cohort::mNextID = 0;
-std::vector<Cohort*> Cohort::mNewCohorts;
 Types::Double2DMap Cohort::mMassAccounting;
 
 Cohort::Cohort( GridCell& gcl, unsigned functionalGroupIndex, double juvenileBodyMass, double adultBodyMass, double initialBodyMass, double initialAbundance, double optimalPreyBodySizeRatio, unsigned short birthTimeStep, double proportionTimeActive, long long &nextCohortID ) {

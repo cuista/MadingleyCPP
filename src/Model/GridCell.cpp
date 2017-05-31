@@ -1,5 +1,7 @@
 #include "GridCell.h"
 
+std::vector<Cohort*> GridCell::mNewCohorts;
+
 GridCell::GridCell( ) {
     // FIX - Should GridCell be initialised here?
 }
