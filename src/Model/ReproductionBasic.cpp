@@ -91,7 +91,7 @@ void ReproductionBasic::Run( GridCell& gcl, Cohort* actingCohort, unsigned curre
             // Add the offspring cohort to the grid cell cohorts array
             //cout<<actingCohort->mCurrentCell<<" "<<&gcl<<endl;
             assert(actingCohort->mCurrentCell==&gcl);
-            Cohort::mNewCohorts.push_back( OffspringCohort );
+            GridCell::mNewCohorts.push_back( OffspringCohort );
 
             // Subtract all of the reproductive potential mass of the parent cohort, which has been used to generate the new
             // cohort, from the delta reproductive potential mass and delta adult body mass

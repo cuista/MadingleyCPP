@@ -167,12 +167,12 @@ void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadVariables& part
 
     }, mCurrentTimeStep );
 
-    for( auto c: Cohort::mNewCohorts ) {
+    for( auto c: GridCell::mNewCohorts ) {
         gcl.InsertCohort( c );
         if( c->mDestinationCell != &gcl ) std::cout << "whut? wrong cell?" << std::endl;
     }
-    partial.mProductions += Cohort::mNewCohorts.size( );
-    Cohort::mNewCohorts.clear( );
+    partial.mProductions += GridCell::mNewCohorts.size( );
+    GridCell::mNewCohorts.clear( );
 
     RunExtinction( gcl, partial );
 

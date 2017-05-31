@@ -42,10 +42,9 @@ public:
     void Move( );
     static void ResetMassFluxes( );
     
-    static std::vector<Cohort*> mNewCohorts; // FIX - Why does Cohort contain a vector to the Cohorts?
     static Types::Double2DMap mMassAccounting;
     static unsigned mNextID;
-    #pragma omp threadprivate(mNewCohorts,mMassAccounting,mNextID)
+    #pragma omp threadprivate(mMassAccounting,mNextID)
 
     long long mID;
     /** \brief A list of all cohort IDs ever associated with individuals in this current cohort */

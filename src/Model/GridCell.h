@@ -31,6 +31,9 @@ public:
     void SetCohortSize( unsigned );
     /** \brief Gets the number of cohorts in this grid cell */
     unsigned GetNumberOfCohorts( );
+    
+    static std::vector<Cohort*> mNewCohorts;
+    #pragma omp threadprivate(mNewCohorts)
 
     template <typename F>
     void ApplyFunctionToAllCohorts( F f ) {
