@@ -1,5 +1,6 @@
 #include "Madingley.h"
 #include <omp.h>
+#include <list>
 
 Madingley::Madingley( ) {
     // Set up list of global diagnostics
@@ -35,7 +36,8 @@ void Madingley::Run( ) {
 
         Environment::Update( mCurrentMonth );
 
-        RunWithinCells( );
+        RunWithinCellsInParallel();
+        //RunWithinCells( );
         mEcologyTimer.Stop( );
         std::cout << "Within grid ecology took: " << mEcologyTimer.GetElapsedTimeSecs( ) << std::endl;
 
@@ -77,46 +79,48 @@ void Madingley::RunWithinCells( ) {
 
 void Madingley::RunWithinCellsInParallel( ) {
     // Instantiate a class to hold thread locked global diagnostic variables
-    // singleThreadDiagnostic-> extinctions, productions, combinations, NextCohortIDThreadLocked = NextCohortID;
-    int extinctions = 0, productions = 0, combinations = 0;
-    ThreadVariables singleThreadDiagnostics( 0, 0, 0, mNextCohortID );
 
     #ifdef _OPENMP
+    std::cout<<"Running RunWithinCellsInParallel( )..."<<endl;
     double startTimeTest = omp_get_wtime( );
     #endif
+    
+    list<ThreadVariables> partialsDiagnostics;
         
-    #pragma omp parallel num_threads(omp_get_num_procs()) firstprivate(singleThreadDiagnostics)
+    #pragma omp parallel num_threads(omp_get_num_procs()) shared(partialsDiagnostics)
     {
-        #pragma omp for schedule(dynamic) reduction(+:extinctions), reduction(+:productions), reduction(+:combinations)
+        ThreadVariables singleThreadDiagnostics( 0, 0, 0, mNextCohortID );
+        
+        #pragma omp for schedule(dynamic)
         for( unsigned gridCellIndex = 0; gridCellIndex < Parameters::Get( )->GetNumberOfGridCells( ); gridCellIndex++ ) 
         {
             RunWithinCellStockEcology( mModelGrid.GetACell( gridCellIndex ));
             RunWithinCellCohortEcology( mModelGrid.GetACell( gridCellIndex ), singleThreadDiagnostics );
-        
-            extinctions += singleThreadDiagnostics.mExtinctions;
-            productions += singleThreadDiagnostics.mProductions;
-            combinations += singleThreadDiagnostics.mCombinations;
-        
-            // Update the variable tracking cohort unique IDs
-            #pragma omp critical
-            {
-            mNextCohortID = singleThreadDiagnostics.mNextCohortID;
-            }
-        
         }
+        partialsDiagnostics.push_back(singleThreadDiagnostics);
     }//END PARALLEL REGION
+    
+    ThreadVariables globalDiagnostics( 0, 0, 0, mNextCohortID);
+    for (list<ThreadVariables>::iterator it=partialsDiagnostics.begin(); it != partialsDiagnostics.end(); it++)
+    {
+        ThreadVariables tmp=*it;
+        globalDiagnostics.mProductions+=tmp.mProductions;
+        globalDiagnostics.mExtinctions+=tmp.mExtinctions;
+        globalDiagnostics.mCombinations+=tmp.mCombinations;
+    }
         
     // Update the variable tracking cohort unique IDs
-    mNextCohortID = singleThreadDiagnostics.mNextCohortID;
+    mNextCohortID = globalDiagnostics.mNextCohortID;
+    
     // Take the results from the thread local variables and apply to the global diagnostic variables
-    mGlobalDiagnosticVariables["NumberOfCohortsExtinct"] = extinctions - combinations;
-    mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = productions;
-    mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = mGlobalDiagnosticVariables["NumberOfCohortsInModel"] + productions - extinctions;
-    mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = combinations;
+    mGlobalDiagnosticVariables["NumberOfCohortsExtinct"] = globalDiagnostics.mExtinctions - globalDiagnostics.mCombinations;
+    mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = globalDiagnostics.mProductions;
+    mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = mGlobalDiagnosticVariables["NumberOfCohortsInModel"] + globalDiagnostics.mProductions - globalDiagnostics.mExtinctions;
+    mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = globalDiagnostics.mCombinations;
         
     #ifdef _OPENMP
     double endTimeTest = omp_get_wtime( );
-    std::cout << "||--TIME--TEST--PARALLEL-REGION--||RunWithinCellsInParallel( )---->" << endTimeTest - startTimeTest << endl;
+    std::cout << "RunWithinCellsInParallel( ) took: " << endTimeTest - startTimeTest << endl;
     #endif
 
 }
