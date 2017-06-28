@@ -20,10 +20,10 @@ void EatingSet::InitializeEcologicalProcess( GridCell& gcl, MadingleyInitialisat
     mImplementations[implementationKey]->InitializeEatingPerTimeStep( gcl, params );
 }
 
-void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
+void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort* actingCohort, unsigned currentTimestep, ThreadVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
 
     // Get the nutrition source (herbivory, carnivory or omnivory) of the acting cohort
-    std::string nutritionSource = params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Nutrition source", actingCohort.mFunctionalGroupIndex );
+    std::string nutritionSource = params.mCohortFunctionalGroupDefinitions.GetTraitNames( "Nutrition source", actingCohort->mFunctionalGroupIndex );
     std::map< std::string, int > vores;
     vores["herbivore"] = 0;
     vores["carnivore"] = 1;
@@ -34,10 +34,10 @@ void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsig
         case 0://"herbivore":
 
             // Get the assimilation efficiency for herbivory for this cohort from the functional group definitions
-            mImplementations[ "revised herbivory" ]->mAssimilationEfficiency = params.mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "herbivory assimilation", actingCohort.mFunctionalGroupIndex );
+            mImplementations[ "revised herbivory" ]->mAssimilationEfficiency = params.mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "herbivory assimilation", actingCohort->mFunctionalGroupIndex );
 
             // Get the proportion of time spent eating for this cohort from the functional group definitions
-            mImplementations[ "revised herbivory" ]->mProportionTimeEating = actingCohort.mProportionTimeActive;
+            mImplementations[ "revised herbivory" ]->mProportionTimeEating = actingCohort->mProportionTimeActive;
 
             // Calculate the potential biomass available from herbivory
             if( gcl.IsMarine( ) )
@@ -53,8 +53,8 @@ void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsig
         case 1://"carnivore":
 
             // Get the assimilation efficiency for predation for this cohort from the functional group definitions
-            mImplementations[ "revised predation" ]->mAssimilationEfficiency = params.mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "carnivory assimilation", actingCohort.mFunctionalGroupIndex );
-            mImplementations[ "revised predation" ]->mProportionTimeEating = actingCohort.mProportionTimeActive;
+            mImplementations[ "revised predation" ]->mAssimilationEfficiency = params.mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "carnivory assimilation", actingCohort->mFunctionalGroupIndex );
+            mImplementations[ "revised predation" ]->mProportionTimeEating = actingCohort->mProportionTimeActive;
 
             // Calculate the potential biomass available from predation
             if( gcl.IsMarine( ) )
@@ -70,15 +70,15 @@ void EatingSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsig
         case 2://"omnivore":
 
             // Get the assimilation efficiency for predation for this cohort from the functional group definitions 
-            mImplementations[ "revised predation" ]->mAssimilationEfficiency = params.mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "carnivory assimilation", actingCohort.mFunctionalGroupIndex );
+            mImplementations[ "revised predation" ]->mAssimilationEfficiency = params.mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "carnivory assimilation", actingCohort->mFunctionalGroupIndex );
 
             // Get the assimilation efficiency for herbivory for this cohort from the functional group definitions
-            mImplementations[ "revised herbivory" ]->mAssimilationEfficiency = params.mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "herbivory assimilation", actingCohort.mFunctionalGroupIndex );
+            mImplementations[ "revised herbivory" ]->mAssimilationEfficiency = params.mCohortFunctionalGroupDefinitions.GetBiologicalPropertyOneFunctionalGroup( "herbivory assimilation", actingCohort->mFunctionalGroupIndex );
 
             // Get the proportion of time spent eating and assign to both the herbivory and predation implementations
-            //                   double ProportionTimeEating = actingCohort.ProportionTimeActive;
-            mImplementations[ "revised predation" ]->mProportionTimeEating = actingCohort.mProportionTimeActive;
-            mImplementations[ "revised herbivory" ]->mProportionTimeEating = actingCohort.mProportionTimeActive;
+            //                   double ProportionTimeEating = actingCohort->ProportionTimeActive;
+            mImplementations[ "revised predation" ]->mProportionTimeEating = actingCohort->mProportionTimeActive;
+            mImplementations[ "revised herbivory" ]->mProportionTimeEating = actingCohort->mProportionTimeActive;
 
             // Calculate the potential biomass available from herbivory
             if( gcl.IsMarine( ) )

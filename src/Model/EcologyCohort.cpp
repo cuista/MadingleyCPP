@@ -28,9 +28,9 @@ EcologyCohort::~EcologyCohort( ) {
     delete mReproductionFormulations["Basic reproduction"];
 }
 
-void EcologyCohort::RunWithinCellEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
+void EcologyCohort::RunWithinCellEcology( GridCell& gcl, Cohort* actingCohort, unsigned currentTimestep, ThreadVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
     // RUN EATING
-    if( actingCohort.mIndividualBodyMass > 0 ) {
+    if( actingCohort->mIndividualBodyMass > 0 ) {
         mEatingFormulations["Basic eating"]->RunEcologicalProcess( gcl, actingCohort, currentTimestep, partial, currentMonth, params );
         // RUN METABOLISM - THIS TIME TAKE THE METABOLIC LOSS TAKING INTO ACCOUNT WHAT HAS BEEN INGESTED THROUGH EATING
         mMetabolismFormulations["Basic metabolism"]->RunEcologicalProcess( gcl, actingCohort, currentTimestep, partial, currentMonth, params );
@@ -41,7 +41,7 @@ void EcologyCohort::RunWithinCellEcology( GridCell& gcl, Cohort& actingCohort, u
     }
 }
 
-void EcologyCohort::UpdateEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep ) {
+void EcologyCohort::UpdateEcology( GridCell& gcl, Cohort* actingCohort, unsigned currentTimestep ) {
     // Apply the results of within-cell ecological processes
     mApplyEcologicalProcessResults.UpdateAllEcology( gcl, actingCohort, currentTimestep );
 }

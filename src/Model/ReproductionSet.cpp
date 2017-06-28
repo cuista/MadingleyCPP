@@ -17,9 +17,9 @@ void ReproductionSet::InitializeEcologicalProcess( GridCell& gcl, MadingleyIniti
     
 }
 
-void ReproductionSet::RunEcologicalProcess( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
+void ReproductionSet::RunEcologicalProcess( GridCell& gcl, Cohort* actingCohort, unsigned currentTimestep, ThreadVariables& partial, unsigned currentMonth, MadingleyInitialisation& params ) {
     // Holds the reproductive strategy of a cohort
-    bool _Iteroparous = ( params.mCohortFunctionalGroupDefinitions.GetTraitNames( "reproductive strategy", actingCohort.mFunctionalGroupIndex ) == "iteroparity" );
+    bool _Iteroparous = ( params.mCohortFunctionalGroupDefinitions.GetTraitNames( "reproductive strategy", actingCohort->mFunctionalGroupIndex ) == "iteroparity" );
     // Assign mass to reproductive potential
     mImplementations["reproduction basic"]->MassAssignment( gcl, actingCohort, currentTimestep, params );
     // Run reproductive events. Note that we can't skip juveniles here as they could conceivably grow to adulthood and get enough biomass to reproduce in a single time step

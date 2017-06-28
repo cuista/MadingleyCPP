@@ -20,7 +20,7 @@ ReproductionBasic::ReproductionBasic( std::string globalModelTimeStepUnit, bool 
     }
 }
 
-void ReproductionBasic::Run( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, ThreadVariables& partial, bool iteroparous, unsigned currentMonth, MadingleyInitialisation& params ) {
+void ReproductionBasic::Run( GridCell& gcl, Cohort* actingCohort, unsigned currentTimestep, ThreadVariables& partial, bool iteroparous, unsigned currentMonth, MadingleyInitialisation& params ) {
     // Adult non-reproductive biomass lost by semelparous organisms
     double adultMassLost;
 
@@ -46,7 +46,7 @@ void ReproductionBasic::Run( GridCell& gcl, Cohort& actingCohort, unsigned curre
         // Add the delta biomass to net biomass
         bodyMassIncludingChangeThisTimeStep += Biomass.second;
     }
-    bodyMassIncludingChangeThisTimeStep += actingCohort.mIndividualBodyMass;
+    bodyMassIncludingChangeThisTimeStep += actingCohort->mIndividualBodyMass;
 
     // Calculate the reproductive biomass of an individual in this cohort including changes this time step from other ecological processes  
     reproductiveMassIncludingChangeThisTimeStep = 0.0;
@@ -55,26 +55,26 @@ void ReproductionBasic::Run( GridCell& gcl, Cohort& actingCohort, unsigned curre
         // Add the delta reproductive biomass to net biomass
         reproductiveMassIncludingChangeThisTimeStep += ReproBiomass.second;
     }
-    reproductiveMassIncludingChangeThisTimeStep += actingCohort.mIndividualReproductivePotentialMass;
-    if( actingCohort.mIndividualBodyMass > 1.e-200 ) {
+    reproductiveMassIncludingChangeThisTimeStep += actingCohort->mIndividualReproductivePotentialMass;
+    if( actingCohort->mIndividualBodyMass > 1.e-200 ) {
         // Get the current ratio of total individual mass (including reproductive potential) to adult body mass
-        currentMassRatio = ( bodyMassIncludingChangeThisTimeStep + reproductiveMassIncludingChangeThisTimeStep ) / actingCohort.mAdultMass;
+        currentMassRatio = ( bodyMassIncludingChangeThisTimeStep + reproductiveMassIncludingChangeThisTimeStep ) / actingCohort->mAdultMass;
 
         // Must have enough mass to hit reproduction threshold criterion, and either (1) be in breeding season, or (2) be a marine cell (no breeding season in marine cells)
-        if( ( currentMassRatio > mMassRatioThreshold ) && ( ( Environment::Get( "Breeding Season", actingCohort.GetCurrentCell( ) ) == 1.0 ) || ( gcl.IsMarine( ) ) ) ) {
+        if( ( currentMassRatio > mMassRatioThreshold ) && ( ( Environment::Get( "Breeding Season", actingCohort->GetCurrentCell( ) ) == 1.0 ) || ( gcl.IsMarine( ) ) ) ) {
             // Iteroparous and semelparous organisms have different strategies
             if( iteroparous ) {
                 // Iteroparous organisms do not allocate any of their current non-reproductive biomass to reproduction
                 adultMassLost = 0.0;
 
                 // Calculate the number of offspring that could be produced given the reproductive potential mass of individuals
-                offspringCohortAbundance = actingCohort.mCohortAbundance * reproductiveMassIncludingChangeThisTimeStep / actingCohort.mJuvenileMass;
+                offspringCohortAbundance = actingCohort->mCohortAbundance * reproductiveMassIncludingChangeThisTimeStep / actingCohort->mJuvenileMass;
             } else {
                 // Semelparous organisms allocate a proportion of their current non-reproductive biomass (including the effects of other ecological processes) to reproduction
                 adultMassLost = mSemelparityAdultMassAllocation * bodyMassIncludingChangeThisTimeStep;
 
                 // Calculate the number of offspring that could be produced given the reproductive potential mass of individuals
-                offspringCohortAbundance = ( ( actingCohort.mCohortAbundance ) * ( adultMassLost + reproductiveMassIncludingChangeThisTimeStep ) ) / actingCohort.mJuvenileMass;
+                offspringCohortAbundance = ( ( actingCohort->mCohortAbundance ) * ( adultMassLost + reproductiveMassIncludingChangeThisTimeStep ) ) / actingCohort->mJuvenileMass;
             }
             // Check that the abundance in the cohort to produce is greater than or equal to zero
             assert( offspringCohortAbundance >= 0.0 && "Offspring abundance < 0" );
@@ -83,13 +83,15 @@ void ReproductionBasic::Run( GridCell& gcl, Cohort& actingCohort, unsigned curre
             offspringJuvenileAndAdultBodyMasses = GetOffspringCohortProperties( actingCohort, params.mCohortFunctionalGroupDefinitions );
 
             // Update cohort abundance in case juvenile mass has been altered through 'evolution'
-            offspringCohortAbundance = offspringCohortAbundance * ( actingCohort.mJuvenileMass / offspringJuvenileAndAdultBodyMasses[ 0 ] );
+            offspringCohortAbundance = offspringCohortAbundance * ( actingCohort->mJuvenileMass / offspringJuvenileAndAdultBodyMasses[ 0 ] );
 
             // Create the offspring cohort
 
-            Cohort OffspringCohort( actingCohort, offspringJuvenileAndAdultBodyMasses[ 0 ], offspringJuvenileAndAdultBodyMasses[ 1 ], offspringJuvenileAndAdultBodyMasses[ 0 ], offspringCohortAbundance, currentTimestep, partial.mNextCohortID );
+            Cohort* OffspringCohort=new Cohort( actingCohort, offspringJuvenileAndAdultBodyMasses[ 0 ], offspringJuvenileAndAdultBodyMasses[ 1 ], offspringJuvenileAndAdultBodyMasses[ 0 ], offspringCohortAbundance, currentTimestep, partial.mNextCohortID );
             // Add the offspring cohort to the grid cell cohorts array
-            Cohort::mNewCohorts.push_back( OffspringCohort );
+            //cout<<actingCohort->mCurrentCell<<" "<<&gcl<<endl;
+            assert(actingCohort->mCurrentCell==&gcl);
+            GridCell::mNewCohorts.push_back( OffspringCohort );
 
             // Subtract all of the reproductive potential mass of the parent cohort, which has been used to generate the new
             // cohort, from the delta reproductive potential mass and delta adult body mass
@@ -101,7 +103,7 @@ void ReproductionBasic::Run( GridCell& gcl, Cohort& actingCohort, unsigned curre
     }
 }
 
-void ReproductionBasic::MassAssignment( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep, MadingleyInitialisation& params ) {
+void ReproductionBasic::MassAssignment( GridCell& gcl, Cohort* actingCohort, unsigned currentTimestep, MadingleyInitialisation& params ) {
     // Biomass per individual in each cohort to be assigned to reproductive potential
     double BiomassToAssignToReproductivePotential;
 
@@ -119,16 +121,16 @@ void ReproductionBasic::MassAssignment( GridCell& gcl, Cohort& actingCohort, uns
 
     // If individual body mass after the addition of the net biomass from processes this time step will yield a body mass 
     // greater than the adult body mass for this cohort, then assign the surplus to reproductive potential
-    if( ( actingCohort.mIndividualBodyMass + NetBiomassFromOtherEcologicalFunctionsThisTimeStep ) > actingCohort.mAdultMass ) {
+    if( ( actingCohort->mIndividualBodyMass + NetBiomassFromOtherEcologicalFunctionsThisTimeStep ) > actingCohort->mAdultMass ) {
         // Calculate the biomass for each individual in this cohort to be assigned to reproductive potential
-        BiomassToAssignToReproductivePotential = actingCohort.mIndividualBodyMass + NetBiomassFromOtherEcologicalFunctionsThisTimeStep - actingCohort.mAdultMass;
+        BiomassToAssignToReproductivePotential = actingCohort->mIndividualBodyMass + NetBiomassFromOtherEcologicalFunctionsThisTimeStep - actingCohort->mAdultMass;
         // Check that a positive biomass is to be assigned to reproductive potential
         assert( BiomassToAssignToReproductivePotential >= 0.0 && "Assignment of negative reproductive potential mass" );
 
         // If this is the first time reproductive potential mass has been assigned for this cohort, 
         // then set the maturity time step for this cohort as the current model time step
-        if( actingCohort.mMaturityTimeStep == std::numeric_limits< unsigned >::max( ) ) {
-            actingCohort.mMaturityTimeStep = currentTimestep;
+        if( actingCohort->mMaturityTimeStep == std::numeric_limits< unsigned >::max( ) ) {
+            actingCohort->mMaturityTimeStep = currentTimestep;
         }
 
         // Assign the specified mass to reproductive potential mass and remove it from individual biomass
@@ -140,7 +142,7 @@ void ReproductionBasic::MassAssignment( GridCell& gcl, Cohort& actingCohort, uns
     }
 }
 
-std::vector< double > ReproductionBasic::GetOffspringCohortProperties( Cohort& actingCohort, FunctionalGroupDefinitions& cohortDefinitions ) {
+std::vector< double > ReproductionBasic::GetOffspringCohortProperties( Cohort* actingCohort, FunctionalGroupDefinitions& cohortDefinitions ) {
     // A two-element vector holding adult and juvenile body masses in elements zero and one respectively
     std::vector< double > cohortJuvenileAdultMasses( 2 );
 
@@ -149,17 +151,17 @@ std::vector< double > ReproductionBasic::GetOffspringCohortProperties( Cohort& a
 
     if( RandomValue > mMassEvolutionProbabilityThreshold ) {
         // Determine the new juvenile body mass // MB correctly formulated?
-        double RandomValueJ = mRandomNumber.GetNormal( actingCohort.mJuvenileMass, mMassEvolutionStandardDeviation * actingCohort.mJuvenileMass );
-        cohortJuvenileAdultMasses[ 0 ] = std::max( RandomValueJ, cohortDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Minimum mass", actingCohort.mFunctionalGroupIndex ) );
+        double RandomValueJ = mRandomNumber.GetNormal( actingCohort->mJuvenileMass, mMassEvolutionStandardDeviation * actingCohort->mJuvenileMass );
+        cohortJuvenileAdultMasses[ 0 ] = std::max( RandomValueJ, cohortDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Minimum mass", actingCohort->mFunctionalGroupIndex ) );
 
         // Determine the new adult body mass
-        double RandomValueA = mRandomNumber.GetNormal( actingCohort.mAdultMass, mMassEvolutionStandardDeviation * actingCohort.mAdultMass );
-        cohortJuvenileAdultMasses[ 1 ] = std::min( RandomValueA, cohortDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Maximum mass", actingCohort.mFunctionalGroupIndex ) );
+        double RandomValueA = mRandomNumber.GetNormal( actingCohort->mAdultMass, mMassEvolutionStandardDeviation * actingCohort->mAdultMass );
+        cohortJuvenileAdultMasses[ 1 ] = std::min( RandomValueA, cohortDefinitions.GetBiologicalPropertyOneFunctionalGroup( "Maximum mass", actingCohort->mFunctionalGroupIndex ) );
 
     } else { // If not, it just gets the same values as the parent cohort
         // Assign masses to the offspring cohort that are equal to those of the parent cohort
-        cohortJuvenileAdultMasses[ 0 ] = actingCohort.mJuvenileMass;
-        cohortJuvenileAdultMasses[ 1 ] = actingCohort.mAdultMass;
+        cohortJuvenileAdultMasses[ 0 ] = actingCohort->mJuvenileMass;
+        cohortJuvenileAdultMasses[ 1 ] = actingCohort->mAdultMass;
     }
 
     // Return the vector of adult and juvenile masses

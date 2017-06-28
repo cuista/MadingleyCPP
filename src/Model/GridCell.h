@@ -18,10 +18,10 @@ public:
     double GetRealm( );
     bool IsMarine( );
     
-    void InsertCohort( Cohort& );
-    void RemoveCohort( Cohort& );
-    void MoveCohort( Cohort& );
-
+    void InsertCohort( Cohort* );
+    void RemoveCohort( Cohort* );
+    void MoveCohort( Cohort* );
+    void CheckGone( Cohort* );
     unsigned GetIndex( ) const;
     unsigned GetLatitudeIndex( ) const;
     unsigned GetLongitudeIndex( ) const;
@@ -31,12 +31,15 @@ public:
     void SetCohortSize( unsigned );
     /** \brief Gets the number of cohorts in this grid cell */
     unsigned GetNumberOfCohorts( );
+    
+    static std::vector<Cohort*> mNewCohorts;
+    #pragma omp threadprivate(mNewCohorts)
 
     template <typename F>
     void ApplyFunctionToAllCohorts( F f ) {
         for( int index = 0; index < mCohorts.size( ); index++ ) {
             // Work through the list of cohorts 
-            for( Cohort& c : mCohorts[ index ] ) {
+            for( Cohort* c : mCohorts[ index ] ) {
                 f( c );
             }
         } 
@@ -58,7 +61,7 @@ public:
         RandomCohortOrder = mUtilities.NonRandomlyOrderedCohorts( TotalCohorts, CurrentTimeStep );
 
         for( int i = 0; i < RandomCohortOrder.size( ); i++ ) {
-            Cohort& c = mCohorts[indexedList[RandomCohortOrder[i]].first][indexedList[RandomCohortOrder[i]].second];
+            Cohort* c = mCohorts[indexedList[RandomCohortOrder[i]].first][indexedList[RandomCohortOrder[i]].second];
             f( c );
         }
     }
@@ -73,7 +76,7 @@ public:
         }
     }
 
-    Types::Cohort2DVector mCohorts;
+    vector< vector<Cohort*> > mCohorts;
     Types::StocksMap mStocks;
 
 private:

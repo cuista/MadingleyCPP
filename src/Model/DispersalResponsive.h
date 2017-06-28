@@ -17,11 +17,11 @@ public:
     @param actingCohortFunctionalGroup The functional group index of the acting cohort 
     @param actingCohortNumber The position of the acting cohort within the functional group in the array of grid cell cohorts 
     @param currentMonth The current model month */
-    void Run( Grid&, Cohort&, const unsigned& );
+    void Run( Grid&, Cohort*, const unsigned& );
 
 private:
-    bool CheckStarvationDispersal( Grid&, Cohort& );
-    void CheckDensityDrivenDispersal( Grid&, Cohort& );
+    bool CheckStarvationDispersal( Grid&, Cohort* );
+    void CheckDensityDrivenDispersal( Grid&, Cohort* );
 
     /** \brief Calculate the average diffusive dispersal speed of individuals in a cohort given their body mass
     @param bodyMass The current body mass of an individual in the cohort 
@@ -32,7 +32,7 @@ private:
     @param madingleyGrid The model grid
     @param c the dispersing cohort
     @param dispersalSpeed The average dispersal speed of individuals in the acting cohort */
-    void CalculateDispersalProbability( Grid&, Cohort&, double );
+    void CalculateDispersalProbability( Grid&, Cohort*, double );
 
     /** \brief The time units associated with this implementation of dispersal */
     std::string mTimeUnitImplementation;

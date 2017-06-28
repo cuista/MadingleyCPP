@@ -3,7 +3,7 @@
 
 #include <assert.h>
 
-void EcologyApply::UpdateAllEcology( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep ) {
+void EcologyApply::UpdateAllEcology( GridCell& gcl, Cohort* actingCohort, unsigned currentTimestep ) {
     // Apply cohort abundance changes
     UpdateAbundance( gcl, actingCohort );
     // Apply cohort biomass changes
@@ -12,7 +12,7 @@ void EcologyApply::UpdateAllEcology( GridCell& gcl, Cohort& actingCohort, unsign
     UpdatePools( gcl );
 }
 
-void EcologyApply::UpdateAbundance( GridCell& gcl, Cohort& actingCohort ) {
+void EcologyApply::UpdateAbundance( GridCell& gcl, Cohort* actingCohort ) {
     // Variable to calculate net abundance change to check that cohort abundance will not become negative
     double NetAbundanceChange = 0.0;
     // Loop over all abundance deltas
@@ -25,17 +25,17 @@ void EcologyApply::UpdateAbundance( GridCell& gcl, Cohort& actingCohort ) {
     //this is a variation from the original below - 
     //the abundance here only changes in Mortality.h where the change was mortalityTotal=(1-exp(-sum-of-Mortalities))*abundance
     //this is now change to mortalityTotal=exp(-sum-of-mortalities) - avoiding possibilities of negatives arising.
-    actingCohort.mCohortAbundance *= NetAbundanceChange;
+    actingCohort->mCohortAbundance *= NetAbundanceChange;
 
     //original code
     //Loop over all keys in the abundance deltas sorted list
     //for( auto& d: Cohort::mMassFluxes["abundance"] ) {
     //    // Update the abundance of the acting cohort
-    //  actingCohort.mCohortAbundance += d.second;
+    //  actingCohort->mCohortAbundance += d.second;
     //}
 }
 
-void EcologyApply::UpdateBiomass( GridCell& gcl, Cohort& actingCohort, unsigned currentTimestep ) {
+void EcologyApply::UpdateBiomass( GridCell& gcl, Cohort* actingCohort, unsigned currentTimestep ) {
     // Variable to calculate net biomass change to check that cohort individual body mass will not become negative
     double NetBiomass = 0.0;
 
@@ -47,11 +47,11 @@ void EcologyApply::UpdateBiomass( GridCell& gcl, Cohort& actingCohort, unsigned 
     double BiomassCheck = 0.0;
     bool NetToBeApplied = true;
     // If cohort abundance is greater than zero, then check that the calculated net biomass will not make individual body mass become negative
-    if( actingCohort.mCohortAbundance > 0 ) {
+    if( actingCohort->mCohortAbundance > 0 ) {
 
-        BiomassCheck = actingCohort.mIndividualBodyMass + NetBiomass;
+        BiomassCheck = actingCohort->mIndividualBodyMass + NetBiomass;
         if( BiomassCheck < 0 ) {
-            std::cout << "Biomass going negative, acting cohort: " << actingCohort.mFunctionalGroupIndex << ", " << actingCohort.mID << std::endl;
+            std::cout << "Biomass going negative, acting cohort: " << actingCohort->mFunctionalGroupIndex << ", " << actingCohort->mID << std::endl;
             exit( 1 );
         }
     }
@@ -60,22 +60,22 @@ void EcologyApply::UpdateBiomass( GridCell& gcl, Cohort& actingCohort, unsigned 
     for( auto& d: Cohort::mMassAccounting["biomass"] ) {
         // If cohort abundance is zero, then set cohort individual body mass to zero and reset the biomass delta to zero, 
         // otherwise update cohort individual body mass and reset the biomass delta to zero
-        if( actingCohort.mCohortAbundance == 0 ) {
-            actingCohort.mIndividualBodyMass = 0.0;
+        if( actingCohort->mCohortAbundance == 0 ) {
+            actingCohort->mIndividualBodyMass = 0.0;
         } else {
             if( NetToBeApplied ) {
-                actingCohort.mIndividualBodyMass = actingCohort.mIndividualBodyMass + NetBiomass;
+                actingCohort->mIndividualBodyMass = actingCohort->mIndividualBodyMass + NetBiomass;
                 NetToBeApplied = false;
             }
         }
     }
     // Check that individual body mass is still greater than zero
-    assert( actingCohort.mIndividualBodyMass >= 0 && "biomass < 0" );
+    assert( actingCohort->mIndividualBodyMass >= 0 && "biomass < 0" );
 
     // If the current individual body mass is the largest that has been achieved by this cohort, then update the maximum achieved
     // body mass tracking variable for the cohort
-    if( actingCohort.mIndividualBodyMass > actingCohort.mMaximumAchievedBodyMass )
-        actingCohort.mMaximumAchievedBodyMass = actingCohort.mIndividualBodyMass;
+    if( actingCohort->mIndividualBodyMass > actingCohort->mMaximumAchievedBodyMass )
+        actingCohort->mMaximumAchievedBodyMass = actingCohort->mIndividualBodyMass;
 
     // Variable to calculate net reproductive biomass change to check that cohort individual body mass will not become negative
     double NetReproductiveBiomass = 0.0;
@@ -90,11 +90,11 @@ void EcologyApply::UpdateBiomass( GridCell& gcl, Cohort& actingCohort, unsigned 
     for( auto& d: Cohort::mMassAccounting["reproductivebiomass"] ) {
         // If cohort abundance is zero, then set cohort reproductive body mass to zero and reset the biomass delta to zero, 
         // otherwise update cohort reproductive body mass and reset the biomass delta to zero
-        if( actingCohort.mCohortAbundance == 0 ) {
-            actingCohort.mIndividualReproductivePotentialMass = 0.0;
+        if( actingCohort->mCohortAbundance == 0 ) {
+            actingCohort->mIndividualReproductivePotentialMass = 0.0;
         } else {
 
-            actingCohort.mIndividualReproductivePotentialMass += d.second;
+            actingCohort->mIndividualReproductivePotentialMass += d.second;
         }
     }
     //Note that maturity time step is set in TReproductionBasic

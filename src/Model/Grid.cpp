@@ -48,3 +48,7 @@ GridCell& Grid::GetACell( const Location& location ) {
     long index = location.mLongitudeIndex + Parameters::Get( )->GetLengthUserLongitudeArray( ) * ( location.mLatitudeIndex );
     return mCells[ index ];
 }
+
+GridCell& Grid::GetACell( const unsigned index ) {
+    return mCells[ index ];
+}

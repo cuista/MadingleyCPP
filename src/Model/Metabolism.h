@@ -11,7 +11,7 @@ public:
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
     @param currentMonth The current month in the model */
-    virtual void Run( Cohort&, unsigned, unsigned ) {
+    virtual void Run( Cohort*, unsigned, unsigned ) {
         std::cout << "If this got called you ended up in a virtual function! MetabolismImplementation RunMetabolism" << std::endl;
     }
 };

@@ -1,4 +1,6 @@
 #include "Madingley.h"
+#include <omp.h>
+#include <list>
 
 Madingley::Madingley( ) {
     // Set up list of global diagnostics
@@ -34,7 +36,8 @@ void Madingley::Run( ) {
 
         Environment::Update( mCurrentMonth );
 
-        RunWithinCells( );
+        RunWithinCellsInParallel();
+        //RunWithinCells( );
         mEcologyTimer.Stop( );
         std::cout << "Within grid ecology took: " << mEcologyTimer.GetElapsedTimeSecs( ) << std::endl;
 
@@ -74,6 +77,54 @@ void Madingley::RunWithinCells( ) {
     mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = singleThreadDiagnostics.mCombinations;
 }
 
+void Madingley::RunWithinCellsInParallel( ) {
+    // Instantiate a class to hold thread locked global diagnostic variables
+
+    #ifdef _OPENMP
+    std::cout<<"Running RunWithinCellsInParallel( )..."<<endl;
+    double startTimeTest = omp_get_wtime( );
+    #endif
+    
+    list<ThreadVariables> partialsDiagnostics;
+        
+    #pragma omp parallel num_threads(omp_get_num_procs()) shared(partialsDiagnostics)
+    {
+        ThreadVariables singleThreadDiagnostics( 0, 0, 0, mNextCohortID );
+        
+        #pragma omp for schedule(dynamic)
+        for( unsigned gridCellIndex = 0; gridCellIndex < Parameters::Get( )->GetNumberOfGridCells( ); gridCellIndex++ ) 
+        {
+            RunWithinCellStockEcology( mModelGrid.GetACell( gridCellIndex ));
+            RunWithinCellCohortEcology( mModelGrid.GetACell( gridCellIndex ), singleThreadDiagnostics );
+        }
+        partialsDiagnostics.push_back(singleThreadDiagnostics);
+    }//END PARALLEL REGION
+    
+    ThreadVariables globalDiagnostics( 0, 0, 0, mNextCohortID);
+    for (list<ThreadVariables>::iterator it=partialsDiagnostics.begin(); it != partialsDiagnostics.end(); it++)
+    {
+        ThreadVariables tmp=*it;
+        globalDiagnostics.mProductions+=tmp.mProductions;
+        globalDiagnostics.mExtinctions+=tmp.mExtinctions;
+        globalDiagnostics.mCombinations+=tmp.mCombinations;
+    }
+        
+    // Update the variable tracking cohort unique IDs
+    mNextCohortID = globalDiagnostics.mNextCohortID;
+    
+    // Take the results from the thread local variables and apply to the global diagnostic variables
+    mGlobalDiagnosticVariables["NumberOfCohortsExtinct"] = globalDiagnostics.mExtinctions - globalDiagnostics.mCombinations;
+    mGlobalDiagnosticVariables["NumberOfCohortsProduced"] = globalDiagnostics.mProductions;
+    mGlobalDiagnosticVariables["NumberOfCohortsInModel"] = mGlobalDiagnosticVariables["NumberOfCohortsInModel"] + globalDiagnostics.mProductions - globalDiagnostics.mExtinctions;
+    mGlobalDiagnosticVariables["NumberOfCohortsCombined"] = globalDiagnostics.mCombinations;
+        
+    #ifdef _OPENMP
+    double endTimeTest = omp_get_wtime( );
+    std::cout << "RunWithinCellsInParallel( ) took: " << endTimeTest - startTimeTest << endl;
+    #endif
+
+}
+
 void Madingley::RunWithinCellStockEcology( GridCell& gcl ) {
 
     // Create a local instance of the stock ecology class
@@ -99,10 +150,10 @@ void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadVariables& part
     Activity CohortActivity;
 
     // Loop over randomly ordered gridCellCohorts to implement biological functions
-    gcl.ApplyFunctionToAllCohortsWithStaticRandomness( [&]( Cohort & c ) {
+    gcl.ApplyFunctionToAllCohortsWithStaticRandomness( [&]( Cohort* c ) {
         // Perform all biological functions except dispersal (which is cross grid cell)
 
-        if( gcl.mCohorts[c.mFunctionalGroupIndex].size( ) != 0 && c.mCohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
+        if( gcl.mCohorts[c->mFunctionalGroupIndex].size( ) != 0 && c->mCohortAbundance > Parameters::Get( )->GetExtinctionThreshold( ) ) {
 
             CohortActivity.AssignProportionTimeActive( gcl, c, mCurrentTimeStep, mCurrentMonth, mParams );
 
@@ -112,25 +163,26 @@ void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadVariables& part
             mEcologyCohort.UpdateEcology( gcl, c, mCurrentTimeStep );
             Cohort::ResetMassFluxes( );
             // Check that the mass of individuals in this cohort is still >= 0 after running ecology
-            assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
+            assert( c->mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
         }
 
         // Check that the mass of individuals in this cohort is still >= 0 after running ecology
-        if( gcl.mCohorts[c.mFunctionalGroupIndex].size( ) > 0 ) assert( c.mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
+        if( gcl.mCohorts[c->mFunctionalGroupIndex].size( ) > 0 ) assert( c->mIndividualBodyMass >= 0.0 && "Biomass < 0 for this cohort" );
 
     }, mCurrentTimeStep );
 
-    for( auto& c: Cohort::mNewCohorts ) {
+    for( auto c: GridCell::mNewCohorts ) {
         gcl.InsertCohort( c );
-        if( c.mDestinationCell != &gcl ) std::cout << "whut? wrong cell?" << std::endl;
+        if( c->mDestinationCell != &gcl ) std::cout << "whut? wrong cell?" << std::endl;
     }
-    partial.mProductions += Cohort::mNewCohorts.size( );
-    Cohort::mNewCohorts.clear( );
+    partial.mProductions += GridCell::mNewCohorts.size( );
+    GridCell::mNewCohorts.clear( );
 
     RunExtinction( gcl, partial );
 
     // Merge cohorts, if necessary
     if( gcl.GetNumberOfCohorts( ) > Parameters::Get( )->GetMaximumNumberOfCohorts( ) ) {
+        mCohortMerger.ResetRandom( );
         partial.mCombinations += mCohortMerger.MergeToReachThresholdFast( gcl, mParams );
 
         //Run extinction a second time to remove those cohorts that have been set to zero abundance when merging
@@ -141,26 +193,27 @@ void Madingley::RunWithinCellCohortEcology( GridCell& gcl, ThreadVariables& part
 void Madingley::RunExtinction( GridCell& gcl, ThreadVariables& partial ) {
 
     // Loop over cohorts and remove any whose abundance is below the extinction threshold
-    std::vector<Cohort> CohortsToRemove;
-    gcl.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
-        if( c.mCohortAbundance - Parameters::Get( )->GetExtinctionThreshold( ) <= 0 || c.mIndividualBodyMass <= 0 ) {
+    std::vector<Cohort*> CohortsToRemove;
+    gcl.ApplyFunctionToAllCohorts( [&]( Cohort* c ) {
+        if( c->mCohortAbundance - Parameters::Get( )->GetExtinctionThreshold( ) <= 0 || c->mIndividualBodyMass <= 0 ) {
             CohortsToRemove.push_back( c );
             partial.mExtinctions += 1;
         }
     } );
 
     // Code to add the biomass to the biomass pool and dispose of the cohort
-    for( auto& c: CohortsToRemove ) {
+    for( auto c: CohortsToRemove ) {
 
         // Add biomass of the extinct cohort to the organic matter pool
-        double deadMatter = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance;
+        double deadMatter = ( c->mIndividualBodyMass + c->mIndividualReproductivePotentialMass ) * c->mCohortAbundance;
         if( deadMatter < 0 ) std::cout << "Dead " << deadMatter << std::endl;
-        Environment::Get( "Organic Pool", c.GetCurrentCell( ) ) += deadMatter;
-        assert( Environment::Get( "Organic Pool", c.GetCurrentCell( ) ) >= 0 && "Organic pool < 0" );
+        Environment::Get( "Organic Pool", c->GetCurrentCell( ) ) += deadMatter;
+        assert( Environment::Get( "Organic Pool", c->GetCurrentCell( ) ) >= 0 && "Organic pool < 0" );
 
         // Remove the extinct cohort from the list of cohorts
         gcl.RemoveCohort( c );
     }
+    for( auto c: CohortsToRemove ) {delete(c);}
 }
 
 void Madingley::RunCrossGridCellEcology( unsigned& dispersals ) {
@@ -229,40 +282,40 @@ void Madingley::Output( unsigned step ) {
                 organicMatterPool += organicMatterThisCell;
                 respiratoryPool += respirationThisCell;
 
-                gridCell.ApplyFunctionToAllCohorts( [&]( Cohort & c ) {
+                gridCell.ApplyFunctionToAllCohorts( [&]( Cohort* c ) {
                     totalCohorts += 1;
-                    totalCohortAbundance += c.mCohortAbundance;
+                    totalCohortAbundance += c->mCohortAbundance;
 
-                            double cohortBiomass = ( c.mIndividualBodyMass + c.mIndividualReproductivePotentialMass ) * c.mCohortAbundance / 1000.;
+                            double cohortBiomass = ( c->mIndividualBodyMass + c->mIndividualReproductivePotentialMass ) * c->mCohortAbundance / 1000.;
                             cohortBiomassThisCell += cohortBiomass;
                             totalCohortBiomass += cohortBiomass;
-                            cohortAbundanceThisCell += c.mCohortAbundance;
+                            cohortAbundanceThisCell += c->mCohortAbundance;
 
-                    if( mCohortNutritionSource[ c.mFunctionalGroupIndex ] == "herbivore" ) {
-                        herbivoreBiomassThisCell += c.mIndividualBodyMass;
-                                herbivoreAbundanceThisCell += c.mCohortAbundance;
-                    } else if( mCohortNutritionSource[ c.mFunctionalGroupIndex ] == "omnivore" ) {
-                        omnivoreBiomassThisCell += c.mIndividualBodyMass;
-                                omnivoreAbundanceThisCell += c.mCohortAbundance;
-                    } else if( mCohortNutritionSource[ c.mFunctionalGroupIndex ] == "carnivore" ) {
-                        carnivoreBiomassThisCell += c.mIndividualBodyMass;
-                                carnivoreAbundanceThisCell += c.mCohortAbundance;
+                    if( mCohortNutritionSource[ c->mFunctionalGroupIndex ] == "herbivore" ) {
+                        herbivoreBiomassThisCell += c->mIndividualBodyMass;
+                                herbivoreAbundanceThisCell += c->mCohortAbundance;
+                    } else if( mCohortNutritionSource[ c->mFunctionalGroupIndex ] == "omnivore" ) {
+                        omnivoreBiomassThisCell += c->mIndividualBodyMass;
+                                omnivoreAbundanceThisCell += c->mCohortAbundance;
+                    } else if( mCohortNutritionSource[ c->mFunctionalGroupIndex ] == "carnivore" ) {
+                        carnivoreBiomassThisCell += c->mIndividualBodyMass;
+                                carnivoreAbundanceThisCell += c->mCohortAbundance;
                     }
 
-                    if( mCohortThermoregulation[ c.mFunctionalGroupIndex ] == "endotherm" ) {
-                        ectothermBiomassThisCell += c.mIndividualBodyMass;
-                                ectothermAbundanceThisCell += c.mCohortAbundance;
-                    } else if( mCohortThermoregulation[ c.mFunctionalGroupIndex ] == "ectotherm" ) {
-                        endothermBiomassThisCell += c.mIndividualBodyMass;
-                                endothermAbundanceThisCell += c.mCohortAbundance;
+                    if( mCohortThermoregulation[ c->mFunctionalGroupIndex ] == "endotherm" ) {
+                        ectothermBiomassThisCell += c->mIndividualBodyMass;
+                                ectothermAbundanceThisCell += c->mCohortAbundance;
+                    } else if( mCohortThermoregulation[ c->mFunctionalGroupIndex ] == "ectotherm" ) {
+                        endothermBiomassThisCell += c->mIndividualBodyMass;
+                                endothermAbundanceThisCell += c->mCohortAbundance;
                     }
 
-                    if( mCohortReproductiveStrategy[ c.mFunctionalGroupIndex ] == "iteroparity" ) {
-                        iteroparousBiomassThisCell += c.mIndividualBodyMass;
-                                iteroparousAbundanceThisCell += c.mCohortAbundance;
-                    } else if( mCohortReproductiveStrategy[ c.mFunctionalGroupIndex ] == "semelparity" ) {
-                        semelparousBiomassThisCell += c.mIndividualBodyMass;
-                                semelparousAbundanceThisCell += c.mCohortAbundance;
+                    if( mCohortReproductiveStrategy[ c->mFunctionalGroupIndex ] == "iteroparity" ) {
+                        iteroparousBiomassThisCell += c->mIndividualBodyMass;
+                                iteroparousAbundanceThisCell += c->mCohortAbundance;
+                    } else if( mCohortReproductiveStrategy[ c->mFunctionalGroupIndex ] == "semelparity" ) {
+                        semelparousBiomassThisCell += c->mIndividualBodyMass;
+                                semelparousAbundanceThisCell += c->mCohortAbundance;
                     }
                 } );
         gridCell.ApplyFunctionToAllStocks( [&]( Stock & s ) {

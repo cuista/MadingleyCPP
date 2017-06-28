@@ -23,7 +23,7 @@ public:
     @param actingCohort The position of the acting cohort in the jagged array of grid cell cohorts 
     @param currentTimestep The current model time step 
     @param currentMonth The current model month */
-    void Run( Cohort&, unsigned, unsigned );
+    void Run( Cohort*, unsigned, unsigned );
 
 private:
    /** \brief Calculate metabolic loss in grams for an individual

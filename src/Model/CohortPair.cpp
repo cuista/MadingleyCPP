@@ -14,5 +14,5 @@ CohortPair::CohortPair( Cohort* cohortA, Cohort* cohortB, double r ) {
         mCohortA = cohortB;
         mCohortB = cohortA;
     }
-    mDistance = CohortMerger::CalculateDistance( *mCohortA, *mCohortB );
+    mDistance = CohortMerger::CalculateDistance( mCohortA, mCohortB );
 }
